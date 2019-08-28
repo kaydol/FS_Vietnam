@@ -47,4 +47,8 @@ Temporary Items
 .apdisk
 
 # Custom
+#*.ogg
+*.mp3
+*.fsm
+*.txt
 Unused/
