@@ -939,6 +939,7 @@ class CfgFunctions
 			class UnitsReady {file = "\FS_Vietnam\Functions\Behaviour\UnitsReady.sqf";};
 			class GookSenses {file = "\FS_Vietnam\Functions\Behaviour\GookSenses.sqf";};
 			class IsPlaceSafe {file = "\FS_Vietnam\Functions\Behaviour\IsPlaceSafe.sqf";};
+			class FilterObjects {file = "\FS_Vietnam\Functions\Behaviour\FilterObjects.sqf";};
 		};
 		
 		class Modules {

@@ -1,35 +1,34 @@
 
 params ["_ailimit", "_groupSize", "_groupsCount", "_debug"];
 
-_allPlayers = call BIS_fnc_listPlayers;
+private _allPlayers = call BIS_fnc_listPlayers;
 
-// Filter out players who use Arsenal Room
-// Filter out Gook players
-_allPlayers = _allPlayers select { side _x != EAST && !(_x getVariable ["UsesArsenalRoom", false]) }; 
+_allPlayers = _allPlayers select { side _x != EAST }; // Filter out Gook players
+_allPlayers = [_allPlayers] call FS_fnc_FilterObjects; // Filter out players who use Arsenal Room
 
 if ( {alive _x} count _allPlayers == 0 ) exitWith {
 	// All players are dead, so nobody to spawn around
 };
 
-_target = _allPlayers call BIS_fnc_SelectRandom;
+private _target = selectRandom _allPlayers;
 
 /* 
 	If The Unsung Vietnam War Mod is not enabled, try to substitute 
 	real Gooks with Chinese speaking asians with Tanoa weapons 
 */
-_baseclass = "O_T_Soldier_F"; 
+private _baseclass = "O_T_Soldier_F"; 
 
 /* 
 	If The Unsung Vietnam War Mod is enabled, select a random
 	pool of classes corresponding with a vietnamese regiment
 */
-_TheUnsungVietnamWarModEnabled = isClass( ConfigFile >> "CfgPatches" >> "uns_men_NVA_daccong" );
-_pools = [];
-_pool = [];
+private _TheUnsungVietnamWarModEnabled = isClass( ConfigFile >> "CfgPatches" >> "uns_men_NVA_daccong" );
+private _pools = [];
+private _pool = [];
 if ( _TheUnsungVietnamWarModEnabled ) then {
 	{
 		if (isClass (ConfigFile >> "CfgPatches" >> _x)) then {
-			_units = getArray ( ConfigFile >> "CfgPatches" >> _x >> "units" );
+			private _units = getArray ( ConfigFile >> "CfgPatches" >> _x >> "units" );
 			if !( _units isEqualTo [] ) then { _pools pushBack _units };
 		};
 	}
@@ -37,7 +36,7 @@ if ( _TheUnsungVietnamWarModEnabled ) then {
 	_pool = selectRandom _pools;
 };
 
-_side = EAST;
+private _side = EAST;
 
 for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do 
 {
@@ -47,13 +46,13 @@ for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do
 		WaitUntil {sleep 0.5; ({side _x == _side && alive _x} count allUnits) <= ( _ailimit - _groupSize * _groupsCount )};
 	};
 	
-	_result = [_allPlayers, 200, True] call FS_fnc_GetHiddenPos;
+	private _result = [_allPlayers, 200, True] call FS_fnc_GetHiddenPos;
 	_result params ["_pos", "_target"];
 	
 	if ( _pos isEqualTo [] ) exitWith { systemChat "GookManager couldn't find a spot to spawn gooks"; };
 	systemChat "GookManager has found a spot";
 	
-	_NewGrp = createGroup _side;
+	private _NewGrp = createGroup _side;
 	
 	if ( isNull _NewGrp ) exitWith {
 		/* The group limit has been reached */
@@ -69,7 +68,7 @@ for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do
 	
 	if !( _TheUnsungVietnamWarModEnabled ) then {
 		for [{_j=0},{_j < _groupSize},{_j=_j+1}] do {
-			_unit = units _NewGrp select _j;
+			private _unit = units _NewGrp select _j;
 			_unit spawn FS_fnc_AuthenticLoadout;
 			sleep 0.5;
 		};

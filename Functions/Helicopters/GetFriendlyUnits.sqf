@@ -23,5 +23,5 @@ _friendlyUnits = [];
 }
 forEach _friendlyGroups;
 
-_friendlyUnits = _friendlyUnits select { !(_x getVariable ["UsesArsenalRoom", False]) }; // Filter out players who use Arsenal Room
+_friendlyUnits = [_friendlyUnits] call FS_fnc_FilterObjects; // Filter out players who use Arsenal Room
 _friendlyUnits 
