@@ -10,7 +10,7 @@ This Arma 3 addon aims at recreating authentic helicopter scouting tactic used b
 * Napalm CAS module: a variation of the standard BIS CAS module designed to work with napalm bombs and planes from The Unsung Vietnam War addon.
 * Napalm Settings module: allows control of napalm lifetime, damage and explosion radius.
 
-### AI improvements
+### New AI
 * OH-6 Scout AI. The scout can asses the battlefield and call-in Napalm and artillery strikes, automatically takes station above known friendlies on the ground, and shares his knowledge with the ground troops if they have a radio. Should the ammo or fuel run out, the scout heads over to the nearest airbase to restock. Should the crewmate get injured, the scout breaks the station and flies to the nearest base that provides crew reinforcements. 
 * Gooks AI. Gooks learned how to set up traps in the jungle, hide in the trees, and practice "Grab them by the belt" tactic. Just like their real life counterparts did.
 
