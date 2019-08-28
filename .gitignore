@@ -49,6 +49,6 @@ Temporary Items
 # Custom
 #*.ogg
 *.mp3
-*.fsm
+#*.fsm
 *.txt
 Unused/

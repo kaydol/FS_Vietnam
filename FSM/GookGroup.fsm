@@ -1,0 +1,747 @@
+/*%FSM<COMPILE "D:\Games\SteamLibrary\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, GookGroup">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"Start",0,250,-190.887299,-152.449432,-100.887352,-102.449432,0.000000,"Start"};
+item1[] = {"Spotted_",4,218,87.558151,-190.697662,177.558151,-140.697662,2.000000,"Spotted?"};
+item2[] = {"Guns_blazing_",2,250,192.790680,-187.790695,282.790710,-137.790695,0.000000,"Guns" \n "blazing!"};
+item3[] = {"Keep_quiet__go_s",2,250,193.705856,-108.634758,283.705872,-58.634750,0.000000,"Keep quiet," \n "go stealth"};
+item4[] = {"_",8,218,283.079285,-149.208710,373.079285,-99.208710,0.000000,""};
+item5[] = {"_",8,218,-106.191910,-205.641678,-16.191910,-155.641678,0.000000,""};
+item6[] = {"____Loop_Start_",2,250,-13.023254,-151.744156,76.976761,-101.744186,0.000000,":: Loop Start ::"};
+item7[] = {"_",-1,250,8.139526,-197.093018,19.186035,-193.604660,0.000000,""};
+item8[] = {"__1",2,250,377.674377,-152.325546,467.674408,-102.325531,0.000000,""};
+item9[] = {"isUnitReady",4,218,463.720947,-205.813950,553.720947,-155.813950,1.000000,"isUnitReady"};
+item10[] = {"____Targeting__",2,250,571.279053,-206.395355,661.279053,-156.395355,0.000000,":: Targeting ::"};
+item11[] = {"",7,210,1056.056030,6.357296,1064.056030,14.357300,0.000000,""};
+item12[] = {"Not_spotted",8,218,86.976738,-112.209297,176.976730,-62.209305,0.000000,"Not spotted"};
+item13[] = {"__2",-1,250,513.372070,-132.558151,513.372070,-130.813965,0.000000,""};
+item14[] = {"Has_target_",4,218,684.613464,-297.879242,774.613464,-247.879227,1.000000,"Has target?"};
+item15[] = {"Grab_them_by_the",2,250,1161.528687,-377.450317,1251.528687,-327.450409,0.000000,"Grab them" \n "by the belt"};
+item16[] = {"No_targets_Area",8,218,678.255981,-179.651138,768.255981,-129.651138,0.000000,"No targets" \n "Area clear"};
+item17[] = {"__3",2,250,788.139404,-168.023285,878.139404,-118.023277,0.000000,""};
+item18[] = {"Is_daylight_",4,218,893.372192,-210.465088,983.372192,-160.465103,1.000000,"Is daylight?"};
+item19[] = {"Start_hugging_tr",2,250,1472.510620,-252.139801,1562.510742,-202.139771,0.000000,"Start hugging" \n "trees"};
+item20[] = {"Go_on_patrol",2,250,1004.562195,-126.568970,1094.562012,-76.568970,0.000000,"Go on patrol"};
+item21[] = {"It_s_dark",8,218,892.209167,-127.325607,982.209167,-77.325607,0.000000,"It's dark"};
+item22[] = {"_",8,218,1161.704346,-186.088058,1251.704346,-136.088028,0.000000,""};
+item23[] = {"Has_no_target",8,218,500.801636,-307.786621,590.801636,-257.786621,0.000000,"Has no target"};
+item24[] = {"Try_to_assign_a",2,250,580.850891,-371.136993,670.850891,-321.136993,0.000000,"Try to assign" \n "a new target"};
+item25[] = {"All_dead_",4,218,-11.575279,-305.499268,78.424713,-255.499268,3.000000,"All dead?"};
+item26[] = {"All_died",1,250,126.469543,-401.633270,216.469574,-351.633270,0.000000,"All died"};
+item27[] = {"____Validate__Target",2,250,792.679016,-375.469086,882.679016,-325.469086,0.000000,":: Validate " \n "Target ::"};
+item28[] = {"Target_reached_",4,218,683.049316,-456.988495,773.049316,-406.988495,1.000000,"Target" \n "reached?"};
+item29[] = {"Target_not_reach",8,218,978.205627,-376.406311,1068.205811,-326.406311,0.000000,"Target" \n "not reached"};
+item30[] = {"",7,210,380.174255,-437.862213,388.174255,-429.862213,0.000000,""};
+item31[] = {"Sleep",2,250,1161.707642,37.749557,1251.707764,87.749557,0.000000,"Sleep"};
+item32[] = {"Time_passed_",4,218,-12.823395,37.750458,77.176483,87.750458,0.000000,"Time" \n "passed?"};
+item33[] = {"__4",2,250,1019.162781,-283.353760,1109.162842,-233.353760,0.000000,""};
+item34[] = {"Current_place_is",4,218,1290.657959,-323.497009,1380.657959,-273.497009,1.000000,"Current place" \n "is not safe?"};
+item35[] = {"Place_Mines_if_p",2,250,1403.638672,-85.525055,1493.638672,-35.525055,0.000000,"Place Mines" \n "if possible"};
+item36[] = {"Current_place_is_1",8,218,1288.545166,-250.605286,1378.545166,-200.605270,0.000000,"Current" \n "place is safe"};
+item37[] = {"Done_",4,218,1396.505493,37.883209,1486.505493,87.883209,1.000000,"Done?"};
+item38[] = {"Still_mining",8,218,1524.072998,-85.873840,1614.072998,-35.873840,0.000000,"Still mining"};
+item39[] = {"Sleep_1",2,250,1647.050781,-84.956146,1737.050781,-34.956146,0.000000,"Sleep"};
+item40[] = {"Time_passed_",4,218,1647.968628,37.103882,1737.968628,87.103882,0.000000,"Time" \n "passed?"};
+item41[] = {"Check",2,250,1523.160645,37.103882,1613.160767,87.103882,0.000000,"Check"};
+item42[] = {"",7,210,1562.706665,227.519958,1570.706665,235.519958,0.000000,""};
+item43[] = {"",7,210,314.965271,222.846252,322.965302,230.846252,0.000000,""};
+version=1;
+class LayoutItems
+{
+	class Item7
+	{
+		class ItemInfo
+		{
+			FontFace="Arial";
+			FontHeight=10;
+			lStyle=1;
+		};
+	};
+	class Item13
+	{
+		class ItemInfo
+		{
+			FontFace="Arial";
+			FontHeight=10;
+			lStyle=1;
+		};
+	};
+};
+link0[] = {0,5};
+link1[] = {1,2};
+link2[] = {2,4};
+link3[] = {3,4};
+link4[] = {4,8};
+link5[] = {5,6};
+link6[] = {6,1};
+link7[] = {6,12};
+link8[] = {6,25};
+link9[] = {8,9};
+link10[] = {8,11};
+link11[] = {9,10};
+link12[] = {10,14};
+link13[] = {10,23};
+link14[] = {11,22};
+link15[] = {12,3};
+link16[] = {14,27};
+link17[] = {15,22};
+link18[] = {16,17};
+link19[] = {17,18};
+link20[] = {17,21};
+link21[] = {18,33};
+link22[] = {19,22};
+link23[] = {20,22};
+link24[] = {21,20};
+link25[] = {22,31};
+link26[] = {23,24};
+link27[] = {24,14};
+link28[] = {24,16};
+link29[] = {25,26};
+link30[] = {27,28};
+link31[] = {27,29};
+link32[] = {28,30};
+link33[] = {29,15};
+link34[] = {30,2};
+link35[] = {31,32};
+link36[] = {32,6};
+link37[] = {33,34};
+link38[] = {33,36};
+link39[] = {34,19};
+link40[] = {35,38};
+link41[] = {36,35};
+link42[] = {37,31};
+link43[] = {38,39};
+link44[] = {39,40};
+link45[] = {40,41};
+link46[] = {41,37};
+link47[] = {41,38};
+link48[] = {41,42};
+link49[] = {42,43};
+link50[] = {43,1};
+globals[] = {0.000000,0,0,0,0,640,480,1,56,6316128,1,-410.744232,1072.937622,309.272491,-463.506531,1127,587,1};
+window[] = {0,-1,-1,-1,-1,863,104,1672,104,1,1145};
+*//*%FSM</HEAD>*/
+class FSM
+{
+        fsmName = "GookGroup";
+        class States
+        {
+                /*%FSM<STATE "Start">*/
+                class Start
+                {
+                        name = "Start";
+                        itemno = 0;
+                        init = /*%FSM<STATEINIT""">*/"params [""_group"", [""_target"", []], [""_debug"", False]];" \n
+                         "" \n
+                         "_sleep = 5;" \n
+                         "" \n
+                         "_group spawn FS_fnc_GrpFiredNear;" \n
+                         "//_group spawn FS_fnc_GookSenses;" \n
+                         "" \n
+                         "//if (_debug) then { " \n
+                         "	systemChat format [""GookGroup: Init target is %1"", _target]; " \n
+                         "//};"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "_">*/
+                                class _
+                                {
+                                        itemno = 5;
+                                        priority = 0.000000;
+                                        to="____Loop_Start_";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Guns_blazing_">*/
+                class Guns_blazing_
+                {
+                        name = "Guns_blazing_";
+                        itemno = 2;
+                        init = /*%FSM<STATEINIT""">*/"_group setBehaviour ""COMBAT"";" \n
+                         "_group setCombatMode ""RED"";" \n
+                         "_group setSpeedMode ""FULL"";" \n
+                         "_group setFormation ""VEE"";" \n
+                         "" \n
+                         "if (_debug) then { " \n
+                         "	systemChat ""GookGroup: Guns blazing!""; " \n
+                         "};"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "_">*/
+                                class _
+                                {
+                                        itemno = 4;
+                                        priority = 0.000000;
+                                        to="__1";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Keep_quiet__go_s">*/
+                class Keep_quiet__go_s
+                {
+                        name = "Keep_quiet__go_s";
+                        itemno = 3;
+                        init = /*%FSM<STATEINIT""">*/"_group setBehaviour ""STEALTH"";" \n
+                         "_group setCombatMode ""WHITE"";" \n
+                         "_group setSpeedMode ""LIMITED"";" \n
+                         "_group setFormation ""DIAMOND"";" \n
+                         "" \n
+                         "if (_debug) then { " \n
+                         "	systemChat ""GookGroup: Keep quiet""; " \n
+                         "};"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "_">*/
+                                class _
+                                {
+                                        itemno = 4;
+                                        priority = 0.000000;
+                                        to="__1";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "____Loop_Start_">*/
+                class ____Loop_Start_
+                {
+                        name = "____Loop_Start_";
+                        itemno = 6;
+                        init = /*%FSM<STATEINIT""">*/"if (_debug) then { systemChat ""GookGroup: LoopStart""; };"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "All_dead_">*/
+                                class All_dead_
+                                {
+                                        itemno = 25;
+                                        priority = 3.000000;
+                                        to="All_died";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"{alive _x} count units _group == 0"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Spotted_">*/
+                                class Spotted_
+                                {
+                                        itemno = 1;
+                                        priority = 2.000000;
+                                        to="Guns_blazing_";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"_group call FS_fnc_IsGroupSpotted"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Not_spotted">*/
+                                class Not_spotted
+                                {
+                                        itemno = 12;
+                                        priority = 0.000000;
+                                        to="Keep_quiet__go_s";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "__1">*/
+                class __1
+                {
+                        name = "__1";
+                        itemno = 8;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "isUnitReady">*/
+                                class isUnitReady
+                                {
+                                        itemno = 9;
+                                        priority = 1.000000;
+                                        to="____Targeting__";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"[units _group] call FS_fnc_UnitsReady"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "_">*/
+                                class _
+                                {
+                                        itemno = 22;
+                                        priority = 0.000000;
+                                        to="Sleep";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "____Targeting__">*/
+                class ____Targeting__
+                {
+                        name = "____Targeting__";
+                        itemno = 10;
+                        init = /*%FSM<STATEINIT""">*/"" \n
+                         "_group setFormation ""VEE"";" \n
+                         "" \n
+                         "if (_debug) then { " \n
+                         "	systemChat ""GookGroup: Targeting""; " \n
+                         "};" \n
+                         ""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Has_target_">*/
+                                class Has_target_
+                                {
+                                        itemno = 14;
+                                        priority = 1.000000;
+                                        to="____Validate__Target";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"" \n
+                                         "if (_target isEqualTo []) exitWith { False };" \n
+                                         "" \n
+                                         "_targetIsPosition = _target isEqualTypeParams [0,0,0];" \n
+                                         "if (_targetIsPosition) exitWith { True };" \n
+                                         "" \n
+                                         "/* Target is unit! */" \n
+                                         "if ( alive _target ) exitWith { True };" \n
+                                         "" \n
+                                         "/* Dead & Deleted units aren't a valid target */" \n
+                                         "False"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Has_no_target">*/
+                                class Has_no_target
+                                {
+                                        itemno = 23;
+                                        priority = 0.000000;
+                                        to="Try_to_assign_a";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Grab_them_by_the">*/
+                class Grab_them_by_the
+                {
+                        name = "Grab_them_by_the";
+                        itemno = 15;
+                        init = /*%FSM<STATEINIT""">*/"if ( _target isEqualTypeParams [0,0,0] ) then {" \n
+                         "	_group move _target;" \n
+                         "} else {" \n
+                         "	_group move position _target;" \n
+                         "};" \n
+                         "" \n
+                         "_group setFormation ""VEE"";" \n
+                         "" \n
+                         "if (_debug) then { " \n
+                         "	systemChat ""GookGroup: Grab them by the belt!""; " \n
+                         "};"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "_">*/
+                                class _
+                                {
+                                        itemno = 22;
+                                        priority = 0.000000;
+                                        to="Sleep";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "__3">*/
+                class __3
+                {
+                        name = "__3";
+                        itemno = 17;
+                        init = /*%FSM<STATEINIT""">*/"if (_debug) then { " \n
+                         "	systemChat ""GookGroup: Area clear""; " \n
+                         "};"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Is_daylight_">*/
+                                class Is_daylight_
+                                {
+                                        itemno = 18;
+                                        priority = 1.000000;
+                                        to="__4";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"dayTime > 6 && dayTime < 17.6"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "It_s_dark">*/
+                                class It_s_dark
+                                {
+                                        itemno = 21;
+                                        priority = 0.000000;
+                                        to="Go_on_patrol";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Start_hugging_tr">*/
+                class Start_hugging_tr
+                {
+                        name = "Start_hugging_tr";
+                        itemno = 19;
+                        init = /*%FSM<STATEINIT""">*/"_group call FS_fnc_GrpHideInTrees;" \n
+                         "" \n
+                         "if (_debug) then { " \n
+                         "	systemChat ""GookGroup: Hug trees""; " \n
+                         "};"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "_">*/
+                                class _
+                                {
+                                        itemno = 22;
+                                        priority = 0.000000;
+                                        to="Sleep";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Go_on_patrol">*/
+                class Go_on_patrol
+                {
+                        name = "Go_on_patrol";
+                        itemno = 20;
+                        init = /*%FSM<STATEINIT""">*/"" \n
+                         "_defaultDest = position leader _group;" \n
+                         "_rndSafeDest = [leader _group, 50, 300, 3, 0, 20, 0] call BIS_fnc_findSafePos;" \n
+                         "" \n
+                         "if (_rndSafeDest isEqualTo []) then {" \n
+                         "	_group move _defaultDest;" \n
+                         "} else {" \n
+                         "	_group move _rndSafeDest;" \n
+                         "};" \n
+                         "" \n
+                         "_group setFormation ""LINE"";" \n
+                         "" \n
+                         "if (_debug) then { " \n
+                         "	systemChat ""GookGroup: Go on patrol""; " \n
+                         "};"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "_">*/
+                                class _
+                                {
+                                        itemno = 22;
+                                        priority = 0.000000;
+                                        to="Sleep";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Try_to_assign_a">*/
+                class Try_to_assign_a
+                {
+                        name = "Try_to_assign_a";
+                        itemno = 24;
+                        init = /*%FSM<STATEINIT""">*/"_target = _group call FS_fnc_GrpNearestEnemy;" \n
+                         "" \n
+                         "if (_debug) then { " \n
+                         "	systemChat format [""GookGroup: New Target is %1"", _target]; " \n
+                         "};"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Has_target_">*/
+                                class Has_target_
+                                {
+                                        itemno = 14;
+                                        priority = 1.000000;
+                                        to="____Validate__Target";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"" \n
+                                         "if (_target isEqualTo []) exitWith { False };" \n
+                                         "" \n
+                                         "_targetIsPosition = _target isEqualTypeParams [0,0,0];" \n
+                                         "if (_targetIsPosition) exitWith { True };" \n
+                                         "" \n
+                                         "/* Target is unit! */" \n
+                                         "if ( alive _target ) exitWith { True };" \n
+                                         "" \n
+                                         "/* Dead & Deleted units aren't a valid target */" \n
+                                         "False"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "No_targets_Area">*/
+                                class No_targets_Area
+                                {
+                                        itemno = 16;
+                                        priority = 0.000000;
+                                        to="__3";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "All_died">*/
+                class All_died
+                {
+                        name = "All_died";
+                        itemno = 26;
+                        init = /*%FSM<STATEINIT""">*/"if (_debug) then { systemChat ""GookGroup: All died""; };"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "____Validate__Target">*/
+                class ____Validate__Target
+                {
+                        name = "____Validate__Target";
+                        itemno = 27;
+                        init = /*%FSM<STATEINIT""">*/"if (_debug) then { " \n
+                         "	systemChat ""GookGroup: Validate Target""; " \n
+                         "};"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Target_reached_">*/
+                                class Target_reached_
+                                {
+                                        itemno = 28;
+                                        priority = 1.000000;
+                                        to="Guns_blazing_";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"if (isNull leader _group) exitWith { False };" \n
+                                         "" \n
+                                         "leader _group distance _target < 20"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Target_not_reach">*/
+                                class Target_not_reach
+                                {
+                                        itemno = 29;
+                                        priority = 0.000000;
+                                        to="Grab_them_by_the";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Sleep">*/
+                class Sleep
+                {
+                        name = "Sleep";
+                        itemno = 31;
+                        init = /*%FSM<STATEINIT""">*/"_time = time;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Time_passed_">*/
+                                class Time_passed_
+                                {
+                                        itemno = 32;
+                                        priority = 0.000000;
+                                        to="____Loop_Start_";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"time - _time > _sleep"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "__4">*/
+                class __4
+                {
+                        name = "__4";
+                        itemno = 33;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Current_place_is">*/
+                                class Current_place_is
+                                {
+                                        itemno = 34;
+                                        priority = 1.000000;
+                                        to="Start_hugging_tr";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!(_group call FS_fnc_IsPlaceSafe)"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Current_place_is_1">*/
+                                class Current_place_is_1
+                                {
+                                        itemno = 36;
+                                        priority = 0.000000;
+                                        to="Place_Mines_if_p";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Place_Mines_if_p">*/
+                class Place_Mines_if_p
+                {
+                        name = "Place_Mines_if_p";
+                        itemno = 35;
+                        init = /*%FSM<STATEINIT""">*/"" \n
+                         "_group setBehaviour ""AWARE"";" \n
+                         "_group setSpeedMode ""FULL"";" \n
+                         "" \n
+                         "if (_debug) then { " \n
+                         "	systemChat ""GookGroup: Placing Mines""; " \n
+                         "};" \n
+                         "" \n
+                         "" \n
+                         "_scriptHandle = _group spawn FS_fnc_GrpPlaceTraps;" \n
+                         "" \n
+                         ""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Still_mining">*/
+                                class Still_mining
+                                {
+                                        itemno = 38;
+                                        priority = 0.000000;
+                                        to="Sleep_1";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Sleep_1">*/
+                class Sleep_1
+                {
+                        name = "Sleep_1";
+                        itemno = 39;
+                        init = /*%FSM<STATEINIT""">*/"_time = time;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Time_passed_">*/
+                                class Time_passed_
+                                {
+                                        itemno = 40;
+                                        priority = 0.000000;
+                                        to="Check";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"time - _time > _sleep"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Check">*/
+                class Check
+                {
+                        name = "Check";
+                        itemno = 41;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Spotted_">*/
+                                class Spotted_
+                                {
+                                        itemno = 1;
+                                        priority = 2.000000;
+                                        to="Guns_blazing_";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"_group call FS_fnc_IsGroupSpotted"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Done_">*/
+                                class Done_
+                                {
+                                        itemno = 37;
+                                        priority = 1.000000;
+                                        to="Sleep";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"scriptDone _scriptHandle"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Still_mining">*/
+                                class Still_mining
+                                {
+                                        itemno = 38;
+                                        priority = 0.000000;
+                                        to="Sleep_1";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+        };
+        initState="Start";
+        finalStates[] =
+        {
+                "All_died",
+        };
+};
+/*%FSM</COMPILE>*/

@@ -1,0 +1,169 @@
+/*%FSM<COMPILE "D:\Games\SteamLibrary\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, GookManager">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"Start",0,250,-280.465271,-202.906891,-190.465149,-152.906982,0.000000,"Start"};
+item1[] = {"Suspense",2,250,-34.052933,-284.302307,55.947083,-234.302292,0.000000,"Suspense"};
+item2[] = {"Spawn_Gooks",3,250,139.520142,-222.248505,229.520142,-172.248520,0.000000,"Spawn Gooks"};
+item3[] = {"_",8,218,-170.929230,-261.629364,-80.929230,-211.629364,0.000000,""};
+item4[] = {"Enough_suspense",4,218,139.748734,-319.711456,229.748734,-269.711334,1.000000,"Enough" \n "suspense?"};
+item5[] = {"More_suspense",8,218,85.800079,-353.022858,175.800079,-303.022766,0.000000,"More" \n "suspense"};
+item6[] = {"Gooks_spawned_",4,218,-34.573074,-221.998413,55.426926,-171.998413,0.000000,"Gooks" \n "spawned?"};
+item7[] = {"_",-1,250,104.911438,-136.757874,113.256653,-136.161774,0.000000,""};
+item8[] = {"__1",-1,250,113.256653,-149.275696,115.641022,-145.103088,0.000000,""};
+item9[] = {"isNull___module",4,218,-64.966774,-425.711304,25.033234,-375.711304,2.000000,"isNull " \n "_module"};
+item10[] = {"Module_deleted",1,250,152.000519,-489.603516,242.000549,-439.603516,0.000000,"Module" \n "deleted"};
+version=1;
+class LayoutItems
+{
+	class Item7
+	{
+		class ItemInfo
+		{
+			FontFace="Arial";
+			FontHeight=10;
+			lStyle=1;
+		};
+	};
+	class Item8
+	{
+		class ItemInfo
+		{
+			FontFace="Arial";
+			FontHeight=10;
+			lStyle=1;
+		};
+	};
+};
+link0[] = {0,3};
+link1[] = {1,4};
+link2[] = {1,5};
+link3[] = {1,9};
+link4[] = {2,6};
+link5[] = {3,1};
+link6[] = {4,2};
+link7[] = {5,1};
+link8[] = {6,1};
+link9[] = {9,10};
+globals[] = {0.000000,0,0,0,0,640,480,1,10,6316128,1,-464.886108,540.717834,29.375854,-542.608887,1032,587,1};
+window[] = {0,-1,-1,-1,-1,941,182,1622,182,1,1050};
+*//*%FSM</HEAD>*/
+class FSM
+{
+        fsmName = "GookManager";
+        class States
+        {
+                /*%FSM<STATE "Start">*/
+                class Start
+                {
+                        name = "Start";
+                        itemno = 0;
+                        init = /*%FSM<STATEINIT""">*/"params [""_module"", ""_spawnProbability"", ""_sleep"", ""_ailimit"", ""_groupSize"", ""_groupsCount"", ""_debug""];" \n
+                         "" \n
+                         "_moduleActive = true;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "_">*/
+                                class _
+                                {
+                                        itemno = 3;
+                                        priority = 0.000000;
+                                        to="Suspense";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Suspense">*/
+                class Suspense
+                {
+                        name = "Suspense";
+                        itemno = 1;
+                        init = /*%FSM<STATEINIT""">*/"_suspense_handle = [_sleep, _debug] spawn FS_fnc_Suspense;" \n
+                         ""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "isNull___module">*/
+                                class isNull___module
+                                {
+                                        itemno = 9;
+                                        priority = 2.000000;
+                                        to="Module_deleted";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"isNull _module"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Enough_suspense">*/
+                                class Enough_suspense
+                                {
+                                        itemno = 4;
+                                        priority = 1.000000;
+                                        to="Spawn_Gooks";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"(scriptDone _suspense_handle) && (_spawnProbability call FS_fnc_IsEnoughSuspense) && _moduleActive"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "More_suspense">*/
+                                class More_suspense
+                                {
+                                        itemno = 5;
+                                        priority = 0.000000;
+                                        to="Suspense";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"scriptDone _suspense_handle && _moduleActive"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Spawn_Gooks">*/
+                class Spawn_Gooks
+                {
+                        name = "Spawn_Gooks";
+                        itemno = 2;
+                        init = /*%FSM<STATEINIT""">*/"_spawn_gooks_handler = [_ailimit, _groupSize, _groupsCount, _debug] spawn FS_fnc_SpawnGooks;" \n
+                         ""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Gooks_spawned_">*/
+                                class Gooks_spawned_
+                                {
+                                        itemno = 6;
+                                        priority = 0.000000;
+                                        to="Suspense";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"scriptDone _spawn_gooks_handler"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Module_deleted">*/
+                class Module_deleted
+                {
+                        name = "Module_deleted";
+                        itemno = 10;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                        };
+                };
+                /*%FSM</STATE>*/
+        };
+        initState="Start";
+        finalStates[] =
+        {
+                "Module_deleted",
+        };
+};
+/*%FSM</COMPILE>*/

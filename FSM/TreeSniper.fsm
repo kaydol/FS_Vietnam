@@ -1,0 +1,208 @@
+/*%FSM<COMPILE "D:\Games\SteamLibrary\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, SniperSentry">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"Sentry_FSM",0,4346,-40.348846,-149.418610,49.651154,-99.418610,0.000000,"Sentry FSM"};
+item1[] = {"_",8,218,118.366638,-150.017212,208.366638,-100.017212,0.000000,""};
+item2[] = {"Reset",2,250,267.866150,-150.203079,357.866150,-100.203079,0.000000,"Reset"};
+item3[] = {"Knows_about_enem",4,218,384.313385,-258.749481,474.313385,-208.749527,1.000000,"Knows" \n "about enemies"};
+item4[] = {"No_known_enemies",8,218,383.472717,-44.445724,473.472565,5.554276,0.000000,"No known" \n "enemies"};
+item5[] = {"All_units_are_de",4,218,268.568146,-317.430573,358.568146,-267.430573,3.000000,"All units" \n "are dead"};
+item6[] = {"Exit",1,250,741.677490,-316.531097,831.677490,-266.531097,0.000000,"Exit"};
+item7[] = {"Sleep",2,250,505.436157,-259.350464,595.436157,-209.350464,0.000000,"Sleep"};
+item8[] = {"Has_time_passed",4,218,503.681763,-144.221222,593.681763,-94.221222,0.000000,"Has time" \n "passed?"};
+item9[] = {"Look_into__random",2,250,635.909729,-44.489441,725.909729,5.510559,0.000000,"Look into " \n "random direction"};
+item10[] = {"_",8,218,638.438477,-261.167419,728.438477,-211.167404,0.000000,""};
+link0[] = {0,1};
+link1[] = {1,2};
+link2[] = {2,3};
+link3[] = {2,4};
+link4[] = {2,5};
+link5[] = {3,7};
+link6[] = {4,9};
+link7[] = {5,6};
+link8[] = {7,8};
+link9[] = {8,2};
+link10[] = {9,10};
+link11[] = {10,7};
+globals[] = {0.000000,0,0,0,0,640,480,1,16,6316128,1,-5.529144,895.131714,98.560593,-413.734131,1032,587,1};
+window[] = {0,-1,-1,-1,-1,898,166,1606,139,1,1050};
+*//*%FSM</HEAD>*/
+class FSM
+{
+        fsmName = "SniperSentry";
+        class States
+        {
+                /*%FSM<STATE "Sentry_FSM">*/
+                class Sentry_FSM
+                {
+                        name = "Sentry_FSM";
+                        itemno = 0;
+                        init = /*%FSM<STATEINIT""">*/"params [""_group"", [""_idleTime"", 20]];" \n
+                         "" \n
+                         "_time = time;" \n
+                         "" \n
+                         "{" \n
+                         "	_x disableAI ""PATH"";" \n
+                         "	_x setUnitPos ""MIDDLE"";" \n
+                         "} " \n
+                         "forEach units _group;" \n
+                         "" \n
+                         "/* Limit ROF */" \n
+                         "{" \n
+                         "	_x addEventHandler [""FiredMan"", {" \n
+                         "		_this spawn {" \n
+                         "			params [""_unit"", ""_weapon"", ""_muzzle"", ""_mode"", ""_ammo"", ""_magazine"", ""_projectile"", ""_vehicle""];" \n
+                         "			_trgt = assignedTarget _unit;" \n
+                         "			if !(isNull _trgt) then {" \n
+                         "				_sleep = linearConversion [100, 25, _unit distance _trgt, 5 + random 20, 0];" \n
+                         "				_unit disableAI ""ANIM"";" \n
+                         "				sleep _sleep;" \n
+                         "				if (alive _unit) then {" \n
+                         "					_unit enableAI ""ANIM"";" \n
+                         "				};" \n
+                         "			};" \n
+                         "		};" \n
+                         "	}];" \n
+                         "} " \n
+                         "forEach units _group;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "_">*/
+                                class _
+                                {
+                                        itemno = 1;
+                                        priority = 0.000000;
+                                        to="Reset";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Reset">*/
+                class Reset
+                {
+                        name = "Reset";
+                        itemno = 2;
+                        init = /*%FSM<STATEINIT""">*/"_group setBehaviour ""STEALTH"";" \n
+                         "_group setCombatMode ""YELLOW"";" \n
+                         "_group setSpeedMode ""LIMITED"";" \n
+                         "" \n
+                         "{" \n
+                         "	_x setUnitPos ""MIDDLE"";" \n
+                         "} " \n
+                         "forEach units _group;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "All_units_are_de">*/
+                                class All_units_are_de
+                                {
+                                        itemno = 5;
+                                        priority = 3.000000;
+                                        to="Exit";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"{ alive _x } count units _group == 0"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Knows_about_enem">*/
+                                class Knows_about_enem
+                                {
+                                        itemno = 3;
+                                        priority = 1.000000;
+                                        to="Sleep";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"count (leader _group targets [True, 200, [WEST,sideEnemy,sideUnknown], _idleTime]) > 0"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "No_known_enemies">*/
+                                class No_known_enemies
+                                {
+                                        itemno = 4;
+                                        priority = 0.000000;
+                                        to="Look_into__random";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Exit">*/
+                class Exit
+                {
+                        name = "Exit";
+                        itemno = 6;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Sleep">*/
+                class Sleep
+                {
+                        name = "Sleep";
+                        itemno = 7;
+                        init = /*%FSM<STATEINIT""">*/"_time = time;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Has_time_passed">*/
+                                class Has_time_passed
+                                {
+                                        itemno = 8;
+                                        priority = 0.000000;
+                                        to="Reset";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"time - _time > _idleTime"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Look_into__random">*/
+                class Look_into__random
+                {
+                        name = "Look_into__random";
+                        itemno = 9;
+                        init = /*%FSM<STATEINIT""">*/"" \n
+                         "/* Look into random direction */" \n
+                         "{" \n
+                         "	_pos = _x getPos [50, random 360];" \n
+                         "	_x doWatch _pos;" \n
+                         "} " \n
+                         "forEach units _group;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "_">*/
+                                class _
+                                {
+                                        itemno = 10;
+                                        priority = 0.000000;
+                                        to="Sleep";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+        };
+        initState="Sentry_FSM";
+        finalStates[] =
+        {
+                "Exit",
+        };
+};
+/*%FSM</COMPILE>*/
