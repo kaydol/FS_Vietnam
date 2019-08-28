@@ -26,7 +26,7 @@ if (_activated) then {
 	if !(isclass _planeCfg) exitwith {["Vehicle class '%1' not found",_planeClass] call bis_fnc_error; false};
 
 	//--- Restore custom direction
-	
+	_dirVar = _fnc_scriptname + typeof _logic;
 	_logic setdir direction _logic;
 
 	//--- Detect gun
@@ -51,24 +51,6 @@ if (_activated) then {
 	} foreach (_planeClass call bis_fnc_weaponsEntityType);//getarray (_planeCfg >> "weapons");
 	if (count _weapons == 0) exitwith {["No weapon of types %2 wound on '%1'",_planeClass,_weaponTypes] call bis_fnc_error; false};
 
-	/* 
-		This is a legit spike to fix a bug with
-		The_Unsung_Vietnam_War_Mod napalm bombs
-		landing 200 meters in front of the target
-		
-		The bug is probably because this entire copy of BIS_fnc_moduleCAS function 
-		wasn't designed to account for the weight of napalm bombs from the mod (?)
-	*/
-	if ( _planeClass == "uns_A7N_CAS" && _weaponTypesID == 3 ) then {
-		_pos = _logic getPos [350, direction _logic];
-		_logic setPos _pos;
-	};
-	//if ( _planeClass == "uns_F4J_CAS" && _weaponTypesID == 3 ) then {
-	//	_pos = _logic getPos [350, direction _logic];
-	//	_logic setPos _pos;
-	//};
-	/* End spike */
-	
 	_posATL = getposatl _logic;
 	_pos = +_posATL;
 	
@@ -95,19 +77,7 @@ if (_activated) then {
 	_plane setcombatmode "blue";
 	
 	/* Removing all but Napalm bombs */
-	{_plane setPylonLoadOut [_x, ""]} forEach ["pylon3", "pylon4", "pylon5", "pylon6", "pylon7", "pylon8"]; 
-	
-	
-	/* Debug */
-	_varname1 = format ["logic_%1", round random 100000];
-	_varname2 = format ["CAS_plane_%1", round random 100000];
-	_logic call compile ( _varname1 + "=_this;" );
-	_plane call compile ( _varname2 + "=_this;" );
-	_code = compile format [" if (!isNull %1 && !isNull %2) then { _this select 0 drawArrow [%1, %2, [1,0,0,1]] };", _varname2, _varname1];
-	_handler = findDisplay 12 displayCtrl 51 ctrlAddEventHandler ["Draw", _code];
-	[_plane, _handler] spawn { params ["_plane", "_handler"]; waitUntil {sleep 0.5; isNull _plane}; findDisplay 12 displayCtrl 51 ctrlRemoveEventHandler ["Draw", _handler] };
-	/* Debug end*/
-
+	{_plane setPylonLoadOut [_x, ""]} forEach ["pylon3", "pylon4", "pylon5", "pylon6", "pylon7", "pylon8", "pylon13"]; 
 	
 	_vectorDir = [_planePos,_pos] call bis_fnc_vectorFromXtoY;
 	_velocity = [_vectorDir,_speed] call bis_fnc_vectorMultiply;
@@ -123,19 +93,21 @@ if (_activated) then {
 		};
 	} foreach _currentWeapons;
 
+				
 	_ehFired = _plane addeventhandler [
 		"fired",
 		{
-			private ["_bomb_type","_plane","_custom_napalm_bomb"]; 
-			_plane = _this select 0; 
-			_bomb_type = _this select 6;
-			_custom_napalm_bomb = "Uns_Napalm_500"; 
-			_napalmDuration = (_plane getVariable "logic") getVariable "napalmDuration";
-			[[_bomb_type,_plane,_custom_napalm_bomb, _napalmDuration],"\FS_Vietnam\Effects\Napalm\al_napalm_player.sqf"] remoteExec ["BIS_fnc_execVM"];
+			private ["_bomb","_plane","_napalmBomb"]; 
+			_plane = _this select 0; 													  
+			_bomb = _this select 6;
+			_napalmBomb = "Uns_Napalm_500";
+			[_plane,_bomb,_napalmBomb] remoteExec ["FS_fnc_NapalmReplaceBomb", 0];
+	 
 		}
 	];
 	_plane setvariable ["ehFired",_ehFired];
 	_plane setvariable ["logic",_logic];
+	_logic setvariable ["plane",_plane];								 
 
 	//--- Show hint
 	[[["Curator","PlaceOrdnance"],nil,nil,nil,nil,nil,nil,true],"bis_fnc_advHint",objectcurators _logic] call bis_fnc_mp;
@@ -143,8 +115,20 @@ if (_activated) then {
 	//--- Play radio
 	[_plane,"CuratorModuleCAS"] call bis_fnc_curatorSayMessage;
 
-	//--- Debug - visualize tracers
-	if (false) then {
+	//--- Debug
+	_debug = _logic getVariable "debug";
+	if (_debug) then 
+	{
+		// Draw approach on the map
+		_varname1 = format ["logic_%1", round random 100000];
+		_varname2 = format ["CAS_plane_%1", round random 100000];
+		_logic call compile ( _varname1 + "=_this;" );
+		_plane call compile ( _varname2 + "=_this;" );
+		_code = compile format [" if (!isNull %1 && !isNull %2) then { _this select 0 drawArrow [%1, %2, [1,0,0,1]] };", _varname2, _varname1];
+		_handler = findDisplay 12 displayCtrl 51 ctrlAddEventHandler ["Draw", _code];
+		[_plane, _handler] spawn { params ["_plane", "_handler"]; waitUntil {sleep 0.5; isNull _plane}; findDisplay 12 displayCtrl 51 ctrlRemoveEventHandler ["Draw", _handler] };
+		
+		// Visualise tracers
 		BIS_draw3d = [];
 		//{deletemarker _x} foreach allmapmarkers;
 		_m = createmarker [str _logic,_pos];
@@ -229,6 +213,7 @@ if (_activated) then {
 			_target = ((position _logic nearEntities [_targetType,250])) param [0,objnull];
 			if (isnull _target) then {
 				_target = createvehicle [_targetType,position _logic,[],0,"none"];
+				_target setPos getPos _logic;
 			};
 			_plane reveal lasertarget _target;
 			_plane dowatch lasertarget _target;
@@ -251,7 +236,7 @@ if (_activated) then {
 						_planeDriver fireattarget [_target,(_x select 0)];
 					} foreach _weapons;
 					_plane setvariable ["fireProgress",(1 - ((_time - time) / _duration)) max 0 min 1];
-					sleep 0.5;
+					sleep 1;
 					time > _time || isnull _plane //--- Shoot only for specific period 
 				};
 				sleep 1;
