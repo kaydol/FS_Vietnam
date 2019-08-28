@@ -1,4 +1,4 @@
-params ["_aircraft", "_prevTarget"];
+params ["_aircraft", "_prevTarget", "_debug"];
 
 if !(local _aircraft) exitWith {
 	_this remoteExec ["FS_fnc_ChooseTarget", _aircraft];
@@ -28,10 +28,10 @@ if ( _friendlyUnits isEqualTo [] ) exitWith {
 	objNull 
 };
 
-_friendlyClusters = [_side, "FRIENDLY_CLUSTERS", 30, [_friendlyUnits, 100], "FS_fnc_Clusterize"] call FS_fnc_SnapshotWrapper;
+_friendlyClusters = [_side, "FRIENDLY_CLUSTERS", 30, [_friendlyUnits, 100, [], _debug], "FS_fnc_Clusterize"] call FS_fnc_SnapshotWrapper;
 _friendlyClusters params ["_clusters_centers", "_cluster_sizes", "_membership"];
 
-_priorities = [_side, _clusters_centers, _cluster_sizes, _friendlyUnits, _membership, 50, -50, 100] call FS_fnc_AssignPriorities;
+_priorities = [_side, _clusters_centers, _cluster_sizes, _friendlyUnits, _membership, [50, -50, 100], _debug] call FS_fnc_AssignPriorities;
 _newTarget = _clusters_centers # ( _priorities find (selectMax _priorities) );
 
 _newTarget 

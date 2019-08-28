@@ -1,5 +1,5 @@
 
-params ["_aircraft", "_assessmentRate", "_supportParams", ["_debug", True]];
+params ["_aircraft", "_assessmentRate", "_supportParams", ["_debug", false, [true]]];
 
 _side = _aircraft getVariable ["initSide", side _aircraft];
 
@@ -11,7 +11,7 @@ _hostileUnits = [_side, "HOSTILE_UNITS", _assessmentRate, [_aircraft], "FS_fnc_G
 if ( count _hostileUnits == 0 ) exitWith { /* All clear */ _taskAssigned };
 
 /* Clusterizing the enemies */
-_hostileClusters = [_side, "HOSTILE_CLUSTERS", _assessmentRate, [_hostileUnits, 70], "FS_fnc_Clusterize"] call FS_fnc_SnapshotWrapper;
+_hostileClusters = [_side, "HOSTILE_CLUSTERS", _assessmentRate, [_hostileUnits, 70, [], _debug], "FS_fnc_Clusterize"] call FS_fnc_SnapshotWrapper;
 _hostileClusters params ["_clusters_centers", "_cluster_sizes", "_membership"];
 
 
@@ -73,10 +73,11 @@ while { ! _taskAssigned && _i < count _clusters_centers} do
 	_cluster_sizes set [_biggestId, 0]; // mark the cluster empty to exclude it from next checks
 	
 	_coordinates = _clusters_centers select _biggestId;
-	if ( _coordinates isEqualTypeAll 0 ) then { _coordinates = [_coordinates] }; // if only 1 pos is given, wrap it into an array 
-	_proximity = [_friendlyUnits, _coordinates, True] call FS_fnc_DistanceBetweenArrays;
+	_dbaInput = _coordinates;
+	if ( _coordinates isEqualTypeAll 0 ) then { _dbaInput = [_coordinates] }; // if only 1 pos is given, wrap it into an array 
+	_proximity = [_friendlyUnits, _dbaInput, True] call FS_fnc_DistanceBetweenArrays;
 	_closestFriend = (_proximity select 1) select 0;
-	_taskAssigned = [_aircraft, _coordinates, _size, _supportParams, _closestFriend] call FS_fnc_AssignFireTask;
+	_taskAssigned = [_aircraft, _coordinates, _size, _supportParams, _closestFriend, _debug] call FS_fnc_AssignFireTask;
 	
 	_i = _i + 1;
 };

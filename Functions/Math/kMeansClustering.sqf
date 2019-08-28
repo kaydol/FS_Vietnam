@@ -7,7 +7,7 @@ Description:
 	Works slower than agglomerative clustering and the only way to find out if the 
 	clusterization was good is to run <FS_fnc_BiggestClusterDiameter>.
 	
-	If the amount of clusters can is not known beforehand, the only way to clusterize
+	If the amount of clusters is not known beforehand, the only way to clusterize
 	points into separated groups is to run clusterization multiple times until the
 	biggest cluster fits within given diameter, which is very slow and inefficient. 
 	

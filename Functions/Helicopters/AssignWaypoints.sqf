@@ -1,7 +1,9 @@
 
-systemchat 'Search pattern started';
+params ["_aircraft", "_target", "_debug"];
 
-params ["_aircraft", "_target"];
+if (_debug) then {
+	systemchat 'Search pattern started';
+};
 
 /*
 	First, updating the stations to indicate that this aircraft

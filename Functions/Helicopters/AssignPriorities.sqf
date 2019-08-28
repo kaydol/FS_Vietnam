@@ -1,6 +1,10 @@
 
-params ["_side", "_clusters_centers", "_cluster_sizes", "_collection", "_membership", ["_overrunMultiplier", 0], ["_stationAlreadyTakenPenalty", 0], ["_distressPriority", 0], ["_debug", True]];
+params ["_side", "_clusters_centers", "_cluster_sizes", "_collection", "_membership", "_config", ["_debug", True]];
 
+_config params [["_overrunMultiplier", 0], ["_stationAlreadyTakenPenalty", 0], ["_distressPriority", 0]];
+// how much importance to add to a cluster if it's being overrun (more enemies than friendlies in the vicinity)
+// how much priority to subtract from a station that already has at least one other scout assigned to it
+// how much importance to add to clusters that directly stated their distress (can only be one by players)
 
 /* Initialization */
 _priorities = [];

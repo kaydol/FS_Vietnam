@@ -1,5 +1,5 @@
 
-params ["_module", ["_debug", True]];
+params ["_ailimit", "_groupSize", "_groupsCount", "_debug"];
 
 _allPlayers = call BIS_fnc_listPlayers;
 
@@ -37,17 +37,14 @@ if ( _TheUnsungVietnamWarModEnabled ) then {
 	_pool = selectRandom _pools;
 };
 
-_ailimit = _module getVariable ["aiLimit", 40];
-_groupSize = _module getVariable ["groupSize", 5];
-_groups_count = 1;
 _side = EAST;
 
-for [{_i=0},{_i < _groups_count},{_i=_i+1}] do 
+for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do 
 {
 	// To prevent EPIC FPS DROP; waiting before spawning next portion of soldiers
 	if (({side _x == _side && alive _x} count allUnits) >= _ailimit) then 
 	{
-		WaitUntil {sleep 0.5; ({side _x == _side && alive _x} count allUnits) <= ( _ailimit - _groupSize * _groups_count )};
+		WaitUntil {sleep 0.5; ({side _x == _side && alive _x} count allUnits) <= ( _ailimit - _groupSize * _groupsCount )};
 	};
 	
 	_result = [_allPlayers, 200, True] call FS_fnc_GetHiddenPos;

@@ -1,5 +1,5 @@
 
-params ["_aircraft"];
+params ["_aircraft", "_debug"];
 
 _aircraft flyInHeight 65;
 _aircraft flyInHeightASL [65, 65, 65];
@@ -39,7 +39,9 @@ while { _aircraft call FS_fnc_CanPerformDuties } do
 			};
 		} forEach _aircrafts;
 		
-		systemChat format ["Friendly aircrafts %1", str _friendly_aircrafts];
+		if (_debug) then {
+			systemChat format ["Friendly aircrafts %1", _friendly_aircrafts];
+		};
 	};
 	_k = ( _k + 1 ) % 10;
 	
@@ -53,7 +55,7 @@ while { _aircraft call FS_fnc_CanPerformDuties } do
 	
 	
 	//_objectsToReveal = getPos _aircraft nearEntities ["Land", 300] select { !(_x isKindOf "Animal") }; // WallHack
-	_objectsToReveal = _aircraft targets [False, 300]; // Fair
+	_objectsToReveal = _aircraft targets [False, 300]; // More Fair as it only returns known objects
 	
 	{
 		/* Informing friendlies */

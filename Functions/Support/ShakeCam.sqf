@@ -1,6 +1,6 @@
 /*
 	Author: Karel Moricky 
-	changed a bit for working on all clients, not only for curator by Fess25Rus
+	changed a bit for working on all clients, not only for curator
 
 	Description:
 	Shake curator camera.

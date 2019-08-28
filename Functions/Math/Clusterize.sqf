@@ -23,7 +23,7 @@ Author:
     kaydol
 ---------------------------------------------------------------------------- */
 
-params ["_collection", "_maxClusterDiam", ["_precalculatedClusters", []], ["_algo", "Agglomerative"], ["_debug", True]];
+params ["_collection", "_maxClusterDiam", ["_precalculatedClusters", []], ["_debug", False], ["_algo", "Agglomerative"]];
 
 /*
 	Two algorithms are available for clustering purposes :
