@@ -14,15 +14,15 @@ This Arma 3 addon aims at recreating authentic helicopter scouting tactic used b
 * OH-6 Scout AI. The scout can asses the battlefield and call-in Napalm and artillery strikes, automatically takes station above known friendlies on the ground, and shares his knowledge with the ground troops if they have a radio. Should the ammo or fuel run out, the scout heads over to the nearest airbase to restock. Should the crewmate get injured, the scout breaks the station and flies to the nearest base that provides crew reinforcements. 
 * Gooks AI. Gooks learned how to set up traps in the jungle, hide in the trees, and practice "Grab them by the belt" tactic. Just like their real life counterparts did.
 
-#### Improvements to The Unsung Vietnam War mod
-* Punji traps spawn spikes exactly where the fired trap was, and their initial orientation is preserved (in Unsung the spikes were spawned in "general vicinity" and their orientation was always 0 degrees).
-* Whip Punji traps now have fire animation (the Unsung simply spawned already fired versions).
-* The default laggy Napalm bomb is replaced with a highly optimized Napalm with new sounds and visuals.
-
 #### Other features
 * If ACE is running, M16 rifles are going to jam a lot more. The aim is to provide authentic experience, of course.
 * M60 and M16 sounds were replaced by some sounds from vanilla game. The reason is the Unsung sounds were too unpleasant to the ear.
 * Whenever a support mission is being started by the pilot, the players with radios and radio backpacks will be notified, and are expected to pass the news along to the rest of the group.
+
+#### Improvements to The Unsung Vietnam War mod
+* Punji traps spawn spikes exactly where the fired trap was, and their initial orientation is preserved (in Unsung the spikes were spawned in "general vicinity" and their orientation was always 0 degrees).
+* Whip Punji traps now have fire animation (the Unsung simply spawned already fired versions).
+* The default laggy Napalm bomb is replaced with a highly optimized Napalm with new sounds and visuals.
 
 ### To do
 * Cobra's AI (historically the OH-6 scout reported targets to the Cobra's gunner who sat there with a map, jotting down coordinates which he then sent to the HQ or artillery support provider)
