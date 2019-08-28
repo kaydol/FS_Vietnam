@@ -5,7 +5,7 @@ class CfgPatches
 	{
 		units[] = {};
 		weapons[] = {"uns_m60_base", "uns_tripwire_punj1"};
-		requiredAddons[] = {"uns_weap_c", "A3_Weapons_F_Mark"};
+		requiredAddons[] = {"uns_weap_c", "A3_Weapons_F_Mark", "uns_missilebox_c"};
 		requiredVersion = 0.100000;
 		author = "Fess25Rus";
 		url = "http://fess-style.ucoz.ru";
@@ -54,7 +54,7 @@ class CfgFactionClasses {
 	class NO_CATEGORY;	
 	class FS_Vietnam : NO_CATEGORY {
 		displayName = "FS Vietnam Modules";
-		author = "Fess25Rus";
+		author = "kaydol";
 		//icon = "";
 	};
 };
@@ -81,7 +81,342 @@ class CfgCloudlets {
 	class punji4_cloud : punji1_cloud {
 		onTimerScript = "\FS_Vietnam\Functions\Punji\fn_punji_whip2.sqf";
 	};
+	class MediumSmoke;
+	class NapalmVictim : MediumSmoke {
+		interval = 0.5;
+		lifeTime = 2;
+		rubbing = 0.025;
+		size[] = {1.2,2.5};
+	};
+	
+	class Default;
+	class ScriptedNapalmExplosion : Default {
+		size[] = {0};
+		interval = 1000;
+		lifeTime = 0;
+		beforeDestroyScript = "\FS_Vietnam\Effects\Napalm\CustomNapalm.sqf";
+	};
+	
+	/*
+	class NapalmExplosion_Puff : Default {
+		circleRadius = 0;
+		circleVelocity[] = {0,0,0};
+		
+		particleShape = "\A3\data_f\cl_basic";
+		particleType = "Billboard";
+		particleFSFrameCount = 1;
+		particleFSIndex = 0;
+		particleFSLoop = 0;
+		particleFSNtieth = 1;
+		timerPeriod = 1;
+		lifeTime = 1.25;
+		position[] = {0,0,0};
+		moveVelocity[] = {0,0,0.75};
+		rotationVelocity = 0;
+		weight = 10;
+		volume = 7.9;
+		rubbing = 0;
+		size[] = {10, 100};
+		color[] = {[1,1,1,0],[1,1,1,0.2],[1,1,1,1],[1,1,1,0.5],[1,1,1,0]};
+		animationSpeed[] = {0.08};
+		randomDirectionPeriod = 1;
+		randomDirectionIntensity = 0;
+		onTimerScript = "";
+		beforeDestroyScript = "\FS_Vietnam\Effects\Napalm\CustomNapalm.sqf";
+		interval = 1000;
+	};
+	
+	class NapalmExplosion_Sparks : Default {
+		circleRadius = 10;
+		circleVelocity[] = {0,0,10};
+		
+		particleShape = "\A3\data_f\cl_exp";
+		particleType = "Billboard";
+		particleFSFrameCount = 1;
+		particleFSIndex = 0;
+		particleFSLoop = 0;
+		particleFSNtieth = 1;
+		timerPeriod = 1;
+		lifeTime = 7;
+		position[] = {0,0,0};
+		moveVelocity[] = {5,5,30};
+		rotationVelocity = 0.3;
+		weight = 200;
+		volume = 5;
+		rubbing = 3;
+		size[] = {1.5, 1, 0.5};
+		color[] = {[1,1,1,1],[1,1,1,1],[1,1,1,1]};
+		animationSpeed[] = {0.08};
+		randomDirectionPeriod = 1;
+		randomDirectionIntensity = 0;
+		onTimerScript = "";
+		beforeDestroyScript = "";
+		interval = 0.02;
+	};
+	
+	class NapalmExplosion_Clouds : Default  {
+		circleRadius = 30;
+		circleVelocity[] = {0.2, 0.5, 0.9};
+		
+		particleShape = "\A3\data_f\cl_basic";
+		particleType = "Billboard";
+		particleFSFrameCount = 1;
+		particleFSIndex = 0;
+		particleFSLoop = 0;
+		particleFSNtieth = 1;
+		timerPeriod = 1;
+		lifeTime = 5;
+		position[] = {0,0,0};
+		moveVelocity[] = {0,0,15};
+		rotationVelocity = 10;
+		weight = 17;
+		volume = 13;
+		rubbing = 0.7;
+		size[] = {15, 25, 31, 50};
+		color[] = {[1,1,1,0],[1,1,1,0.2],[1,1,1,1],[0.5,0.5,0.5,0.5],[0,0,0,0]};
+		animationSpeed[] = {0.08};
+		randomDirectionPeriod = 0.1;
+		randomDirectionIntensity = 3;
+		onTimerScript = "";
+		beforeDestroyScript = "";
+		interval = 0.05;
+	};
+	*/
 };
+
+class NapalmExplosion_Impact {
+	class Scripted {
+		simulation = "particles";
+		type = "ScriptedNapalmExplosion";
+		lifeTime = 1;
+	};
+	/*
+	class Puff {
+		simulation = "particles";
+		type = "NapalmExplosion_Puff";
+		lifeTime = 1;
+	};
+	class Sparks {
+		simulation = "particles";
+		type = "NapalmExplosion_Sparks";
+		lifeTime = 1;
+	};
+	class Clouds {
+		simulation = "particles";
+		type = "NapalmExplosion_Clouds";
+		lifeTime = 3;
+	};*/
+	/*
+	class napalm_LightExp {
+		simulation = "light";
+		type = "uns_NAPALM_ExploLight";
+		position[] = {0,0,0};
+		intensity = 2;
+		interval = 1;
+		lifeTime = 20;
+	};
+	class napalm_FireLight {
+		simulation = "light";
+		type = "SmallFireLight";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 1;
+		lifeTime = 20;
+	};
+	class napalm_WPTrailEffect {
+		simulation = "particles";
+		type = "uns_WPTrails_napalm";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 1;
+		lifeTime = 0.5;
+	};
+	class napalm_Sound {
+		simulation = "sound";
+		type = "Fire";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 1;
+		lifeTime = 20;
+	};
+	class napalm_Fire1 {
+		simulation = "particles";
+		type = "uns_NapalmFuelFire";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 1;
+		lifeTime = 20;
+	};
+	class napalm_Fire2 {
+		simulation = "particles";
+		type = "uns_NapalmFuelFiremed";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 1;
+		lifeTime = 16;
+	};
+	class napalm_Fire3 {
+		simulation = "particles";
+		type = "uns_NapalmFuelFiresmall";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 1;
+		lifeTime = 19;
+	};
+	class napalm_FireBall {
+		simulation = "particles";
+		type = "uns_NapalmFireBallbright";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 1;
+		lifeTime = 8;
+	};
+	class napalm_FireBall2 {
+		simulation = "particles";
+		type = "uns_NapalmFireBallbright2";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 1;
+		lifeTime = 10;
+	};
+	class napalm_Smoke {
+		simulation = "particles";
+		type = "uns_NapalmCloud";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 1;
+		lifeTime = 7;
+	};
+	class napalm_Smoke2 {
+		simulation = "particles";
+		type = "uns_NapalmCloud2";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 1;
+		lifeTime = 8;
+	};
+	class napalm_Tall_Smoke {
+		simulation = "particles";
+		type = "uns_NapalmFuelSmoke";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 1;
+		lifeTime = 20;
+	};*/
+};
+
+/*
+class CfgSoundSets {
+	class Punji_SoundSet {
+		distanceFilter = "explosionDistanceFreqAttenuationFilter";
+		doppler = 0;
+		loop = 0;
+		sound3DProcessingType = "ExplosionLight3DProcessingType";
+		soundShaders[] = {"punji_soundshader_near","punji_soundshader_mid","punji_soundshader_far"};
+		spatial = 1;
+		volumeCurve = "InverseSquare2Curve";
+		volumeFactor = 1;
+	};
+};
+*/
+class CfgAmmo {
+	
+	class APERSMine_Range_Ammo;
+	class uns_punji_ammo_base : APERSMine_Range_Ammo { //["MineBase","MineCore","TimeBombCore","Default"]
+		hit = 6;
+		indirectHit = 6;
+		indirectHitRange = 1;
+		SoundSetExplosion[] = {"Punji_SoundSet","","Explosion_Debris_SoundSet"};
+		soundHit1[] = {}; // filename, volume, pitch, distance (optional)
+		soundHit2[] = {};
+		soundHit3[] = {};
+		soundHit4[] = {};
+		multiSoundHit[] = {};
+		soundTrigger[] = {"\uns_traps_s\sound\punji1",20,1,50};
+		soundActivation[] = {"A3\Sounds_F\weapons\mines\mech_activate_mine_1",0.562341,1,30};
+		whistleDist = 8;
+		mineInconspicuousness = 0.5;
+	};
+	class uns_punji_small_ammo : uns_punji_ammo_base { //["APERSMine_Range_Ammo","MineBase","MineCore","TimeBombCore","Default"]
+		hit = 4;
+		indirectHit = 4;
+		indirectHitRange = 1;
+	};
+	class uns_punji_large_ammo : uns_punji_small_ammo { 
+		hit = 7;
+		indirectHit = 5;
+		indirectHitRange = 2;
+		mineInconspicuousness = 0.8;
+	};
+	class uns_punji_whip_ammo : uns_punji_small_ammo { 
+		hit = 7;
+		indirectHit = 1;
+		indirectHitRange = 1;
+	};
+	class uns_punji_whip2_ammo : uns_punji_whip_ammo { 
+		hit = 4;
+		indirectHit = 1;
+		indirectHitRange = 1;
+	};
+	
+	class uns_bombcore;
+	class Uns_Napalm_500 : uns_bombcore { //["BombCore","Default"]
+		model = "\uns_missilebox\FRL_MK77\FRL_MK77_fly.p3d";
+		proxyShape = "\uns_missilebox\FRL_MK77\FRL_MK77.p3d";
+		hit = 0; // 1000
+		indirectHit = 0; // 250
+		indirectHitRange = 0; // 12
+		
+		soundHit0[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm.ogg",3,1,2500};
+		soundHit1[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_1.ogg",3,1,2500};
+		soundHit2[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_2.ogg",3,1,2500};
+		soundHit3[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_3.ogg",3,1,2500};
+		soundHit4[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_4.ogg",3,1,2500};
+		soundHit5[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_5.ogg",3,1,2500};
+		soundHit6[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_6.ogg",3,1,2500};
+		soundHit7[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_7.ogg",3,1,2500};
+		soundHit8[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_8.ogg",3,1,2500};
+		soundHit9[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_9.ogg",3,1,2500};
+		multiSoundHit[] = {"soundHit0",0.1,"soundHit1",0.1,"soundHit2",0.1,"soundHit3",0.1,"soundHit4",0.1,"soundHit5",0.1,"soundHit6",0.1,"soundHit7",0.1,"soundHit8",0.1,"soundHit9",0.1};
+		
+		explosionEffects = "NapalmExplosion_Impact";
+		CraterEffects = "";
+		trackOversteer = 1;
+		fuseDistance = 35;
+		whistleDist = 24;
+		aiAmmoUsageFlags = "64 + 128 + 512";
+		dangerRadiusHit = 1550;
+		suppressionRadiusHit = 150;
+		maneuvrability = 15;
+		effectsMissile = "EmptyEffect";
+		effectsMissileInit = "";
+		initTime = 0.5;
+		thrustTime = 45;
+		thrust = 0;
+		trackLead = 1;
+	};
+	class Uns_Napalm_750 : Uns_Napalm_500 { //["uns_bombcore","BombCore","Default"]
+		model = "\uns_missilebox\FRL_BLU1B\FRL_BLU1B_fly.p3d";
+		proxyShape = "\uns_missilebox\FRL_BLU1B\FRL_BLU1B.p3d";
+		hit = 1500;
+		indirectHit = 350;
+		indirectHitRange = 17;
+	};
+	class Uns_Napalm_blu1 : Uns_Napalm_500 { //["uns_bombcore","BombCore","Default"]
+		model = "\uns_missilebox\uns_A1\uns_blu1_fly.p3d";
+		proxyShape = "\uns_missilebox\uns_A1\uns_blu1.p3d";
+		hit = 2000;
+		indirectHit = 450;
+		indirectHitRange = 20;
+	};
+	class Uns_Napalm_ZB360 : Uns_Napalm_500 { //["uns_bombcore","BombCore","Default"]
+		model = "\uns_missilebox\PRACS\PRACS_TK_SAB100Tb.p3d";
+		proxyShape = "\uns_missilebox\PRACS\PRACS_TK_SAB100Tb.p3d";
+	};
+};
+
+
+
 
 /*
 	Modules
@@ -107,7 +442,7 @@ class CfgVehicles
 	};
 	
 	class FS_Vietnam_Module : Module_F {
-		author = "Fess25Rus";
+		author = "kaydol";
 		scope = 1;
 		is3DEN = 0;
 		isGlobal = 0;
@@ -117,6 +452,8 @@ class CfgVehicles
 	
 	class FS_AirBase_Module : FS_Vietnam_Module {
 		_generalMacro = "FS_AirBase_Module";
+		icon = "\a3\Missions_F_Curator\data\img\iconMPTypeSectorControl_ca.paa";
+		portrait = "\a3\Missions_F_Curator\data\img\portraitMPTypeSectorControl_ca.paa";
 		scope = 2;
 		displayName = "Air Base";
 		function = "FS_fnc_ModuleCreateAirBase";
@@ -173,6 +510,8 @@ class CfgVehicles
 	
 	class FS_AirCommand_Module : FS_Vietnam_Module {
 		_generalMacro = "FS_AirCommand_Module";
+		icon = "\a3\Modules_f\data\iconHQ_ca.paa";
+		portrait = "\a3\Modules_f\data\portraitHQ_ca.paa";
 		scope = 2;
 		displayName = "Air Command";
 		function = "FS_fnc_ModuleAirCommand";
@@ -208,7 +547,14 @@ class CfgVehicles
 			class ArtilleryCooldown : Edit {
 				property = "artilleryCooldown";
 				displayName = "Artillery cooldown";
-				tooltip = "Minimum time between calling-in artillery by the pilots.";
+				tooltip = "Minimum time between artillery call-ins by the pilots.";
+				typeName = "NUMBER";
+				defaultValue = 120;
+			};
+			class ArtilleryMinDist : Edit {
+				property = "artilleryMinDist";
+				displayName = "Artillery minimum distance";
+				tooltip = "Minimum distance between the center of a cluster of enemies and the nearest friendly unit while considering an artillery strike. Low values may result in casualties from friendly fire.";
 				typeName = "NUMBER";
 				defaultValue = 120;
 			};
@@ -222,22 +568,31 @@ class CfgVehicles
 			class NapalmCooldown : Edit {
 				property = "napalmCooldown";
 				displayName = "Napalm cooldown";
-				tooltip = "Minimum time between calling-in napalm by the pilots.";
+				tooltip = "Minimum time between napalm call-ins by the pilots.";
 				typeName = "NUMBER";
 				defaultValue = 300;
 			};
-			class NapalmDuration : Edit {
-				property = "napalmDuration";
-				displayName = "Napalm burn time";
-				tooltip = "Historically, napalm burn time varied from 15 seconds up to 10 minutes, depending on the chemical composition.";
+			class NapalmMinDist : Edit {
+				property = "napalmMinDist";
+				displayName = "Napalm minimum distance";
+				tooltip = "Minimum distance between the center of a cluster of enemies and the nearest friendly unit while considering a napalm strike. Low values may result in casualties from friendly fire.";
 				typeName = "NUMBER";
-				defaultValue = 120;
+				defaultValue = 150;
+			};
+			class Debug : Checkbox {
+				property = "debug";
+				displayName = "Debug";
+				tooltip = "Enable debug information.";
+				typeName = "BOOL";
+				defaultValue = "false";
 			};
 		};
 	};
 	
 	class FS_GookManager_Module : FS_Vietnam_Module {
 		_generalMacro = "FS_GookManager_Module";
+		icon = "A3\Modules_F_Tacops\Data\CivilianPresence\icon32_ca.paa";
+		portrait = "A3\Modules_F_Tacops\Data\CivilianPresence\icon32_ca.paa";
 		scope = 2;
 		displayName = "Gook Manager";
 		function = "FS_fnc_ModuleGookManager";
@@ -260,6 +615,13 @@ class CfgVehicles
 				typeName = "NUMBER";
 				defaultValue = 5;
 			};
+			class GroupsCount : Edit {
+				property = "groupsCount";
+				displayName = "Groups count";
+				tooltip = "How many groups of Gooks can be spawned at once.";
+				typeName = "NUMBER";
+				defaultValue = 1;
+			};
 			class SpawnProbability : Edit {
 				property = "spawnProbability";
 				displayName = "Spawn probability";
@@ -273,6 +635,13 @@ class CfgVehicles
 				tooltip = "The Manager drops a dice to decide whether to spawn a group of Gooks or not, then spawns it if the answer is yes. After that, the Manager waits some, then the whole thing is repeated. This number defines how much time passes between dice drops.";
 				typeName = "NUMBER";
 				defaultValue = 30;
+			};
+			class Debug : Checkbox {
+				property = "debug";
+				displayName = "Debug";
+				tooltip = "Enable debug information.";
+				typeName = "BOOL";
+				defaultValue = "false";
 			};
 		};
 	};
@@ -322,6 +691,8 @@ class CfgVehicles
 	
 	class FS_GarbageCollector_Module : FS_Vietnam_Module {
 		_generalMacro = "FS_GarbageCollector_Module";
+		icon = "\a3\Modules_f\data\iconRespawn_ca.paa";
+		portrait = "\a3\Modules_f\data\portraitRespawn_ca.paa";
 		scope = 2;
 		displayName = "Garbage Collector";
 		function = "FS_fnc_ModuleGarbageCollector";
@@ -360,6 +731,129 @@ class CfgVehicles
 			};
 		};
 	};
+	
+	class FS_NapalmSettings_Module : FS_Vietnam_Module {
+		_generalMacro = "FS_NapalmSettings_Module";
+		scope = 2;
+		isGlobal = 2; // Persistent global execution
+		displayName = "Napalm Settings";
+		function = "FS_fnc_ModuleNapalmSettings";
+		class ModuleDescription : ModuleDescription {
+			description = "This module configures napalm settings.";
+			sync[] = {};
+		};
+		class Attributes : AttributesBase {
+			class NapalmBombRadius : Edit {
+				property = "NapalmBombRadius";
+				displayName = "Napalm Bomb Radius";
+				tooltip = "";
+				typeName = "NUMBER";
+				defaultValue = 40;
+			};
+			class SpawnCrater : Checkbox {
+				property = "SpawnCrater";
+				displayName = "Burn Ground";
+				tooltip = "If true, the ground will appear burned after the napalm effect ends. Due to some technical limitations, the size of the burned spot is not scalable and has a radius of ~35 meters.";
+				typeName = "BOOL";
+				defaultValue = "true"; //true - 1, false - 0
+			};
+			class NapalmLifeTime : Edit {
+				property = "NapalmLifeTime";
+				displayName = "Napalm Lifetime";
+				tooltip = "Historically, napalm burn time varied from 15 seconds up to 10 minutes, depending on the chemical composition.";
+				typeName = "NUMBER";
+				defaultValue = 40;
+			};
+			class NapalmDamage : Edit {
+				property = "NapalmDamage";
+				displayName = "Napalm Damage";
+				tooltip = "Damage per Tick.";
+				typeName = "NUMBER";
+				defaultValue = 0.4;
+			};
+			class NapalmTickRate : Edit {
+				property = "NapalmTickRate";
+				displayName = "Napalm Tick Rate";
+				tooltip = "How much time is passed between dealing damage to the objects inside Napalm Bomb Radius, in seconds.";
+				typeName = "NUMBER";
+				defaultValue = 1;
+			};
+			class MakeVictimsScream : Checkbox {
+				property = "MakeVictimsScream";
+				displayName = "Make Victims Scream";
+				tooltip = "";
+				typeName = "BOOL";
+				defaultValue = "true"; //true - 1, false - 0
+			};
+			class VictimsSmokeTime : Edit {
+				property = "VictimsSmokeTime";
+				displayName = "Victims Smoke Time";
+				tooltip = "Dead bodies will start smoking after the napalm effect ends. Set to 0 if you don't want any smoke.";
+				typeName = "NUMBER";
+				defaultValue = 40;
+			};
+		};
+	};
+	
+	class FS_NapalmCAS_Module : FS_Vietnam_Module {
+		_generalMacro = "FS_NapalmCAS_Module";
+		scope = 2;
+		scopeCurator = 0;
+		isGlobal = 1;
+		isTriggerActivated = 1;
+		icon = "\a3\Modules_F_Curator\Data\iconCAS_ca.paa";
+		portrait = "\a3\Modules_F_Curator\Data\portraitCAS_ca.paa";
+		curatorCost = 5;
+		displayName = "Napalm CAS";
+		function = "FS_fnc_ModuleNapalmCAS";
+		class ModuleDescription : ModuleDescription {
+			description = "";
+			sync[] = {};
+		};
+		class Attributes : AttributesBase {
+			class Vehicle : Combo {
+				property = "Vehicle";
+				displayName = "Plane";
+				tooltip = "";
+				typeName = "STRING";
+				class values
+				{
+					class uns_A7N_CAS {
+						name = "A-7C Corsair II (CAS)";
+						value = "uns_A7N_CAS";
+						default = 1;
+					};
+					class uns_F4J_CAS {
+						name = "F-4J Phantom II (CAS)";
+						value = "uns_F4J_CAS";
+					};
+				};
+			};
+			class Type : Combo {
+				property = "Type";
+				displayName = "Support type";
+				tooltip = "";
+				typeName = "NUMBER";
+				class values
+				{
+					class Bombs {
+						name = "Napalm bombs";
+						value = 3;
+						default = 1;
+					};
+				};
+			};
+			class Debug : Checkbox {
+				property = "Debug";
+				displayName = "Debug";
+				tooltip = "";
+				typeName = "BOOL";
+				defaultValue = "false"; //true - 1, false - 0
+			};
+			
+		};
+		
+	};
 };
 
 
@@ -386,6 +880,7 @@ class CfgFunctions
 			class UpdateSideVariable {file = "\FS_Vietnam\Functions\Misc\UpdateSideVariable.sqf";};
 			class GroupMarkers {file = "\FS_Vietnam\Functions\Misc\GroupMarkers.sqf";};
 			class ObjectsGrabber {file = "\FS_Vietnam\Functions\Misc\ObjectsGrabber.sqf";};
+			class ObjectsMapper {file = "\FS_Vietnam\Functions\Misc\ObjectsMapper.sqf";};
 		};
 		
 		class Helicopters {
@@ -411,9 +906,12 @@ class CfgFunctions
 		class Support {
 			class DropMines {file = "\FS_Vietnam\Functions\Support\DropMines.sqf";};
 			class DropNapalm {file = "\FS_Vietnam\Functions\Support\DropNapalm.sqf";};
-			class ModuleCas {file = "\FS_Vietnam\Functions\Support\ModuleCas.sqf";};
 			class ShakeCam {file = "\FS_Vietnam\Functions\Support\ShakeCam.sqf";};
-			class SpawnCrater {file = "\FS_Vietnam\Functions\Support\ShakeCam.sqf";};
+			class NapalmBurnedAlive {file = "\FS_Vietnam\Effects\Napalm\NapalmBurnedAlive.sqf";};
+			class NapalmPuffAndSparks {file = "\FS_Vietnam\Effects\Napalm\NapalmPuffAndSparks.sqf";};
+			class NapalmPhosphorusStrands {file = "\FS_Vietnam\Effects\Napalm\NapalmPhosphorusStrands.sqf";};
+			class NapalmAfterEffect {file = "\FS_Vietnam\Effects\Napalm\NapalmAfterEffect.sqf";};
+			class NapalmCreateExplosion {file = "\FS_Vietnam\Effects\Napalm\NapalmCreateExplosion.sqf";};
 		};
 		
 		class Radio {
@@ -457,6 +955,8 @@ class CfgFunctions
 			class ArsenalRoom {file = "\FS_Vietnam\Functions\Modules\ArsenalRoom.sqf";};
 			class ArsenalRoomCreate {file = "\FS_Vietnam\Functions\Modules\ArsenalRoomCreate.sqf";};
 			class ModuleGarbageCollector {file = "\FS_Vietnam\Functions\Modules\ModuleGarbageCollector.sqf";};
+			class ModuleNapalmSettings {file = "\FS_Vietnam\Functions\Modules\ModuleNapalmSettings.sqf";};
+			class ModuleNapalmCAS {file = "\FS_Vietnam\Functions\Modules\ModuleNapalmCAS.sqf";};
 		};
 	};
 	
