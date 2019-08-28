@@ -15,7 +15,7 @@ Parameters:
     _grabRadius - radius of the grabbing [Number].
     
 Returns:
-    An array of [_obj, _objPosASL, _vectorDirUp, _objOrientation] 
+    An array of [typeOf _obj, _objPosASL, _vectorDirAndUp, _objPitchBank] 
 
 Author:
     kaydol
@@ -32,9 +32,27 @@ _minY = 1e6;
 _minZ = 1e6; 
 { 
 	_p = _x # 1; 
-	if ( _p # 0 < _minX ) then { _minX = _p # 0 }; 
-	if ( _p # 1 < _minY ) then { _minY = _p # 1 }; 
-	if ( _p # 2 < _minZ ) then { _minZ = _p # 2 }; 
+	if ( _p # 0 < _minX ) then { 
+		_minX = _p # 0;
+		_minY = _p # 1;
+		_minZ = _p # 2;
+	} 
+	else {
+		if ( _p # 1 < _minY ) then {  
+			_minX = _p # 0;
+			_minY = _p # 1;
+			_minZ = _p # 2;
+		
+		} 
+		else {
+			if ( _p # 2 < _minZ ) then {  
+				_minX = _p # 0;
+				_minY = _p # 1;
+				_minZ = _p # 2;
+			}; 
+		};
+	};
+	
 } forEach _entities; 
 
 _entities = _entities apply { [_x # 0, (_x # 1 vectorDiff [_minX, _minY, _minZ]), _x # 2, _x # 3] }; 

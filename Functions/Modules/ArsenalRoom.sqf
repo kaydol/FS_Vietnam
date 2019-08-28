@@ -6,25 +6,49 @@ if ( _aceCompatibility ) then {
 	ace_hearing_disableVolumeUpdate = true; // thanks ACE devs for this
 };
 
-startLoadingScreen ["Loading Arsenal..."];
+//startLoadingScreen ["Loading Arsenal..."];
 
 player setVariable ["UsesArsenalRoom", True, True];
 _returnPos = getPos player;
 _returnDir = getDir player;
 
-player hideObjectGlobal True; 
-player hideObject False;
-
-_playerPosInRoom = [3.06543,2.78906,1.64733];
-_playerDirInRoom = 111.968;
-
-player setPosASL (_roomPos vectorAdd _playerPosInRoom);
-player setDir _playerDirInRoom;
-
-endLoadingScreen;
-
 sleep 0.001;
 
+private _getPlayerShiftBasedOnGUID = {
+	params ["_beginPos", "_guid"];
+	private _i = _guid % 8;
+	private _j = floor ( _guid / 8 ); 
+	private _stepI = 1.7;
+	private _stepJ = -3.8;
+	private _shiftedPos = +_beginPos;
+	_shiftedPos set [0, ( _beginPos # 0 ) + _i * _stepI]; 
+	_shiftedPos set [1, ( _beginPos # 1 ) + _j * _stepJ]; 
+	_shiftedPos set [2, _beginPos # 2]; 
+	_shiftedPos
+};
+
+/* Test
+[getPos player] spawn 
+{
+	for [{_i = 0},{_i < 20},{_i = _i + 1}] do {
+		_playerPos = [[0,0,0], _i] call _getPlayerShiftBasedOnGUID;
+		systemCHat str _playerPos;
+		_sPos = (_this # 0) vectorAdd _playerPos;
+		_s = "VR_3DSelector_01_Incomplete_F" createVehicle _sPos;
+		_s setPos _sPos;
+	};
+};
+*/
+
+_playerPosInRoom = [[-3.00293,-22.9119,0.00143862], clientOwner % 40] call _getPlayerShiftBasedOnGUID;
+_playerDirInRoom = 180.0;
+
+player setPosASL ( _roomPos vectorAdd _playerPosInRoom );
+player setDir _playerDirInRoom;
+
+//endLoadingScreen;
+
+sleep 0.001;
 
 enableRadio False; 
 
@@ -52,14 +76,13 @@ waitUntil {isNull (uinamespace getvariable ["BIS_fnc_arsenal_cam",objnull])};
 
 startLoadingScreen ["Exiting Arsenal..."];
 
-waitUntil { preloadCamera _returnPos };
+//waitUntil { preloadCamera _returnPos };
 
 progressLoadingScreen 0.7; 
 
 player setPos _returnPos;
 player setDir _returnDir;
 
-player hideObjectGlobal False;
 player setVariable ["UsesArsenalRoom", False, True];
 
 endLoadingScreen;
