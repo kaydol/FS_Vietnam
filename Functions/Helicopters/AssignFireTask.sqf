@@ -9,12 +9,13 @@ params [
 	"_coordinates", 
 	"_estimatedVictims",
 	"_supportParams",	
-	["_closestFriend", objNull]
+	["_closestFriend", objNull],
+	["_debug", false, [true]]
 ];
 
-_side = _caller getVariable ["initSide", side _caller];
-_multipleCoordinates = _coordinates isEqualTypeAll [];
-_distanceTofriendlies = 1e6;
+private _side = _caller getVariable ["initSide", side _caller];
+private _multipleCoordinates = _coordinates isEqualTypeAll [];
+private _distanceTofriendlies = 1e6;
 
 if !( isNull _closestFriend ) then 
 {
@@ -24,32 +25,32 @@ if !( isNull _closestFriend ) then
 	_distanceToFriendlies = _closestFriend distance _coordinates;
 };
 
-_supportParams params ["_artilleryThreshold", "_artilleryCD", "_napalmThreshold", "_napalmCD", "_napalmDuration"];
+_supportParams params ["_artilleryThreshold", "_artilleryCD", "_napalmThreshold", "_napalmCD"];
 
-_taskAssigned = False; 
+private _taskAssigned = False; 
 
 /* FAC Napalm strike */
-if ( !_taskAssigned && _estimatedVictims >= _napalmThreshold && _distanceTofriendlies > 150) then 
+if ( !_taskAssigned && _estimatedVictims >= _napalmThreshold && _distanceTofriendlies > SUPPORT_MINDISTANCE_NAPALM) then 
 {
-	_params = [];
+	private _params = [];
 	if !( _multipleCoordinates ) then {
 		/* 	If only one coordinate is supplied, calculate the incoming angle of the airstrike;
 			FAC always strikes sideways in relation to the closest friendly unit to minimize 
 			the risk of damaging friendly troops */
-		_bestAngle = (( [_coordinates, _closestFriend] call BIS_fnc_dirTo ) + 90) % 360;
-		_params = [[_coordinates], _bestAngle];
-	}  
+		private _bestAngle = (( [_coordinates, _closestFriend] call BIS_fnc_dirTo ) + 90) % 360;
+		_params = [_coordinates, _bestAngle]; 
+	}
 	else { 
 		/* two coordinates are supplied */
-		_params = [_coordinates];
+		_params = _coordinates;
 	};
 	
-	_supportName = "NAPALM";
-	_supportAvailable = [_side, "FIRETASKS", _supportName] call FS_fnc_GetSideVariable isEqualTo [];
+	private _supportName = "NAPALM";
+	private _supportAvailable = [_side, "FIRETASKS", _supportName] call FS_fnc_GetSideVariable isEqualTo [];
 	
 	if ( _supportAvailable ) then 
 	{
-		_params pushBack _napalmDuration;
+		_params set [count _params, _debug]; 
 		_params call FS_fnc_DropNapalm;
 		
 		// Updating global variable that stores all fire tasks that are in progress
@@ -62,12 +63,12 @@ if ( !_taskAssigned && _estimatedVictims >= _napalmThreshold && _distanceTofrien
 };
 
 /* Artillery */
-if ( !_taskAssigned && _estimatedVictims >= _artilleryThreshold && _distanceTofriendlies > 120) then 
+if ( !_taskAssigned && _estimatedVictims >= _artilleryThreshold && _distanceTofriendlies > SUPPORT_MINDISTANCE_ARTILLERY) then 
 {
 	if ( _multipleCoordinates ) exitWith {};
 	
-	_supportName = "ARTILLERY";
-	_supportAvailable = [_side, "FIRETASKS", _supportName] call FS_fnc_GetSideVariable isEqualTo [];
+	private _supportName = "ARTILLERY";
+	private _supportAvailable = [_side, "FIRETASKS", _supportName] call FS_fnc_GetSideVariable isEqualTo [];
 	
 	if ( _supportAvailable ) then 
 	{
