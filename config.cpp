@@ -881,6 +881,12 @@ class CfgFunctions
 			class GroupMarkers {file = "\FS_Vietnam\Functions\Misc\GroupMarkers.sqf";};
 			class ObjectsGrabber {file = "\FS_Vietnam\Functions\Misc\ObjectsGrabber.sqf";};
 			class ObjectsMapper {file = "\FS_Vietnam\Functions\Misc\ObjectsMapper.sqf";};
+			class QueueCreate {file = "\FS_Vietnam\Functions\Misc\QueueCreate.sqf";};
+			class QueueDispose {file = "\FS_Vietnam\Functions\Misc\QueueDispose.sqf";};
+			class QueueGetData {file = "\FS_Vietnam\Functions\Misc\QueueGetData.sqf";};
+			class QueueGetSize {file = "\FS_Vietnam\Functions\Misc\QueueGetSize.sqf";};
+			class QueuePush {file = "\FS_Vietnam\Functions\Misc\QueuePush.sqf";};
+			class ShakeCam {file = "\FS_Vietnam\Functions\Misc\ShakeCam.sqf";};
 		};
 		
 		class Helicopters {
@@ -904,9 +910,8 @@ class CfgFunctions
 		};
 		
 		class Support {
-			class DropMines {file = "\FS_Vietnam\Functions\Support\DropMines.sqf";};
-			class DropNapalm {file = "\FS_Vietnam\Functions\Support\DropNapalm.sqf";};
-			class ShakeCam {file = "\FS_Vietnam\Functions\Support\ShakeCam.sqf";};
+			class DropMines {file = "\FS_Vietnam\Effects\Artillery\DropMines.sqf";};
+			class DropNapalm {file = "\FS_Vietnam\Effects\Napalm\DropNapalm.sqf";};
 			class NapalmBurnedAlive {file = "\FS_Vietnam\Effects\Napalm\NapalmBurnedAlive.sqf";};
 			class NapalmPuffAndSparks {file = "\FS_Vietnam\Effects\Napalm\NapalmPuffAndSparks.sqf";};
 			class NapalmPhosphorusStrands {file = "\FS_Vietnam\Effects\Napalm\NapalmPhosphorusStrands.sqf";};
