@@ -72,8 +72,8 @@ if ( !_taskAssigned && _estimatedVictims >= _artilleryThreshold && _distanceTofr
 	
 	if ( _supportAvailable ) then 
 	{
-		[_coordinates, _estimatedVictims, 50, 1.1, nil, nil, 18, true] spawn FS_fnc_DropMines;
-	
+		[_coordinates, _estimatedVictims, 50, nil, nil, 18, _debug] spawn FS_fnc_DropMines;
+		
 		// Updating global variable that stores all fire tasks that are in progress
 		[_side, "FIRETASKS", [_supportName, [_caller, _target]], _artilleryCD] call FS_fnc_UpdateSideVariable;
 		// Sending a radio warning
