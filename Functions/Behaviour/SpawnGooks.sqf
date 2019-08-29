@@ -49,7 +49,7 @@ for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do
 	private _result = [_allPlayers, 200, True] call FS_fnc_GetHiddenPos;
 	_result params ["_pos", "_target"];
 	
-	if ( _pos isEqualTo [] ) exitWith { systemChat "GookManager couldn't find a spot to spawn gooks"; };
+	if ( _pos isEqualTo [] && _debug ) exitWith { systemChat "GookManager couldn't find a spot to spawn gooks"; };
 	systemChat "GookManager has found a spot";
 	
 	private _NewGrp = createGroup _side;
