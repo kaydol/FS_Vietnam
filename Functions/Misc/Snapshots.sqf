@@ -1,9 +1,31 @@
+/* ----------------------------------------------------------------------------
+Function: FS_fnc_Snapshots
 
-/*
-	Storing time-specific variables and dispensing them if they're still relevant 
-	Used to decrease the amount of calculations where applicable by using the recent
-	values instead of re-calculating them all over again
-*/
+Description:
+	Stores a variable with a lifespan and dispenses it if it's still relevant.
+	Used to decrese the amount of calculations by using cached values that are 
+	not too old yet.
+	
+Parameters:
+    _side - Defines a prefix of the global variable [EAST|WEST|RESISTANCE].
+    _varname - Name of the variable [String].
+	_parameter - [Number] or [Array of data]. If number, returns the variable's 
+		value if age is less than this number. If not a number, it's treated as 
+		data to be stored.
+		
+Returns:
+    Data stored in the variable or [].
+
+Examples:
+	Stores _data to a global variable GUER_CLUSTERIZATION_DATA:
+		[RESISTANCE, "CLUSTERIZATION_DATA", _data] call FS_fnc_Snapshots;
+		
+	Retreives the data if the age of the variable is less than 30 seconds, otherwise returns []:
+		_data = [RESISTANCE, "CLUSTERIZATION_DATA", 30] call FS_fnc_Snapshots;
+
+Author:
+    kaydol
+---------------------------------------------------------------------------- */
 
 params ["_side", "_varname", "_parameter"];
 

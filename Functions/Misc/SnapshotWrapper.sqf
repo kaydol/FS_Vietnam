@@ -1,11 +1,25 @@
+/* ----------------------------------------------------------------------------
+Function: FS_fnc_SnapshotWrapper
 
-/*
-	Returns a valid snapshot if it exists, otherwise does what it's told
-	to calculate, update and return that snapshot
+Description:
+	Returns a valid snapshot if it exists. If it does not exist, or is expired,
+	calculates and stores a new value and returns it.
+	Used to decrese the amount of calculations by using cached values that are 
+	not too old yet.
 	
-	Please, in order to spend 3 days debugging, do NOT use pushBack with
-	the results that come of this function
-*/
+Parameters:
+    _side - Defines a prefix of the global variable [EAST|WEST|RESISTANCE].
+    _varname - Name of the variable [String].
+	_time - if variable's age is bigger than this, it will be recalculated [Number].
+	_arguments - arguments passed to the function for recalculating [Array].
+	_function - function used to calculate the new value [String].
+		
+Returns:
+    Cached or calculated variable.
+
+Author:
+    kaydol
+---------------------------------------------------------------------------- */
 
 params ["_side", "_varname", "_time", "_arguments", "_function"];
 
@@ -20,5 +34,5 @@ if ( _variable isEqualTo [] ) then
 	
 };
 
-_variable = +_variable; // After I wasted 3 days chasing a very rare and weird bug, I learned that this variable must be dispensed as a copy, and that by default it's sent out as a reference
+_variable = +_variable; // 3 days wasted to find out I needed a + here.
 _variable
