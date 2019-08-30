@@ -1,18 +1,7 @@
 
-params ["_ailimit", "_groupSize", "_groupsCount", "_debug"];
+params [["_pos", [], [[]]], ["_target",[]], ["_groupSize", 5 + ceil random 6, [0]], ["_groupsCount", 1, [0]], ["_debug", false, [true]]];
 
-private _allPlayers = call BIS_fnc_listPlayers;
-
-_allPlayers = _allPlayers select { side _x != EAST }; // Filter out Gook players
-_allPlayers = [_allPlayers] call FS_fnc_FilterObjects; // Filter out players who use Arsenal Room
-
-if ( {alive _x} count _allPlayers == 0 ) exitWith {
-	// All players are dead, so nobody to spawn around
-};
-
-private _target = selectRandom _allPlayers;
-
-/* 
+/*
 	If The Unsung Vietnam War Mod is not enabled, try to substitute 
 	real Gooks with Chinese speaking asians with Tanoa weapons 
 */
@@ -40,18 +29,6 @@ private _side = EAST;
 
 for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do 
 {
-	// To prevent EPIC FPS DROP; waiting before spawning next portion of soldiers
-	if (({side _x == _side && alive _x} count allUnits) >= _ailimit) then 
-	{
-		WaitUntil {sleep 0.5; ({side _x == _side && alive _x} count allUnits) <= ( _ailimit - _groupSize * _groupsCount )};
-	};
-	
-	private _result = [_allPlayers, 200, True] call FS_fnc_GetHiddenPos;
-	_result params ["_pos", "_target"];
-	
-	if ( _pos isEqualTo [] && _debug ) exitWith { systemChat "GookManager couldn't find a spot to spawn gooks"; };
-	systemChat "GookManager has found a spot";
-	
 	private _NewGrp = createGroup _side;
 	
 	if ( isNull _NewGrp ) exitWith {
@@ -73,22 +50,10 @@ for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do
 			sleep 0.5;
 		};
 	};
-	/*
-	_NewWP = _NewGrp addWaypoint [getPos _target, 5];
-	_NewWP setWaypointType "SAD";
-	_NewWP setWaypointSpeed "NORMAL";	
-	_NewWP setWaypointBehaviour "STEALTH";	
-	_NewWP setWaypointCombatMode "RED";	
-	_NewGrp allowFleeing 0;
-	*/
 	
-	/* Supply _target to make the group move towards it */
 	[_NewGrp, _target] execFSM "\FS_Vietnam\FSM\GookGroup.fsm";
 	
-	/* Do not supply target to make the group stay where it is and wait for enemies */
-	//[_NewGrp] execFSM "\FS_Vietnam\FSM\GookGroup.fsm";
-	
-	if (_debug) then {
+	if ( _debug ) then {
 		// Group markers
 		[_NewGrp, 'o_inf'] spawn FS_fnc_GroupMarkers;
 	};

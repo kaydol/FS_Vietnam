@@ -101,7 +101,7 @@ link30[] = {27,28};
 link31[] = {27,29};
 link32[] = {28,30};
 link33[] = {29,15};
-link34[] = {30,2};
+link34[] = {30,6};
 link35[] = {31,32};
 link36[] = {32,6};
 link37[] = {33,34};
@@ -118,8 +118,8 @@ link47[] = {41,38};
 link48[] = {41,42};
 link49[] = {42,43};
 link50[] = {43,1};
-globals[] = {0.000000,0,0,0,0,640,480,1,56,6316128,1,-410.744232,1072.937622,309.272491,-463.506531,1127,587,1};
-window[] = {0,-1,-1,-1,-1,863,104,1672,104,1,1145};
+globals[] = {0.000000,0,0,0,0,640,480,1,56,6316128,1,-77.184265,1664.753174,392.264923,-515.026367,1127,587,1};
+window[] = {0,-1,-1,-1,-1,811,52,1620,52,1,1145};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -138,9 +138,17 @@ class FSM
                          "_group spawn FS_fnc_GrpFiredNear;" \n
                          "//_group spawn FS_fnc_GookSenses;" \n
                          "" \n
-                         "//if (_debug) then { " \n
+                         "// If _target is a direction, rotate" \n
+                         "// leader to face it " \n
+                         "if ( _target isEqualType 0 ) then {" \n
+                         "	leader _group setDir _target;" \n
+                         "	_target = [];" \n
+                         "};" \n
+                         "" \n
+                         "" \n
+                         "if (_debug) then { " \n
                          "	systemChat format [""GookGroup: Init target is %1"", _target]; " \n
-                         "//};"/*%FSM</STATEINIT""">*/;
+                         "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -196,7 +204,7 @@ class FSM
                         init = /*%FSM<STATEINIT""">*/"_group setBehaviour ""STEALTH"";" \n
                          "_group setCombatMode ""WHITE"";" \n
                          "_group setSpeedMode ""LIMITED"";" \n
-                         "_group setFormation ""DIAMOND"";" \n
+                         "_group setFormation ""LINE"";" \n
                          "" \n
                          "if (_debug) then { " \n
                          "	systemChat ""GookGroup: Keep quiet""; " \n
@@ -223,7 +231,7 @@ class FSM
                 {
                         name = "____Loop_Start_";
                         itemno = 6;
-                        init = /*%FSM<STATEINIT""">*/"if (_debug) then { systemChat ""GookGroup: LoopStart""; };"/*%FSM</STATEINIT""">*/;
+                        init = /*%FSM<STATEINIT""">*/"if (_debug) then { diag_log ""GookGroup: LoopStart""; };"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -306,7 +314,7 @@ class FSM
                          "_group setFormation ""VEE"";" \n
                          "" \n
                          "if (_debug) then { " \n
-                         "	systemChat ""GookGroup: Targeting""; " \n
+                         "	diag_log ""GookGroup: Targeting""; " \n
                          "};" \n
                          ""/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -320,7 +328,7 @@ class FSM
                                         to="____Validate__Target";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"" \n
-                                         "if (_target isEqualTo []) exitWith { False };" \n
+                                         "if ( _target isEqualTo [] ) exitWith { False };" \n
                                          "" \n
                                          "_targetIsPosition = _target isEqualTypeParams [0,0,0];" \n
                                          "if (_targetIsPosition) exitWith { True };" \n
@@ -329,6 +337,7 @@ class FSM
                                          "if ( alive _target ) exitWith { True };" \n
                                          "" \n
                                          "/* Dead & Deleted units aren't a valid target */" \n
+                                         "_target = [];" \n
                                          "False"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
@@ -358,10 +367,8 @@ class FSM
                          "	_group move position _target;" \n
                          "};" \n
                          "" \n
-                         "_group setFormation ""VEE"";" \n
-                         "" \n
                          "if (_debug) then { " \n
-                         "	systemChat ""GookGroup: Grab them by the belt!""; " \n
+                         "	diag_log format [""GookGroup: Moving to %1"", _target]; " \n
                          "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
@@ -501,7 +508,7 @@ class FSM
                                         to="____Validate__Target";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"" \n
-                                         "if (_target isEqualTo []) exitWith { False };" \n
+                                         "if ( _target isEqualTo [] ) exitWith { False };" \n
                                          "" \n
                                          "_targetIsPosition = _target isEqualTypeParams [0,0,0];" \n
                                          "if (_targetIsPosition) exitWith { True };" \n
@@ -510,6 +517,7 @@ class FSM
                                          "if ( alive _target ) exitWith { True };" \n
                                          "" \n
                                          "/* Dead & Deleted units aren't a valid target */" \n
+                                         "_target = [];" \n
                                          "False"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
@@ -533,7 +541,7 @@ class FSM
                 {
                         name = "All_died";
                         itemno = 26;
-                        init = /*%FSM<STATEINIT""">*/"if (_debug) then { systemChat ""GookGroup: All died""; };"/*%FSM</STATEINIT""">*/;
+                        init = /*%FSM<STATEINIT""">*/"if (_debug) then { diag_log ""GookGroup: All died""; };"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -556,7 +564,7 @@ class FSM
                                 {
                                         itemno = 28;
                                         priority = 1.000000;
-                                        to="Guns_blazing_";
+                                        to="____Loop_Start_";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"if (isNull leader _group) exitWith { False };" \n
                                          "" \n

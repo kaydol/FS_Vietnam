@@ -103,7 +103,7 @@ while { true } do
 	// 	Remove strayed Gooks	//
 	//--------------------------//
 	
-	if ( _removeGooks ) then {
+	if ( _removeGooks > 0 ) then {
 		{
 			if ( side _x == EAST && count units _x > 0 ) then 
 			{
@@ -113,7 +113,7 @@ while { true } do
 				_distToPlayers = selectMin ( _allPlayers apply { _x distance2D _center2D } );
 				
 				// Try to delete Gooks that are too far away
-				if ( _distToPlayers > 300 ) then 
+				if ( _distToPlayers > _removeGooks ) then 
 				{
 					_unitPositions = units _grp apply { getPosASL _x };
 					_eyePositions = _allPlayers apply { eyePos _x };

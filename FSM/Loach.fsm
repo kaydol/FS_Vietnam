@@ -83,8 +83,8 @@ link43[] = {31,21};
 link44[] = {32,14};
 link45[] = {33,34};
 link46[] = {34,27};
-globals[] = {0.000000,0,0,0,0,640,480,1,62,6316128,1,-931.008057,235.383484,161.872162,-515.010132,996,578,1};
-window[] = {0,-1,-1,-1,-1,855,61,1453,105,1,1014};
+globals[] = {0.000000,0,0,0,0,640,480,1,62,6316128,1,-700.309082,466.082062,175.924347,-500.958496,996,578,1};
+window[] = {0,-1,-1,-32000,-32000,880,130,1522,130,1,1014};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -129,7 +129,7 @@ class FSM
                          "_target = [_aircraft, _prevtarget, _debug] call FS_fnc_ChooseTarget;" \n
                          "" \n
                          "if (_debug) then {" \n
-                         "	systemChat format [""Loach: New Target is %1"", _target];" \n
+                         "	diag_log format [""Loach: New Target is %1"", _target];" \n
                          "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
