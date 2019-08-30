@@ -22,6 +22,7 @@ while { !_pos_found && _attempts > 0 } do
 	{
 		_anchor = _x;
 		_p = AGLToASL ( _anchor getPos [_distance, _minAngle + random _angleRange] );
+		_p = _p vectorAdd [0,0,1.8]; // elevate p to represent a height of a standing person
 		{
 			_cansee = [objNull, "VIEW"] checkVisibility [eyePos _x, _p] > 0.3 ;
 			_water = surfaceIsWater _p;

@@ -2,7 +2,7 @@
 params ["_aircraft", "_target", "_debug"];
 
 if (_debug) then {
-	systemchat 'Search pattern started';
+	diag_log 'Loach: Search pattern started';
 };
 
 /*

@@ -1,7 +1,7 @@
 
 params ["_queue", "_elem", ["_newMaxSize", 0, [0]]];
 
-_queue params ["_maxQueueSize", "_data"];
+_queue params [["_maxQueueSize", 1, [0]], "_data"];
 
 if ( _newMaxSize > 0 ) then {
 	_queue set [0, _newMaxSize];
@@ -14,7 +14,7 @@ if ( _newMaxSize > 0 ) then {
 
 private _size = count _data;
 
-if ( _size + 1 < _maxQueueSize ) then {
+if ( _size + 1 <= _maxQueueSize ) then {
 	_size = _size + 1;
 	_data resize _size;
 }; 

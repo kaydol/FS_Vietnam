@@ -40,7 +40,7 @@ while { _aircraft call FS_fnc_CanPerformDuties } do
 		} forEach _aircrafts;
 		
 		if (_debug) then {
-			systemChat format ["Friendly aircrafts %1", _friendly_aircrafts];
+			diag_log format ["Friendly aircrafts %1", _friendly_aircrafts];
 		};
 	};
 	_k = ( _k + 1 ) % 10;

@@ -33,7 +33,7 @@ for "_i" from 1 to _salvos do
 		
 		private _emitter = "#particlesource" createVehicle [_pos # 0, _pos # 1, 50];
 		private _incomingShell = ["incoming_1", "incoming_2", "incoming_3", "incoming_4", "incoming_5", "incoming_6", "incoming_7", "incoming_8", "incoming_9", "incoming_10", "incoming_11", "incoming_12", "incoming_13"] call BIS_fnc_SelectRandom;
-		[_emitter, [_incomingShell, 500]] remoteExec ["say3D", 0];
+		[_emitter, [_incomingShell, 800]] remoteExec ["say3D", 0];
 		_soundEmitters pushBack _emitter;
 		
 		sleep (0.3 + random 2);
@@ -61,7 +61,7 @@ for "_i" from 1 to _salvos do
 			waitUntil {!alive _mine};
 			private _emitter = "#particlesource" createVehicle _pos;
 			private _rumbling = ["dirt_1", "dirt_2", "dirt_3", "dirt_4", "dirt_5", "dirt_6", "dirt_7"] call BIS_fnc_SelectRandom;
-			[_emitter, [_rumbling, 300]] remoteExec ["say3D", 0];
+			[_emitter, [_rumbling, 800]] remoteExec ["say3D", 0];
 			_soundEmitters pushBack _emitter;
 			{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_pos,["bush"],10]);
 		};

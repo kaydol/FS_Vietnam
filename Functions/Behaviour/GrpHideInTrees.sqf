@@ -9,8 +9,6 @@ if ({alive _x} count units _group <= 0) exitWith { };
 	use his position as a center when looking for best places 
 */
 
-
-
 _leader = leader _group;
 if ( isNull _leader ) then { _leader = selectRandom (units _group select {alive _x}) };
 
