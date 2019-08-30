@@ -28,10 +28,13 @@ if ( count _friendlyUnits > 0 ) then {
 	};
 };
 
+/* The idea was great but I am commenting it out until I can make the planes drop lines of bombs instead of dropping them all in one place 
+
 // try to select 2 near located clusters to hit them with a single line of bombs
 // orientating the line of strike to hit maximum amount of targets
 _estimatedFACvictims = 0;
 _bestLineForFAC = [];
+
 for [{_i = 0},{_i < count _clusters_centers},{_i = _i + 1}] do {
 	_pos1 = _clusters_centers select _i;
 	_size1 = _cluster_sizes select _i;
@@ -52,6 +55,7 @@ if !( _bestLineForFAC isEqualTo [] ) then
 	_clusters_centers pushBack _bestLineForFAC;
 	_cluster_sizes pushBack _estimatedFACvictims;
 };
+*/
 
 /*
 	Now after we formed an array of potential targets, it is time to select a single target that will be fired upon
@@ -95,7 +99,7 @@ if ( _debug ) then {
 			_arrows pushBack _arrow;
 		};
 	};
-	// gradually increase transparency
+	// delete arrows after _lifetime
 	_arrows spawn {
 		_lifetime = 30;
 		sleep _lifetime;
