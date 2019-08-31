@@ -586,20 +586,6 @@ class CfgVehicles
 				typeName = "BOOL";
 				defaultValue = "true"; 
 			};
-			class PlayMusic : Checkbox {
-				property = "playMusic";
-				displayName = "With music";
-				tooltip = "Play music while in arsenal";
-				typeName = "BOOL";
-				defaultValue = "true"; 
-			};
-			class AceCompatibility : Checkbox {
-				property = "aceCompatibility";
-				displayName = "Ace compatibility";
-				tooltip = "ACE addon deafness system overrides smooth music volume changes, resulting in arsenal music ending abruptly. When enabled, this will disable ACE's deafness while the player is in the arsenal, then enable it back after the music was silenced.";
-				typeName = "BOOL";
-				defaultValue = "true"; 
-			};
 		};
 	};
 	
@@ -768,6 +754,92 @@ class CfgVehicles
 		};
 		
 	};
+	
+	class FS_Jukebox_Module : FS_Vietnam_Module {
+		_generalMacro = "FS_Jukebox_Module";
+		scope = 2;
+		displayName = "Jukebox";
+		function = "FS_fnc_ModuleJukebox";
+		isDisposable = 1; // 1 if modules is to be disabled once it's activated (i.e., repeated trigger activation won't work)
+		isGlobal = 2; // 0 for server only execution, 1 for global execution, 2 for persistent global execution
+		class ModuleDescription : ModuleDescription {
+			description = "Module that runs on server and plays music for all connected clients";
+			sync[] = {};
+		};
+		class Attributes : AttributesBase {
+			class AnnounceTracks : Checkbox { //["Default"]
+				property = "AnnounceTracks";
+				displayName = "Announce tracks";
+				tooltip = "Announce track names in system chat.";
+				typeName = "BOOL";
+				defaultValue = "false";
+			};
+			class PlayLocally : Checkbox { //["Default"]
+				property = "PlayLocally";
+				displayName = "Run locally";
+				tooltip = "The module will run independently for each client, allowing for everybody to have music at different time rather than the timings being controlled by the server.";
+				typeName = "BOOL";
+				defaultValue = "false";
+			};
+			class Preset: Combo {
+				property = "Preset";
+				displayName = "Preset";
+				tooltip = "A quick way to setup the general mood of the tracks played."; // Tooltip description
+				typeName = "NUMBER";
+				class Values
+				{
+					class Arsenal {
+						name = "Arsenal Room tracks";
+						value = 0;
+						default = 1;
+					};
+					class Custom {
+						name = "Custom tracks";
+						value = 3;
+					};
+				};
+			};
+			class CustomTracks: Edit {
+				property = "CustomTracks";
+				displayName = "Custom tracks";
+				tooltip = "If preset is set to Custom, the tracks from this array are played instead.";
+				defaultValue = "['LeadTrack01_F_EPA', 'LeadTrack04_F_EPC']";
+			};	
+			class StartCondition: Edit {
+				property = "StartCondition";
+				displayName = "Start condition";
+				tooltip = "Condition that has to be true in order for this module to start working. Condition is checked every second and only on Server.";
+				defaultValue = "true";
+			};
+			class StopCondition: Edit {
+				property = "StopCondition";
+				displayName = "Stop condition";
+				tooltip = "Condition that has to be true in order for this module to stop working, after which the module will delete itself. Condition is checked every second and only on Server.";
+				defaultValue = "false";
+			};
+			class LoopConditions : Checkbox { //["Default"]
+				property = "LoopConditions";
+				displayName = "Loop conditions";
+				tooltip = "If enabled, instead of deleting itself, the module will restart after Stop Condition turned true. It allows a cycle: Start Condition -> Stop Condition -> Start Condition -> etc. Use this if you want to be able to stop and resume the work of the module.";
+				typeName = "BOOL";
+				defaultValue = "false";
+			};
+			class StopMusic : Checkbox { //["Default"]
+				property = "StopMusic";
+				displayName = "Stop music when finished";
+				tooltip = "The track that was playing when Stop Condition evaluated true will be silenced. May need to enable ACE compatibility for this one.";
+				typeName = "BOOL";
+				defaultValue = "false";
+			};
+			class DisableACEVolumeUpdate : Checkbox { //["Default"]
+				property = "DisableACEVolumeUpdate";
+				displayName = "ACE compatibility";
+				tooltip = "ACE addon deafness system overrides smooth music volume changes, resulting in arsenal music ending abruptly. When enabled, this will disable ACE's deafness while the player is in the arsenal, then enable it back after the music was silenced.";
+				typeName = "BOOL";
+				defaultValue = "false";
+			};
+		};
+	};
 };
 
 
@@ -890,6 +962,8 @@ class CfgFunctions
 			class ModuleGarbageCollector {file = "\FS_Vietnam\Functions\Modules\ModuleGarbageCollector.sqf";};
 			class ModuleNapalmSettings {file = "\FS_Vietnam\Functions\Modules\ModuleNapalmSettings.sqf";};
 			class ModuleNapalmCAS {file = "\FS_Vietnam\Functions\Modules\ModuleNapalmCAS.sqf";};
+			class ModuleJukebox {file = "\FS_Vietnam\Functions\Modules\ModuleJukebox.sqf";};
+			class JukeboxPlayMusic {file = "\FS_Vietnam\Functions\Modules\JukeboxPlayMusic.sqf";};
 		};
 	};
 	
