@@ -31,6 +31,7 @@ This Arma 3 addon aims at recreating authentic helicopter scouting tactic used b
 * Gook Manager upgrade (tracks movements of players and spawns ambushes and snipers on the trees along their way).
 * Ability to call-in artillery barrages for ground troops.
 
-### Bugs and things from the Unsung Vietnam War mod that need to be fixed
-- First fired punji trap does not leave spikes. This is because for some reason the first exploded mine does not spawn any clouds, and code that supposed to spawn a replacement model is ran inside particle's onTimerScript function, which wouldn't be called. First fired punji trap leaves an array of data in FS_AllGookTraps, e.g. [NULL-Object, _position, _orientation] which stays there without being removed.
+### Bugs
+- First fired punji trap does not always leave spikes. This is because for some reason the first exploded mine does not always spawn any clouds, and code that supposed to spawn a replacement model is ran inside particle's onTimerScript function, which wouldn't be called. First fired punji trap leaves an array of data in FS_AllGookTraps, e.g. [NULL-Object, _position, _orientation] which stays there without being removed.
 - Large punji trap sometimes kills the gook who placed it.
+- Arsenal Room module changes player's gear to random gear if placed in a new mission and loaded directly after mission start. This also happens if running "['Open', true] call BIS_fnc_Arsenal" in init.sqf, so it's not my fault, but I will see if I can create a workaround.
