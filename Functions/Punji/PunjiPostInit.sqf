@@ -15,8 +15,8 @@ waitUntil { isPlayer player };
 
 player addEventHandler ["Fired", { _this call FS_fnc_PunjiPutEventHandler; }];
 
+/*
 player addEventHandler ["Respawn", {
-
 	player addEventHandler ["Fired", { _this call FS_fnc_PunjiPutEventHandler; }];
-
 }];
+*/

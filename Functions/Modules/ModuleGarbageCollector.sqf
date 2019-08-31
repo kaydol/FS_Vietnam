@@ -2,6 +2,8 @@
 	This module can remove dead bodies, placed traps, and even alive enemies
 */
 
+#define TRAPS_REMOVAL_DISTANCE 300 
+
 params ["_module"];
 
 _removeDead = _module getVariable "removeDead";
@@ -44,7 +46,7 @@ while { true } do
 	// 	First remove traps that are too far from players	//
 	//------------------------------------------------------//
 	
-	if ( _removeTraps ) then {	
+	if ( _removeTraps ) then {
 		{
 			_x params ["_mine", "_posAGL", "_orientation"];
 			
@@ -54,7 +56,7 @@ while { true } do
 				_distances = _allPlayers apply { _x distance _mine };
 				
 				/* Do not remove mines that are too close to the players */
-				if ( selectMin _distances > 300 ) then {
+				if ( selectMin _distances > TRAPS_REMOVAL_DISTANCE ) then {
 					deleteVehicle _mine;
 					_gookTraps set [_forEachIndex, objNull];
 				};
@@ -63,11 +65,6 @@ while { true } do
 			};
 		}
 		forEach _gookTraps;
-		
-		if ( _trapsThreshold >= 0 ) then {
-			_gookTraps = _gookTraps arrayIntersect _gookTraps; // to get rid of objNulls
-		};
-		
 	};
 	
 	//------------------------------------------//
@@ -83,7 +80,7 @@ while { true } do
 		*/
 		_gookTraps = _gookTraps call BIS_fnc_arrayShuffle; 
 	
-		for [{_i = _trapsThreshold},{ _i < count _gookTraps },{ _i = _i + 1 }] do 
+		for [{_i = _trapsThreshold},{ _i < count _gookTraps },{ _i = _i + 1}] do 
 		{
 			(_gookTraps # _i) params ["_mine", "_posAGL", "_orientation"];
 			
@@ -98,6 +95,9 @@ while { true } do
 		
 		_gookTraps resize _trapsThreshold;
 	};
+	
+	_gookTraps = _gookTraps arrayIntersect _gookTraps; // to get rid of objNulls
+	publicVariable "FS_AllGookTraps";
 	
 	//--------------------------//
 	// 	Remove strayed Gooks	//
