@@ -9,6 +9,7 @@ This Arma 3 addon aims at recreating authentic helicopter scouting tactic used b
 * Gook Manager module: spawns angry Vietnamese guerillas around players and runs behavioristic scripts on them.
 * Napalm CAS module: a variation of the standard BIS CAS module designed to work with napalm bombs and planes from The Unsung Vietnam War addon.
 * Napalm Settings module: allows control of napalm lifetime, damage and explosion radius.
+* Jukebox: easier scripted music with easier start & stop conditions and global\local music playing.
 
 ### New AI
 * OH-6 Scout AI. The scout can asses the battlefield and call-in Napalm and artillery strikes, automatically takes station above known friendlies on the ground, and shares his knowledge with the ground troops if they have a radio. Should the ammo or fuel run out, the scout heads over to the nearest airbase to restock. Should the crewmate get injured, the scout breaks the station and flies to the nearest base that provides crew reinforcements. 
@@ -16,7 +17,7 @@ This Arma 3 addon aims at recreating authentic helicopter scouting tactic used b
 
 #### Other features
 * If ACE is running, M16 rifles are going to jam a lot more. The aim is to provide authentic experience, of course.
-* M60 and M16 sounds were replaced by some sounds from vanilla game. The reason is the Unsung sounds were too unpleasant to the ear.
+* M60 and M16 sounds were replaced by some sounds from vanilla game. The reason is the Unsung sounds were too unpleasant to ears.
 * Whenever a support mission is being started by the pilot, the players with radios and radio backpacks will be notified, and are expected to pass the news along to the rest of the group.
 
 #### Improvements to The Unsung Vietnam War mod
