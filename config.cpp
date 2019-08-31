@@ -5,7 +5,7 @@ class CfgPatches
 	{
 		units[] = {};
 		weapons[] = {"uns_m60_base", "uns_tripwire_punj1"};
-		requiredAddons[] = {"uns_weap_c", "A3_Weapons_F_Mark", "uns_missilebox_c"};
+		requiredAddons[] = {"uns_weap_c", "A3_Weapons_F_Mark", "uns_missilebox_c", "uns_traps_s"};
 		requiredVersion = 0.100000;
 		author = "Fess25Rus";
 		url = "http://fess-style.ucoz.ru";
@@ -43,7 +43,7 @@ class CfgMusic {
 class CfgSounds {
 	
 	#include "SupportSounds.hpp"
-	
+
 };
 
 
@@ -69,7 +69,12 @@ class CfgFactionClasses {
 	most effective solution, though I've added a precise tracking.
 */
 class CfgCloudlets {
-	class punji1_cloud {
+	class Default;
+	class punji1_cloud : Default {
+		size[] = {0};
+		timerPeriod = 0.05;
+		interval = 1000;
+		lifeTime = 0.09;
 		onTimerScript = "\FS_Vietnam\Functions\Punji\fn_punji_small.sqf";
 	};
 	class punji2_cloud : punji1_cloud {
@@ -88,8 +93,6 @@ class CfgCloudlets {
 		rubbing = 0.025;
 		size[] = {1.2,2.5};
 	};
-	
-	class Default;
 	class ScriptedNapalmExplosion : Default {
 		size[] = {0};
 		interval = 1000;
@@ -190,151 +193,42 @@ class NapalmExplosion_Impact {
 		type = "ScriptedNapalmExplosion";
 		lifeTime = 1;
 	};
-	/*
-	class Puff {
-		simulation = "particles";
-		type = "NapalmExplosion_Puff";
-		lifeTime = 1;
-	};
-	class Sparks {
-		simulation = "particles";
-		type = "NapalmExplosion_Sparks";
-		lifeTime = 1;
-	};
-	class Clouds {
-		simulation = "particles";
-		type = "NapalmExplosion_Clouds";
-		lifeTime = 3;
-	};*/
-	/*
-	class napalm_LightExp {
-		simulation = "light";
-		type = "uns_NAPALM_ExploLight";
-		position[] = {0,0,0};
-		intensity = 2;
-		interval = 1;
-		lifeTime = 20;
-	};
-	class napalm_FireLight {
-		simulation = "light";
-		type = "SmallFireLight";
-		position[] = {0,0,0};
-		intensity = 1;
-		interval = 1;
-		lifeTime = 20;
-	};
-	class napalm_WPTrailEffect {
-		simulation = "particles";
-		type = "uns_WPTrails_napalm";
-		position[] = {0,0,0};
-		intensity = 1;
-		interval = 1;
-		lifeTime = 0.5;
-	};
-	class napalm_Sound {
-		simulation = "sound";
-		type = "Fire";
-		position[] = {0,0,0};
-		intensity = 1;
-		interval = 1;
-		lifeTime = 20;
-	};
-	class napalm_Fire1 {
-		simulation = "particles";
-		type = "uns_NapalmFuelFire";
-		position[] = {0,0,0};
-		intensity = 1;
-		interval = 1;
-		lifeTime = 20;
-	};
-	class napalm_Fire2 {
-		simulation = "particles";
-		type = "uns_NapalmFuelFiremed";
-		position[] = {0,0,0};
-		intensity = 1;
-		interval = 1;
-		lifeTime = 16;
-	};
-	class napalm_Fire3 {
-		simulation = "particles";
-		type = "uns_NapalmFuelFiresmall";
-		position[] = {0,0,0};
-		intensity = 1;
-		interval = 1;
-		lifeTime = 19;
-	};
-	class napalm_FireBall {
-		simulation = "particles";
-		type = "uns_NapalmFireBallbright";
-		position[] = {0,0,0};
-		intensity = 1;
-		interval = 1;
-		lifeTime = 8;
-	};
-	class napalm_FireBall2 {
-		simulation = "particles";
-		type = "uns_NapalmFireBallbright2";
-		position[] = {0,0,0};
-		intensity = 1;
-		interval = 1;
-		lifeTime = 10;
-	};
-	class napalm_Smoke {
-		simulation = "particles";
-		type = "uns_NapalmCloud";
-		position[] = {0,0,0};
-		intensity = 1;
-		interval = 1;
-		lifeTime = 7;
-	};
-	class napalm_Smoke2 {
-		simulation = "particles";
-		type = "uns_NapalmCloud2";
-		position[] = {0,0,0};
-		intensity = 1;
-		interval = 1;
-		lifeTime = 8;
-	};
-	class napalm_Tall_Smoke {
-		simulation = "particles";
-		type = "uns_NapalmFuelSmoke";
-		position[] = {0,0,0};
-		intensity = 1;
-		interval = 1;
-		lifeTime = 20;
-	};*/
 };
 
-/*
-class CfgSoundSets {
-	class Punji_SoundSet {
-		distanceFilter = "explosionDistanceFreqAttenuationFilter";
-		doppler = 0;
-		loop = 0;
-		sound3DProcessingType = "ExplosionLight3DProcessingType";
-		soundShaders[] = {"punji_soundshader_near","punji_soundshader_mid","punji_soundshader_far"};
-		spatial = 1;
-		volumeCurve = "InverseSquare2Curve";
-		volumeFactor = 1;
+class CfgSoundShaders {
+	class punji_soundshader_far {
+		range = 0;
+		rangeCurve[] = {};
+		samples[] = {};
+		volume = 0;
+	};
+	class punji_soundshader_mid {
+		range = 0;
+		rangeCurve[] = {};
+		samples[] = {};
+		volume = 0;
+	};
+	class punji_soundshader_near {
+		range = 0;
+		rangeCurve[] = {};
+		samples[] = {};
+		volume = 0;
 	};
 };
-*/
-class CfgAmmo {
-	
+
+class CfgAmmo 
+{
 	class APERSMine_Range_Ammo;
 	class uns_punji_ammo_base : APERSMine_Range_Ammo { //["MineBase","MineCore","TimeBombCore","Default"]
+		delete soundHit1;
+		delete soundHit2;
+		delete soundHit3;
+		delete soundHit4;
+		delete multiSoundHit;
+		soundHit[] = {"\uns_traps_s\sound\punji1",3.16228,1,30};
 		hit = 6;
 		indirectHit = 6;
 		indirectHitRange = 1;
-		SoundSetExplosion[] = {"Punji_SoundSet","","Explosion_Debris_SoundSet"};
-		soundHit1[] = {}; // filename, volume, pitch, distance (optional)
-		soundHit2[] = {};
-		soundHit3[] = {};
-		soundHit4[] = {};
-		multiSoundHit[] = {};
-		soundTrigger[] = {"\uns_traps_s\sound\punji1",20,1,50};
-		soundActivation[] = {"A3\Sounds_F\weapons\mines\mech_activate_mine_1",0.562341,1,30};
-		whistleDist = 8;
 		mineInconspicuousness = 0.5;
 	};
 	class uns_punji_small_ammo : uns_punji_ammo_base { //["APERSMine_Range_Ammo","MineBase","MineCore","TimeBombCore","Default"]
@@ -602,42 +496,62 @@ class CfgVehicles
 		};
 		class Attributes : AttributesBase {
 			class AILimit : Edit {
-				property = "aiLimit";
+				property = "AILimit";
 				displayName = "AI limit";
 				tooltip = "How many alive Gooks can be present on the map simultaneously. Reduce to ease lags, increase if you have a very powerful CPU.";
 				typeName = "NUMBER";
-				defaultValue = 40;
+				defaultValue = 20;
 			};
 			class GroupSize : Edit {
-				property = "groupSize";
-				displayName = "Group size";
-				tooltip = "How many Gooks will be spawned per group. Reduce to spawn a high amount of small groups, increase to spawn a small amount of large groups. Better keep this in 5-12 range.";
+				property = "GroupSize";
+				displayName = "Group Size";
+				tooltip = "How many Gooks will be spawned per group. Reduce to spawn a high amount of small groups, increase to spawn a small amount of large groups. Better keep this in 5-12 range, because the game's engine struggles with operating huge groups effectively.";
 				typeName = "NUMBER";
-				defaultValue = 5;
+				defaultValue = 6;
+			};
+			class GroupSizeVar : Edit {
+				property = "GroupSizeVar";
+				displayName = "Group Size random addition";
+				tooltip = "";
+				typeName = "NUMBER";
+				defaultValue = 6;
 			};
 			class GroupsCount : Edit {
-				property = "groupsCount";
-				displayName = "Groups count";
+				property = "GroupsCount";
+				displayName = "Groups Count";
 				tooltip = "How many groups of Gooks can be spawned at once.";
 				typeName = "NUMBER";
 				defaultValue = 1;
 			};
-			class SpawnProbability : Edit {
-				property = "spawnProbability";
-				displayName = "Spawn probability";
-				tooltip = "Defines the probability of spawning a group of Gooks. Number in range 0-1.";
+			class GroupsCountVar : Edit {
+				property = "GroupsCountVar";
+				displayName = "Groups Count random addition";
+				tooltip = "";
 				typeName = "NUMBER";
-				defaultValue = 0.9;
+				defaultValue = 1;
+			};
+			class SpawnCondition : Edit {
+				property = "SpawnCondition";
+				displayName = "Spawn Condition";
+				tooltip = "Condition that has to be true in order for this module to spawn a group of Gooks. Condition is evaluated every Assessment Rate seconds.";
+				defaultValue = "true";
 			};
 			class Sleep : Edit {
-				property = "sleep";
-				displayName = "Time between attempts";
-				tooltip = "The Manager drops a dice to decide whether to spawn a group of Gooks or not, then spawns it if the answer is yes. After that, the Manager waits some, then the whole thing is repeated. This number defines how much time passes between dice drops.";
+				property = "Sleep";
+				displayName = "Assessment Rate";
+				tooltip = "The Manager evaluates Spawn Condition to decide whether to spawn a group of Gooks or not, then spawns it if the condition is true. After that, the Manager waits some time, then the whole thing is repeated. This number defines how much time passes between condition evaluations.";
 				typeName = "NUMBER";
 				defaultValue = 30;
 			};
+			class SpawnDistance : Edit {
+				property = "SpawnDistance";
+				displayName = "Spawn Distance";
+				tooltip = "How far from players the gooks will be spawned.";
+				typeName = "NUMBER";
+				defaultValue = 200;
+			};
 			class Debug : Checkbox {
-				property = "debug";
+				property = "Debug";
 				displayName = "Debug";
 				tooltip = "Enable debug information.";
 				typeName = "BOOL";
@@ -704,7 +618,7 @@ class CfgVehicles
 			class RemoveDead : Checkbox {
 				property = "removeDead";
 				displayName = "Remove dead";
-				tooltip = "Enable to remove dead bodies from the world eventually. Disable to leave them be.";
+				tooltip = "Enable to eventually remove dead bodies from the world. Disable to leave them be.";
 				typeName = "BOOL";
 				defaultValue = "true";
 			};
@@ -722,12 +636,12 @@ class CfgVehicles
 				typeName = "NUMBER";
 				defaultValue = 40;
 			};
-			class RemoveGooks : Checkbox {
+			class RemoveGooks : Edit {
 				property = "removeGooks";
-				displayName = "Remove strayed Gooks";
-				tooltip = "Gooks that are too far from any of the players will be mercilessly deleted.";
-				typeName = "BOOL";
-				defaultValue = "true"; //true - 1, false - 0
+				displayName = "Remove Gooks further than";
+				tooltip = "Gooks that are too far from any of the players will be mercilessly deleted. Use -1 to disable threshold.";
+				typeName = "NUMBER";
+				defaultValue = 300;
 			};
 		};
 	};
@@ -912,11 +826,22 @@ class CfgFunctions
 		class Support {
 			class DropMines {file = "\FS_Vietnam\Effects\Artillery\DropMines.sqf";};
 			class DropNapalm {file = "\FS_Vietnam\Effects\Napalm\DropNapalm.sqf";};
+		};
+		
+		class Napalm {
 			class NapalmBurnedAlive {file = "\FS_Vietnam\Effects\Napalm\NapalmBurnedAlive.sqf";};
 			class NapalmPuffAndSparks {file = "\FS_Vietnam\Effects\Napalm\NapalmPuffAndSparks.sqf";};
 			class NapalmPhosphorusStrands {file = "\FS_Vietnam\Effects\Napalm\NapalmPhosphorusStrands.sqf";};
 			class NapalmAfterEffect {file = "\FS_Vietnam\Effects\Napalm\NapalmAfterEffect.sqf";};
 			class NapalmCreateExplosion {file = "\FS_Vietnam\Effects\Napalm\NapalmCreateExplosion.sqf";};
+			
+		};
+		
+		class Punji {
+			class PunjiEffects {file = "\FS_Vietnam\Functions\Punji\PunjiEffects.sqf";};
+			class PunjiPostInit {file = "\FS_Vietnam\Functions\Punji\PunjiPostInit.sqf"; postInit = 1;};
+			class PunjiTrapFired {file = "\FS_Vietnam\Functions\Punji\PunjiTrapFired.sqf";};
+			class PunjiPutEventHandler {file = "\FS_Vietnam\Functions\Punji\PunjiPutEventHandler.sqf";};
 		};
 		
 		class Radio {
@@ -945,6 +870,12 @@ class CfgFunctions
 			class GookSenses {file = "\FS_Vietnam\Functions\Behaviour\GookSenses.sqf";};
 			class IsPlaceSafe {file = "\FS_Vietnam\Functions\Behaviour\IsPlaceSafe.sqf";};
 			class FilterObjects {file = "\FS_Vietnam\Functions\Behaviour\FilterObjects.sqf";};
+			class SpawnGooks {file = "\FS_Vietnam\Functions\Behaviour\SpawnGooks.sqf";};
+			class Suspense {file = "\FS_Vietnam\Functions\Behaviour\Suspense.sqf";};
+			class IsEnoughSuspense {file = "\FS_Vietnam\Functions\Behaviour\IsEnoughSuspense.sqf";};
+			class GetHiddenPos {file = "\FS_Vietnam\Functions\Behaviour\GetHiddenPos.sqf";};
+			class GetHiddenPos2 {file = "\FS_Vietnam\Functions\Behaviour\GetHiddenPos2.sqf";};
+			class AttackPlanner {file = "\FS_Vietnam\Functions\Behaviour\AttackPlanner.sqf";};
 		};
 		
 		class Modules {
@@ -952,10 +883,6 @@ class CfgFunctions
 			class ModuleAirCommand {file = "\FS_Vietnam\Functions\Modules\ModuleAirCommand.sqf";};
 			class ModuleGookManager {file = "\FS_Vietnam\Functions\Modules\ModuleGookManager.sqf";};
 			class GetModuleOwner {file = "\FS_Vietnam\Functions\Modules\GetModuleOwner.sqf";};
-			class SpawnGooks {file = "\FS_Vietnam\Functions\Modules\SpawnGooks.sqf";};
-			class Suspense {file = "\FS_Vietnam\Functions\Modules\Suspense.sqf";};
-			class IsEnoughSuspense {file = "\FS_Vietnam\Functions\Modules\IsEnoughSuspense.sqf";};
-			class GetHiddenPos {file = "\FS_Vietnam\Functions\Modules\GetHiddenPos.sqf";};
 			class AuthenticLoadout {file = "\FS_Vietnam\Functions\Modules\AuthenticLoadout.sqf";};
 			class ModuleArsenal {file = "\FS_Vietnam\Functions\Modules\ModuleArsenal.sqf";};
 			class ArsenalRoom {file = "\FS_Vietnam\Functions\Modules\ArsenalRoom.sqf";};
