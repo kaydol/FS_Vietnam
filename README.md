@@ -22,6 +22,8 @@ This Arma 3 addon aims at recreating authentic helicopter scouting tactic used b
 #### Improvements to The Unsung Vietnam War mod
 * Punji traps spawn spikes exactly where the fired trap was, and their initial orientation is preserved (in Unsung the spikes were spawned in "general vicinity" and their orientation was always 0 degrees).
 * Whip Punji traps now have fire animation (the Unsung simply spawned already fired versions).
+* Removed the ear-raping punji trap death sound that could be heard from several kilometers.
+* Activating a punji trap now spawns visual effects of leaves and plays a dedicated sound.
 * The default laggy Napalm bomb is replaced with a highly optimized Napalm with new sounds and visuals.
 
 ### To do
