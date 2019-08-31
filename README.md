@@ -34,5 +34,3 @@ This Arma 3 addon aims at recreating authentic helicopter scouting tactic used b
 ### Bugs and things from the Unsung Vietnam War mod that need to be fixed
 - First fired punji trap does not leave spikes. This is because for some reason the first exploded mine does not spawn any clouds, and code that supposed to spawn a replacement model is ran inside particle's onTimerScript function, which wouldn't be called. First fired punji trap leaves an array of data in FS_AllGookTraps, e.g. [NULL-Object, _position, _orientation] which stays there without being removed.
 - Large punji trap sometimes kills the gook who placed it.
-- The death sound from punji trap can be heard from a very long distance.
-- Punji trap deaths appear to spawn multiple screams at once.
