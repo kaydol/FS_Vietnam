@@ -564,7 +564,7 @@ class CfgVehicles
 		_generalMacro = "FS_Arsenal_Module";
 		scope = 2;
 		isGlobal = 2; // Persistent global execution
-		displayName = "Arsenal";
+		displayName = "Arsenal Room";
 		function = "FS_fnc_ModuleArsenal";
 		isDisposable = 0; // 1 if modules is to be disabled once it's activated (i.e., repeated trigger activation won't work)
 		class ModuleDescription : ModuleDescription {

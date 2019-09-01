@@ -48,6 +48,20 @@ sleep 0.001;
 
 enableRadio False; 
 
+if ( time < 1 ) then 
+{
+	/*
+		A workaround to prevent replacing player's gear with random shit if the module is run
+		in a freshly created mission right after mission start. We save player's gear and then
+		immediately load it after the Virtual Arsenal opens.
+	*/
+	[] spawn {
+		[player, [missionNameSpace, "FS_PLAYER_LOADOUT"]] call BIS_fnc_saveInventory;
+		waitUntil {!isNull (uinamespace getvariable ["BIS_fnc_arsenal_cam",objnull])};
+		[player, [missionNameSpace, "FS_PLAYER_LOADOUT"]] call BIS_fnc_LoadInventory;
+	};
+};
+
 ['Open', _allowAll] call BIS_fnc_Arsenal;
 
 waitUntil {!isNull (uinamespace getvariable ["BIS_fnc_arsenal_cam",objnull])};
