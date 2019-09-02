@@ -38,6 +38,8 @@ _synced = synchronizedObjects _module;
 {
 	if ( typeOf _x isKindOf "Air" ) then { 
 		[_x, _assessmentRate, [_artilleryThreshold, _artilleryCD, _napalmThreshold, _napalmCD], objNull, _debug] execFSM "\FS_Vietnam\FSM\Loach.fsm"; 
+		[_x, "West", 1] spawn FS_fnc_UnsungRadioPlayback;
+		
 	};
 }
 forEach _synced;

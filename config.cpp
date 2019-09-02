@@ -927,6 +927,7 @@ class CfgFunctions
 			class TransmitOverRadio {file = "\FS_Vietnam\Functions\Radio\TransmitOverRadio.sqf";};
 			class TransmitSitrep {file = "\FS_Vietnam\Functions\Radio\TransmitSitrep.sqf";};
 			class IsRankingOfficer {file = "\FS_Vietnam\Functions\Radio\IsRankingOfficer.sqf";};
+			class UnsungRadioPlayback {file = "\FS_Vietnam\Functions\Radio\UnsungRadioPlayback.sqf";};
 		};
 		
 		class Behaviour {
