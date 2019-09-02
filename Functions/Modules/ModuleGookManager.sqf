@@ -112,70 +112,71 @@ while { true } do {
 		*/
 		private _menInOldCluster = count (( _oldClusters # _indexInOldClusters ) # 1 );
 		private _majorityStartsAt = ceil ( _menInOldCluster / 2 ); // use _majorityStartsAt = 0 for simply choosing the match with most common elements
-		
-		if ( _indexInNewClusters >= 0 && _matchCount >= _majorityStartsAt ) then 
-		{
-			/* All criteria fullfilled, this must be the same cluster */
-			
-			private _prev = _oldClusters # _indexInOldClusters;
-			private _next = _newClusters # _indexInNewClusters;
-			
-			// The previous and the current positions of this cluster [_clusterCenter, _elems, _queue]
-			private _startPos = _prev # 0;
-			private _endPos = _next # 0;
-			
-			// Draw arrows
-			if ( _debug ) then {
-				private _arrow = [_startPos, _endPos, [1,1,0,1], [3,1/7,3]] call BIS_fnc_drawArrow;
-				[_arrow, _assessmentRate * DEBUG_ARROWS_COUNT] spawn {
-					sleep ( _this # 1 );
-					_this # 0 call BIS_fnc_drawArrow;
-				};
-			};
-			
-			// If there was no queue stored in the cluster, create it and add current cluster's position to the queue
-			if ( count _prev == 2 ) then {
-				[_prev, _scope] call _fnc_InsertNewQueue;
-			};
-			
-			// Copy the movements queue from the prev and add new position to it
-			private _queue = _prev # 2;
-			[_queue, _endPos, _scope] call FS_fnc_QueuePush;
-			_next set [2, _queue];
-			
-			// Now we can analyze the movement of this cluster to predict it's route (newest positions are stored on the left of the queue)
-			private _coordinates = [_queue] call FS_fnc_QueueGetData;
-			if ( count _coordinates == _scope ) then 
+		if ( _indexInNewClusters >= 0 ) then {
+			if ( _matchCount >= _majorityStartsAt ) then 
 			{
-				/* Enough time passed to understand whether the group is moving somewhere or not */
-				private _timeToSpawnGooks = ( call compile _spawnCondition ) && ({side _x == EAST && alive _x} count allUnits) <= _ailimit;
-				if ( _timeToSpawnGooks ) then 
-				{
-					/* ☭ FINALLY! IT'S TIME TO OVERTHROW CAPITALISM, COMRADES ☭ (﻿ ͡° ͜ʖ ͡°) ☭
-									   
-									   ----/*~\              O      ----/*~\
-										(~~    ~~~)    __---=/\>     (~~    ~~~)
-															  /\/
-															  \
-							|   ,		   \
-							| O /   	  	'\ O        	 O
-							|--\    	   	  \_\ 	   __---=/\>
-							  / \   	 	    /\/    		  /\/ 
-							  \  \  	  	    \      		  \
-					*/
-					_groupSize = _groupSize + round random _groupSizeVar;
-					_groupsCount = _groupsCount + round random _groupsCountVar;
-					
-					[_next, _allPlayers, SUFFICIENT_CLUSTER_SHIFT, _spawnDistance, _groupsCount, _groupSize, _debug] spawn FS_fnc_AttackPlanner;
+				/* All criteria fullfilled, this must be the same cluster */
+				
+				private _prev = _oldClusters # _indexInOldClusters;
+				private _next = _newClusters # _indexInNewClusters;
+				
+				// The previous and the current positions of this cluster [_clusterCenter, _elems, _queue]
+				private _startPos = _prev # 0;
+				private _endPos = _next # 0;
+				
+				// Draw arrows
+				if ( _debug ) then {
+					private _arrow = [_startPos, _endPos, [1,1,0,1], [3,1/7,3]] call BIS_fnc_drawArrow;
+					[_arrow, _assessmentRate * DEBUG_ARROWS_COUNT] spawn {
+						sleep ( _this # 1 );
+						_this # 0 call BIS_fnc_drawArrow;
+					};
 				};
+				
+				// If there was no queue stored in the cluster, create it and add current cluster's position to the queue
+				if ( count _prev == 2 ) then {
+					[_prev, _scope] call _fnc_InsertNewQueue;
+				};
+				
+				// Copy the movements queue from the prev and add new position to it
+				private _queue = _prev # 2;
+				[_queue, _endPos, _scope] call FS_fnc_QueuePush;
+				_next set [2, _queue];
+				
+				// Now we can analyze the movement of this cluster to predict it's route (newest positions are stored on the left of the queue)
+				private _coordinates = [_queue] call FS_fnc_QueueGetData;
+				if ( count _coordinates == _scope ) then 
+				{
+					/* Enough time passed to understand whether the group is moving somewhere or not */
+					private _timeToSpawnGooks = ( call compile _spawnCondition ) && ({side _x == EAST && alive _x} count allUnits) <= _ailimit;
+					if ( _timeToSpawnGooks ) then 
+					{
+						/* ☭ FINALLY! IT'S TIME TO OVERTHROW CAPITALISM, COMRADES ☭ (﻿ ͡° ͜ʖ ͡°) ☭
+										   
+										   ----/*~\              O      ----/*~\
+											(~~    ~~~)    __---=/\>     (~~    ~~~)
+																  /\/
+																  \
+								|   ,		   \
+								| O /   	  	'\ O        	 O
+								|--\    	   	  \_\ 	   __---=/\>
+								  / \   	 	    /\/    		  /\/ 
+								  \  \  	  	    \      		  \
+						*/
+						_groupSize = _groupSize + round random _groupSizeVar;
+						_groupsCount = _groupsCount + round random _groupsCountVar;
+						
+						[_next, _allPlayers, SUFFICIENT_CLUSTER_SHIFT, _spawnDistance, _groupsCount, _groupSize, _debug] spawn FS_fnc_AttackPlanner;
+					};
+				};
+				
+			} 
+			else {
+				// Insert new queue to the clusters that didn't match the criteria
+				private _clusterThatDidntPassCriteria = _newClusters # _indexInNewClusters;
+				[_clusterThatDidntPassCriteria, _scope] call _fnc_InsertNewQueue;
+				
 			};
-			
-		} 
-		else {
-			// Insert new queue to the clusters that didn't match the criteria
-			private _clusterThatDidntPassCriteria = _newClusters # _indexInNewClusters;
-			[_clusterThatDidntPassCriteria, _scope] call _fnc_InsertNewQueue;
-			
 		};
 	};
 	
