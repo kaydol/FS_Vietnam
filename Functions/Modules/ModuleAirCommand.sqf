@@ -36,6 +36,8 @@ SUPPORT_MINDISTANCE_NAPALM = _module getVariable "napalmMinDist";
 _synced = synchronizedObjects _module; 
 
 {
-	if (typeOf _x isKindOf "Air" ) then { [_x, _assessmentRate, [_artilleryThreshold, _artilleryCD, _napalmThreshold, _napalmCD], objNull, _debug] execFSM "\FS_Vietnam\FSM\Loach.fsm" };
+	if ( typeOf _x isKindOf "Air" ) then { 
+		[_x, _assessmentRate, [_artilleryThreshold, _artilleryCD, _napalmThreshold, _napalmCD], objNull, _debug] execFSM "\FS_Vietnam\FSM\Loach.fsm"; 
+	};
 }
 forEach _synced;
