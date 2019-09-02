@@ -1,5 +1,5 @@
 
-params ["_aircraft"];
+params ["_aircraft", "_debug"];
 
 /*
 	First, updating the stations to indicate that this aircraft
@@ -7,8 +7,6 @@ params ["_aircraft"];
 */
 _side = _aircraft getVariable ["initSide", side _aircraft];
 [_side, "AIRSTATIONS", _aircraft] call FS_fnc_UpdateSideVariable;
-
-
 
 _group = group _aircraft;
 _bases = [];
@@ -25,13 +23,11 @@ if ( _hasDead && _hasAlive ) then {
 	In case this aircraft has both wounded and needs maintenance
 	Attempt to find a base both with crew replacements and maintenance 
 */
-
 if ( _hasDead && _needsMaintenance ) then {
 	_bases = FS_REINFORCEMENT_BASES arrayIntersect FS_REFUELRELOAD_BASES;
 };
 
 /* If attempt failed, go for reinforcements first */
-
 if ( _bases isEqualTo [] && _hasDead ) then {
 	_bases = FS_REINFORCEMENT_BASES;
 } else {
@@ -62,7 +58,8 @@ forEach _bases;
 if ( _closest_base isEqualTo objNull ) then 
 {
 	// No airports defined in the editor
-	systemChat "Pilot: No places to refuel & reload at";
+	diag_log "Pilot: No places to refuel & reload at";
+	// TODO make the helicopter fly off the map and then get deleted
 }
 else
 {
@@ -105,16 +102,19 @@ else
 			sleep _refuelRearmTime;
 			
 			/* Refueling */
-			[_aircraft, 1] remoteExec ["setFuel", 0];
+			[_aircraft, 1] remoteExec ["setFuel", _aircraft];
 			
-			/* Reloading turrets */
-			[_aircraft, 1] remoteExec ["setVehicleAmmo", 0];
+			/* 
+				Reloading all turrets and the vehicle's gunner (usually, co-pilot)
+				running this globally, bc only ammo of the local turrets is ressuplied, and turrets may be owned by clients 
+			*/
+			[_aircraft, 1] remoteExec ["setVehicleAmmoDef", 0];
 			
 			/* Healing the crew */
 			{ if (alive _x) then { [_x, 0] remoteExec ["setDamage", _x]; }; } forEach crew _aircraft;
 			 
 			/* Partially fixing all broken parts */
-			getAllHitPointsDamage _aircraft params ["_names", "_trash", "_damage"];
+			getAllHitPointsDamage _aircraft params ["_names", "_selections", "_damage"];
 			
 			for [{_i = 0},{_i < count _damage},{_i = _i + 1}] do {
 				if ( ( _damage select _i ) > 0 ) then {
@@ -166,7 +166,7 @@ else
 					If no respawn points were provided, teleport the replacement 
 					directly into the helicopter, otherwise make him run and board it
 				*/
-				if ( _respawn_at isEqualTo [0,0,0] ) then 
+				if !( _respawn_at isEqualTo [0,0,0] ) then 
 				{
 					waitUntil { sleep 0.5; { _x in _aircraft } count units _group == count crew _aircraft || !alive _aircraft };
 				}
@@ -200,7 +200,7 @@ else
 	// Restarting the loop that was canceled by FS_fnc_CanPerformDuties check inside FS_fnc_LoachInit
 	if (_aircraft call FS_fnc_CanPerformDuties) then 
 	{
-		_aircraft spawn FS_fnc_LoachInit;
+		[_aircraft, _debug] spawn FS_fnc_LoachInit;
 		
 		/* 	Once the first waypoint is reached send a radiomessage to 
 			inform ground troops about a new air-asset coming on-line */

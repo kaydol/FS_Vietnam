@@ -83,8 +83,8 @@ link43[] = {31,21};
 link44[] = {32,14};
 link45[] = {33,34};
 link46[] = {34,27};
-globals[] = {0.000000,0,0,0,0,640,480,1,62,6316128,1,-700.309082,466.082062,175.924347,-500.958496,996,578,1};
-window[] = {0,-1,-1,-32000,-32000,880,130,1522,130,1,1014};
+globals[] = {0.000000,0,0,0,0,640,480,1,62,6316128,1,-262.321838,904.068909,117.372711,-559.508545,996,578,1};
+window[] = {0,-1,-1,-1,-1,854,104,1496,104,1,1014};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -232,7 +232,7 @@ class FSM
                 {
                         name = "Break_Station";
                         itemno = 8;
-                        init = /*%FSM<STATEINIT""">*/"_breakStation = [_aircraft] spawn FS_fnc_ReloadAndRefuel;" \n
+                        init = /*%FSM<STATEINIT""">*/"_breakStation = [_aircraft, _debug] spawn FS_fnc_ReloadAndRefuel;" \n
                          "_aircraft setVariable [""reached_the_area"", false];"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
