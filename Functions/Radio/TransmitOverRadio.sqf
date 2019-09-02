@@ -108,11 +108,21 @@ switch ( _messageType ) do
 	
 	params ["_side", "_message", "_text", "_vehicle", "_speaker"];
 	
-	// Exit if the radio message is aimed directly at a specific vehicle and players is not it\not in it
-	if (!isNull _vehicle && ( player == _vehicle || player in _vehicle )) exitWith {};
+	private _canReceiveMessage = false;
 	
-	// Message is receivable only if players has radio \ RTO backpack
-	if !( player call FS_fnc_HasRadio || player call FS_fnc_HasRTO ) exitWith {};
+	if !(isNull _vehicle) then {
+		// If the target of the message is a specific vehicle, check if it has radio comm system and player is in it
+		if (_vehicle call FS_fnc_HasCommSystem && (player == _vehicle || player in _vehicle)) then {
+			_canReceiveMessage = true;
+		};
+	} else {
+		// If the message is being broadcasted to everybody (not only 1 vehicle) then check if player has radio or RTO backpack
+		if (player call FS_fnc_HasRadio || player call FS_fnc_HasRTO) then {
+			_canReceiveMessage = true;
+		};
+	};
+	
+	if !( _canReceiveMessage ) exitWith {};
 	
 	if ( _speaker isEqualType "" ) then {
 		[_side, _speaker] sideRadio _message;
