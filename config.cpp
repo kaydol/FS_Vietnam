@@ -339,7 +339,7 @@ class CfgVehicles
 		author = "kaydol";
 		scope = 1;
 		is3DEN = 0;
-		isGlobal = 0;
+		isGlobal = 0; // 0 for server only execution, 1 for global execution, 2 for persistent global execution
 		displayName = "FS Vietnam Module";
 		category = "FS_Vietnam";
 	};
@@ -378,22 +378,22 @@ class CfgVehicles
 			};
 		};
 		class Attributes : AttributesBase {
-			class Resupply : Checkbox {
-				property = "providesMaintenance";
+			class ProvidesMaintenance : Checkbox {
+				property = "ProvidesMaintenance";
 				displayName = "Refuel, rearm, repair, heal";
 				tooltip = "Landing helicopters will be refueled, rearmed & repaired; the crew will be healed";
 				typeName = "BOOL";
 				defaultValue = "true"; 
 			};
-			class ReplaceCrew : Checkbox {
-				property = "providesCrew";
+			class ProvidesCrew : Checkbox {
+				property = "ProvidesCrew";
 				displayName = "Replace dead crew";
 				tooltip = "Sync Respawn Points to spawn new crew there and then make them run and board the helicopter. If no RPs were synced, the new crew will be teleported into the helicopter directly.";
 				typeName = "BOOL";
 				defaultValue = "true"; 
 			};
 			class RefuelRearmTime : Edit {
-				property = "refuelRearmTime";
+				property = "RefuelRearmTime";
 				displayName = "Maintenance time";
 				tooltip = "How much time is needed to refuel, rearm, repair and heal up.";
 				typeName = "NUMBER";
