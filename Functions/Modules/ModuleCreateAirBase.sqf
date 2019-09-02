@@ -40,13 +40,16 @@ forEach _synced;
 
 if ( _side isEqualTo sideLogic ) exitWith { ["[Air Base] No Side has been synced, please sync a Side that will get access to this module"] call BIS_fnc_error };
 
-
+if (isNil{ FS_REFUELRELOAD_BASES }) then { 
+	FS_REFUELRELOAD_BASES = []; 
+};
+if (isNil{ FS_REINFORCEMENT_BASES }) then { 
+	FS_REINFORCEMENT_BASES = []; 
+};
+	
 _providesMaintenance = _module getVariable ["providesMaintenance", False];
 if ( _providesMaintenance ) then 
-{ 
-	if (isNil{ FS_REFUELRELOAD_BASES }) then { 
-		FS_REFUELRELOAD_BASES = []; 
-	};
+{
 	FS_REFUELRELOAD_BASES pushBackUnique _module;
 	[] spawn {
 		sleep random 5; // This is needed to make publicVariable collisions less likely
@@ -58,9 +61,6 @@ if ( _providesMaintenance ) then
 _providesCrew = _module getVariable ["providesCrew", False];
 if ( _providesCrew ) then 
 {
-	if (isNil{ FS_REINFORCEMENT_BASES }) then { 
-		FS_REINFORCEMENT_BASES = []; 
-	};
 	FS_REINFORCEMENT_BASES pushBackUnique _module;
 	[] spawn {
 		sleep random 5; // This is needed to make publicVariable collisions less likely
