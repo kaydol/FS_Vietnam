@@ -51,30 +51,31 @@ _providesMaintenance = _module getVariable ["providesMaintenance", False];
 if ( _providesMaintenance ) then 
 {
 	FS_REFUELRELOAD_BASES pushBackUnique _module;
-	[] spawn {
-		sleep random 5; // This is needed to make publicVariable collisions less likely
-		publicVariable "FS_REFUELRELOAD_BASES";
-	};
 };
-
 
 _providesCrew = _module getVariable ["providesCrew", False];
 if ( _providesCrew ) then 
 {
 	FS_REINFORCEMENT_BASES pushBackUnique _module;
-	[] spawn {
-		sleep random 5; // This is needed to make publicVariable collisions less likely
-		publicVariable "FS_REINFORCEMENT_BASES";
-	};
+
+	/* If respawn point entities were synced, use their positions as respawn points for new crew */
+	_respawn_points = [];
+	{
+		if (typeOf _x == "LocationRespawnPoint_F") then {
+			_respawn_points pushBack getPos _x;
+		};
+	}
+	forEach _synced;
+	
+	_module setVariable ["respawn_points", _respawn_points, True];
 };
 
 
-_respawn_points = [];
-{
-	if (typeOf _x == "LocationRespawnPoint_F") then {
-		_respawn_points pushBackUnique getPos _x;
-	};
-}
-forEach _synced;
-_module setVariable ["respawn_points", _respawn_points, True];
-
+/* Code that happens only once regardles of how many air bases are placed */
+if (isNil { FS_AIRBASES_INIT_PUBLICVARIABLE }) then {
+	FS_AIRBASES_INIT_PUBLICVARIABLE = 0;
+	sleep 5;
+	publicVariable "FS_REINFORCEMENT_BASES";
+	publicVariable "FS_REFUELRELOAD_BASES";
+	FS_AIRBASES_INIT_PUBLICVARIABLE = nil;
+};
