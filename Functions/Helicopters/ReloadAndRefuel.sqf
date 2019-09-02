@@ -99,6 +99,7 @@ else
 	{
 		if ( _needsMaintenance && _providesMaintenance ) then 
 		{
+			[effectiveCommander _aircraft, "Conducting maintenance..."] remoteExec ["vehicleChat", 0];
 			sleep _refuelRearmTime;
 			
 			/* Refueling */
@@ -114,13 +115,16 @@ else
 			{ if (alive _x) then { [_x, 0] remoteExec ["setDamage", _x]; }; } forEach crew _aircraft;
 			 
 			/* Partially fixing all broken parts */
+			private _repairTo = 1 - (missionNameSpace getVariable ["MAINTENANCE_REPAIR_EFFECTIVENESS", 0.75]);
 			getAllHitPointsDamage _aircraft params ["_names", "_selections", "_damage"];
 			
 			for [{_i = 0},{_i < count _damage},{_i = _i + 1}] do {
 				if ( ( _damage select _i ) > 0 ) then {
-					[_aircraft, [_names select _i, 0.5 min (_damage select _i)]] remoteExec ["setHitPointDamage", _aircraft];
+					[_aircraft, [_names select _i, _repairTo min (_damage select _i)]] remoteExec ["setHitPointDamage", _aircraft];
 				};
 			};
+			
+			[effectiveCommander _aircraft, "Maintenance is finished, all critical systems operational."] remoteExec ["vehicleChat", 0];
 		};
 		
 		/* Getting replacement crew */
@@ -148,11 +152,6 @@ else
 				_class createUnit [_respawn_at, _group, "", random 1, "PRIVATE"];
 				_newMan = units _group select ( units _group findIf { vehicle _x != _aircraft } );
 				
-				/*
-					This command attempts to move the given crew member out before deleting it. Made especially for deleting dead crew members, as using conventional deleteVehicle leads to all sorts of bugs and ghost objects. While the argument is global, you should take extra steps and execute this where vehicle is local as moving units out of the vehicle happens where vehicle is local and you want this to always precede deletion.
-				*/
-				_dead_unit remoteExec ["deleteVehicleCrew", _aircraft];
-				
 				switch ( _role select 0 ) do {
 					case "Turret": { _newMan assignAsTurret [_aircraft, _role select 1]; };
 					case "Driver": { _newMan assignAsDriver _aircraft; };
@@ -179,6 +178,8 @@ else
 						default {}
 					};
 				};
+				
+				_dead_unit remoteExec ["deleteVehicle", _dead_unit];
 				
 				sleep 2;
 			};

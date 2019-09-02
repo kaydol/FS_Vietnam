@@ -349,7 +349,7 @@ class CfgVehicles
 		icon = "\a3\Missions_F_Curator\data\img\iconMPTypeSectorControl_ca.paa";
 		portrait = "\a3\Missions_F_Curator\data\img\portraitMPTypeSectorControl_ca.paa";
 		scope = 2;
-		displayName = "Air Base";
+		displayName = "Helicopter Air Base";
 		function = "FS_fnc_ModuleCreateAirBase";
 		class ModuleDescription : ModuleDescription {
 			description = "This module is required for Vietnam helicopter crews.";
@@ -840,6 +840,42 @@ class CfgVehicles
 			};
 		};
 	};
+	
+	class FS_MaintenanceSettings_Module : FS_Vietnam_Module {
+		_generalMacro = "FS_MaintenanceSettings_Module";
+		scope = 2;
+		isGlobal = 2; // Persistent global execution
+		displayName = "Helicopter Maintenance Settings";
+		function = "FS_fnc_ModuleMaintenanceSettings";
+		class ModuleDescription : ModuleDescription {
+			description = "This module configures helicopter maintenance settings.";
+			sync[] = {};
+		};
+		class Attributes : AttributesBase {
+			class RefuelAt : Edit {
+				property = "RefuelAt";
+				displayName = "Refuel at";
+				tooltip = "The pilot will abandon station if he has less fuel than this value.";
+				typeName = "NUMBER";
+				defaultValue = 0.2;
+			};
+			class RepairAt : Edit {
+				property = "RepairAt";
+				displayName = "Repair at";
+				tooltip = "How badly the helicopter should be damaged in order for the pilot to abandon station.";
+				typeName = "NUMBER";
+				defaultValue = 0.5;
+			};
+			class RepairEffectiveness : Edit {
+				property = "RepairEffectiveness";
+				displayName = "The effectiveness of repairings";
+				tooltip = "How well the helicopters are repaired when receiving maintenance. Maximum value - 1 (fully repaired), minimum value - the value of 'Repair at', otherwise you will be stuck in an infinite loop!";
+				typeName = "NUMBER";
+				defaultValue = 0.75;
+			};
+			
+		};
+	};
 };
 
 
@@ -965,6 +1001,7 @@ class CfgFunctions
 			class ModuleNapalmCAS {file = "\FS_Vietnam\Functions\Modules\ModuleNapalmCAS.sqf";};
 			class ModuleJukebox {file = "\FS_Vietnam\Functions\Modules\ModuleJukebox.sqf";};
 			class JukeboxPlayMusic {file = "\FS_Vietnam\Functions\Modules\JukeboxPlayMusic.sqf";};
+			class ModuleMaintenanceSettings {file = "\FS_Vietnam\Functions\Modules\ModuleMaintenanceSettings.sqf";};
 		};
 	};
 	
