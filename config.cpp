@@ -611,12 +611,12 @@ class CfgVehicles
 				typeName = "BOOL";
 				defaultValue = "true";
 			};
-			class RemoveTraps : Checkbox {
-				property = "removeTraps";
-				displayName = "Remove far traps";
+			class TrapsRemovalDistance : Edit {
+				property = "trapsRemovalDistance";
+				displayName = "Traps removal distance";
 				tooltip = "Remove traps that are too far from any of the players.";
-				typeName = "BOOL";
-				defaultValue = "true"; 
+				typeName = "NUMBER";
+				defaultValue = 300; 
 			};
 			class TrapsThreshold : Edit {
 				property = "trapsThreshold";
@@ -625,9 +625,9 @@ class CfgVehicles
 				typeName = "NUMBER";
 				defaultValue = 40;
 			};
-			class RemoveGooks : Edit {
-				property = "removeGooks";
-				displayName = "Remove Gooks further than";
+			class GookRemovalDistance : Edit {
+				property = "gookRemovalDistance";
+				displayName = "Gook removal distance";
 				tooltip = "Gooks that are too far from any of the players will be mercilessly deleted. Use -1 to disable threshold.";
 				typeName = "NUMBER";
 				defaultValue = 300;
