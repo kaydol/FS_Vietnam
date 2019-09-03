@@ -21,7 +21,7 @@ _unit playActionNow "PutDown";
 _choice = selectRandom (_tripwires + _punjis);
 
 
-_id = _unit addEventHandler ["Fired", { _this call FS_fnc_PunjiPutEH; }];
+_id = _unit addEventHandler ["Fired", { _this call FS_fnc_PunjiPutEventHandler; }];
 
 _unit setVariable ["PunjiPutEventHandler", _id];
 
