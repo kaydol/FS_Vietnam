@@ -6,7 +6,6 @@ private _refuelAt = missionNameSpace getVariable ["MAINTENANCE_REFUEL_AT", 0.2];
 /* Ammo check */
 private _noAmmo = { _x # 2 != 0} count (magazinesAllTurrets _aircraft) == 0;
 
-	
 /* Damage check*/
 getAllHitPointsDamage _aircraft params ["_hitParts", "_selections", "_damage"];
 

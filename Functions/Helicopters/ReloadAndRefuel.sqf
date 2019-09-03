@@ -34,6 +34,11 @@ if ( _bases isEqualTo [] && _hasDead ) then {
 	_bases = FS_REFUELRELOAD_BASES;
 };
 
+/* If we just want to land for the night */
+if ( !_hasDead && !_needsMaintenance ) then {
+	_bases = FS_REFUELRELOAD_BASES + FS_REINFORCEMENT_BASES;
+};
+
 /* Select the closest base */
 
 _distance = 999999999999;
@@ -58,7 +63,9 @@ forEach _bases;
 if ( _closest_base isEqualTo objNull ) then 
 {
 	// No airports defined in the editor
-	diag_log "Pilot: No places to refuel & reload at";
+	if ( _debug ) then {
+		diag_log "Pilot: No places to refuel & reload at";
+	};
 	// TODO make the helicopter fly off the map and then get deleted
 }
 else
@@ -90,9 +97,52 @@ else
 	_aircraft setVariable ["reached_the_area", False];
 	_NewWP setWaypointStatements ["true", "vehicle this land 'LAND'; deleteWaypoint [group this, currentWaypoint (group this)]"];
 	
+	// A short godmode to negate hard landings performed by AI 
+	private _softLanding = _aircraft spawn 
+	{
+		private _softLandingEnabled = missionNamespace getVariable ["MAINTENANCE_AI_SOFT_LANDING", true];
+		if !(_softLandingEnabled) exitWith {};
+	
+		waitUntil {
+			sleep 1;
+			if (_this call FS_fnc_IsScrambleNeeded) exitWith { true };
+			private _height = (getPos _this) # 2;
+			_height < 20
+		};
+		
+		// Unfortunately currentPilot is only available in A3 1.95 dev brunch as of now
+		// In the current state the players can abuse the system by taking controls as copilot 
+		// and then slamming the helicopter into the ground, enjoying godmode :[
+		//if !(isPlayer (currentPilot _this)) then 
+		
+		// Only provide soft landings for AI controlled pilots
+		if !(isPlayer (driver _this)) then 
+		{
+			if !(_this call FS_fnc_IsScrambleNeeded) then {
+				[_this, false] remoteExec ["allowDamage", _this];
+				systemChat "GODMODE ON";
+			};
+			
+			sleep 10; // 10 sec of god mode
+			
+			if !(_this call FS_fnc_IsScrambleNeeded) then {
+				[_this, true] remoteExec ["allowDamage", _aircraft];
+				systemChat "GODMODE OFF";
+			};
+		};
+	};
 	
 	while {((getPos _aircraft select 2) > 1 || _aircraft distance _pos > 200 || !(unitReady _aircraft)) && !(_aircraft call FS_fnc_IsScrambleNeeded)} do {
 		sleep 1;
+	};
+	
+	// Terminating soft landing script if it hasn't finished
+	if !( scriptDone _softLanding ) then {
+		systemchat "SOFTLANDING IS NOT DONE, TERMINATING BY FORCE";
+		terminate _softLanding;
+		if !(_aircraft call FS_fnc_IsScrambleNeeded) then {
+			[_aircraft, false] remoteExec ["allowDamage", _aircraft];
+		};
 	};
 	
 	if !( _aircraft call FS_fnc_IsScrambleNeeded ) then 
@@ -190,8 +240,16 @@ else
 			sleep 4;
 		};
 		
+		/* Waiting for daytime */
+		if ( !_hasDead && !_needsMaintenance ) then {
+			if ( _debug ) then {
+				diag_log "Pilot: Landed for the night"
+			};
+			waitUntil { sleep 5; _aircraft call FS_fnc_IsScrambleNeeded || call FS_fnc_IsEnoughDaylight };
+		};
+		if (_aircraft call FS_fnc_IsScrambleNeeded) exitWith {};
+		
 		_aircraft engineOn True;
-
 	} 
 	else 
 	{

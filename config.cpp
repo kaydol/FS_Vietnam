@@ -476,6 +476,13 @@ class CfgVehicles
 				typeName = "NUMBER";
 				defaultValue = 150;
 			};
+			class AmbientRadio : Checkbox {
+				property = "AmbientRadio";
+				displayName = "Enable Unsung ambient radio";
+				tooltip = "Uses The Unsung Vietnam War addon's functions to add an ambient radio playback to the synced helicopters.";
+				typeName = "BOOL";
+				defaultValue = "false";
+			};
 			class Debug : Checkbox {
 				property = "debug";
 				displayName = "Debug";
@@ -923,6 +930,13 @@ class CfgVehicles
 			sync[] = {};
 		};
 		class Attributes : AttributesBase {
+			class HealAt : Edit {
+				property = "HealAt";
+				displayName = "Max crew damage";
+				tooltip = "How badly one of the crew mates has to be wounded in order for the pilot to abandon the station and try to get medical help on the air base that provides medical help.";
+				typeName = "NUMBER";
+				defaultValue = 0.35;
+			};
 			class RefuelAt : Edit {
 				property = "RefuelAt";
 				displayName = "Refuel at";
@@ -943,6 +957,13 @@ class CfgVehicles
 				tooltip = "How well the helicopters are repaired when receiving maintenance. Maximum value - 1 (fully repaired), minimum value - the value of 'Repair at', otherwise you will be stuck in an infinite loop!";
 				typeName = "NUMBER";
 				defaultValue = 0.75;
+			};
+			class AISoftLanding : Checkbox {
+				property = "AISoftLanding";
+				displayName = "Soft landing for AI";
+				tooltip = "AI pilots tend to slam their helicopters into the ground, damaging it in the process. Enabling this will give them a short god mode for several seconds or until they landed.";
+				typeName = "BOOL";
+				defaultValue = "true";
 			};
 			
 		};
@@ -1000,6 +1021,7 @@ class CfgFunctions
 			class ReloadAndRefuel {file = "\FS_Vietnam\Functions\Helicopters\ReloadAndRefuel.sqf";};
 			class Scramble {file = "\FS_Vietnam\Functions\Helicopters\Scramble.sqf";};
 			class ValidateTarget {file = "\FS_Vietnam\Functions\Helicopters\ValidateTarget.sqf";};
+			class IsEnoughDaylight {file = "\FS_Vietnam\Functions\Helicopters\IsEnoughDaylight.sqf";};
 		};
 		
 		class Support {

@@ -36,6 +36,7 @@ item31[] = {"Fire_tasks_assigned",4,218,156.878906,-14.807800,246.878906,35.1922
 item32[] = {"",7,210,-90.073860,61.206451,-82.073845,69.206459,0.000000,""};
 item33[] = {"Target_changed_",4,218,399.435883,-227.390289,489.435883,-177.390289,2.000000,"Target" \n "changed?"};
 item34[] = {"",7,210,226.005341,-358.969177,234.005341,-350.969177,0.000000,""};
+item35[] = {"",7,210,-13.223938,-336.654541,-5.223938,-328.654541,0.000000,""};
 link0[] = {0,18};
 link1[] = {1,17};
 link2[] = {2,27};
@@ -58,33 +59,35 @@ link18[] = {12,13};
 link19[] = {13,11};
 link20[] = {14,2};
 link21[] = {14,3};
-link22[] = {15,14};
-link23[] = {16,28};
-link24[] = {17,23};
-link25[] = {18,27};
-link26[] = {19,20};
-link27[] = {19,31};
-link28[] = {20,6};
-link29[] = {21,10};
-link30[] = {21,24};
-link31[] = {22,10};
-link32[] = {22,29};
-link33[] = {23,15};
-link34[] = {24,22};
-link35[] = {25,8};
-link36[] = {26,19};
-link37[] = {27,7};
-link38[] = {27,10};
-link39[] = {27,29};
-link40[] = {28,30};
-link41[] = {29,6};
-link42[] = {30,32};
-link43[] = {31,21};
-link44[] = {32,14};
-link45[] = {33,34};
-link46[] = {34,27};
-globals[] = {0.000000,0,0,0,0,640,480,1,62,6316128,1,-262.321838,904.068909,117.372711,-559.508545,996,578,1};
-window[] = {0,-1,-1,-1,-1,854,104,1496,104,1,1014};
+link22[] = {14,35};
+link23[] = {15,14};
+link24[] = {16,28};
+link25[] = {17,23};
+link26[] = {18,27};
+link27[] = {19,20};
+link28[] = {19,31};
+link29[] = {20,6};
+link30[] = {21,10};
+link31[] = {21,24};
+link32[] = {22,10};
+link33[] = {22,29};
+link34[] = {23,15};
+link35[] = {24,22};
+link36[] = {25,8};
+link37[] = {26,19};
+link38[] = {27,7};
+link39[] = {27,10};
+link40[] = {27,29};
+link41[] = {28,30};
+link42[] = {29,6};
+link43[] = {30,32};
+link44[] = {31,21};
+link45[] = {32,14};
+link46[] = {33,34};
+link47[] = {34,27};
+link48[] = {35,7};
+globals[] = {0.000000,0,0,0,0,640,480,1,63,6316128,1,-290.700928,852.092957,131.274750,-531.912476,996,578,1};
+window[] = {0,-1,-1,-1,-1,848,248,1640,98,1,1014};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -233,7 +236,12 @@ class FSM
                         name = "Break_Station";
                         itemno = 8;
                         init = /*%FSM<STATEINIT""">*/"_breakStation = [_aircraft, _debug] spawn FS_fnc_ReloadAndRefuel;" \n
-                         "_aircraft setVariable [""reached_the_area"", false];"/*%FSM</STATEINIT""">*/;
+                         "_aircraft setVariable [""reached_the_area"", false];" \n
+                         "" \n
+                         "if (_debug) then {" \n
+                         "	[_aircraft, _debug] call FS_fnc_isMaintenanceNeeded;" \n
+                         "	diag_log ""Loach: Reload & Refuel"";" \n
+                         "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -317,6 +325,17 @@ class FSM
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
+                                /*%FSM<LINK "Have_to_break_station">*/
+                                class Have_to_break_station
+                                {
+                                        itemno = 7;
+                                        priority = 4.000000;
+                                        to="Break_Station";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!(_aircraft call FS_fnc_CanPerformDuties)"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
                                 /*%FSM<LINK "Is_target_still">*/
                                 class Is_target_still
                                 {
