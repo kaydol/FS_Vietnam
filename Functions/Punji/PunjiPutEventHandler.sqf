@@ -4,6 +4,7 @@ params ["_unit", "_weapon", "_muzzle", "_mode", "_ammo", "_magazine", "_projecti
 if ( _weapon == "Put" ) then 
 {
 	private _id = _unit getVariable "PunjiPutEventHandler";
+	
 	if !( isNil{ _id } ) then {
 		// Only remove this handler if it was stored in unit's namespace
 		_unit removeEventHandler ["Fired", _id]; 
@@ -12,8 +13,8 @@ if ( _weapon == "Put" ) then
 	
 	if ( isNil { FS_AllGookTraps }) then {
 		FS_AllGookTraps = [];
-		publicVariable "FS_AllGookTraps"; // *sigh*
 	};
+	
 	// TODO add isPlayer _unit to distinguish mines placed by player
 	if ( _muzzle == "uns_punj1_muzzle" ) then {
 		FS_AllGookTraps pushBack [_projectile, getPos _projectile, [vectorDir _projectile, vectorUP _projectile]]; 
@@ -22,4 +23,6 @@ if ( _weapon == "Put" ) then
 	};
 	
 	// For Garbage Collector && Punji Trap animations
+	publicVariable "FS_AllGookTraps"; // *sigh*
+	
 };
