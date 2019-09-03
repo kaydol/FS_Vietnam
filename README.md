@@ -29,9 +29,9 @@ This Arma 3 addon aims at recreating authentic helicopter scouting tactic used b
 * The default laggy Napalm bomb is replaced with a highly optimized Napalm with new sounds and visuals.
 
 ### To do
-* Cobra's AI (historically the OH-6 scout reported targets to the Cobra's gunner who sat there with a map, jotting down coordinates which he then sent to the HQ or artillery support provider)
-* Gook Manager upgrade (tracks movements of players and spawns ambushes and snipers on the trees along their way).
-* Ability to call-in artillery barrages for ground troops.
+- [ ] Cobra's AI (historically the OH-6 scout reported targets to the Cobra's gunner who sat there with a map, jotting down coordinates which he then sent to the HQ or artillery support provider)
+- [ ] Gook Manager upgrade (tracks movements of players and spawns ambushes and snipers on the trees along their way).
+- [ ] Ability to call-in artillery barrages for ground troops.
 
 ### Bugs
 - First fired punji trap does not always leave spikes. This is because for some reason the first exploded mine does not always spawn any clouds, and code that supposed to spawn a replacement model is ran inside particle's onTimerScript function, which wouldn't be called. First fired punji trap leaves an array of data in FS_AllGookTraps, e.g. [NULL-Object, _position, _orientation] which stays there without being removed.
