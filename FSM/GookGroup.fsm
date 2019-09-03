@@ -17,10 +17,10 @@ item12[] = {"Not_spotted",8,218,86.976738,-112.209297,176.976730,-62.209305,0.00
 item13[] = {"__2",-1,250,513.372070,-132.558151,513.372070,-130.813965,0.000000,""};
 item14[] = {"Has_target_",4,218,684.613464,-297.879242,774.613464,-247.879227,1.000000,"Has target?"};
 item15[] = {"Grab_them_by_the",2,250,1161.528687,-377.450317,1251.528687,-327.450409,0.000000,"Grab them" \n "by the belt"};
-item16[] = {"No_targets_Area",8,218,678.255981,-179.651138,768.255981,-129.651138,0.000000,"No targets" \n "Area clear"};
-item17[] = {"__3",2,250,788.139404,-168.023285,878.139404,-118.023277,0.000000,""};
+item16[] = {"No_targets",8,218,678.255981,-179.651138,768.255981,-129.651138,0.000000,"No targets"};
+item17[] = {"____Area_clear_",2,250,788.139404,-168.023285,878.139404,-118.023277,0.000000,":: Area clear ::"};
 item18[] = {"Is_daylight_",4,218,893.372192,-210.465088,983.372192,-160.465103,1.000000,"Is daylight?"};
-item19[] = {"Start_hugging_tr",2,250,1472.510620,-252.139801,1562.510742,-202.139771,0.000000,"Start hugging" \n "trees"};
+item19[] = {"Start_hugging_tr",2,250,1282.241455,-184.557861,1372.241577,-134.557831,0.000000,"Start hugging" \n "trees"};
 item20[] = {"Go_on_patrol",2,250,1004.562195,-126.568970,1094.562012,-76.568970,0.000000,"Go on patrol"};
 item21[] = {"It_s_dark",8,218,892.209167,-127.325607,982.209167,-77.325607,0.000000,"It's dark"};
 item22[] = {"_",8,218,1161.704346,-186.088058,1251.704346,-136.088028,0.000000,""};
@@ -34,10 +34,10 @@ item29[] = {"Target_not_reach",8,218,978.205627,-376.406311,1068.205811,-326.406
 item30[] = {"",7,210,380.174255,-437.862213,388.174255,-429.862213,0.000000,""};
 item31[] = {"Sleep",2,250,1161.707642,37.749557,1251.707764,87.749557,0.000000,"Sleep"};
 item32[] = {"Time_passed_",4,218,-12.823395,37.750458,77.176483,87.750458,0.000000,"Time" \n "passed?"};
-item33[] = {"__4",2,250,1019.162781,-283.353760,1109.162842,-233.353760,0.000000,""};
-item34[] = {"Current_place_is",4,218,1290.657959,-323.497009,1380.657959,-273.497009,1.000000,"Current place" \n "is not safe?"};
-item35[] = {"Place_Mines_if_p",2,250,1403.638672,-85.525055,1493.638672,-35.525055,0.000000,"Place Mines" \n "if possible"};
-item36[] = {"Current_place_is_1",8,218,1288.545166,-250.605286,1378.545166,-200.605270,0.000000,"Current" \n "place is safe"};
+item33[] = {"__3",2,250,1019.162781,-283.353760,1109.162842,-233.353760,0.000000,""};
+item34[] = {"Current_place_is",4,218,1282.340332,-261.113708,1372.340332,-211.113708,1.000000,"Current place" \n "is not safe?"};
+item35[] = {"Place_Mines_if_p",2,250,1525.285889,-186.378113,1615.285889,-136.378113,0.000000,"Place Mines" \n "if possible"};
+item36[] = {"Current_place_is_1",8,218,1287.505127,-332.743317,1377.505127,-282.743286,0.000000,"Current" \n "place is safe"};
 item37[] = {"Done_",4,218,1396.505493,37.883209,1486.505493,87.883209,1.000000,"Done?"};
 item38[] = {"Still_mining",8,218,1524.072998,-85.873840,1614.072998,-35.873840,0.000000,"Still mining"};
 item39[] = {"Sleep_1",2,250,1647.050781,-84.956146,1737.050781,-34.956146,0.000000,"Sleep"};
@@ -118,8 +118,8 @@ link47[] = {41,38};
 link48[] = {41,42};
 link49[] = {42,43};
 link50[] = {43,1};
-globals[] = {0.000000,0,0,0,0,640,480,1,56,6316128,1,-77.184265,1664.753174,392.264923,-515.026367,1127,587,1};
-window[] = {0,-1,-1,-1,-1,811,52,1620,52,1,1145};
+globals[] = {0.000000,0,0,0,0,640,480,1,56,6316128,1,741.482666,1913.249268,196.557129,-413.759918,1127,587,1};
+window[] = {0,-1,-1,-1,-1,915,156,1724,156,1,1145};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -311,8 +311,6 @@ class FSM
                         name = "____Targeting__";
                         itemno = 10;
                         init = /*%FSM<STATEINIT""">*/"" \n
-                         "_group setFormation ""VEE"";" \n
-                         "" \n
                          "if (_debug) then { " \n
                          "	diag_log ""GookGroup: Targeting""; " \n
                          "};" \n
@@ -387,10 +385,10 @@ class FSM
                         };
                 };
                 /*%FSM</STATE>*/
-                /*%FSM<STATE "__3">*/
-                class __3
+                /*%FSM<STATE "____Area_clear_">*/
+                class ____Area_clear_
                 {
-                        name = "__3";
+                        name = "____Area_clear_";
                         itemno = 17;
                         init = /*%FSM<STATEINIT""">*/"if (_debug) then { " \n
                          "	systemChat ""GookGroup: Area clear""; " \n
@@ -403,7 +401,7 @@ class FSM
                                 {
                                         itemno = 18;
                                         priority = 1.000000;
-                                        to="__4";
+                                        to="__3";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"dayTime > 6 && dayTime < 17.6"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -465,8 +463,6 @@ class FSM
                          "	_group move _rndSafeDest;" \n
                          "};" \n
                          "" \n
-                         "_group setFormation ""LINE"";" \n
-                         "" \n
                          "if (_debug) then { " \n
                          "	systemChat ""GookGroup: Go on patrol""; " \n
                          "};"/*%FSM</STATEINIT""">*/;
@@ -522,12 +518,12 @@ class FSM
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
-                                /*%FSM<LINK "No_targets_Area">*/
-                                class No_targets_Area
+                                /*%FSM<LINK "No_targets">*/
+                                class No_targets
                                 {
                                         itemno = 16;
                                         priority = 0.000000;
-                                        to="__3";
+                                        to="____Area_clear_";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -609,10 +605,10 @@ class FSM
                         };
                 };
                 /*%FSM</STATE>*/
-                /*%FSM<STATE "__4">*/
-                class __4
+                /*%FSM<STATE "__3">*/
+                class __3
                 {
-                        name = "__4";
+                        name = "__3";
                         itemno = 33;
                         init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
