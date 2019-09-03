@@ -1,5 +1,5 @@
 
-params [["_pos", [], [[]]], ["_target",[]], ["_groupSize", 5 + ceil random 6, [0]], ["_groupsCount", 1, [0]], ["_debug", false, [true]]];
+params [["_pos", [], [[]]], ["_target",[]], ["_groupSize", 5 + ceil random 6, [0]], ["_groupsCount", 1, [0]], ["_customClasses", [], [[]]], ["_debug", false, [true]]];
 
 /*
 	If The Unsung Vietnam War Mod is not enabled, try to substitute 
@@ -14,6 +14,7 @@ private _baseclass = "O_T_Soldier_F";
 private _TheUnsungVietnamWarModEnabled = isClass( ConfigFile >> "CfgPatches" >> "uns_men_NVA_daccong" );
 private _pools = [];
 private _pool = [];
+
 if ( _TheUnsungVietnamWarModEnabled ) then {
 	{
 		if (isClass (ConfigFile >> "CfgPatches" >> _x)) then {
@@ -22,7 +23,13 @@ if ( _TheUnsungVietnamWarModEnabled ) then {
 		};
 	}
 	forEach ["uns_men_NVA_daccong", "uns_men_NVA_65", "uns_men_NVA_68", "uns_men_VC_mainforce", "uns_men_VC_mainforce_68", "uns_men_VC_recon", "uns_men_VC_regional", "uns_men_VC_local"];
+	
 	_pool = selectRandom _pools;
+
+	if !( _customClasses isEqualTo [] ) then {
+		_pool = _customClasses;
+	};
+
 };
 
 private _side = EAST;
