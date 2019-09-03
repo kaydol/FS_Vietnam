@@ -229,28 +229,31 @@ class CfgAmmo
 		hit = 6;
 		indirectHit = 6;
 		indirectHitRange = 1;
-		mineInconspicuousness = 0.5;
+		mineInconspicuousness = 1000;
 	};
 	class uns_punji_small_ammo : uns_punji_ammo_base { //["APERSMine_Range_Ammo","MineBase","MineCore","TimeBombCore","Default"]
 		hit = 4;
 		indirectHit = 4;
 		indirectHitRange = 1;
+		mineInconspicuousness = 1000;
 	};
 	class uns_punji_large_ammo : uns_punji_small_ammo { 
 		hit = 7;
 		indirectHit = 5;
 		indirectHitRange = 2;
-		mineInconspicuousness = 0.8;
+		mineInconspicuousness = 1000;
 	};
 	class uns_punji_whip_ammo : uns_punji_small_ammo { 
 		hit = 7;
 		indirectHit = 1;
 		indirectHitRange = 1;
+		mineInconspicuousness = 1000;
 	};
 	class uns_punji_whip2_ammo : uns_punji_whip_ammo { 
 		hit = 4;
 		indirectHit = 1;
 		indirectHitRange = 1;
+		mineInconspicuousness = 1000;
 	};
 	
 	class uns_bombcore;
@@ -750,6 +753,74 @@ class CfgVehicles
 				typeName = "BOOL";
 				defaultValue = "false"; //true - 1, false - 0
 			};
+		};
+	};
+	
+	class FS_ArtyStrike_Module : FS_Vietnam_Module {
+		_generalMacro = "FS_ArtyStrike_Module";
+		scope = 2;
+		scopeCurator = 0;
+		isGlobal = 1;
+		isTriggerActivated = 1;
+		icon = "\a3\Modules_F_Curator\Data\iconOrdnance_ca.paa";
+		portrait = "\a3\Modules_F_Curator\Data\portraitOrdnance_ca.paa";
+		curatorCost = 5;
+		displayName = "Artillery Strike";
+		function = "FS_fnc_ModuleArtyStrike";
+		class ModuleDescription : ModuleDescription {
+			description = "";
+			sync[] = {};
+		};
+		class Attributes : AttributesBase {
+			class Type : Combo {
+				property = "Type";
+				displayName = "Type";
+				tooltip = "";
+				typeName = "STRING";
+				class values
+				{
+					class Sh_82mm_AMOS {
+						name = "82mm AMOS";
+						value = "Sh_82mm_AMOS";
+						default = 1;
+					};
+				};
+			};
+			class Salvos : Edit {
+				property = "Salvos";
+				displayName = "Salvos";
+				tooltip = "";
+				typeName = "NUMBER";
+				defaultValue = 5;
+			};
+			class Radius : Edit {
+				property = "Radius";
+				displayName = "Radius";
+				tooltip = "";
+				typeName = "NUMBER";
+				defaultValue = 30;
+			};
+			class Height : Edit {
+				property = "Height";
+				displayName = "Height";
+				tooltip = "";
+				typeName = "NUMBER";
+				defaultValue = 150;
+			};
+			class InitDelay : Edit {
+				property = "InitDelay";
+				displayName = "Delay before first round";
+				tooltip = "";
+				typeName = "NUMBER";
+				defaultValue = 0;
+			};
+			class Debug : Checkbox {
+				property = "Debug";
+				displayName = "Debug";
+				tooltip = "";
+				typeName = "BOOL";
+				defaultValue = "false"; //true - 1, false - 0
+			};
 			
 		};
 		
@@ -933,16 +1004,13 @@ class CfgFunctions
 		
 		class Support {
 			class DropMines {file = "\FS_Vietnam\Effects\Artillery\DropMines.sqf";};
+			class FallingDirt {file = "\FS_Vietnam\Effects\Artillery\FallingDirt.sqf";};
 			class DropNapalm {file = "\FS_Vietnam\Effects\Napalm\DropNapalm.sqf";};
-		};
-		
-		class Napalm {
 			class NapalmBurnedAlive {file = "\FS_Vietnam\Effects\Napalm\NapalmBurnedAlive.sqf";};
 			class NapalmPuffAndSparks {file = "\FS_Vietnam\Effects\Napalm\NapalmPuffAndSparks.sqf";};
 			class NapalmPhosphorusStrands {file = "\FS_Vietnam\Effects\Napalm\NapalmPhosphorusStrands.sqf";};
 			class NapalmAfterEffect {file = "\FS_Vietnam\Effects\Napalm\NapalmAfterEffect.sqf";};
 			class NapalmCreateExplosion {file = "\FS_Vietnam\Effects\Napalm\NapalmCreateExplosion.sqf";};
-			
 		};
 		
 		class Punji {
@@ -1002,6 +1070,7 @@ class CfgFunctions
 			class ModuleJukebox {file = "\FS_Vietnam\Functions\Modules\ModuleJukebox.sqf";};
 			class JukeboxPlayMusic {file = "\FS_Vietnam\Functions\Modules\JukeboxPlayMusic.sqf";};
 			class ModuleMaintenanceSettings {file = "\FS_Vietnam\Functions\Modules\ModuleMaintenanceSettings.sqf";};
+			class ModuleArtyStrike {file = "\FS_Vietnam\Functions\Modules\ModuleArtyStrike.sqf";};
 		};
 	};
 	

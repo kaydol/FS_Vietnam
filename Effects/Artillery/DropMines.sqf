@@ -18,64 +18,68 @@ Author:
     kaydol
 ---------------------------------------------------------------------------- */
 
+#define INCOMING_SHELL_SOUNDS ["incoming_1", "incoming_2", "incoming_3", "incoming_4", "incoming_5", "incoming_6", "incoming_7", "incoming_8", "incoming_9", "incoming_10", "incoming_11", "incoming_12", "incoming_13"]
 
-params ["_pos", ["_salvos", 5], ["_radius", 25 + random 25], ["_type", "Sh_82mm_AMOS"], ["_height", 150], ["_initDelay", 0], ["_debug", false]];
+params ["_posOrObject", ["_salvos", 5], ["_radius", 25 + random 25], ["_type", "Sh_82mm_AMOS"], ["_height", 150], ["_initDelay", 0], ["_debug", false]];
 
 sleep _initDelay;
 
 private ["_i"];
 private _markers = [];
-private _soundEmitters = [];
 
 for "_i" from 1 to _salvos do 
 {
-	for [{_j = 0},{_j < 6},{_j = _j + 1}] do {
+	for [{_j = 0},{_j < 6},{_j = _j + 1}] do 
+	{
+		private _position = if ( _posOrObject isEqualType objNull ) then [{ getPos _posOrObject }, { _posOrObject }];
 		
-		private _emitter = "#particlesource" createVehicle [_pos # 0, _pos # 1, 50];
-		private _incomingShell = ["incoming_1", "incoming_2", "incoming_3", "incoming_4", "incoming_5", "incoming_6", "incoming_7", "incoming_8", "incoming_9", "incoming_10", "incoming_11", "incoming_12", "incoming_13"] call BIS_fnc_SelectRandom;
-		[_emitter, [_incomingShell, 800]] remoteExec ["say3D", 0];
-		_soundEmitters pushBack _emitter;
+		if ( _position isEqualTo [0,0,0] ) exitWith {}; // object became null 
+		
+		[_position, {
+			if !(hasInterface) exitWith {};
+			playSound3D [format ["FS_Vietnam\Effects\Artillery\Sound\%1.ogg", selectRandom INCOMING_SHELL_SOUNDS], nil, false, ATLToASL [_this # 0, _this # 1, 50], 10, 1.5, 800];
+		}]
+		remoteExec ["call", 0];
 		
 		sleep (0.3 + random 2);
 		
 		private _x = _radius - random(_radius*2); 
 		private _y = _radius - random(_radius*2); 
 			
-		private _mine = _type createVehicle [(_pos select 0) + _x, (_pos select 1) + _y, _height];  
-		_mine setPos [(_pos select 0) + _x, (_pos select 1) + _y, _height];
+		private _mine = _type createVehicle [(_position select 0) + _x, (_position select 1) + _y, _height];
+		
+		_mine setPos [(_position select 0) + _x, (_position select 1) + _y, _height];
 		
 		private _pos1 = getPos _mine;
-		private _pos2 = _pos getPos [random _radius, random 360];
+		private _pos2 = _position getPos [random _radius, random 360];
 		private _velocity = [(_pos2 select 0) - (_pos1 select 0), (_pos2 select 1) - (_pos1 select 1), (_pos2 select 2) - (_pos1 select 2)];
 		
 		_mine setVelocity _velocity;
 		
 		if ( _debug ) then {
-			private _mark = createMarker [format ["%1",random 10000], [(_pos select 0) + _x, (_pos select 1) + _y]];
-			_mark setMarkerType "hd_destroy";
+			private _mark = createMarker [format ["%1",random 10000], [(_position select 0) + _x, (_position select 1) + _y]];
+			_mark setMarkerType "mil_dot";
+			_mark setMarkerColor "ColorRed";
 			_markers pushBack _mark;
 		};
 		
-		[_mine, _soundEmitters, _pos2] spawn {
-			params ["_mine", "_soundEmitters", "_pos"];
+		[_mine, _pos2] spawn 
+		{
+			params ["_mine", "_position"];
+			
 			waitUntil {!alive _mine};
-			private _emitter = "#particlesource" createVehicle _pos;
-			private _rumbling = ["dirt_1", "dirt_2", "dirt_3", "dirt_4", "dirt_5", "dirt_6", "dirt_7"] call BIS_fnc_SelectRandom;
-			[_emitter, [_rumbling, 800]] remoteExec ["say3D", 0];
-			_soundEmitters pushBack _emitter;
-			{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_pos,["bush"],10]);
+			
+			[_position] remoteExec ["FS_fnc_FallingDirt", 0];
+			
+			{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_position,["bush"],10]);
 		};
 		
 	};
-	
-	
 	
 	sleep 6;
 };
 
 sleep 6;
-
-{ deleteVehicle _x } forEach _soundEmitters;
 
 if ( _debug ) then {
 	// gradually increase transparency
