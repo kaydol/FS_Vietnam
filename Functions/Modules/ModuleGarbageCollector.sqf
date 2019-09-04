@@ -15,7 +15,7 @@ while { true } do
 	// 	Remove dead bodies	//
 	//----------------------//
 	
-	if ( _removeDead ) then
+	if ( _removeDead >= 0 ) then
 	{
 		{
 			if !(isNull _x) then 
@@ -24,14 +24,18 @@ while { true } do
 				_allPlayers = call BIS_fnc_listPlayers;
 				_distances = _allPlayers apply { _x distance _body };
 				
+				// Do not remove shot down helicopters
+				if (_body isKindOf "AIR") exitWith {};
+				
 				/* Do not remove bodies that are too close to the players */
-				if ( selectMin _distances > 10 ) then {
+				if ( selectMin _distances > _removeDead ) then {
 					deleteVehicle _body;
 				};
 				
 				sleep (1 + random 2);
 			};
-		} forEach AllDead;
+		} 
+		forEach AllDead;
 	};
 	
 	
@@ -44,7 +48,7 @@ while { true } do
 	// 	First remove traps that are too far from players	//
 	//------------------------------------------------------//
 	
-	if ( _trapsRemovalDistance > 0 ) then {
+	if ( _trapsRemovalDistance >= 0 ) then {
 		{
 			_x params ["_mine", "_posAGL", "_orientation"];
 			
