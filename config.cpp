@@ -479,7 +479,7 @@ class CfgVehicles
 			class AmbientRadio : Checkbox {
 				property = "AmbientRadio";
 				displayName = "Enable Unsung ambient radio";
-				tooltip = "Uses The Unsung Vietnam War addon's functions to add an ambient radio playback to the synced helicopters.";
+				tooltip = "Uses The Unsung Vietnam War addon's functions to add an ambient radio playback to synced helicopters.";
 				typeName = "BOOL";
 				defaultValue = "false";
 			};
@@ -611,17 +611,17 @@ class CfgVehicles
 			sync[] = {};
 		};
 		class Attributes : AttributesBase {
-			class RemoveDead : Checkbox {
+			class RemoveDead : Edit {
 				property = "removeDead";
-				displayName = "Remove dead";
-				tooltip = "Enable to eventually remove dead bodies from the world. Disable to leave them be.";
-				typeName = "BOOL";
-				defaultValue = "true";
+				displayName = "Dead bodies removal distance";
+				tooltip = "Minimum distance between players and dead bodies in order for the latter to be removed. Use -1 to disable.";
+				typeName = "NUMBER";
+				defaultValue = 30;
 			};
 			class TrapsRemovalDistance : Edit {
 				property = "trapsRemovalDistance";
 				displayName = "Traps removal distance";
-				tooltip = "Remove traps that are too far from any of the players.";
+				tooltip = "Remove traps that are too far from any of the players. Use -1 to disable traps removal.";
 				typeName = "NUMBER";
 				defaultValue = 300; 
 			};
@@ -635,7 +635,7 @@ class CfgVehicles
 			class GookRemovalDistance : Edit {
 				property = "gookRemovalDistance";
 				displayName = "Gook removal distance";
-				tooltip = "Gooks that are too far from any of the players will be mercilessly deleted. Use -1 to disable threshold.";
+				tooltip = "Gooks that are too far from any of the players will be mercilessly deleted. Use -1 to disable gook removal.";
 				typeName = "NUMBER";
 				defaultValue = 300;
 			};
@@ -961,7 +961,7 @@ class CfgVehicles
 			class AISoftLanding : Checkbox {
 				property = "AISoftLanding";
 				displayName = "Soft landing for AI";
-				tooltip = "AI pilots tend to slam their helicopters into the ground, damaging it in the process. Enabling this will give them a short god mode for several seconds or until they landed.";
+				tooltip = "AI pilots tend to slam their helicopters into the ground, damaging it in the process. Enabling this will give them a short god mode for several seconds during landing and until they landed.";
 				typeName = "BOOL";
 				defaultValue = "true";
 			};
@@ -1022,6 +1022,7 @@ class CfgFunctions
 			class Scramble {file = "\FS_Vietnam\Functions\Helicopters\Scramble.sqf";};
 			class ValidateTarget {file = "\FS_Vietnam\Functions\Helicopters\ValidateTarget.sqf";};
 			class IsEnoughDaylight {file = "\FS_Vietnam\Functions\Helicopters\IsEnoughDaylight.sqf";};
+			class SurvivedPilots {file = "\FS_Vietnam\Functions\Helicopters\SurvivedPilots.sqf";};
 		};
 		
 		class Support {
