@@ -120,14 +120,14 @@ else
 		{
 			if !(_this call FS_fnc_IsScrambleNeeded) then {
 				[_this, false] remoteExec ["allowDamage", _this];
-				systemChat "GODMODE ON";
+				//systemChat "GODMODE ON";
 			};
 			
 			sleep 10; // 10 sec of god mode
 			
 			if !(_this call FS_fnc_IsScrambleNeeded) then {
 				[_this, true] remoteExec ["allowDamage", _aircraft];
-				systemChat "GODMODE OFF";
+				//systemChat "GODMODE OFF";
 			};
 		};
 	};
@@ -138,7 +138,7 @@ else
 	
 	// Terminating soft landing script if it hasn't finished
 	if !( scriptDone _softLanding ) then {
-		systemchat "SOFTLANDING IS NOT DONE, TERMINATING BY FORCE";
+		//systemchat "SOFTLANDING IS NOT DONE, TERMINATING BY FORCE";
 		terminate _softLanding;
 		if !(_aircraft call FS_fnc_IsScrambleNeeded) then {
 			[_aircraft, false] remoteExec ["allowDamage", _aircraft];
