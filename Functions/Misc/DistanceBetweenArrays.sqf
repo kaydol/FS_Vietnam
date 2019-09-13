@@ -27,7 +27,7 @@ Author:
 
 //diag_log format ["FS_fnc_DistanceBetweenArrays Input: %1", _this];
 
-params [["_array1", []], ["_array2", []], ["_verbose", False, [True]]];
+params [["_array1", []], ["_array2", []], ["_verbose", false, [true]], ["_distance2D", false, [true]]];
 
 _closestFromArray1 = objNull;
 _closestFromArray2 = objNull;
@@ -42,7 +42,7 @@ if (count _array1 > 0 && count _array2 > 0) then
 		_elem = _x;
 		_temp = _forEachIndex;
 		{
-			_dist = _elem distance _x;
+			_dist = if (_distance2D) then [{_elem distance2D _x},{_elem distance _x}];
 			if ( _dist <= _minDistance ) then {
 				_minDistance = _dist; 
 				if ( _verbose ) then {
