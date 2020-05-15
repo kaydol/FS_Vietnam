@@ -110,13 +110,8 @@ else
 			_height < 20
 		};
 		
-		// Unfortunately currentPilot is only available in A3 1.95 dev brunch as of now
-		// In the current state the players can abuse the system by taking controls as copilot 
-		// and then slamming the helicopter into the ground, enjoying godmode :[
-		//if !(isPlayer (currentPilot _this)) then 
-		
 		// Only provide soft landings for AI controlled pilots
-		if !(isPlayer (driver _this)) then 
+		if !(isPlayer (currentPilot _this)) then 
 		{
 			if !(_this call FS_fnc_IsScrambleNeeded) then {
 				[_this, false] remoteExec ["allowDamage", _this];
@@ -126,7 +121,7 @@ else
 			sleep 10; // 10 sec of god mode
 			
 			if !(_this call FS_fnc_IsScrambleNeeded) then {
-				[_this, true] remoteExec ["allowDamage", _aircraft];
+				[_this, true] remoteExec ["allowDamage", _this];
 				//systemChat "GODMODE OFF";
 			};
 		};
