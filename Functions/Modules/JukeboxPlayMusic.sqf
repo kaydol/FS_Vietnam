@@ -15,17 +15,21 @@ private _newTrack = selectRandomWeighted _poolWeighted;
 private _newTrackID = _poolWeighted findIf { _x isEqualTo _newTrack };
 
 /* 3) Increase all the weights by the increment */
-_poolWeighted = _poolWeighted apply {
-	if ( _x isEqualType 0 ) then {
-		_x = _x + 1.0 / ((count _poolWeighted - 2) / 2);
-		_w = [_x, 1.0] select (_x > 1.0);
-		_x = _w;
+if (count _poolWeighted == 2) then { // do nothing if there is only 1 track in the pool
+	_poolWeighted = _poolWeighted apply {
+		if ( _x isEqualType 0 ) then {
+			_x = _x + 1.0 / ((count _poolWeighted - 2) / 2);
+			_w = [_x, 1.0] select (_x > 1.0);
+			_x = _w;
+		};
+		_x
 	};
-	_x
 };
 
 /* 4) Set the weight of the currently selected track to be 0 */
-_poolWeighted set [_newTrackID + 1, 0];
+if (count _poolWeighted == 2) then { // do nothing if there is only 1 track in the pool
+	_poolWeighted set [_newTrackID + 1, 0];
+};
 
 /* 5) Store the track pool in the Logic namespace */
 _logic setVariable ["TrackPool", _poolWeighted];
