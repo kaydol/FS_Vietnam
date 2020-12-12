@@ -65,7 +65,8 @@ if !( _pool isEqualTypeAll "" ) exitWith {
 
 /* This check fires if one or more tracks don't exist in the CfgMusic */
 {
-	if !(isClass (configFile >> "CfgMusic" >> _x)) then {
+	if (!isClass (configFile >> "CfgMusic" >> _x) && 
+		!isClass (missionConfigFile >> "CfgMusic" >> _x)) then {
 		["CfgMusic does not contain '%1', missing addon or was it removed?", _x] call BIS_fnc_error;
 	};
 } 
