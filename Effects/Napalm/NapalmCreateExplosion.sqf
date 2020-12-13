@@ -14,6 +14,7 @@ if (isNil{ NAPALM_BOMB_RADIUS }) then
 	NAPALM_TICK_RATE = 2;
 	NAPALM_VICTIMS_SCREAM = true;
 	NAPALM_VICTIMS_SMOKE_TIME = 40;
+	NAPALM_SPAWN_CRATER = true;
 };
 
 private _anchor = "#particlesource" createVehicleLocal _pos; 
