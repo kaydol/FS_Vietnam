@@ -80,7 +80,9 @@ if ( isServer ) then
 				
 				{
 					[[_x, NAPALM_DAMAGE], {
-						(_this # 0) setDamage (( getDammage ( _this # 0 )) + ( _this # 1 ));  
+						if (isDamageAllowed _x) then {
+							(_this # 0) setDamage (( getDammage ( _this # 0 )) + ( _this # 1 ));  
+						};
 					}] remoteExec ["call", _x]
 				}
 				forEach _objects;
