@@ -26,19 +26,19 @@ if ( !_playLocally && !isServer ) exitWith {};
 
 if ( _aceEnabled && _DisableACEVolumeUpdate ) then 
 {
-	if ( !_playLocally ) then 
+	if ( _playLocally ) then 
 	{
+		[] spawn {
+			WaitUntil { sleep 1; !isNil{ ace_hearing_disableVolumeUpdate }};
+			ace_hearing_disableVolumeUpdate = false;
+		};
+	} 
+	else {
 		{
 			WaitUntil { sleep 1; !isNil{ ace_hearing_disableVolumeUpdate }};
 			ace_hearing_disableVolumeUpdate = false;
 		}
 		remoteExec ["spawn", 0, True];
-	} 
-	else {
-		[] spawn {
-			WaitUntil { sleep 1; !isNil{ ace_hearing_disableVolumeUpdate }};
-			ace_hearing_disableVolumeUpdate = false;
-		};
 	};
 };
 

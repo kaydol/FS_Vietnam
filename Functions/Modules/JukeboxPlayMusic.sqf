@@ -15,7 +15,7 @@ private _newTrack = selectRandomWeighted _poolWeighted;
 private _newTrackID = _poolWeighted findIf { _x isEqualTo _newTrack };
 
 /* 3) Increase all the weights by the increment */
-if (count _poolWeighted == 2) then { // do nothing if there is only 1 track in the pool
+if (count _poolWeighted > 2) then { // do nothing if there is only 1 track in the pool
 	_poolWeighted = _poolWeighted apply {
 		if ( _x isEqualType 0 ) then {
 			_x = _x + 1.0 / ((count _poolWeighted - 2) / 2);
@@ -27,7 +27,7 @@ if (count _poolWeighted == 2) then { // do nothing if there is only 1 track in t
 };
 
 /* 4) Set the weight of the currently selected track to be 0 */
-if (count _poolWeighted == 2) then { // do nothing if there is only 1 track in the pool
+if (count _poolWeighted > 2) then { // do nothing if there is only 1 track in the pool
 	_poolWeighted set [_newTrackID + 1, 0];
 };
 
