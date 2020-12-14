@@ -16,6 +16,6 @@ _NewGrp = createGroup EAST;
 _unit = units _NewGrp select 0;
 _unit setPos _rndPos;
 
-[_unit] execFSM "TreeSniper.fsm"; 
+[_unit] execFSM "\FS_Vietnam\FSM\TreeSniper.fsm"; 
 
 
