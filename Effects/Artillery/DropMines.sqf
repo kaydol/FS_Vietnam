@@ -3,7 +3,7 @@ Function: FS_fnc_DropMines
 
 Description:
 	Causes mines to fall in the area. Each projectile has it's own unique trajectory.
-	Bombs fall at different angles from different directions and with different velocities.
+	Mines\bombs\shells fall at different angles from different directions and with different velocities.
 	
 Parameters:
     _this select 0 : center, format [x,y,z]
@@ -37,7 +37,7 @@ for "_i" from 1 to _salvos do
 		
 		[_position, {
 			if !(hasInterface) exitWith {};
-			playSound3D [format ["FS_Vietnam\Effects\Artillery\Sound\%1.ogg", selectRandom INCOMING_SHELL_SOUNDS], nil, false, ATLToASL [_this # 0, _this # 1, 50], 10, 1.5, 800];
+			playSound3D [format ["FS_Vietnam\Effects\Artillery\Sound\%1.ogg", selectRandom INCOMING_SHELL_SOUNDS], nil, false, ATLToASL [_this # 0, _this # 1, 50], 15, 1.5, 800];
 		}]
 		remoteExec ["call", 0];
 		
@@ -70,7 +70,6 @@ for "_i" from 1 to _salvos do
 			waitUntil {!alive _mine};
 			
 			[_position] remoteExec ["FS_fnc_FallingDirt", 0];
-			
 			{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_position,["bush"],10]);
 		};
 		

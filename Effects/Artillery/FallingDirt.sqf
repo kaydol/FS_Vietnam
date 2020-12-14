@@ -18,7 +18,7 @@ private _fnc_fadingEffect = {
 	deleteVehicle _emitter;
 };
 
-playSound3D [format ["FS_Vietnam\Effects\Artillery\Sound\%1.ogg", selectRandom FALLING_DIRT_SOUNDS], nil, false, ATLToASL [_explosionPos # 0, _explosionPos # 1, 50], 10, 1, 800];
+playSound3D [format ["FS_Vietnam\Effects\Artillery\Sound\%1.ogg", selectRandom FALLING_DIRT_SOUNDS], nil, false, ATLToASL [_explosionPos # 0, _explosionPos # 1, 50], 15, 1, 800];
 
 private _dirt = "#particlesource" createVehicleLocal getPos player;
 _dirt setParticleCircle [0, [0, 0, 0]];
