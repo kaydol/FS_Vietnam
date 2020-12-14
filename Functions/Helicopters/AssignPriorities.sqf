@@ -1,6 +1,10 @@
 
 params ["_side", "_clusters_centers", "_cluster_sizes", "_collection", "_membership", "_config", ["_debug", True]];
 
+if (_debug) then {
+	diag_log format ["AssignPriorities.sqf input: %1", _this];
+};
+
 _config params [["_overrunMultiplier", 0], ["_stationAlreadyTakenPenalty", 0], ["_distressPriority", 0]];
 // how much importance to add to a cluster if it's being overrun (more enemies than friendlies in the vicinity)
 // how much priority to subtract from a station that already has at least one other scout assigned to it
@@ -31,7 +35,7 @@ for [{_i = 0},{_i < count _collection},{_i = _i + 1}] do
 	
 	/* Finding the biggest estimated size of the enemy group around each cluster */
 	_enemiesAround = ( _obj getVariable ["KNOWN_ENEMIES_AROUND", 0] ) max ( _maxKnownEnemiesPerCluster # ( _membership # _i ) );
-	_maxKnownEnemiesPerCluster set [_membership # _i, _enemiesAround]; 
+	_maxKnownEnemiesPerCluster set [_membership # _i, _enemiesAround]; //<- sometimes a very rare error is triggered here...
 }; 
 
 
