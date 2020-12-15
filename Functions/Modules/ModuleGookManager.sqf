@@ -33,6 +33,7 @@ _groupsCount = _logic getVariable "GroupsCount";
 _groupsCountVar = _logic getVariable "GroupsCountVar";
 _debug = _logic getVariable "Debug";
 _spawnDistance = _logic getVariable "SpawnDistance";
+_areaModules = synchronizedObjects _logic select { typeOf _x == "FS_GookArea_Module" };
 
 /*
 _fsm = _logic getVariable "fsm";
@@ -166,7 +167,7 @@ while { true } do {
 						_groupSize = _groupSize + round random _groupSizeVar;
 						_groupsCount = _groupsCount + round random _groupsCountVar;
 						
-						[_next, _allPlayers, SUFFICIENT_CLUSTER_SHIFT, _spawnDistance, _groupsCount, _groupSize, _debug] spawn FS_fnc_AttackPlanner;
+						[_next, _allPlayers, SUFFICIENT_CLUSTER_SHIFT, _spawnDistance, _groupsCount, _groupSize, _areaModules, _debug] spawn FS_fnc_AttackPlanner;
 					};
 				};
 				

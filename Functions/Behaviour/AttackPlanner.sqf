@@ -1,7 +1,7 @@
 
-#define PREDICTION_CONE 60
+#define PREDICTION_CONE 30
 
-params ["_cluster", "_unitsToHideFrom", "_sufficientClusterShift", "_distanceToSpawn", "_groupSize", "_groupsCount", ["_debug", false, [true]]];
+params ["_cluster", "_unitsToHideFrom", "_sufficientClusterShift", "_distanceToSpawn", "_groupSize", "_groupsCount", "_areaModules", ["_debug", false, [true]]];
 
 private _queue = _cluster # 2;
 private _coordinates = [_queue] call FS_fnc_QueueGetData;
@@ -32,7 +32,18 @@ else {
 };
 
 private _result = [_unitsToHideFrom, _cluster # 0, _distanceToSpawn, [_angleMin, _angleMax], 10, _debug] call FS_fnc_GetHiddenPos2;
-	
+
+_areaModules = _areaModules apply { [position _x, _x getVariable "Radius"] };
+if (count (_areaModules select { _result distance2D _x # 0 < _x # 1 }) > 0) exitWith {
+	// The proposed coordinates fall into forbidden spawn areas
+	if ( _debug ) then {
+		_marker = createMarkerLocal [str(round random(1000000)), _result];
+		_marker setMarkerTypeLocal "mil_dot";
+		_marker setMarkerColor "ColorWhite";
+		_marker setMarkerText "Failed to spawn ambush in this safe area";
+	};
+};
+
 // If hidden position found
 if !( _result isEqualTo [] ) then 
 {

@@ -568,6 +568,29 @@ class CfgVehicles
 		};
 	};
 	
+	class FS_GookArea_Module : FS_Vietnam_Module {
+		_generalMacro = "FS_GookArea_Module";
+		icon = "A3\Modules_F_Tacops\Data\CivilianPresenceSafeSpot\icon32_ca.paa";
+		portrait = "A3\Modules_F_Tacops\Data\CivilianPresenceSafeSpot\icon32_ca.paa";
+		scope = 2;
+		is3DEN = 1;
+		displayName = "Define Gook-free Area";
+		function = "FS_fnc_ModuleGookArea";
+		class ModuleDescription : ModuleDescription {
+			description = "This module affects where Vietnamese can or can't be spawned.";
+			sync[] = {};
+		};
+		class Attributes : AttributesBase {
+			class Radius : Edit {
+				property = "Radius";
+				displayName = "Radius";
+				tooltip = "Gook Manager Module will not spawn any gooks in this area.";
+				typeName = "NUMBER";
+				defaultValue = 400;
+			};
+		};
+	};
+	
 	class FS_Arsenal_Module : FS_Vietnam_Module {
 		_generalMacro = "FS_Arsenal_Module";
 		scope = 2;
@@ -1099,6 +1122,8 @@ class CfgFunctions
 			class JukeboxPlayMusic {file = "\FS_Vietnam\Functions\Modules\JukeboxPlayMusic.sqf";};
 			class ModuleMaintenanceSettings {file = "\FS_Vietnam\Functions\Modules\ModuleMaintenanceSettings.sqf";};
 			class ModuleArtyStrike {file = "\FS_Vietnam\Functions\Modules\ModuleArtyStrike.sqf";};
+			class ModuleGookArea {file = "\FS_Vietnam\Functions\Modules\ModuleGookArea.sqf";};
+			class VisualizeModuleRadius3DEN {file = "\FS_Vietnam\Functions\Modules\VisualizeModuleRadius3DEN.sqf";};
 		};
 	};
 	
