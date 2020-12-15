@@ -34,16 +34,33 @@ _debug = _module getVariable "debug";
 SUPPORT_MINDISTANCE_ARTILLERY = _module getVariable "artilleryMinDist"; 
 SUPPORT_MINDISTANCE_NAPALM = _module getVariable "napalmMinDist";
 
-_synced = synchronizedObjects _module; 
+// For some reason when using synchronizedObjectsAdd [heli] mid mission, 
+// it only syncs it's effective commander, and I need it to sync the actual vehicle  
+// So here I sync in 2 steps, first I gather the vehicles of all synced objects, and then
+// I do the actual thing on the gathered vehicles
 
+// Step 1. Gather aircrafts of all synced objects
+_synced = synchronizedObjects _module; 
+_aircrafts = [];
 {
-	if ( typeOf _x isKindOf "Air" ) then 
+	if ( typeOf _x isKindOf "Air" || vehicle _x isKindOf "Air" ) then 
 	{ 
-		[_x, _assessmentRate, [_artilleryThreshold, _artilleryCD, _napalmThreshold, _napalmCD], objNull, _debug] execFSM "\FS_Vietnam\FSM\Loach.fsm"; 
+		_aircrafts pushBackUnique vehicle _x;
+	};
+}
+forEach _synced;
+
+// Step 2. Run scripts on synced aircrafts
+{
+	[_x, _assessmentRate, [_artilleryThreshold, _artilleryCD, _napalmThreshold, _napalmCD], objNull, _debug] execFSM "\FS_Vietnam\FSM\Loach.fsm"; 
 		
 		if ( _ambientRadio ) then {
 			[_x, "West", 1] spawn FS_fnc_UnsungRadioPlayback;
 		};	
-	};
 }
-forEach _synced;
+forEach _aircrafts;
+
+
+
+
+
