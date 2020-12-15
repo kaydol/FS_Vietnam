@@ -35,7 +35,7 @@ for [{_i = 0},{_i < count _collection},{_i = _i + 1}] do
 	
 	/* Finding the biggest estimated size of the enemy group around each cluster */
 	_enemiesAround = ( _obj getVariable ["KNOWN_ENEMIES_AROUND", 0] ) max ( _maxKnownEnemiesPerCluster # ( _membership # _i ) );
-	_maxKnownEnemiesPerCluster set [_membership # _i, _enemiesAround]; //<- sometimes a very rare error is triggered here...
+	_maxKnownEnemiesPerCluster set [_membership # _i, _enemiesAround];
 }; 
 
 
