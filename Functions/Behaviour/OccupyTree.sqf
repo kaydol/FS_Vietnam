@@ -9,7 +9,7 @@ _buildingPositions = _tree call BIS_fnc_buildingPositions;
 if (_buildingPositions isEqualTo []) exitWith {};
 
 _rndPos = selectRandom _buildingPositions;
-
+_tree allowDamage false;
 
 _NewGrp = createGroup EAST;
 "uns_men_NVA_daccong_MRK" createUnit [_rndPos, _NewGrp, "", 1, "PRIVATE"];
