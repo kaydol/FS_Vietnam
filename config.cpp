@@ -5,7 +5,7 @@ class CfgPatches
 	{
 		units[] = {"Invisible_Minigun_Turret"};
 		weapons[] = {"uns_m60_base", "uns_tripwire_punj1"};
-		requiredAddons[] = {"A3_Data_F", "uns_weap_c", "A3_Weapons_F_Mark", "uns_missilebox_c", "uns_traps_s"};
+		requiredAddons[] = {"A3_Data_F", "uns_weap_c", "uns_armour_c", "A3_Weapons_F_Mark", "uns_missilebox_c", "uns_traps_s"};
 		requiredVersion = 0.100000;
 		author = "kaydol";
 		url = "";
@@ -1114,6 +1114,37 @@ class Mode_FullAuto;
 
 class CfgWeapons 
 {
+	
+	class uns_M60_v;
+	class uns_M60_PBR : uns_M60_v { //["Uns_LMG_v","uns_MGun_base","MGun","MGunCore","Default"]
+		class GunParticles {
+			class effect1 {
+				positionName = "m60_usti_hlavne";
+				directionName = "m60_konec_hlavne";
+				effectName = "";
+			};
+		};
+	};
+	class uns_M2;
+	class uns_M2_rear : uns_M2 {
+		class GunParticles {
+			class effect1 {
+				positionName = "REAR_usti_hlavne";
+				directionName = "REAR_konec_hlavne";
+				effectName = "";
+			};
+		};
+	};
+	class UNS_M2x2 : uns_M2 { //["Uns_HMG_v","uns_MGun_base","MGun","MGunCore","Default"]
+		class GunParticles {
+			class effect1 {
+				positionName = "usti_hlavne";
+				directionName = "konec_hlavne";
+				effectName = "";
+			};
+		};
+	};
+	
 	class Uns_HMG;
 	class uns_m60_base : Uns_HMG {
 		class FullAuto : Mode_FullAuto {
@@ -1122,7 +1153,6 @@ class CfgWeapons
 				soundSetShot[] = {"DMR06_Shot_SoundSet","DMR06_tail_SoundSet","DMR06_InteriorTail_SoundSet"};
 			};
 		};
-		
 	};
 	
 	class Uns_Rifle;
