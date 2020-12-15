@@ -8,6 +8,16 @@ _removeDead = _module getVariable "removeDead";
 _trapsRemovalDistance = _module getVariable "trapsRemovalDistance";
 _trapsThreshold = _module getVariable "trapsThreshold";
 _gookRemovalDistance = _module getVariable "gookRemovalDistance";
+_removePreplacedUnits = _module getVariable "removePreplaced";
+
+if (!_removePreplacedUnits) then {
+	{
+		if (side _x == EAST && count (units _x arrayIntersect (playableUnits + switchableUnits)) == 0 ) then {
+			_x setVariable ["ExcludeGroupFromGarbageCollector", true, true];
+		};
+	} forEach AllGroups;
+};
+
 
 while { true } do 
 {
@@ -21,18 +31,21 @@ while { true } do
 			if !(isNull _x) then 
 			{
 				_body = _x;
-				_allPlayers = call BIS_fnc_listPlayers;
-				_distances = _allPlayers apply { _x distance _body };
-				
-				// Do not remove shot down helicopters
-				if (_body isKindOf "AIR") exitWith {};
-				
-				/* Do not remove bodies that are too close to the players */
-				if ( selectMin _distances > _removeDead ) then {
-					deleteVehicle _body;
+				if !(_body getVariable ["ExcludeFromGarbageCollector", false]) then 
+				{
+					_allPlayers = call BIS_fnc_listPlayers;
+					_distances = _allPlayers apply { _x distance _body };
+					
+					// Do not remove shot down helicopters
+					if (_body isKindOf "AIR") exitWith {};
+					
+					/* Do not remove bodies that are too close to the players */
+					if ( selectMin _distances > _removeDead ) then {
+						deleteVehicle _body;
+					};
+					
+					sleep (1 + random 2);
 				};
-				
-				sleep (1 + random 2);
 			};
 		} 
 		forEach AllDead;
@@ -117,14 +130,15 @@ while { true } do
 	
 	if ( _gookRemovalDistance >= 0 ) then {
 		{
-			if ( side _x == EAST && count units _x > 0 ) then 
+			if ( side _x == EAST && count units _x > 0 && !(_x getVariable ["ExcludeGroupFromGarbageCollector", false]) ) then 
 			{
 				_grp = _x;
+				// Find distance between the closest player and the calculated center point of the group
 				_allPlayers = call BIS_fnc_listPlayers;
 				_center2D = [units _grp] call FS_fnc_CalculateCenter2D;
 				_distToPlayers = selectMin ( _allPlayers apply { _x distance2D _center2D } );
 				
-				// Try to delete Gooks that are too far away
+				// Try to delete entire groups whose distance is beyond _gookRemovalDistance threshold
 				if ( _distToPlayers > _gookRemovalDistance ) then 
 				{
 					_unitPositions = units _grp apply { getPosASL _x };
@@ -142,21 +156,26 @@ while { true } do
 					
 					// Players don't have a direct LOS with any of the group members
 					if !( _canSee ) then {
+						_occupiedVehicles = [];
 						{
 							if ( vehicle _x == _x ) then {
+								// Deleting soldiers on foot
 								deleteVehicle _x;
 							} else {
+								// Deleting soldiers in vehicles + their vehicles
+								_occupiedVehicles pushBackUnique vehicle _x;
 								_x remoteExec ["deleteVehicleCrew", vehicle _x]; // delete unit where its vehicle is local
 							};
 						}
 						forEach units _grp;
+						{ deleteVehicle _x; } forEach _occupiedVehicles;
 						_grp remoteExec ["deleteGroup", _grp]; // delete group where it's local
 					};
 				};
 				
 				sleep (1 + random 2);
 			};
-		} 
+		}
 		forEach AllGroups;
 	};
 	
