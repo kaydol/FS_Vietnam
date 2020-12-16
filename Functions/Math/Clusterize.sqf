@@ -89,8 +89,9 @@ switch ( _algo ) do {
 };
 
 /* Debug */
-if ( _debug && !(_data isEqualTo []) ) then {
-	
+if ( _debug && !(_data isEqualTo []) ) then 
+{
+	diag_log format ["Clusterize.sqf result is: %1", _data] ;
 	_data params ["_clusters_centers", "_cluster_sizes", "_membership"];
 
 	_lineEHs = [];
@@ -99,7 +100,7 @@ if ( _debug && !(_data isEqualTo []) ) then {
 		_pos1 = _collection select _i;
 		if !( _pos1 isEqualType [] ) then { _pos1 = getPos _pos1; };
 		_pos2 = _clusters_centers select ( _membership select _i );
-		_id = (findDisplay 12 displayCtrl 51) ctrlAddEventHandler ["Draw", format ["(_this select 0) drawLine [%1,%2,[1,1,1,1]];", _pos1, _pos2] ];
+		_id = (findDisplay 12 displayCtrl 51) ctrlAddEventHandler ["Draw", format ["(_this select 0) drawLine [%1,%2,[1,1,1,1]];", _pos1, _pos2] ]; //<-- sometimes there is a very rare error with undefined _pos2 here
 		_lineEHs pushBack _id;
 	};
 	// create markers on enemies with their cluster for label
