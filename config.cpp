@@ -1104,6 +1104,7 @@ class CfgFunctions
 			class GetHiddenPos {file = "\FS_Vietnam\Functions\Behaviour\GetHiddenPos.sqf";};
 			class GetHiddenPos2 {file = "\FS_Vietnam\Functions\Behaviour\GetHiddenPos2.sqf";};
 			class AttackPlanner {file = "\FS_Vietnam\Functions\Behaviour\AttackPlanner.sqf";};
+			class IsPosHidden {file = "\FS_Vietnam\Functions\Behaviour\IsPosHidden.sqf";};
 		};
 		
 		class Modules {

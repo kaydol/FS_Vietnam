@@ -5,7 +5,6 @@
 params ["_tree"];
 
 _buildingPositions = _tree call BIS_fnc_buildingPositions;
-
 if (_buildingPositions isEqualTo []) exitWith {};
 
 _rndPos = selectRandom _buildingPositions;
@@ -16,6 +15,6 @@ _NewGrp = createGroup EAST;
 _unit = units _NewGrp select 0;
 _unit setPos _rndPos;
 
-[_unit] execFSM "\FS_Vietnam\FSM\TreeSniper.fsm"; 
+[_unit, _tree] execFSM "\FS_Vietnam\FSM\TreeSniper.fsm"; 
 
 
