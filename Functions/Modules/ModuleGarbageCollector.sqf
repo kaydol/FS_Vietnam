@@ -16,6 +16,9 @@ if (!_removePreplacedUnits) then {
 			_x setVariable ["ExcludeGroupFromGarbageCollector", true, true];
 		};
 	} forEach AllGroups;
+	{
+		_x setVariable ["ExcludeFromGarbageCollector", true, true];
+	} forEach vehicles;
 };
 
 

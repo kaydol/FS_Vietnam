@@ -662,7 +662,7 @@ class CfgVehicles
 			};
 			class RemovePreplaced : Checkbox {
 				property = "removePreplaced";
-				displayName = "Remove preplaced groups";
+				displayName = "Remove preplaced groups and vehicles";
 				tooltip = "If unchecked, units in preplaced EAST side groups won't be deleted due to distance checks. Does not affect preplaced mines, because they always stay until destroyed or picked up.";
 				typeName = "BOOL";
 				defaultValue = "false"; 
