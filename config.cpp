@@ -1140,7 +1140,46 @@ class Mode_FullAuto;
 
 class CfgWeapons 
 {
+	// Allow AI to fire RPGs at helicopters
+	class Launcher;
+    class Launcher_Base_F: Launcher {
+        class WeaponSlotsInfo;
+    };
+    class Launch_RPG7_F : Launcher_Base_F {
+        class Single : Mode_SemiAuto {
+            aiDispersionCoefX = 1.8;
+            aiDispersionCoefY = 2.3;
+            aiRateOfFireDispersion = 10;
+            aiRateOfFireDistance = 300;
+            maxRange = 400;
+            maxRangeProbab = 0.4;
+            midRange = 250;
+            midRangeProbab = 0.9;
+            minRange = 5;
+            minRangeProbab = 0.56;
+            recoil = "recoil_single_law";
+            sounds[] = {"StandardSound"};
+        };
+    };
+    class launch_RPG32_F : Launcher_Base_F {
+        class Single : Mode_SemiAuto {
+            aiDispersionCoefX = 1.7;
+            aiDispersionCoefY = 2.2;
+            aiRateOfFire = 7;
+            aiRateOfFireDispersion = 3;
+            aiRateOfFireDistance = 400;
+            maxRange = 600;
+            maxRangeProbab = 0.85;
+            midRange = 40;
+            midRangeProbab = 0.85;
+            minRange = 10;
+            minRangeProbab = 0.3;
+            recoil = "recoil_single_law";
+            sounds[] = {"StandardSound"};
+        };
+    };
 	
+	// Remove muzzle dust effects of the US patrol boat machineguns
 	class uns_M60_v;
 	class uns_M60_PBR : uns_M60_v { //["Uns_LMG_v","uns_MGun_base","MGun","MGunCore","Default"]
 		class GunParticles {
@@ -1171,6 +1210,7 @@ class CfgWeapons
 		};
 	};
 	
+	// Changing M60 firing sound
 	class Uns_HMG;
 	class uns_m60_base : Uns_HMG {
 		class FullAuto : Mode_FullAuto {
@@ -1181,14 +1221,13 @@ class CfgWeapons
 		};
 	};
 	
+	// Promoting jamming for M16 rifles
 	class Uns_Rifle;
 	class uns_m16 : Uns_Rifle {
-		
-		/* ACE snippet to promote jamming for M16 */
+		/* This will take effect only if ACE is enabled */
 		ace_overheating_mrbs = 350; //Mean Rounds Between Stoppages (scaled based on the barrel temp)
         ace_overheating_slowdownFactor = 0.5; //Slowdown Factor (scaled based on the barrel temp)
         ace_overheating_allowSwapBarrel = 0; // 1 to enable barrel swap. 0 to disable. Meant for machine guns where you can easily swap the barrel without dismantling the whole weapon.
-		
 		class Single : Mode_SemiAuto {
 			class BaseSoundModeType {
 				closure1[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_Closure_01",0.398107,1,30};
