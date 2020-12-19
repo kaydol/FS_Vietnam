@@ -84,6 +84,7 @@ else
 	
 	_NewWP = _group addWaypoint [_pos, 0];
 	_NewWP setWaypointType "MOVE";
+	_NewWP setWaypointDescription "LAND AT BASE";
 	_NewWP setWaypointSpeed "FULL";	
 	_NewWP setWaypointBehaviour "AWARE";	
 	_NewWP setWaypointCombatMode "RED";	
@@ -98,31 +99,35 @@ else
 	_NewWP setWaypointStatements ["true", "vehicle this land 'LAND'; deleteWaypoint [group this, currentWaypoint (group this)]"];
 	
 	// A short godmode to negate hard landings performed by AI 
-	private _softLanding = _aircraft spawn 
+	private _softLanding = [_aircraft, _debug] spawn 
 	{
+		params ["_aircraft", "_debug"];
 		private _softLandingEnabled = missionNamespace getVariable ["MAINTENANCE_AI_SOFT_LANDING", true];
 		if !(_softLandingEnabled) exitWith {};
 	
 		waitUntil {
 			sleep 1;
-			if (_this call FS_fnc_IsScrambleNeeded) exitWith { true };
-			private _height = (getPos _this) # 2;
+			if (_aircraft call FS_fnc_IsScrambleNeeded) exitWith { true };
+			private _height = (getPos _aircraft) # 2;
 			_height < 20
 		};
 		
 		// Only provide soft landings for AI controlled pilots
-		if !(isPlayer (currentPilot _this)) then 
-		{
-			if !(_this call FS_fnc_IsScrambleNeeded) then {
-				[_this, false] remoteExec ["allowDamage", _this];
-				//systemChat "GODMODE ON";
+		if (isPlayer (currentPilot _aircraft)) exitWith {}; 
+		
+		if !(_aircraft call FS_fnc_IsScrambleNeeded) then {
+			[_aircraft, false] remoteExec ["allowDamage", _aircraft];
+			if (_debug) then {
+				systemChat "SOFT LANDING: GODMODE ON";
 			};
-			
-			sleep 10; // 10 sec of god mode
-			
-			if !(_this call FS_fnc_IsScrambleNeeded) then {
-				[_this, true] remoteExec ["allowDamage", _this];
-				//systemChat "GODMODE OFF";
+		};
+		
+		sleep 10; // 10 sec of god mode
+		
+		if !(_aircraft call FS_fnc_IsScrambleNeeded) then {
+			[_aircraft, true] remoteExec ["allowDamage", _aircraft];
+			if (_debug) then {
+				systemChat "SOFT LANDING: GODMODE OFF";
 			};
 		};
 	};
@@ -144,8 +149,21 @@ else
 	{
 		if ( _needsMaintenance && _providesMaintenance ) then 
 		{
-			[effectiveCommander _aircraft, "Conducting maintenance..."] remoteExec ["vehicleChat", 0];
+			private _msg = "Conducting maintenance...";
+			[[effectiveCommander _aircraft, _msg], {
+				params ["_speaker", "_msg"];
+				4 enableChannel [true, true]; 
+				_speaker sideChat _msg;
+			}] remoteExec ["call", 0];
+			
+			// Disallow the fuckers from flying until the maintenance is done.
+			private _oldBeh = if ({alive _x} count crew _aircraft > 0) then [{ behaviour ((crew _aircraft select {alive _x}) # 0) },{"CARELESS"}];
+			{ [_x, "CARELESS"] remoteExec ["setBehaviour", _x] } forEach crew _aircraft;
+			
 			sleep _refuelRearmTime;
+			
+			// Allow the fuckers to move again.
+			{ [_x, _oldBeh] remoteExec ["setBehaviour", _x] } forEach crew _aircraft;
 			
 			/* Refueling */
 			[_aircraft, 1] remoteExec ["setFuel", _aircraft];
@@ -165,25 +183,30 @@ else
 			
 			for [{_i = 0},{_i < count _damage},{_i = _i + 1}] do {
 				if ( ( _damage select _i ) > 0 ) then {
-					[_aircraft, [_names select _i, _repairTo min (_damage select _i)]] remoteExec ["setHitPointDamage", _aircraft];
+					// Just reshuffled this code a bit because the previous version suddenly 
+					// stopped working after I haven't touched the code for a year 
+					[[_aircraft, _names select _i, _repairTo min (_damage select _i)], {
+						_this # 0 setHitPointDamage [_this # 1, _this # 1];
+					}] remoteExec ["call", _aircraft];
 				};
 			};
 			
-			[effectiveCommander _aircraft, "Maintenance is finished, all critical systems operational."] remoteExec ["vehicleChat", 0];
+			_msg = "Maintenance is finished, all critical systems operational.";
+			[[effectiveCommander _aircraft, _msg], {
+				params ["_speaker", "_msg"];
+				4 enableChannel [true, true]; 
+				_speaker sideChat _msg;
+			}] remoteExec ["call", 0];
 		};
 		
 		/* Getting replacement crew */
 		if ( _hasDead && _providesCrew ) then 
 		{
-			_k = 0;
-			
 			[side _aircraft, "BoardingStarted", _aircraft] remoteExec ["FS_fnc_TransmitOverRadio", 2];
 			sleep 4;
 			
-			while {{!alive _x} count crew _aircraft > _k} do 
+			while {{!alive _x} count crew _aircraft > 0} do 
 			{
-				_k = _k + 1;
-				
 				_respawn_at = [0,0,0];
 				if ( count _respawn_points > 0 ) then {
 					_respawn_at = selectRandom _respawn_points;
@@ -191,40 +214,27 @@ else
 				
 				_index = crew _aircraft findIf {!alive _x};
 				_dead_unit = crew _aircraft select _index;
-				//_role = assignedVehicleRole _dead_unit;
-				_role = _dead_unit getVariable "role";
+				
 				_class = typeOf _dead_unit;
 				_class createUnit [_respawn_at, _group, "", random 1, "PRIVATE"];
 				_newMan = units _group select ( units _group findIf { vehicle _x != _aircraft } );
-				
-				switch ( _role select 0 ) do {
-					case "Turret": { _newMan assignAsTurret [_aircraft, _role select 1]; };
-					case "Driver": { _newMan assignAsDriver _aircraft; };
-					case "Cargo": { _newMan assignAsCargo _aircraft; };
-					default {}
-				};
-				
+
 				[_newMan] orderGetIn true; 
 				
 				/* 
 					If no respawn points were provided, teleport the replacement 
 					directly into the helicopter, otherwise make him run and board it
 				*/
-				if !( _respawn_at isEqualTo [0,0,0] ) then 
+				if ( _respawn_at isEqualTo [0,0,0] ) then 
 				{
-					waitUntil { sleep 0.5; { _x in _aircraft } count units _group == count crew _aircraft || !alive _aircraft };
+					_newMan moveInAny _aircraft;
 				}
 				else 
 				{
-					switch ( _role select 0 ) do {
-						case "Turret": { _newMan moveInTurret [_aircraft, _role select 1]; };
-						case "Driver": { _newMan moveInDriver _aircraft; };
-						case "Cargo": { _newMan moveInCargo _aircraft; };
-						default {}
-					};
+					waitUntil { sleep 0.5; { _x in _aircraft } count units _group == count crew _aircraft || !alive _aircraft };
 				};
 				
-				_dead_unit remoteExec ["deleteVehicle", _dead_unit];
+				[_dead_unit, _aircraft] remoteExec ["deleteVehicleCrew", _aircraft];
 				
 				sleep 2;
 			};

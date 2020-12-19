@@ -14,14 +14,8 @@ forEach crew _aircraft;
 
 //driver _aircraft disableAI "AUTOCOMBAT";
 
-/* Storing the vehicle role is needed because the unit's vehicle role is lost after unit is dead, so we have to save his role before that happens in order to be able to correctly reinforce lost crewmates at base */
-{
-	_x setVariable ["role", assignedVehicleRole _x];
-} forEach crew _aircraft;
-
 // The side has to be saved to find out which side this aircraft served to before it got destroyed
 _aircraft setVariable ["initSide", side _aircraft]; 
-
 
 _friendly_aircrafts = [];
 _k = 0;
@@ -56,7 +50,7 @@ while { _aircraft call FS_fnc_CanPerformDuties } do
 	
 	//_objectsToReveal = getPos _aircraft nearEntities ["Land", 300] select { !(_x isKindOf "Animal") }; // WallHack
 	_objectsToReveal = _aircraft targets [False, 300]; // More Fair as it only returns known objects
-	
+	_objectsToReveal = _objectsToReveal select { getPos _x select 2 < 3 }; // Only reveal objects on Land (not snipers on trees)
 	{
 		/* Informing friendlies */
 		_grp = _x;
@@ -68,7 +62,7 @@ while { _aircraft call FS_fnc_CanPerformDuties } do
 					[[_x, _objectsToReveal # _i, _aircraft knowsAbout _objectsToReveal # _i], {
 						params ["_friend", "_foe", "_helisOwnKnowledge"];
 						_knowledge = _friend knowsAbout _foe;
-						_knowledge = ( _knowledge + 0.2 ) min 4;
+						_knowledge = ( _knowledge + 0.1 ) min 4;
 						//_knowledge = ( _knowledge + 0.2 ) min _helisOwnKnowledge;
 						_friend reveal [_foe, _knowledge];
 					}] remoteExec ["call", _x];
