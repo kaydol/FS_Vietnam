@@ -46,7 +46,7 @@ if (isNil{ _fsm }) then
 // Use to stop spawning new Gooks
 //_fsm setFSMVariable ["_moduleActive", false];
 
-private _scope = 3; 
+private _scope = 3; // how many times we assess the movements before judging about a trend. Defines the length of the queue 
 private _previousClusterization = [];
 
 /*

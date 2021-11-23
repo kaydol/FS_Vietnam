@@ -5,7 +5,7 @@ if (vehicle player != player) exitWith {};
 //startLoadingScreen ["Loading Arsenal..."];
 
 player setVariable ["UsesArsenalRoom", True, True];
-_returnPos = getPos player;
+_returnPos = getPosATL player;
 _returnDir = getDir player;
 
 sleep 0.001;
@@ -86,7 +86,7 @@ startLoadingScreen ["Exiting Arsenal..."];
 
 progressLoadingScreen 0.7; 
 
-player setPos _returnPos;
+player setPosATL _returnPos;
 player setDir _returnDir;
 
 player setVariable ["UsesArsenalRoom", False, True];

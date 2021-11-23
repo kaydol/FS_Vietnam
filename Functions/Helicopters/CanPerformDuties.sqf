@@ -1,7 +1,7 @@
 params ["_aircraft"];
 
-if ( !alive _aircraft ) exitWith { False };
-if ( !canMove _aircraft ) exitWith { False };
+if !( alive _aircraft ) exitWith { False };
+if !( canMove _aircraft ) exitWith { False };
 if !( call FS_fnc_IsEnoughDaylight ) exitWith { False };
 if ( _aircraft call FS_fnc_IsMaintenanceNeeded ) exitWith { False };
 if ( {!alive _x} count crew _aircraft > 0 ) exitWith { False };
