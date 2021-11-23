@@ -23,8 +23,8 @@ if !(hasInterface) exitWith {};
 
 params ["_unit", ["_deathSound", ""], ["_smokeDelay", 0], ["_screamingTime", 10]];
 
-_screaming = missionNameSpace getVariable ["NAPALM_VICTIMS_SCREAM", true];
-_smokingTime = missionNameSpace getVariable ["NAPALM_VICTIMS_SMOKE_TIME", 40];
+_screaming = missionNameSpace getVariable ["NAPALM_VICTIMS_SCREAM", getNumber (ConfigFile >> "CfgVehicles" >> "FS_NapalmSettings_Module" >> "Attributes" >> "MakeVictimsScream" >> "defaultValue") == 1];
+_smokingTime = missionNameSpace getVariable ["NAPALM_VICTIMS_SMOKE_TIME", getNumber (ConfigFile >> "CfgVehicles" >> "FS_NapalmSettings_Module" >> "Attributes" >> "VictimsSmokeTime" >> "defaultValue")];
 
 if ( !_screaming && _smokingTime <= 0 ) exitWith {};
 

@@ -58,7 +58,7 @@ while { true } do
 	if ( isNil { FS_AllGookTraps }) then {
 		FS_AllGookTraps = [];
 	};
-	_gookTraps = FS_AllGookTraps;
+	_gookTraps = FS_AllGookTraps + (allSimpleObjects [] select {str _x find 'punji' > 0});
 	
 	//------------------------------------------------------//
 	// 	First remove traps that are too far from players	//
@@ -113,15 +113,6 @@ while { true } do
 		
 		_gookTraps resize _trapsThreshold;
 	};
-	
-	// To remove [<NULL-object>,[4228.22,1634.07,0.000764847],[[0.549327,-0.831807,-0.0796101],[-0.0510919,-0.128529,0.990389]]]
-	{ 
-		if ( _x isEqualType [] ) then {
-			if ( isNull( _x # 0 ) ) then {
-				_gookTraps set [_forEachIndex, objNull];
-			};
-		};
-	} forEach _gookTraps;
 	
 	FS_AllGookTraps = _gookTraps select { !(_x isEqualTo objNull) }; // to get rid of objNulls 
 	

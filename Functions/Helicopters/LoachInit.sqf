@@ -56,7 +56,7 @@ while { _aircraft call FS_fnc_CanPerformDuties } do
 		_grp = _x;
 		{
 			for [{_i = 0}, {_i < count _objectsToReveal}, {_i = _i + 1}] do { 
-				if ( _x call FS_fnc_HasRadioAround ) then 
+				if ( _x call FS_fnc_CanReceive ) then 
 				{
 					// Increasing knowledge of friendly units about the enemy 
 					[[_x, _objectsToReveal # _i, _aircraft knowsAbout _objectsToReveal # _i], {

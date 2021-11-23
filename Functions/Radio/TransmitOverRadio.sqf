@@ -117,7 +117,7 @@ switch ( _messageType ) do
 		};
 	} else {
 		// If the message is being broadcasted to everybody (not only 1 vehicle) then check if player has radio or RTO backpack
-		if (player call FS_fnc_HasRadio || player call FS_fnc_HasRTO) then {
+		if (player call FS_fnc_CanReceive) then {
 			_canReceiveMessage = true;
 		};
 	};

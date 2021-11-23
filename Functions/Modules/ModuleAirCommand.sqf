@@ -53,10 +53,6 @@ forEach _synced;
 // Step 2. Run scripts on synced aircrafts
 {
 	[_x, _assessmentRate, [_artilleryThreshold, _artilleryCD, _napalmThreshold, _napalmCD], objNull, _debug] execFSM "\FS_Vietnam\FSM\Loach.fsm"; 
-		
-		if ( _ambientRadio ) then {
-			[_x, "West", 1] spawn FS_fnc_UnsungRadioPlayback;
-		};	
 }
 forEach _aircrafts;
 

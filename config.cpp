@@ -59,33 +59,8 @@ class CfgFactionClasses {
 	};
 };
 
-/*
-		Redefining the spawn of fired traps to add fired versions 
-	to FS_AllGookTraps pool used by Garbage Collector module.
-	
-		Unfortunately there does not seem to be a better way to spawn
-	fired versions of traps. I tried to add various EH to the mines
-	and decided that the way the author of Unsung version used is the 
-	most effective solution, though I've added a precise tracking.
-*/
 class CfgCloudlets {
 	class Default;
-	class punji1_cloud : Default {
-		size[] = {0};
-		timerPeriod = 0.05;
-		interval = 1000;
-		lifeTime = 0.09;
-		onTimerScript = "\FS_Vietnam\Functions\Punji\fn_punji_small.sqf";
-	};
-	class punji2_cloud : punji1_cloud {
-		onTimerScript = "\FS_Vietnam\Functions\Punji\fn_punji_large.sqf";
-	};
-	class punji3_cloud : punji1_cloud {
-		onTimerScript = "\FS_Vietnam\Functions\Punji\fn_punji_whip1.sqf";
-	};
-	class punji4_cloud : punji1_cloud {
-		onTimerScript = "\FS_Vietnam\Functions\Punji\fn_punji_whip2.sqf";
-	};
 	class MediumSmoke;
 	class NapalmVictim : MediumSmoke {
 		interval = 0.5;
@@ -93,225 +68,117 @@ class CfgCloudlets {
 		rubbing = 0.025;
 		size[] = {1.2,2.5};
 	};
-	class ScriptedNapalmExplosion : Default {
+	class FS_ScriptedNapalmExplosion : Default {
 		size[] = {0};
 		interval = 1000;
 		lifeTime = 0;
 		beforeDestroyScript = "\FS_Vietnam\Effects\Napalm\CustomNapalm.sqf";
 	};
 	
-	/*
-	class NapalmExplosion_Puff : Default {
-		circleRadius = 0;
-		circleVelocity[] = {0,0,0};
-		
-		particleShape = "\A3\data_f\cl_basic";
-		particleType = "Billboard";
-		particleFSFrameCount = 1;
-		particleFSIndex = 0;
-		particleFSLoop = 0;
-		particleFSNtieth = 1;
-		timerPeriod = 1;
-		lifeTime = 1.25;
-		position[] = {0,0,0};
-		moveVelocity[] = {0,0,0.75};
-		rotationVelocity = 0;
-		weight = 10;
-		volume = 7.9;
-		rubbing = 0;
-		size[] = {10, 100};
-		color[] = {[1,1,1,0],[1,1,1,0.2],[1,1,1,1],[1,1,1,0.5],[1,1,1,0]};
-		animationSpeed[] = {0.08};
-		randomDirectionPeriod = 1;
-		randomDirectionIntensity = 0;
-		onTimerScript = "";
-		beforeDestroyScript = "\FS_Vietnam\Effects\Napalm\CustomNapalm.sqf";
-		interval = 1000;
-	};
-	
-	class NapalmExplosion_Sparks : Default {
-		circleRadius = 10;
-		circleVelocity[] = {0,0,10};
-		
-		particleShape = "\A3\data_f\cl_exp";
-		particleType = "Billboard";
-		particleFSFrameCount = 1;
-		particleFSIndex = 0;
-		particleFSLoop = 0;
-		particleFSNtieth = 1;
-		timerPeriod = 1;
-		lifeTime = 7;
-		position[] = {0,0,0};
-		moveVelocity[] = {5,5,30};
-		rotationVelocity = 0.3;
-		weight = 200;
-		volume = 5;
-		rubbing = 3;
-		size[] = {1.5, 1, 0.5};
-		color[] = {[1,1,1,1],[1,1,1,1],[1,1,1,1]};
-		animationSpeed[] = {0.08};
-		randomDirectionPeriod = 1;
-		randomDirectionIntensity = 0;
-		onTimerScript = "";
-		beforeDestroyScript = "";
-		interval = 0.02;
-	};
-	
-	class NapalmExplosion_Clouds : Default  {
-		circleRadius = 30;
-		circleVelocity[] = {0.2, 0.5, 0.9};
-		
-		particleShape = "\A3\data_f\cl_basic";
-		particleType = "Billboard";
-		particleFSFrameCount = 1;
-		particleFSIndex = 0;
-		particleFSLoop = 0;
-		particleFSNtieth = 1;
-		timerPeriod = 1;
-		lifeTime = 5;
-		position[] = {0,0,0};
-		moveVelocity[] = {0,0,15};
-		rotationVelocity = 10;
-		weight = 17;
-		volume = 13;
-		rubbing = 0.7;
-		size[] = {15, 25, 31, 50};
-		color[] = {[1,1,1,0],[1,1,1,0.2],[1,1,1,1],[0.5,0.5,0.5,0.5],[0,0,0,0]};
-		animationSpeed[] = {0.08};
-		randomDirectionPeriod = 0.1;
-		randomDirectionIntensity = 3;
-		onTimerScript = "";
-		beforeDestroyScript = "";
-		interval = 0.05;
-	};
-	*/
 };
 
-class NapalmExplosion_Impact {
+class vn_vfx_napalm_container_explosion_effect {
 	class Scripted {
 		simulation = "particles";
-		type = "ScriptedNapalmExplosion";
+		type = "FS_ScriptedNapalmExplosion";
 		lifeTime = 1;
 	};
-};
-
-class CfgSoundShaders {
-	class punji_soundshader_far {
-		range = 0;
-		rangeCurve[] = {};
-		samples[] = {};
-		volume = 0;
+	class vn_vfx_napalm_vehicle_explosion_TrailEffect {
+		simulation = "particles";
+		type = "vn_vfx_napalm_vehicle_explosion_TrailEffect";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 1;
+		lifeTime = 0.5;
 	};
-	class punji_soundshader_mid {
-		range = 0;
-		rangeCurve[] = {};
-		samples[] = {};
-		volume = 0;
+	class vn_vfx_napalm_vehicle_explosion_ShardsEffect {
+		simulation = "particles";
+		type = "vn_vfx_napalm_vehicle_explosion_ShardsEffect";
+		position[] = {0,5,0};
+		intensity = 2;
+		interval = 1;
+		lifeTime = 3;
+		qualityLevel = 2;
 	};
-	class punji_soundshader_near {
-		range = 0;
-		rangeCurve[] = {};
-		samples[] = {};
-		volume = 0;
+	class vn_vfx_napalm_vehicle_explosion_CloudPlusDamage {
+		simulation = "particles";
+		type = "vn_vfx_napalm_vehicle_explosion_CloudPlusDamage";
+		position[] = {0,0,0};
+		intensity = 0.9;
+		interval = 1;
+		lifeTime = 10;
 	};
-};
-
-class CfgAmmo 
-{
-	class APERSMine_Range_Ammo;
-	class uns_punji_ammo_base : APERSMine_Range_Ammo { //["MineBase","MineCore","TimeBombCore","Default"]
-		delete soundHit1;
-		delete soundHit2;
-		delete soundHit3;
-		delete soundHit4;
-		delete multiSoundHit;
-		soundHit[] = {"\uns_traps_s\sound\punji1",3.16228,1,30};
-		hit = 6;
-		indirectHit = 6;
-		indirectHitRange = 1;
-		mineInconspicuousness = 1000;
+	class vn_vfx_Napalm_ExpSparksBig {
+		simulation = "particles";
+		type = "ExpSparks";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 1;
+		lifeTime = 2;
+		enabled = "distToWater interpolate [0,0.0001,-1,1]";
 	};
-	class uns_punji_small_ammo : uns_punji_ammo_base { //["APERSMine_Range_Ammo","MineBase","MineCore","TimeBombCore","Default"]
-		hit = 4;
-		indirectHit = 4;
-		indirectHitRange = 1;
-		mineInconspicuousness = 1000;
+	class vn_vfx_Napalm_fire_linger {
+		simulation = "particles";
+		type = "vn_vfx_napalm_fire_linger";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 1;
+		start = 2;
+		enable = 1;
+		lifeTime = 15;
 	};
-	class uns_punji_large_ammo : uns_punji_small_ammo { 
-		hit = 7;
-		indirectHit = 5;
-		indirectHitRange = 2;
-		mineInconspicuousness = 1000;
+	class vn_vfx_Napalm_LightExpBig {
+		simulation = "light";
+		type = "ExploLight";
+		position[] = {0,1.5,0};
+		intensity = 0.001;
+		interval = 1;
+		lifeTime = 34;
 	};
-	class uns_punji_whip_ammo : uns_punji_small_ammo { 
-		hit = 7;
-		indirectHit = 1;
-		indirectHitRange = 1;
-		mineInconspicuousness = 1000;
+	class vn_vfx_Napalm_Explosion1Big {
+		simulation = "particles";
+		type = "VehExplosionParticles";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 1;
+		lifeTime = 0.2;
 	};
-	class uns_punji_whip2_ammo : uns_punji_whip_ammo { 
-		hit = 4;
-		indirectHit = 1;
-		indirectHitRange = 1;
-		mineInconspicuousness = 1000;
+	class vn_vfx_Napalm_Explosion2Big {
+		simulation = "particles";
+		type = "FireBallBright";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 1;
+		lifeTime = 1;
 	};
-	
-	class uns_bombcore;
-	class Uns_Napalm_500 : uns_bombcore { //["BombCore","Default"]
-		model = "\uns_missilebox\FRL_MK77\FRL_MK77_fly.p3d";
-		proxyShape = "\uns_missilebox\FRL_MK77\FRL_MK77.p3d";
-		hit = 0; // 1000
-		indirectHit = 0; // 250
-		indirectHitRange = 0; // 12
-		
-		soundHit0[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm.ogg",3,1,2500};
-		soundHit1[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_1.ogg",3,1,2500};
-		soundHit2[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_2.ogg",3,1,2500};
-		soundHit3[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_3.ogg",3,1,2500};
-		soundHit4[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_4.ogg",3,1,2500};
-		soundHit5[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_5.ogg",3,1,2500};
-		soundHit6[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_6.ogg",3,1,2500};
-		soundHit7[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_7.ogg",3,1,2500};
-		soundHit8[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_8.ogg",3,1,2500};
-		soundHit9[] = {"\FS_Vietnam\Effects\Napalm\Sound\napalm_9.ogg",3,1,2500};
-		multiSoundHit[] = {"soundHit0",0.1,"soundHit1",0.1,"soundHit2",0.1,"soundHit3",0.1,"soundHit4",0.1,"soundHit5",0.1,"soundHit6",0.1,"soundHit7",0.1,"soundHit8",0.1,"soundHit9",0.1};
-		
-		explosionEffects = "NapalmExplosion_Impact";
-		CraterEffects = "";
-		trackOversteer = 1;
-		fuseDistance = 35;
-		whistleDist = 24;
-		aiAmmoUsageFlags = "64 + 128 + 512";
-		dangerRadiusHit = 1550;
-		suppressionRadiusHit = 150;
-		maneuvrability = 15;
-		effectsMissile = "EmptyEffect";
-		effectsMissileInit = "";
-		initTime = 0.5;
-		thrustTime = 45;
-		thrust = 0;
-		trackLead = 1;
+	class vn_vfx_Napalm_Smoke1Big {
+		simulation = "particles";
+		type = "VehExpSmoke";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 2;
+		start = 2;
+		lifeTime = 15;
 	};
-	class Uns_Napalm_750 : Uns_Napalm_500 { //["uns_bombcore","BombCore","Default"]
-		model = "\uns_missilebox\FRL_BLU1B\FRL_BLU1B_fly.p3d";
-		proxyShape = "\uns_missilebox\FRL_BLU1B\FRL_BLU1B.p3d";
-		hit = 1500;
-		indirectHit = 350;
-		indirectHitRange = 17;
+	class vn_vfx_Napalm_SmallSmoke1Big {
+		simulation = "particles";
+		type = "VehExpSmoke2";
+		position[] = {0,0,0};
+		intensity = 1;
+		interval = 2;
+		start = 2;
+		lifeTime = 25;
 	};
-	class Uns_Napalm_blu1 : Uns_Napalm_500 { //["uns_bombcore","BombCore","Default"]
-		model = "\uns_missilebox\uns_A1\uns_blu1_fly.p3d";
-		proxyShape = "\uns_missilebox\uns_A1\uns_blu1.p3d";
-		hit = 2000;
-		indirectHit = 450;
-		indirectHitRange = 20;
-	};
-	class Uns_Napalm_ZB360 : Uns_Napalm_500 { //["uns_bombcore","BombCore","Default"]
-		model = "\uns_missilebox\PRACS\PRACS_TK_SAB100Tb.p3d";
-		proxyShape = "\uns_missilebox\PRACS\PRACS_TK_SAB100Tb.p3d";
+	class vn_vfx_Napalm_Refract {
+		simulation = "particles";
+		type = "ObjectDestructionRefractSmall";
+		position[] = {0,0,0};
+		intensity = 0.15;
+		interval = 1;
+		lifeTime = 20;
+		start = 2;
 	};
 };
-
 
 class CfgVehicles 
 {
@@ -355,6 +222,8 @@ class CfgVehicles
 		class ModuleDescription : ModuleDescription {
 			description = "This module is required for Vietnam helicopter crews.";
 			sync[] = {"RespawnPoints", "Side"};
+			position = 1;
+			direction = 0;
 			class RespawnPoints {
 				description[] = { // Multi-line descriptions are supported
 					"Respawn Points define where the crew replacements will be spawned. After spawn, they will run to the helicopter and board it, replacing the dead crew. Consider placing respawn points in tents or houses, unless you want the crew to spawn in the open. If no RP were provided, the new crew teleports directly into transport."
@@ -400,6 +269,7 @@ class CfgVehicles
 				typeName = "NUMBER";
 				defaultValue = 60;
 			};
+			class ModuleDescription : ModuleDescription {};
 		};
 	};
 	
@@ -474,13 +344,6 @@ class CfgVehicles
 				typeName = "NUMBER";
 				defaultValue = 150;
 			};
-			class AmbientRadio : Checkbox {
-				property = "AmbientRadio";
-				displayName = "Enable Unsung ambient radio";
-				tooltip = "Uses The Unsung Vietnam War addon's functions to add an ambient radio playback to synced helicopters.";
-				typeName = "BOOL";
-				defaultValue = "false";
-			};
 			class Debug : Checkbox {
 				property = "debug";
 				displayName = "Debug";
@@ -488,6 +351,7 @@ class CfgVehicles
 				typeName = "BOOL";
 				defaultValue = "false";
 			};
+			class ModuleDescription : ModuleDescription {};
 		};
 	};
 	
@@ -565,6 +429,7 @@ class CfgVehicles
 				typeName = "BOOL";
 				defaultValue = "false";
 			};
+			class ModuleDescription : ModuleDescription {};
 		};
 	};
 	
@@ -579,6 +444,8 @@ class CfgVehicles
 		class ModuleDescription : ModuleDescription {
 			description = "This module affects where Vietnamese can or can't be spawned.";
 			sync[] = {};
+			position = 1;
+			direction = 0; 
 		};
 		class Attributes : AttributesBase {
 			class Radius : Edit {
@@ -588,6 +455,7 @@ class CfgVehicles
 				typeName = "NUMBER";
 				defaultValue = 400;
 			};
+			class ModuleDescription : ModuleDescription {};
 		};
 	};
 	
@@ -617,9 +485,10 @@ class CfgVehicles
 				typeName = "BOOL";
 				defaultValue = "true"; 
 			};
+			class ModuleDescription : ModuleDescription {};
 		};
 	};
-	
+	// todo rework mines to sog 
 	class FS_GarbageCollector_Module : FS_Vietnam_Module {
 		_generalMacro = "FS_GarbageCollector_Module";
 		icon = "\a3\Modules_f\data\iconRespawn_ca.paa";
@@ -667,6 +536,7 @@ class CfgVehicles
 				typeName = "BOOL";
 				defaultValue = "false"; 
 			};
+			class ModuleDescription : ModuleDescription {};
 		};
 	};
 	
@@ -681,12 +551,26 @@ class CfgVehicles
 			sync[] = {};
 		};
 		class Attributes : AttributesBase {
+			class Enable : Checkbox {
+				property = "Enable";
+				displayName = "Enable";
+				tooltip = "If enabled, napalm bombs will have an additional scripted effects, which can be customized.";
+				typeName = "BOOL";
+				defaultValue = "true"; //true - 1, false - 0
+			};
 			class NapalmBombRadius : Edit {
 				property = "NapalmBombRadius";
 				displayName = "Napalm Bomb Radius";
-				tooltip = "";
+				tooltip = "Everything within this radius from the bomb impact instantly dies. A fire circle is then spawned to mark the enflamed area.";
 				typeName = "NUMBER";
 				defaultValue = 40;
+			};
+			class DeleteVegetation : Checkbox {
+				property = "DeleteVegetation";
+				displayName = "Delete Vegetation";
+				tooltip = "If true, vegetation will be gradually deleted during Napalm Lifetime.";
+				typeName = "BOOL";
+				defaultValue = "true"; //true - 1, false - 0
 			};
 			class SpawnCrater : Checkbox {
 				property = "SpawnCrater";
@@ -730,6 +614,7 @@ class CfgVehicles
 				typeName = "NUMBER";
 				defaultValue = 40;
 			};
+			class ModuleDescription : ModuleDescription {};
 		};
 	};
 	
@@ -747,6 +632,8 @@ class CfgVehicles
 		class ModuleDescription : ModuleDescription {
 			description = "";
 			sync[] = {};
+			position = 1;
+			direction = 1; 
 		};
 		class Attributes : AttributesBase {
 			class Vehicle : Combo {
@@ -788,6 +675,7 @@ class CfgVehicles
 				typeName = "BOOL";
 				defaultValue = "false"; //true - 1, false - 0
 			};
+			class ModuleDescription : ModuleDescription {};
 		};
 	};
 	
@@ -805,6 +693,8 @@ class CfgVehicles
 		class ModuleDescription : ModuleDescription {
 			description = "";
 			sync[] = {};
+			position = 1;
+			direction = 0; 
 		};
 		class Attributes : AttributesBase {
 			class Type : Combo {
@@ -856,7 +746,7 @@ class CfgVehicles
 				typeName = "BOOL";
 				defaultValue = "false"; //true - 1, false - 0
 			};
-			
+			class ModuleDescription : ModuleDescription {};
 		};
 		
 	};
@@ -944,6 +834,7 @@ class CfgVehicles
 				typeName = "BOOL";
 				defaultValue = "false";
 			};
+			class ModuleDescription : ModuleDescription {};
 		};
 	};
 	
@@ -993,7 +884,55 @@ class CfgVehicles
 				typeName = "BOOL";
 				defaultValue = "true";
 			};
-			
+			class ModuleDescription : ModuleDescription {};
+		};
+	};
+	
+	class FS_RadioSettings_Module : FS_Vietnam_Module {
+		_generalMacro = "FS_RadioSettings_Module";
+		scope = 2;
+		isGlobal = 2; // Persistent global execution
+		displayName = "Radio Settings";
+		function = "FS_fnc_RadioSettings";
+		class ModuleDescription : ModuleDescription {
+			description = "This module configures the custom radio communication system that was written from scratch specifically for this addon. There are two levels of radio access - units that are able to receive and units that are able to both receive and transmit. Only RTOs and vehicles with radio comms can transmit. Groups with RTOs are made known to pilots and can request air and artillery support. The location of units in these groups is considered by pilots when assigning targets for CAS, artillery strikes and napalm. Units from groups that have no RTOs and members of which weren't directly spotted by pilots may die due to friendly firemissions being too close to them.";
+			sync[] = {};
+		};
+		class Attributes : AttributesBase {
+			class EntitiesWithComms : Edit {
+				property = "EntitiesWithComms";
+				displayName = "Entities with built-in radio comms";
+				tooltip = "An array of entities that grant nearby units access to the radio communication system, which enables them to transmit and receive addon-specific messages over radio.";
+				defaultValue = "['Air', 'Tank', 'uns_willys_base']";
+			};
+			class AudibleRadius : Edit {
+				property = "AudibleRadius";
+				displayName = "Audible radius";
+				tooltip = "Units within this distance from RTOs or objects & vehicles specified in the field above will be given access to comms.";
+				typeName = "NUMBER";
+				defaultValue = 10;
+			};
+			class RTOItemsAndBackpacks : Edit {
+				property = "RTOItemsAndBackpacks";
+				displayName = "RTO items and backpacks";
+				tooltip = "Items and backpacks that give full access to comms. Units with these items or backpacks are considered Radio Telephone Operators (RTOs).";
+				defaultValue = "['vn_b_pack_lw_06', 'vn_b_pack_prc77_01', 'vn_b_pack_03_02', 'vn_b_pack_03', 'vn_b_pack_t884_01', 'vn_b_pack_trp_04', 'UNS_ItemRadio_PRC_25', 'UNS_NVA_RTO', 'UNS_ARMY_RTO', 'UNS_ARMY_RTO2', 'UNS_SF_RTO', 'UNS_Alice_FR', 'UNS_USMC_RTO', 'UNS_USMC_RTO2']";
+			};
+			class RequireRankingOfficer : Checkbox {
+				property = "RequireRankingOfficer";
+				displayName = "Require Ranking Officer";
+				tooltip = "Some support missions can be called only by a ranking officer. Ranking officer is the most senior officer in the group.";
+				typeName = "BOOL";
+				defaultValue = "true";
+			};
+			class EnableBrokenArrow : Checkbox {
+				property = "EnableBrokenArrow";
+				displayName = "Enable Broken Arrow callsign";
+				tooltip = "Units with radio comms may call Broken Arrow. Broken Arrow is a special callsign that means 'Friendly unit is in danger of being overrun and will be KIA unless urgent action is taken'. Units that called Broken Arrow are treated with much higher priority when assigning escort missions to pilots. Escort mission is when a pilot is stationed above a known group of friendly units to provide aerial assistance.";
+				typeName = "BOOL";
+				defaultValue = "true";
+			};
+			class ModuleDescription : ModuleDescription {};
 		};
 	};
 };
@@ -1064,25 +1003,19 @@ class CfgFunctions
 			class NapalmCreateExplosion {file = "\FS_Vietnam\Effects\Napalm\NapalmCreateExplosion.sqf";};
 		};
 		
-		class Punji {
-			class PunjiEffects {file = "\FS_Vietnam\Functions\Punji\PunjiEffects.sqf";};
-			class PunjiPostInit {file = "\FS_Vietnam\Functions\Punji\PunjiPostInit.sqf"; postInit = 1;};
-			class PunjiTrapFired {file = "\FS_Vietnam\Functions\Punji\PunjiTrapFired.sqf";};
-			class PunjiPutEventHandler {file = "\FS_Vietnam\Functions\Punji\PunjiPutEventHandler.sqf";};
+		class Traps {
+			class PutEventHandler {file = "\FS_Vietnam\Functions\Traps\PutEventHandler.sqf";};
 		};
 		
 		class Radio {
 			class AddCommsMenu {file = "\FS_Vietnam\Functions\Radio\AddCommsMenu.sqf";};
 			class HasCommSystem {file = "\FS_Vietnam\Functions\Radio\HasCommSystem.sqf";};
-			class HasRadio {file = "\FS_Vietnam\Functions\Radio\HasRadio.sqf";};
-			class HasRadioAround {file = "\FS_Vietnam\Functions\Radio\HasRadioAround.sqf";};
-			class HasRTO {file = "\FS_Vietnam\Functions\Radio\HasRTO.sqf";};
-			class HasRTOAround {file = "\FS_Vietnam\Functions\Radio\HasRTOAround.sqf";};
+			class CanTransmit {file = "\FS_Vietnam\Functions\Radio\CanTransmit.sqf";};
+			class CanReceive {file = "\FS_Vietnam\Functions\Radio\CanReceive.sqf";};
 			class TransmitDistress {file = "\FS_Vietnam\Functions\Radio\TransmitDistress.sqf";};
 			class TransmitOverRadio {file = "\FS_Vietnam\Functions\Radio\TransmitOverRadio.sqf";};
 			class TransmitSitrep {file = "\FS_Vietnam\Functions\Radio\TransmitSitrep.sqf";};
 			class IsRankingOfficer {file = "\FS_Vietnam\Functions\Radio\IsRankingOfficer.sqf";};
-			class UnsungRadioPlayback {file = "\FS_Vietnam\Functions\Radio\UnsungRadioPlayback.sqf";};
 		};
 		
 		class Behaviour {
@@ -1130,14 +1063,8 @@ class CfgFunctions
 	
 };
 
-
-/*
-	M60 & M16 sound replacement
-*/
-
 class Mode_SemiAuto;
 class Mode_FullAuto;
-
 class CfgWeapons 
 {
 	// Allow AI to fire RPGs at helicopters
@@ -1179,204 +1106,4 @@ class CfgWeapons
         };
     };
 	
-	// Remove muzzle dust effects of the US patrol boat machineguns
-	class uns_M60_v;
-	class uns_M60_PBR : uns_M60_v { //["Uns_LMG_v","uns_MGun_base","MGun","MGunCore","Default"]
-		class GunParticles {
-			class effect1 {
-				positionName = "m60_usti_hlavne";
-				directionName = "m60_konec_hlavne";
-				effectName = "";
-			};
-		};
-	};
-	class uns_M2;
-	class uns_M2_rear : uns_M2 {
-		class GunParticles {
-			class effect1 {
-				positionName = "REAR_usti_hlavne";
-				directionName = "REAR_konec_hlavne";
-				effectName = "";
-			};
-		};
-	};
-	class UNS_M2x2 : uns_M2 { //["Uns_HMG_v","uns_MGun_base","MGun","MGunCore","Default"]
-		class GunParticles {
-			class effect1 {
-				positionName = "usti_hlavne";
-				directionName = "konec_hlavne";
-				effectName = "";
-			};
-		};
-	};
-	
-	// Changing M60 firing sound
-	class Uns_HMG;
-	class uns_m60_base : Uns_HMG {
-		class FullAuto : Mode_FullAuto {
-			class BaseSoundModeType;
-			class StandardSound : BaseSoundModeType {
-				soundSetShot[] = {"DMR06_Shot_SoundSet","DMR06_tail_SoundSet","DMR06_InteriorTail_SoundSet"};
-			};
-		};
-	};
-	
-	// Promoting jamming for M16 rifles
-	class Uns_Rifle;
-	class uns_m16 : Uns_Rifle {
-		/* This will take effect only if ACE is enabled */
-		ace_overheating_mrbs = 350; //Mean Rounds Between Stoppages (scaled based on the barrel temp)
-        ace_overheating_slowdownFactor = 0.5; //Slowdown Factor (scaled based on the barrel temp)
-        ace_overheating_allowSwapBarrel = 0; // 1 to enable barrel swap. 0 to disable. Meant for machine guns where you can easily swap the barrel without dismantling the whole weapon.
-		class Single : Mode_SemiAuto {
-			class BaseSoundModeType {
-				closure1[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_Closure_01",0.398107,1,30};
-				closure2[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_Closure_02",0.398107,1,30};
-				soundClosure[] = {"closure1",0.5,"closure2",0.5};
-			};
-			class StandardSound : BaseSoundModeType {
-				soundSetShot[] = {"DMR05_Shot_SoundSet","DMR05_tail_SoundSet","DMR05_InteriorTail_SoundSet"};
-				begin1[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_short_01",2.51189,1,1200};
-				begin2[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_short_02",2.51189,1,1200};
-				begin3[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_short_03",2.51189,1,1200};
-				soundBegin[] = {"begin1",0.33,"begin2",0.33,"begin3",0.34};
-				class SoundTails {
-					class TailInterior {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_tail_interior",1.41254,1,1200};
-						frequency = 1;
-						volume = "interior";
-					};
-					class TailTrees {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_tail_trees",1,1,1200};
-						frequency = 1;
-						volume = "(1-interior/1.4)*trees";
-					};
-					class TailForest {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_tail_forest",1,1,1200};
-						frequency = 1;
-						volume = "(1-interior/1.4)*forest";
-					};
-					class TailMeadows {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_tail_meadows",1,1,1200};
-						frequency = 1;
-						volume = "(1-interior/1.4)*(meadows/2 max sea/2)";
-					};
-					class TailHouses {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_tail_houses",1,1,1200};
-						frequency = 1;
-						volume = "(1-interior/1.4)*houses";
-					};
-				};
-			};
-			class SilencedSound : BaseSoundModeType {
-				SoundSetShot[] = {"DMR05_silencerShot_SoundSet","DMR05_silencerTail_SoundSet","DMR05_silencerInteriorTail_SoundSet"};
-				begin1[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\silencer_DMR_05_short_01",1,1,300};
-				begin2[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\silencer_DMR_05_short_02",1,1,300};
-				begin3[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\silencer_DMR_05_short_03",1,1,300};
-				soundBegin[] = {"begin1",0.33,"begin2",0.33,"begin3",0.34};
-				class SoundTails {
-					class TailInterior {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\silencer_DMR_05_tail_interior",1,1,300};
-						frequency = 1;
-						volume = "interior";
-					};
-					class TailTrees {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\silencer_DMR_05_tail_trees",1,1,300};
-						frequency = 1;
-						volume = "(1-interior/1.4)*trees";
-					};
-					class TailForest {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\silencer_DMR_05_tail_forest",1,1,300};
-						frequency = 1;
-						volume = "(1-interior/1.4)*forest";
-					};
-					class TailMeadows {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\silencer_DMR_05_tail_meadows",1,1,300};
-						frequency = 1;
-						volume = "(1-interior/1.4)*(meadows/2 max sea/2)";
-					};
-					class TailHouses {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\silencer_DMR_05_tail_houses",1,1,300};
-						frequency = 1;
-						volume = "(1-interior/1.4)*houses";
-					};
-				};
-			};
-		};
-		class FullAuto : Mode_FullAuto {
-			class BaseSoundModeType {
-				closure1[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_Closure_01",0.398107,1,30};
-				closure2[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_Closure_02",0.398107,1,30};
-				soundClosure[] = {"closure1",0.5,"closure2",0.5};
-			};
-			class StandardSound : BaseSoundModeType {
-				soundSetShot[] = {"DMR05_Shot_SoundSet","DMR05_tail_SoundSet","DMR05_InteriorTail_SoundSet"};
-				begin1[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_short_01",2.51189,1,1200};
-				begin2[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_short_02",2.51189,1,1200};
-				begin3[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_short_03",2.51189,1,1200};
-				soundBegin[] = {"begin1",0.33,"begin2",0.33,"begin3",0.34};
-				class SoundTails {
-					class TailInterior {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_tail_interior",1.41254,1,1200};
-						frequency = 1;
-						volume = "interior";
-					};
-					class TailTrees {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_tail_trees",1,1,1200};
-						frequency = 1;
-						volume = "(1-interior/1.4)*trees";
-					};
-					class TailForest {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_tail_forest",1,1,1200};
-						frequency = 1;
-						volume = "(1-interior/1.4)*forest";
-					};
-					class TailMeadows {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_tail_meadows",1,1,1200};
-						frequency = 1;
-						volume = "(1-interior/1.4)*(meadows/2 max sea/2)";
-					};
-					class TailHouses {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\DMR_05_tail_houses",1,1,1200};
-						frequency = 1;
-						volume = "(1-interior/1.4)*houses";
-					};
-				};
-			};
-			class SilencedSound : BaseSoundModeType {
-				SoundSetShot[] = {"DMR05_silencerShot_SoundSet","DMR05_silencerTail_SoundSet","DMR05_silencerInteriorTail_SoundSet"};
-				begin1[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\silencer_DMR_05_short_01",1,1,300};
-				begin2[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\silencer_DMR_05_short_02",1,1,300};
-				begin3[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\silencer_DMR_05_short_03",1,1,300};
-				soundBegin[] = {"begin1",0.33,"begin2",0.33,"begin3",0.34};
-				class SoundTails {
-					class TailInterior {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\silencer_DMR_05_tail_interior",1,1,300};
-						frequency = 1;
-						volume = "interior";
-					};
-					class TailTrees {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\silencer_DMR_05_tail_trees",1,1,300};
-						frequency = 1;
-						volume = "(1-interior/1.4)*trees";
-					};
-					class TailForest {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\silencer_DMR_05_tail_forest",1,1,300};
-						frequency = 1;
-						volume = "(1-interior/1.4)*forest";
-					};
-					class TailMeadows {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\silencer_DMR_05_tail_meadows",1,1,300};
-						frequency = 1;
-						volume = "(1-interior/1.4)*(meadows/2 max sea/2)";
-					};
-					class TailHouses {
-						sound[] = {"A3\Sounds_F_Mark\arsenal\weapons\LongRangeRifles\DMR_05_Cyrus\silencer_DMR_05_tail_houses",1,1,300};
-						frequency = 1;
-						volume = "(1-interior/1.4)*houses";
-					};
-				};
-			};
-		};
-	};
 };

@@ -1,7 +1,15 @@
 
 
-if ( typeName _this == "GROUP" ) exitWith { False };
+if ( typeName _this == "GROUP" ) exitWith { false };
 
-if ( _this isKindOf "uns_willys_base" || _this isKindOf "Air" || _this isKindOf "Tank" ) exitWith { True };
+if (isNil{RADIOCOMMS_ENTITIES_WITH_COMMS}) then {
+	RADIOCOMMS_ENTITIES_WITH_COMMS = getArray (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "EntitiesWithComms" >> "defaultValue");
+};
 
-False 
+private _hasComms = false;
+{
+	if (_this isKindOf _x) exitWith { _hasComms = true };
+} 
+forEach RADIOCOMMS_ENTITIES_WITH_COMMS;
+
+_hasComms 

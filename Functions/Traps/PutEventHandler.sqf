@@ -15,14 +15,9 @@ if ( _weapon == "Put" ) then
 		FS_AllGookTraps = [];
 	};
 	
-	// TODO add isPlayer _unit to distinguish mines placed by player
-	if ( _muzzle == "uns_punj1_muzzle" ) then {
-		FS_AllGookTraps pushBack [_projectile, getPos _projectile, [vectorDir _projectile, vectorUP _projectile]]; 
-	} else {
-		FS_AllGookTraps pushBack _projectile;
-	};
+	FS_AllGookTraps pushBack _projectile;
 	
-	// For Garbage Collector && Punji Trap animations
+	// For Garbage Collector
 	publicVariable "FS_AllGookTraps"; // *sigh*
 	
 };

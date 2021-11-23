@@ -8,13 +8,14 @@ params ["_pos"];
 // Initializing default values
 if (isNil{ NAPALM_BOMB_RADIUS }) then 
 {
-	NAPALM_BOMB_RADIUS = 40;
-	NAPALM_LIFE_TIME = 40;
-	NAPALM_DAMAGE = 0.3;
-	NAPALM_TICK_RATE = 2;
-	NAPALM_VICTIMS_SCREAM = true;
-	NAPALM_VICTIMS_SMOKE_TIME = 40;
-	NAPALM_SPAWN_CRATER = true;
+	NAPALM_BOMB_RADIUS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_NapalmSettings_Module" >> "Attributes" >> "NapalmBombRadius" >> "defaultValue");
+	NAPALM_LIFE_TIME = getNumber (ConfigFile >> "CfgVehicles" >> "FS_NapalmSettings_Module" >> "Attributes" >> "NapalmLifeTime" >> "defaultValue");
+	NAPALM_DAMAGE = getNumber (ConfigFile >> "CfgVehicles" >> "FS_NapalmSettings_Module" >> "Attributes" >> "NapalmDamage" >> "defaultValue");
+	NAPALM_TICK_RATE = getNumber (ConfigFile >> "CfgVehicles" >> "FS_NapalmSettings_Module" >> "Attributes" >> "NapalmTickRate" >> "defaultValue");
+	NAPALM_VICTIMS_SCREAM = getNumber (ConfigFile >> "CfgVehicles" >> "FS_NapalmSettings_Module" >> "Attributes" >> "MakeVictimsScream" >> "defaultValue") == 1;
+	NAPALM_VICTIMS_SMOKE_TIME = getNumber (ConfigFile >> "CfgVehicles" >> "FS_NapalmSettings_Module" >> "Attributes" >> "VictimsSmokeTime" >> "defaultValue");
+	NAPALM_SPAWN_CRATER = getNumber (ConfigFile >> "CfgVehicles" >> "FS_NapalmSettings_Module" >> "Attributes" >> "SpawnCrater" >> "defaultValue") == 1;
+	NAPALM_DELETE_VEGETATION = getNumber (ConfigFile >> "CfgVehicles" >> "FS_NapalmSettings_Module" >> "Attributes" >> "DeleteVegetation" >> "defaultValue") == 1;
 };
 
 private _anchor = "#particlesource" createVehicleLocal _pos; 
@@ -26,13 +27,16 @@ if (isServer) then {
 if (hasInterface) then 
 {
 	/* Making the men inside the bomb impact radius scream */
-	private _victims = _pos nearEntities ["MAN", NAPALM_BOMB_RADIUS];
+	if (NAPALM_VICTIMS_SCREAM || NAPALM_VICTIMS_SMOKE_TIME) then 
 	{
-		// Only do screams for EAST units, because as of now we only have vietnamese screams
-		_deathSound = if (side _x == EAST) then [{selectRandom DEATH_SOUNDS},{""}];
-		[_x, _deathSound, NAPALM_LIFE_TIME] spawn FS_fnc_NapalmBurnedAlive;
-	}
-	forEach _victims;
+		private _victims = _pos nearEntities ["MAN", NAPALM_BOMB_RADIUS];
+		{
+			// Only do screams for EAST units, because as of now we only have vietnamese screams
+			_deathSound = if (side _x == EAST) then [{selectRandom DEATH_SOUNDS},{""}];
+			[_x, _deathSound, NAPALM_LIFE_TIME] spawn FS_fnc_NapalmBurnedAlive;
+		}
+		forEach _victims;
+	};
 	
 	/* Play explosion sound */
 	// this was transferred into config instead
@@ -93,16 +97,21 @@ if ( isServer ) then
 	};
 
 	/* Gradually deleting bushes in the napalm area over time */
-	private _nearestTerrainObjects = nearestTerrainObjects [_pos, ["bush"], NAPALM_BOMB_RADIUS];
-	private _count = count _nearestTerrainObjects;
-	if ( _count == 0 ) then {
+	if (NAPALM_DELETE_VEGETATION) then 
+	{
+		private _nearestTerrainObjects = nearestTerrainObjects [_pos, ["bush"], NAPALM_BOMB_RADIUS];
+		private _count = count _nearestTerrainObjects;
+		if ( _count == 0 ) then {
+			sleep NAPALM_LIFE_TIME;
+		}
+		else {
+			{ 
+				sleep ( NAPALM_LIFE_TIME / _count ); 
+				_x hideObjectGlobal true; 
+			} foreach _nearestTerrainObjects;
+		};
+	} else {
 		sleep NAPALM_LIFE_TIME;
-	}
-	else {
-		{ 
-			sleep ( NAPALM_LIFE_TIME / _count ); 
-			_x hideObjectGlobal true; 
-		} foreach _nearestTerrainObjects;
 	};
 	
 	/* Spawning crater */

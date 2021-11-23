@@ -43,7 +43,7 @@ private _center = createCenter sideLogic;
 private _group = createGroup _center;
 private _logic = _group createUnit ["LOGIC", _beginPos, [], 0, "NONE"];
 //_logic setVariable ["vehicle", "uns_F4J_CAS"]; 
-_logic setVariable ["vehicle", "uns_A7N_CAS"]; 
+_logic setVariable ["vehicle", "vn_b_air_f4b_navy_cas"]; 
 _logic setvariable ["type", 3];
 _logic setvariable ["debug", _debug];
 _logic setDir _direction;
@@ -54,7 +54,7 @@ _logic setDir _direction;
 	The_Unsung_Vietnam_War_Mod napalm bombs
 	landing 200 meters in front of the target
 */
-//if ( _planeClass == "uns_A7N_CAS" && _weaponTypesID == 3 ) then {
+//if ( _planeClass == "vn_b_air_f4b_navy_cas" && _weaponTypesID == 3 ) then {
 //	_pos = _logic getPos [50, direction _logic];
 //	_logic setPos _pos;
 //};

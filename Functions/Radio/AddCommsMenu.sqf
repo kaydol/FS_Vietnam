@@ -17,9 +17,9 @@ MENU_ARTYSCREEN_OPTIONS =
 	//["Kill Target", [3], "", -5, [["expression", "_target SetDamage 1;"]], "1", "1", "\A3\ui_f\data\IGUI\Cfg\Cursors\iconcursorsupport_ca.paa"],
 	//["Disabled", [4], "", -5, [["expression", ""]], "1", "0"],
 	//["Submenu", [5], "#USER:MENU_COMMS_2", -5, [], "1", "1"]
-	["Put strikes 50m infront", [0], "", -5, [["true","player call FS_fnc_HasRTOAround"]], "isVisible", "1", "\A3\ui_f\data\IGUI\Cfg\Cursors\iconcursorsupport_ca.paa"],
-	["Put strikes around", [0], "", -5, [["true","player call FS_fnc_HasRTOAround"]], "isVisible", "1", "\A3\ui_f\data\IGUI\Cfg\Cursors\iconcursorsupport_ca.paa"],
-	["Form a corridor ahead", [0], "", -5, [["true","player call FS_fnc_HasRTOAround"]], "isVisible", "1", "\A3\ui_f\data\IGUI\Cfg\Cursors\iconcursorsupport_ca.paa"]
+	["Put strikes 50m infront", [0], "", -5, [["true","player call FS_fnc_CanTransmit"]], "isVisible", "1", "\A3\ui_f\data\IGUI\Cfg\Cursors\iconcursorsupport_ca.paa"],
+	["Put strikes around", [0], "", -5, [["true","player call FS_fnc_CanTransmit"]], "isVisible", "1", "\A3\ui_f\data\IGUI\Cfg\Cursors\iconcursorsupport_ca.paa"],
+	["Form a corridor ahead", [0], "", -5, [["true","player call FS_fnc_CanTransmit"]], "isVisible", "1", "\A3\ui_f\data\IGUI\Cfg\Cursors\iconcursorsupport_ca.paa"]
 ];
 
 [player,"RequestAeroScreen",[],[],""] call BIS_fnc_addCommMenuItem; 

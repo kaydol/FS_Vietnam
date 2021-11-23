@@ -1,18 +1,25 @@
 
 params ["_caller"];
 
-if !( player call FS_fnc_HasRadioAround ) exitWith {
-	"You need a radio to do that" call FS_fnc_ShowMessage;
+if (isNil{RADIOCOMMS_REQUIRE_RANKING_OFFICER}) then {
+	RADIOCOMMS_REQUIRE_RANKING_OFFICER = getNumber (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "RequireRankingOfficer" >> "defaultValue") == 1;
+	RADIOCOMMS_AUDIBLE_RADIUS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "AudibleRadius" >> "defaultValue");
 };
 
 /* TODO include the mention of tanks when present */
-private _knownEnemies = count ( _caller nearTargets 500 select { [_x # 2, side _caller] call BIS_fnc_sideIsEnemy } );
-private _friendliesAround = _caller nearEntities ["MAN", 30] select { !(_x isKindOf "Animal") && [side _x, side _caller] call BIS_fnc_sideIsFriendly };
 
-if !( [player, _friendliesAround] call FS_fnc_IsRankingOfficer ) exitWith {
+private _friendliesAround = _caller nearEntities ["MAN", 30] select { !(_x isKindOf "Animal") && [side _x, side _caller] call BIS_fnc_sideIsFriendly };
+private _canTransmit = ((_caller nearEntities RADIOCOMMS_AUDIBLE_RADIUS) select { _x call FS_fnc_CanTransmit }) > 0;
+
+if ( !_canTransmit ) exitWith {
+	format["You need an RTO or a vehicle with comm system within %1 meters to do that", RADIOCOMMS_AUDIBLE_RADIUS] call FS_fnc_ShowMessage;
+};
+
+if ( RADIOCOMMS_REQUIRE_RANKING_OFFICER && ![_caller, _friendliesAround] call FS_fnc_IsRankingOfficer ) exitWith {
 	"You are not the ranking officer\nOnly ranking officers are to provide situational reports" call FS_fnc_ShowMessage;
 };
 
+private _knownEnemies = count ( _caller nearTargets 500 select { [_x # 2, side _caller] call BIS_fnc_sideIsEnemy } );
 [_caller, "KNOWN_ENEMIES_AROUND", _knownEnemies, 180] spawn FS_fnc_SetVarLifespan;
 
 /* If the caller is all alone */
@@ -29,7 +36,7 @@ if ( _knownEnemies isEqualTo 0 ) then {
 		"All clear, we are proceeding further.", 
 		"No enemy activity spotted.", 
 		"The area seems to be clear.", 
-		"It's getting too quiet here...", 
+		"Didn't see any VC. It's getting too quiet here...", 
 		"Haven't encountered any enemies so far.", 
 		"The area looks clear, haven't seen or heard any VC yet.", 
 		"Nothing to report so far. Proceeding as ordered.", 
@@ -138,7 +145,7 @@ private _format = format [_template, _nameAndRank, _companyName, _infoAboutEnemi
 [[_caller, _format], {
 	
 	if !(hasInterface) exitWith {};
-	if !( player call FS_fnc_HasRadio || player call FS_fnc_HasRTO ) exitWith {};
+	if !( _caller call FS_fnc_CanReceive ) exitWith {};
 	
 	params ["_caller", "_message"];
 	

@@ -16,7 +16,7 @@ _friendlyUnits = [];
 /* If the group has a radio operator, or is known to the pilot, add it to the pool of friendly units */
 {
 	_add = [];
-	if ( _x call FS_fnc_HasRTO || { _aircraft knowsAbout _x > 0 } count units _x > 0 ) then { 
+	if ( _x call FS_fnc_CanTransmit || { _aircraft knowsAbout _x > 0 } count units _x > 0 ) then { 
 		_add = units _x select {vehicle _x isKindOf "LAND"}; 
 	};
 	_friendlyUnits = _friendlyUnits + _add;
