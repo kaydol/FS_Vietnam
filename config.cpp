@@ -1081,6 +1081,13 @@ class CfgFunctions
 	
 };
 
+class CfgAmmo {
+	class DirectionalBombBase;
+	class vn_mine_ammobox_range_ammo : DirectionalBombBase { //["DirectionalBombCore","TimeBombCore","Default"]
+		mineInconspicuousness = 500;
+	};
+};
+
 class Mode_SemiAuto;
 class Mode_FullAuto;
 class CfgWeapons 
