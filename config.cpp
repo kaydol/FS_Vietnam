@@ -485,6 +485,24 @@ class CfgVehicles
 				typeName = "BOOL";
 				defaultValue = "true"; 
 			};
+			class RespawnLoadoutMsgStyle : Combo {
+				property = "respawnLoadoutMsgStyle";
+				displayName = "Notification style";
+				tooltip = "Defines how 'Loadout saved' messages are shown. These messages only appear if 'Respawn loadout' is checked.";
+				typeName = "NUMBER";
+				class values
+				{
+					class WS {
+						name = "Western Sahara style (BIS_fnc_textTiles)";
+						value = 1;
+						default = 1;
+					};
+					class Vanilla {
+						name = "Old (BIS_fnc_showNotification)";
+						value = 0;
+					};
+				};
+			};
 			class ModuleDescription : ModuleDescription {};
 		};
 	};

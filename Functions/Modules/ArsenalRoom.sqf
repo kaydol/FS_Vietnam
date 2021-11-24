@@ -1,4 +1,4 @@
-params ["_roomPos", "_allowAll", "_respawnLoadout"];
+params ["_roomPos", "_allowAll", "_respawnLoadout", "_respawnLoadoutMsgStyle"];
 
 if (vehicle player != player) exitWith {};
 
@@ -97,13 +97,24 @@ endLoadingScreen;
 
 if ( _respawnLoadout ) then {
 	[player, [missionNameSpace, "FS_PLAYER_LOADOUT"]] call BIS_fnc_saveInventory;
-	player addMPEventHandler ["MPRespawn", {
-		params ["_unit", "_corpse"];
-		[player, [missionNameSpace, "FS_PLAYER_LOADOUT"]] call BIS_fnc_LoadInventory;
-	}];
-	[] spawn {
+	if (isNil{missionNameSpace getVariable "FS_PLAYER_LOADOUT_HANDLER"}) then {
+		private _id = player addMPEventHandler ["MPRespawn", {
+			params ["_unit", "_corpse"];
+			[player, [missionNameSpace, "FS_PLAYER_LOADOUT"]] call BIS_fnc_LoadInventory;
+		}];
+		missionNameSpace setVariable ["FS_PLAYER_LOADOUT_HANDLER", _id];
+	};
+	_respawnLoadoutMsgStyle spawn {
 		sleep 2;
-		["RespawnAdded", ["Loadout saved", "You will respawn with the current loadout", "\a3\Ui_f\data\GUI\Cfg\CommunicationMenu\instructor_ca.paa"]] call BIS_fnc_showNotification;
+		switch (_this) do {
+			case 0: {
+				["RespawnAdded", ["Loadout saved", "You will respawn with the current loadout", "\a3\Ui_f\data\GUI\Cfg\CommunicationMenu\instructor_ca.paa"]] call BIS_fnc_showNotification; 
+			};
+			case 1: {
+				[parseText format ["<t font='PuristaBold' size='1.6' color='#FFA500' >%2</t><br />%1",gettext (configfile >> "CfgWeapons" >> currentweapon player >> "displayName"),localize "STR_LXWS_EXT_LoadOut"], true, nil, 7, 0.7, 0] spawn BIS_fnc_textTiles; 
+			};
+			default {};
+		};
 	};
 };
 

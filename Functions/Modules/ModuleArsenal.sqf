@@ -10,7 +10,8 @@ if ( isServer ) then {
 
 _allowAll = _module getVariable "allowAll";
 _respawnLoadout = _module getVariable "respawnLoadout";
+_respawnLoadoutMsgStyle = _module getVariable "respawnLoadoutMsgStyle";
 
 if (hasInterface) then {
-	[_arsenalRoomAt, _allowAll, _respawnLoadout] spawn FS_fnc_ArsenalRoom;
+	[_arsenalRoomAt, _allowAll, _respawnLoadout, _respawnLoadoutMsgStyle] spawn FS_fnc_ArsenalRoom;
 };
