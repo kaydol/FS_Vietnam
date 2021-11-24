@@ -50,7 +50,7 @@ while { _aircraft call FS_fnc_CanPerformDuties } do
 	
 	//_objectsToReveal = getPos _aircraft nearEntities ["Land", 300] select { !(_x isKindOf "Animal") }; // WallHack
 	_objectsToReveal = _aircraft targets [False, 300]; // More Fair as it only returns known objects
-	_objectsToReveal = _objectsToReveal select { getPos _x select 2 < 3 }; // Only reveal objects on Land (not snipers on trees)
+	_objectsToReveal = _objectsToReveal select { getPosATL _x select 2 < 3 }; // Only reveal objects on Land (not snipers on trees)
 	{
 		/* Informing friendlies */
 		_grp = _x;
