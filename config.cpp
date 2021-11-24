@@ -506,7 +506,7 @@ class CfgVehicles
 			class ModuleDescription : ModuleDescription {};
 		};
 	};
-	// todo rework mines to sog 
+	
 	class FS_GarbageCollector_Module : FS_Vietnam_Module {
 		_generalMacro = "FS_GarbageCollector_Module";
 		icon = "\a3\Modules_f\data\iconRespawn_ca.paa";
@@ -524,7 +524,7 @@ class CfgVehicles
 				displayName = "Dead bodies removal distance";
 				tooltip = "Minimum distance between players and dead bodies in order for the latter to be removed. Use -1 to disable.";
 				typeName = "NUMBER";
-				defaultValue = 30;
+				defaultValue = 300;
 			};
 			class TrapsRemovalDistance : Edit {
 				property = "trapsRemovalDistance";
@@ -638,11 +638,11 @@ class CfgVehicles
 	
 	class FS_NapalmCAS_Module : FS_Vietnam_Module {
 		_generalMacro = "FS_NapalmCAS_Module";
+		icon = "\a3\Modules_F_Curator\Data\iconCAS_ca.paa";
 		scope = 2;
 		scopeCurator = 0;
 		isGlobal = 1;
 		isTriggerActivated = 1;
-		icon = "\a3\Modules_F_Curator\Data\iconCAS_ca.paa";
 		portrait = "\a3\Modules_F_Curator\Data\portraitCAS_ca.paa";
 		curatorCost = 5;
 		displayName = "Napalm CAS";
@@ -699,11 +699,11 @@ class CfgVehicles
 	
 	class FS_ArtyStrike_Module : FS_Vietnam_Module {
 		_generalMacro = "FS_ArtyStrike_Module";
+		icon = "\a3\Modules_F_Curator\Data\iconOrdnance_ca.paa";
 		scope = 2;
 		scopeCurator = 0;
 		isGlobal = 1;
 		isTriggerActivated = 1;
-		icon = "\a3\Modules_F_Curator\Data\iconOrdnance_ca.paa";
 		portrait = "\a3\Modules_F_Curator\Data\portraitOrdnance_ca.paa";
 		curatorCost = 5;
 		displayName = "Artillery Strike";
@@ -907,11 +907,12 @@ class CfgVehicles
 	};
 	
 	class FS_RadioSettings_Module : FS_Vietnam_Module {
-		_generalMacro = "FS_RadioSettings_Module";
+		_generalMacro = "FS_ModuleRadioSettings";
+		icon = "\a3\Modules_F_Curator\Data\iconRadioChannelCreate_ca.paa";
 		scope = 2;
 		isGlobal = 2; // Persistent global execution
 		displayName = "Radio Settings";
-		function = "FS_fnc_RadioSettings";
+		function = "FS_fnc_ModuleRadioSettings";
 		class ModuleDescription : ModuleDescription {
 			description = "This module configures the custom radio communication system that was written from scratch specifically for this addon. There are two levels of radio access - units that are able to receive and units that are able to both receive and transmit. Only RTOs and vehicles with radio comms can transmit. Groups with RTOs are made known to pilots and can request air and artillery support. The location of units in these groups is considered by pilots when assigning targets for CAS, artillery strikes and napalm. Units from groups that have no RTOs and members of which weren't directly spotted by pilots may die due to friendly firemissions being too close to them.";
 			sync[] = {};
@@ -934,7 +935,7 @@ class CfgVehicles
 				property = "RTOItemsAndBackpacks";
 				displayName = "RTO items and backpacks";
 				tooltip = "Items and backpacks that give full access to comms. Units with these items or backpacks are considered Radio Telephone Operators (RTOs).";
-				defaultValue = "['vn_b_pack_lw_06', 'vn_b_pack_prc77_01', 'vn_b_pack_03_02', 'vn_b_pack_03', 'vn_b_pack_t884_01', 'vn_b_pack_trp_04', 'UNS_ItemRadio_PRC_25', 'UNS_NVA_RTO', 'UNS_ARMY_RTO', 'UNS_ARMY_RTO2', 'UNS_SF_RTO', 'UNS_Alice_FR', 'UNS_USMC_RTO', 'UNS_USMC_RTO2']";
+				defaultValue = "['vn_b_pack_lw_06', 'vn_b_pack_lw_06_m16_pl', 'vn_b_pack_prc77_01', 'vn_b_pack_03_02', 'vn_b_pack_03', 'vn_b_pack_t884_01', 'vn_b_pack_trp_04', 'UNS_ItemRadio_PRC_25', 'UNS_NVA_RTO', 'UNS_ARMY_RTO', 'UNS_ARMY_RTO2', 'UNS_SF_RTO', 'UNS_Alice_FR', 'UNS_USMC_RTO', 'UNS_USMC_RTO2']";
 			};
 			class RequireRankingOfficer : Checkbox {
 				property = "RequireRankingOfficer";
@@ -961,22 +962,17 @@ class CfgFunctions
 	class FS {
 		
 		class Math {
-			class kMeansClustering {file = "\FS_Vietnam\Functions\Math\kMeansClustering.sqf";};
 			class AgglomerativeClustering {file = "\FS_Vietnam\Functions\Math\AgglomerativeClustering.sqf";};
-			class CalculateCenter2D {file = "\FS_Vietnam\Functions\Math\CalculateCenter2D.sqf";};
 			class BiggestClusterDiameter {file = "\FS_Vietnam\Functions\Math\BiggestClusterDiameter.sqf";};
+			class CalculateCenter2D {file = "\FS_Vietnam\Functions\Math\CalculateCenter2D.sqf";};
 			class Clusterize {file = "\FS_Vietnam\Functions\Math\Clusterize.sqf";};
+			class kMeansClustering {file = "\FS_Vietnam\Functions\Math\kMeansClustering.sqf";};
 		};
 		
 		class Misc {
 			class DirectionWrapper {file = "\FS_Vietnam\Functions\Misc\DirectionWrapper.sqf";};
 			class DistanceBetweenArrays {file = "\FS_Vietnam\Functions\Misc\DistanceBetweenArrays.sqf";};
 			class GetSideVariable {file = "\FS_Vietnam\Functions\Misc\GetSideVariable.sqf";};
-			class SetVarLifespan {file = "\FS_Vietnam\Functions\Misc\SetVarLifespan.sqf";};
-			class ShowMessage {file = "\FS_Vietnam\Functions\Misc\ShowMessage.sqf";};
-			class Snapshots {file = "\FS_Vietnam\Functions\Misc\Snapshots.sqf";};
-			class SnapshotWrapper {file = "\FS_Vietnam\Functions\Misc\SnapshotWrapper.sqf";};
-			class UpdateSideVariable {file = "\FS_Vietnam\Functions\Misc\UpdateSideVariable.sqf";};
 			class GroupMarkers {file = "\FS_Vietnam\Functions\Misc\GroupMarkers.sqf";};
 			class ObjectsGrabber {file = "\FS_Vietnam\Functions\Misc\ObjectsGrabber.sqf";};
 			class ObjectsMapper {file = "\FS_Vietnam\Functions\Misc\ObjectsMapper.sqf";};
@@ -985,7 +981,12 @@ class CfgFunctions
 			class QueueGetData {file = "\FS_Vietnam\Functions\Misc\QueueGetData.sqf";};
 			class QueueGetSize {file = "\FS_Vietnam\Functions\Misc\QueueGetSize.sqf";};
 			class QueuePush {file = "\FS_Vietnam\Functions\Misc\QueuePush.sqf";};
+			class SetVarLifespan {file = "\FS_Vietnam\Functions\Misc\SetVarLifespan.sqf";};
 			class ShakeCam {file = "\FS_Vietnam\Functions\Misc\ShakeCam.sqf";};
+			class ShowMessage {file = "\FS_Vietnam\Functions\Misc\ShowMessage.sqf";};
+			class SnapshotWrapper {file = "\FS_Vietnam\Functions\Misc\SnapshotWrapper.sqf";};
+			class Snapshots {file = "\FS_Vietnam\Functions\Misc\Snapshots.sqf";};
+			class UpdateSideVariable {file = "\FS_Vietnam\Functions\Misc\UpdateSideVariable.sqf";};
 		};
 		
 		class Helicopters {
@@ -998,6 +999,7 @@ class CfgFunctions
 			class FinalizeTarget {file = "\FS_Vietnam\Functions\Helicopters\FinalizeTarget.sqf";};
 			class GetFriendlyUnits {file = "\FS_Vietnam\Functions\Helicopters\GetFriendlyUnits.sqf";};
 			class GetHostileUnits {file = "\FS_Vietnam\Functions\Helicopters\GetHostileUnits.sqf";};
+			class IsEnoughDaylight {file = "\FS_Vietnam\Functions\Helicopters\IsEnoughDaylight.sqf";};
 			class IsMaintenanceNeeded {file = "\FS_Vietnam\Functions\Helicopters\IsMaintenanceNeeded.sqf";};
 			class IsScrambleNeeded {file = "\FS_Vietnam\Functions\Helicopters\IsScrambleNeeded.sqf";};
 			class IsStationTaken {file = "\FS_Vietnam\Functions\Helicopters\IsStationTaken.sqf";};
@@ -1005,20 +1007,19 @@ class CfgFunctions
 			class LoachInit {file = "\FS_Vietnam\Functions\Helicopters\LoachInit.sqf";};
 			class ReloadAndRefuel {file = "\FS_Vietnam\Functions\Helicopters\ReloadAndRefuel.sqf";};
 			class Scramble {file = "\FS_Vietnam\Functions\Helicopters\Scramble.sqf";};
-			class ValidateTarget {file = "\FS_Vietnam\Functions\Helicopters\ValidateTarget.sqf";};
-			class IsEnoughDaylight {file = "\FS_Vietnam\Functions\Helicopters\IsEnoughDaylight.sqf";};
 			class SurvivedPilots {file = "\FS_Vietnam\Functions\Helicopters\SurvivedPilots.sqf";};
+			class ValidateTarget {file = "\FS_Vietnam\Functions\Helicopters\ValidateTarget.sqf";};
 		};
 		
 		class Support {
 			class DropMines {file = "\FS_Vietnam\Effects\Artillery\DropMines.sqf";};
-			class FallingDirt {file = "\FS_Vietnam\Effects\Artillery\FallingDirt.sqf";};
 			class DropNapalm {file = "\FS_Vietnam\Effects\Napalm\DropNapalm.sqf";};
-			class NapalmBurnedAlive {file = "\FS_Vietnam\Effects\Napalm\NapalmBurnedAlive.sqf";};
-			class NapalmPuffAndSparks {file = "\FS_Vietnam\Effects\Napalm\NapalmPuffAndSparks.sqf";};
-			class NapalmPhosphorusStrands {file = "\FS_Vietnam\Effects\Napalm\NapalmPhosphorusStrands.sqf";};
+			class FallingDirt {file = "\FS_Vietnam\Effects\Artillery\FallingDirt.sqf";};
 			class NapalmAfterEffect {file = "\FS_Vietnam\Effects\Napalm\NapalmAfterEffect.sqf";};
+			class NapalmBurnedAlive {file = "\FS_Vietnam\Effects\Napalm\NapalmBurnedAlive.sqf";};
 			class NapalmCreateExplosion {file = "\FS_Vietnam\Effects\Napalm\NapalmCreateExplosion.sqf";};
+			class NapalmPhosphorusStrands {file = "\FS_Vietnam\Effects\Napalm\NapalmPhosphorusStrands.sqf";};
+			class NapalmPuffAndSparks {file = "\FS_Vietnam\Effects\Napalm\NapalmPuffAndSparks.sqf";};
 		};
 		
 		class Traps {
@@ -1027,54 +1028,55 @@ class CfgFunctions
 		
 		class Radio {
 			class AddCommsMenu {file = "\FS_Vietnam\Functions\Radio\AddCommsMenu.sqf";};
-			class HasCommSystem {file = "\FS_Vietnam\Functions\Radio\HasCommSystem.sqf";};
-			class CanTransmit {file = "\FS_Vietnam\Functions\Radio\CanTransmit.sqf";};
 			class CanReceive {file = "\FS_Vietnam\Functions\Radio\CanReceive.sqf";};
+			class CanTransmit {file = "\FS_Vietnam\Functions\Radio\CanTransmit.sqf";};
+			class HasCommSystem {file = "\FS_Vietnam\Functions\Radio\HasCommSystem.sqf";};
+			class IsRankingOfficer {file = "\FS_Vietnam\Functions\Radio\IsRankingOfficer.sqf";};
 			class TransmitDistress {file = "\FS_Vietnam\Functions\Radio\TransmitDistress.sqf";};
 			class TransmitOverRadio {file = "\FS_Vietnam\Functions\Radio\TransmitOverRadio.sqf";};
 			class TransmitSitrep {file = "\FS_Vietnam\Functions\Radio\TransmitSitrep.sqf";};
-			class IsRankingOfficer {file = "\FS_Vietnam\Functions\Radio\IsRankingOfficer.sqf";};
 		};
 		
 		class Behaviour {
+			class AttackPlanner {file = "\FS_Vietnam\Functions\Behaviour\AttackPlanner.sqf";};
+			class FilterObjects {file = "\FS_Vietnam\Functions\Behaviour\FilterObjects.sqf";};
+			class GetHiddenPos {file = "\FS_Vietnam\Functions\Behaviour\GetHiddenPos.sqf";};
+			class GetHiddenPos2 {file = "\FS_Vietnam\Functions\Behaviour\GetHiddenPos2.sqf";};
+			class GookSenses {file = "\FS_Vietnam\Functions\Behaviour\GookSenses.sqf";};
 			class GrpFiredNear {file = "\FS_Vietnam\Functions\Behaviour\GrpFiredNear.sqf";};
 			class GrpFiredNearExec {file = "\FS_Vietnam\Functions\Behaviour\GrpFiredNearExec.sqf";};
 			class GrpHideInTrees {file = "\FS_Vietnam\Functions\Behaviour\GrpHideInTrees.sqf";};
 			class GrpNearestEnemy {file = "\FS_Vietnam\Functions\Behaviour\GrpNearestEnemy.sqf";};
 			class GrpPlaceTraps {file = "\FS_Vietnam\Functions\Behaviour\GrpPlaceTraps.sqf";};
+			class IsEnoughSuspense {file = "\FS_Vietnam\Functions\Behaviour\IsEnoughSuspense.sqf";};
 			class IsGroupSpotted {file = "\FS_Vietnam\Functions\Behaviour\IsGroupSpotted.sqf";};
-			class PlaceTrap {file = "\FS_Vietnam\Functions\Behaviour\PlaceTrap.sqf";};
-			class OccupyTree {file = "\FS_Vietnam\Functions\Behaviour\OccupyTree.sqf";};
-			class UnitsReady {file = "\FS_Vietnam\Functions\Behaviour\UnitsReady.sqf";};
-			class GookSenses {file = "\FS_Vietnam\Functions\Behaviour\GookSenses.sqf";};
 			class IsPlaceSafe {file = "\FS_Vietnam\Functions\Behaviour\IsPlaceSafe.sqf";};
-			class FilterObjects {file = "\FS_Vietnam\Functions\Behaviour\FilterObjects.sqf";};
+			class IsPosHidden {file = "\FS_Vietnam\Functions\Behaviour\IsPosHidden.sqf";};
+			class OccupyTree {file = "\FS_Vietnam\Functions\Behaviour\OccupyTree.sqf";};
+			class PlaceTrap {file = "\FS_Vietnam\Functions\Behaviour\PlaceTrap.sqf";};
 			class SpawnGooks {file = "\FS_Vietnam\Functions\Behaviour\SpawnGooks.sqf";};
 			class Suspense {file = "\FS_Vietnam\Functions\Behaviour\Suspense.sqf";};
-			class IsEnoughSuspense {file = "\FS_Vietnam\Functions\Behaviour\IsEnoughSuspense.sqf";};
-			class GetHiddenPos {file = "\FS_Vietnam\Functions\Behaviour\GetHiddenPos.sqf";};
-			class GetHiddenPos2 {file = "\FS_Vietnam\Functions\Behaviour\GetHiddenPos2.sqf";};
-			class AttackPlanner {file = "\FS_Vietnam\Functions\Behaviour\AttackPlanner.sqf";};
-			class IsPosHidden {file = "\FS_Vietnam\Functions\Behaviour\IsPosHidden.sqf";};
+			class UnitsReady {file = "\FS_Vietnam\Functions\Behaviour\UnitsReady.sqf";};
 		};
 		
 		class Modules {
-			class ModuleCreateAirBase {file = "\FS_Vietnam\Functions\Modules\ModuleCreateAirBase.sqf";};
-			class ModuleAirCommand {file = "\FS_Vietnam\Functions\Modules\ModuleAirCommand.sqf";};
-			class ModuleGookManager {file = "\FS_Vietnam\Functions\Modules\ModuleGookManager.sqf";};
-			class GetModuleOwner {file = "\FS_Vietnam\Functions\Modules\GetModuleOwner.sqf";};
-			class AuthenticLoadout {file = "\FS_Vietnam\Functions\Modules\AuthenticLoadout.sqf";};
-			class ModuleArsenal {file = "\FS_Vietnam\Functions\Modules\ModuleArsenal.sqf";};
 			class ArsenalRoom {file = "\FS_Vietnam\Functions\Modules\ArsenalRoom.sqf";};
 			class ArsenalRoomCreate {file = "\FS_Vietnam\Functions\Modules\ArsenalRoomCreate.sqf";};
-			class ModuleGarbageCollector {file = "\FS_Vietnam\Functions\Modules\ModuleGarbageCollector.sqf";};
-			class ModuleNapalmSettings {file = "\FS_Vietnam\Functions\Modules\ModuleNapalmSettings.sqf";};
-			class ModuleNapalmCAS {file = "\FS_Vietnam\Functions\Modules\ModuleNapalmCAS.sqf";};
-			class ModuleJukebox {file = "\FS_Vietnam\Functions\Modules\ModuleJukebox.sqf";};
+			class AuthenticLoadout {file = "\FS_Vietnam\Functions\Modules\AuthenticLoadout.sqf";};
+			class GetModuleOwner {file = "\FS_Vietnam\Functions\Modules\GetModuleOwner.sqf";};
 			class JukeboxPlayMusic {file = "\FS_Vietnam\Functions\Modules\JukeboxPlayMusic.sqf";};
-			class ModuleMaintenanceSettings {file = "\FS_Vietnam\Functions\Modules\ModuleMaintenanceSettings.sqf";};
+			class ModuleAirCommand {file = "\FS_Vietnam\Functions\Modules\ModuleAirCommand.sqf";};
+			class ModuleArsenal {file = "\FS_Vietnam\Functions\Modules\ModuleArsenal.sqf";};
 			class ModuleArtyStrike {file = "\FS_Vietnam\Functions\Modules\ModuleArtyStrike.sqf";};
+			class ModuleCreateAirBase {file = "\FS_Vietnam\Functions\Modules\ModuleCreateAirBase.sqf";};
+			class ModuleGarbageCollector {file = "\FS_Vietnam\Functions\Modules\ModuleGarbageCollector.sqf";};
 			class ModuleGookArea {file = "\FS_Vietnam\Functions\Modules\ModuleGookArea.sqf";};
+			class ModuleGookManager {file = "\FS_Vietnam\Functions\Modules\ModuleGookManager.sqf";};
+			class ModuleJukebox {file = "\FS_Vietnam\Functions\Modules\ModuleJukebox.sqf";};
+			class ModuleMaintenanceSettings {file = "\FS_Vietnam\Functions\Modules\ModuleMaintenanceSettings.sqf";};
+			class ModuleNapalmCAS {file = "\FS_Vietnam\Functions\Modules\ModuleNapalmCAS.sqf";};
+			class ModuleNapalmSettings {file = "\FS_Vietnam\Functions\Modules\ModuleNapalmSettings.sqf";};
+			class ModuleRadioSettings {file = "\FS_Vietnam\Functions\Modules\ModuleRadioSettings.sqf";};
 			class VisualizeModuleRadius3DEN {file = "\FS_Vietnam\Functions\Modules\VisualizeModuleRadius3DEN.sqf";};
 		};
 	};

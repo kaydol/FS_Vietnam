@@ -2,8 +2,8 @@
 params ["_caller"];
 
 if (isNil{RADIOCOMMS_REQUIRE_RANKING_OFFICER}) then {
-	RADIOCOMMS_REQUIRE_RANKING_OFFICER = getNumber (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "RequireRankingOfficer" >> "defaultValue") == 1;
-	RADIOCOMMS_AUDIBLE_RADIUS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "AudibleRadius" >> "defaultValue");
+	RADIOCOMMS_REQUIRE_RANKING_OFFICER = getNumber (ConfigFile >> "CfgVehicles" >> "FS_ModuleRadioSettings" >> "Attributes" >> "RequireRankingOfficer" >> "defaultValue") == 1;
+	RADIOCOMMS_AUDIBLE_RADIUS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_ModuleRadioSettings" >> "Attributes" >> "AudibleRadius" >> "defaultValue");
 };
 
 /* TODO include the mention of tanks when present */

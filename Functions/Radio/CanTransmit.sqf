@@ -8,7 +8,7 @@
 if ( _this call FS_fnc_HasCommSystem ) exitWith { true };
 
 if (isNil{RADIOCOMMS_ITEMS_BACKPACKS}) then {
-	RADIOCOMMS_ITEMS_BACKPACKS = getArray (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "RTOItemsAndBackpacks" >> "defaultValue");
+	RADIOCOMMS_ITEMS_BACKPACKS = getArray (ConfigFile >> "CfgVehicles" >> "FS_ModuleRadioSettings" >> "Attributes" >> "RTOItemsAndBackpacks" >> "defaultValue");
 };
 
 private _hasRTO = false; 
@@ -16,7 +16,7 @@ private _isGroup = typeName _this == "GROUP";
 private _pool = if ( _isGroup ) then [{units _this}, {[_this]}];
 
 {
-	if ( count ( RADIOCOMMS_ITEMS_BACKPACKS arrayIntersect (items _x + assignedItems _x + [backpack _x]) ) > 0 ) exitWith 
+	if ( count ((RADIOCOMMS_ITEMS_BACKPACKS apply {toLowerANSI _x}) arrayIntersect ((items _x + assignedItems _x + [backpack _x]) apply {toLowerANSI _x})) > 0 ) exitWith 
 	{
 		_hasRTO = true;
 		/*
