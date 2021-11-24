@@ -25,6 +25,8 @@ Author:
 params ["_logic"];
 
 _spawnCondition = _logic getVariable "SpawnCondition";
+if !(_spawnCondition isEqualType "") then { _spawnCondition = str _spawnCondition; };
+
 _assessmentRate = _logic getVariable "Sleep";
 _ailimit = _logic getVariable "AILimit";
 _groupSize = _logic getVariable "GroupSize";
