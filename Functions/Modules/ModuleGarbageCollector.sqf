@@ -17,7 +17,9 @@ if (!_removePreplacedUnits) then {
 		};
 	} forEach AllGroups;
 	{
-		_x setVariable ["ExcludeFromGarbageCollector", true, true];
+		private _vehicle = _x;
+		_vehicle setVariable ["ExcludeFromGarbageCollector", true, true];
+		{ _x setVariable ["ExcludeFromGarbageCollector", true, true]; } forEach crew _vehicle;
 	} forEach vehicles;
 };
 
