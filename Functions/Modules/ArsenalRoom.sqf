@@ -111,7 +111,7 @@ if ( _respawnLoadout ) then {
 				["RespawnAdded", ["Loadout saved", "You will respawn with the current loadout", "\a3\Ui_f\data\GUI\Cfg\CommunicationMenu\instructor_ca.paa"]] call BIS_fnc_showNotification; 
 			};
 			case 1: {
-				[parseText format ["<t font='PuristaBold' size='1.6' color='#FFA500' >%2</t><br />%1",gettext (configfile >> "CfgWeapons" >> currentweapon player >> "displayName"),localize "STR_LXWS_EXT_LoadOut"], true, nil, 7, 0.7, 0] spawn BIS_fnc_textTiles; 
+				[parseText format ["<t font='PuristaBold' size='1.6' color='#FFA500' >%2</t><br />%1",gettext (configfile >> "CfgWeapons" >> currentweapon player >> "displayName"),"LOADOUT SAVED"], true, nil, 7, 0.7, 0] spawn BIS_fnc_textTiles; 
 			};
 			default {};
 		};
