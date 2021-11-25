@@ -16,9 +16,10 @@ if (isNil{RADIOCOMMS_AUDIBLE_RADIUS}) then {
 	RADIOCOMMS_AUDIBLE_RADIUS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_ModuleRadioSettings" >> "Attributes" >> "AudibleRadius" >> "defaultValue");
 };
 
-private _entities = _this nearEntities RADIOCOMMS_AUDIBLE_RADIUS;
+private _entities = _this nearObjects RADIOCOMMS_AUDIBLE_RADIUS;
 {
-	if ( [side _x, side _this] call BIS_fnc_sideIsFriendly && [_x, true] call FS_fnc_CanReceive ) exitWith {
+	if ([side _x, side _this] call BIS_fnc_sideIsFriendly && [_x, true] call FS_fnc_CanReceive || 
+		typeOf _x in (RADIOCOMMS_ENTITIES_WITH_COMMS apply {toLowerAnsi _x})) exitWith {
 		_ableToReceiveRadioComms = true;
 	};
 	
