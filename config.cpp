@@ -4,8 +4,8 @@ class CfgPatches
 	class FS_Vietnam
 	{
 		units[] = {"Invisible_Minigun_Turret"};
-		weapons[] = {"uns_m60_base", "uns_tripwire_punj1"};
-		requiredAddons[] = {"A3_Data_F", "uns_weap_c", "uns_armour_c", "A3_Weapons_F_Mark", "uns_missilebox_c", "uns_traps_s"};
+		weapons[] = {};
+		requiredAddons[] = {"A3_Data_F", "A3_Weapons_F_Mark", "weapons_f_vietnam_c"};
 		requiredVersion = 0.100000;
 		author = "kaydol";
 		url = "";
@@ -907,7 +907,7 @@ class CfgVehicles
 	};
 	
 	class FS_RadioSettings_Module : FS_Vietnam_Module {
-		_generalMacro = "FS_ModuleRadioSettings";
+		_generalMacro = "FS_RadioSettings_Module";
 		icon = "\a3\Modules_F_Curator\Data\iconRadioChannelCreate_ca.paa";
 		scope = 2;
 		isGlobal = 2; // Persistent global execution
@@ -1080,11 +1080,11 @@ class CfgFunctions
 			class VisualizeModuleRadius3DEN {file = "\FS_Vietnam\Functions\Modules\VisualizeModuleRadius3DEN.sqf";};
 		};
 	};
-	
 };
 
 class CfgAmmo {
 	class DirectionalBombBase;
+	// from weapons_f_vietnam_c
 	class vn_mine_ammobox_range_ammo : DirectionalBombBase { //["DirectionalBombCore","TimeBombCore","Default"]
 		mineInconspicuousness = 500;
 	};
