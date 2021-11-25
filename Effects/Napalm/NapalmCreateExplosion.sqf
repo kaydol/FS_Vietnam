@@ -27,7 +27,7 @@ if (isServer) then {
 if (hasInterface) then 
 {
 	/* Making the men inside the bomb impact radius scream */
-	if (NAPALM_VICTIMS_SCREAM || NAPALM_VICTIMS_SMOKE_TIME) then 
+	if (NAPALM_VICTIMS_SCREAM || NAPALM_VICTIMS_SMOKE_TIME > 0) then 
 	{
 		private _victims = _pos nearEntities ["MAN", NAPALM_BOMB_RADIUS];
 		{
