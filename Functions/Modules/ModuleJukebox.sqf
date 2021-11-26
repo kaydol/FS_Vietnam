@@ -2,9 +2,9 @@
 #define JUKEBOX_PRESET_ARSENAL 0
 #define JUKEBOX_PRESET_CUSTOM 3
 
-_logic = _this select 0;
-_units = _this select 1;
-_activated = _this select 2;
+params ["_logic", "_units", "_activated"];
+
+if !(_activated) exitWith {};
 
 /* A little hack to make the logic have a nice string-friendly name */
 _logicName = format ["ModuleJukebox_%1", round random 1000000];

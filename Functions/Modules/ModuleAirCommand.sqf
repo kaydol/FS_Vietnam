@@ -20,7 +20,9 @@ Author:
 
 if !(isServer || isDedicated) exitWith {};
 
-params ["_module"];
+params ["_module", "_units", "_activated"];
+
+if !(_activated) exitWith {};
 
 _assessmentRate = _module getVariable "assessmentRate";
 _artilleryThreshold = _module getVariable "artilleryThreshold";
@@ -52,7 +54,18 @@ forEach _synced;
 
 // Step 2. Run scripts on synced aircrafts
 {
-	[_x, _assessmentRate, [_artilleryThreshold, _artilleryCD, _napalmThreshold, _napalmCD], objNull, _debug] execFSM "\FS_Vietnam\FSM\Loach.fsm"; 
+	private _fsmInProgress = false;
+	
+	if (!isNil{_x getVariable "AirCommandFSMHandle"}) then {
+		_fsmInProgress = !completedFSM (_x getVariable "AirCommandFSMHandle");
+	};
+	
+	if !(_fsmInProgress) then 
+	{
+		private _fsmHandle = [_x, _assessmentRate, [_artilleryThreshold, _artilleryCD, _napalmThreshold, _napalmCD], objNull, _debug] execFSM "\FS_Vietnam\FSM\Loach.fsm";
+		
+		_x setVariable ["AirCommandFSMHandle", _fsmHandle, true];
+	};
 }
 forEach _aircrafts;
 

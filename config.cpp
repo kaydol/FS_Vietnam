@@ -278,6 +278,7 @@ class CfgVehicles
 		icon = "\a3\Modules_f\data\iconHQ_ca.paa";
 		portrait = "\a3\Modules_f\data\portraitHQ_ca.paa";
 		scope = 2;
+		isTriggerActivated = 1;
 		displayName = "Air Command";
 		function = "FS_fnc_ModuleAirCommand";
 		class ModuleDescription : ModuleDescription {
@@ -463,6 +464,7 @@ class CfgVehicles
 		_generalMacro = "FS_Arsenal_Module";
 		scope = 2;
 		isGlobal = 2; // Persistent global execution
+		isTriggerActivated = 1;
 		displayName = "Arsenal Room";
 		function = "FS_fnc_ModuleArsenal";
 		isDisposable = 0; // 1 if modules is to be disabled once it's activated (i.e., repeated trigger activation won't work)
@@ -776,6 +778,7 @@ class CfgVehicles
 		function = "FS_fnc_ModuleJukebox";
 		isDisposable = 1; // 1 if modules is to be disabled once it's activated (i.e., repeated trigger activation won't work)
 		isGlobal = 2; // 0 for server only execution, 1 for global execution, 2 for persistent global execution
+		isTriggerActivated = 1;
 		class ModuleDescription : ModuleDescription {
 			description = "Module that runs on server and plays music for all connected clients";
 			sync[] = {};
@@ -935,7 +938,7 @@ class CfgVehicles
 				property = "RTOItemsAndBackpacks";
 				displayName = "RTO items and backpacks";
 				tooltip = "Items and backpacks that give full access to comms. Units with these items or backpacks are considered Radio Telephone Operators (RTOs).";
-				defaultValue = "['vn_b_pack_lw_06', 'vn_b_pack_lw_06_m16_pl', 'vn_b_pack_prc77_01', 'vn_b_pack_03_02', 'vn_b_pack_03', 'vn_b_pack_t884_01', 'vn_b_pack_trp_04', 'UNS_ItemRadio_PRC_25', 'UNS_NVA_RTO', 'UNS_ARMY_RTO', 'UNS_ARMY_RTO2', 'UNS_SF_RTO', 'UNS_Alice_FR', 'UNS_USMC_RTO', 'UNS_USMC_RTO2']";
+				defaultValue = "['vn_o_pack_t884_01', 'vn_b_pack_lw_06', 'vn_b_pack_lw_06_m16_pl', 'vn_b_pack_prc77_01', 'vn_b_pack_03_02', 'vn_b_pack_03', 'vn_b_pack_t884_01', 'vn_b_pack_trp_04', 'UNS_ItemRadio_PRC_25', 'UNS_NVA_RTO', 'UNS_ARMY_RTO', 'UNS_ARMY_RTO2', 'UNS_SF_RTO', 'UNS_Alice_FR', 'UNS_USMC_RTO', 'UNS_USMC_RTO2']";
 			};
 			class RequireRankingOfficer : Checkbox {
 				property = "RequireRankingOfficer";

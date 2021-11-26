@@ -2,13 +2,13 @@ params ["_roomPos", "_allowAll", "_respawnLoadout", "_respawnLoadoutMsgStyle"];
 
 if (vehicle player != player) exitWith {};
 
-//startLoadingScreen ["Loading Arsenal..."];
-
 player setVariable ["UsesArsenalRoom", True, True];
 _returnPos = getPosATL player;
 _returnDir = getDir player;
 
 sleep 0.001;
+
+//["TeleportToArsenalRoom", "Loading Arsenal"] call BIS_fnc_startLoadingScreen;
 
 private _getPlayerShiftBasedOnGUID = {
 	params ["_beginPos", "_guid"];
@@ -42,7 +42,7 @@ _playerDirInRoom = 180.0;
 player setPosASL ( _roomPos vectorAdd _playerPosInRoom );
 player setDir _playerDirInRoom;
 
-//endLoadingScreen;
+//"TeleportToArsenalRoom" call BIS_fnc_endLoadingScreen;
 
 sleep 0.001;
 
