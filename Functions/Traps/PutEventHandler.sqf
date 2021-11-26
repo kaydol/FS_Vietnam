@@ -3,13 +3,14 @@ params ["_unit", "_weapon", "_muzzle", "_mode", "_ammo", "_magazine", "_projecti
 
 if ( _weapon == "Put" ) then 
 {
-	private _id = _unit getVariable "PunjiPutEventHandler";
+	private _id = _unit getVariable "PutEventHandler";
 	
 	if !( isNil{ _id } ) then {
 		// Only remove this handler if it was stored in unit's namespace
 		_unit removeEventHandler ["Fired", _id]; 
 	};
 	_projectile setVectorUp surfaceNormal position _projectile; // To fix some punji traps' wrong orientation
+	_projectile enableDynamicSimulation true;
 	
 	if ( isNil { FS_AllGookTraps }) then {
 		FS_AllGookTraps = [];

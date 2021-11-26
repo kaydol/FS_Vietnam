@@ -21,7 +21,7 @@ _choice = selectRandom (_tripwires + _punjis);
 
 _id = _unit addEventHandler ["Fired", { _this call FS_fnc_PutEventHandler; }];
 
-_unit setVariable ["PunjiPutEventHandler", _id];
+_unit setVariable ["PutEventHandler", _id];
 
 if ( _choice in _tripwires ) then {
 	_unit selectWeapon "ClassicMineWireMuzzle"; 
