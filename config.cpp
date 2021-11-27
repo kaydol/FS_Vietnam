@@ -418,14 +418,14 @@ class CfgVehicles
 			};
 			class SpawnDistanceMoving : Edit {
 				property = "SpawnDistanceMoving";
-				displayName = "Spawn Distance when target is moving";
+				displayName = "Spawn Distance (target moving)";
 				tooltip = "Spawn distance when a group of players that is about to be attacked is on the move (when players have been moving through jungle for some time, etc). If players are moving, Gooks are always spawned in their path. When Garbage Collector module is present, be mindful of Gook removal distance to avoid spawned Gooks being instantly removed due to players being too far.";
 				typeName = "NUMBER";
 				defaultValue = 200;
 			};
 			class SpawnDistanceStationary : Edit {
 				property = "SpawnDistanceStationary";
-				displayName = "Spawn Distance when target is still";
+				displayName = "Spawn Distance (target stationary)";
 				tooltip = "Spawn distance when a group of players that is about to be attacked is stationary (when players are defending a spot). When players are stationary, Gooks are spawned randomly on the circle with this radius. When Garbage Collector module is present, be mindful of Gook removal distance to avoid spawned Gooks being instantly removed due to players being too far.";
 				typeName = "NUMBER";
 				defaultValue = 400;
@@ -997,6 +997,7 @@ class CfgFunctions
 			class SnapshotWrapper {file = "\FS_Vietnam\Functions\Misc\SnapshotWrapper.sqf";};
 			class Snapshots {file = "\FS_Vietnam\Functions\Misc\Snapshots.sqf";};
 			class UpdateSideVariable {file = "\FS_Vietnam\Functions\Misc\UpdateSideVariable.sqf";};
+			class VisualizeBestPlaces {file = "\FS_Vietnam\Functions\Misc\VisualizeBestPlaces.sqf";};
 		};
 		
 		class Helicopters {

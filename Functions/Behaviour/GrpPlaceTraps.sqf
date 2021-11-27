@@ -10,16 +10,16 @@ if ({alive _x} count units _group <= 0) exitWith { };
 	First, see if the group has any traps 
 */
 
-_tripwires = getArray (configFile >> "CfgWeapons" >> "Put" >> DEF_PUT_MUZZLE_WIREMINE >> "magazines");
-_punjis = getArray (configFile >> "CfgWeapons" >> "Put" >> DEF_PUT_MUZZLE_PUNJI >> "magazines");
-_traps = _tripwires + _punjis;
+private _tripwires = getArray (configFile >> "CfgWeapons" >> "Put" >> DEF_PUT_MUZZLE_WIREMINE >> "magazines");
+private _punjis = getArray (configFile >> "CfgWeapons" >> "Put" >> DEF_PUT_MUZZLE_PUNJI >> "magazines");
+private _traps = _tripwires + _punjis;
 
-_hasTraps = {
+private _hasTraps = {
 	params ["_unit", "_traps"];
 	count ( magazines _unit arrayIntersect _traps ) > 0
 };
 
-_sappers = units _group select { [_x, _traps] call _hasTraps && !isPlayer _x }; // Exclude players from sappers who receive orders
+private _sappers = units _group select { [_x, _traps] call _hasTraps && !isPlayer _x }; // Exclude players from sappers who receive orders
 if ( _sappers isEqualTo [] ) exitWith { /* No explosives */ };
 
 /*
@@ -27,9 +27,9 @@ if ( _sappers isEqualTo [] ) exitWith { /* No explosives */ };
 	use his position as a center when looking for best places 
 */
 
-_leader = leader _group;
+private _leader = leader _group;
 if ( isNull _leader ) then { _leader = selectRandom (units _group select {alive _x}) };
-_places = selectBestPlaces [position _leader, 50, "(forest + 2*trees) * (1-houses) * (1-sea)", 1, 20];
+private _places = selectBestPlaces [position _leader, 50, DEF_GOOK_MANAGER_TRAPS_BEST_PLACES, 1, 20];
 
 
 // Hold position
@@ -42,7 +42,7 @@ while { count _places > 0 && count _sappers > 0 } do
 	{
 		if ( count _places == 0 ) exitWith { };
 		
-		_pop = ( _places # (count _places - 1) ) # 0;
+		private _pop = ( _places # (count _places - 1) ) # 0;
 		_places resize (count _places - 1);
 		
 		[_x, _pop] spawn 

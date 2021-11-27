@@ -8,10 +8,8 @@ if !(local _unit) exitWith {
 	[_unit] remoteExec ["FS_fnc_PlaceTrap", _unit];
 };
 
-private ["_tripwires", "_punjis", "_choice", "_id"];
-
-_tripwires = getArray (configFile >> "CfgWeapons" >> "Put" >> DEF_PUT_MUZZLE_WIREMINE >> "magazines");
-_punjis = getArray (configFile >> "CfgWeapons" >> "Put" >> DEF_PUT_MUZZLE_PUNJI >> "magazines");
+private _tripwires = getArray (configFile >> "CfgWeapons" >> "Put" >> DEF_PUT_MUZZLE_WIREMINE >> "magazines");
+private _punjis = getArray (configFile >> "CfgWeapons" >> "Put" >> DEF_PUT_MUZZLE_PUNJI >> "magazines");
 
 _tripwires = magazines _unit arrayIntersect _tripwires; // returns an array of unique common elements
 _punjis = magazines _unit arrayIntersect _punjis; 		// returns an array of unique common elements
@@ -19,9 +17,9 @@ _punjis = magazines _unit arrayIntersect _punjis; 		// returns an array of uniqu
 if (count _tripwires == 0 && count _punjis == 0) exitWith {};
 
 _unit playActionNow "PutDown"; 
-_choice = selectRandom (_tripwires + _punjis);
+private _choice = selectRandom (_tripwires + _punjis);
 
-_id = _unit addEventHandler ["Fired", { _this call FS_fnc_PutEventHandler; }];
+private _id = _unit addEventHandler ["Fired", { _this call FS_fnc_PutEventHandler; }];
 
 _unit setVariable ["PutEventHandler", _id];
 

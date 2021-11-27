@@ -1,0 +1,87 @@
+
+#define DEF_HANDLER_VARNAME "VisualizeBestPlaces_HandlerId"
+#define DEF_PLACES_VARNAME "VisualizeBestPlaces_Places"
+#define DEF_MARKERS_VARNAME "VisualizeBestPlaces_Markers"
+
+params ["_position", "_expression"];
+
+private _places = selectBestPlaces [_position, 50, _expression, 1, 20];
+
+if (!isNil{missionNameSpace getVariable DEF_HANDLER_VARNAME}) then {
+	[DEF_HANDLER_VARNAME, "onEachFrame"] call BIS_fnc_removeStackedEventHandler;
+	
+	private _markers = missionNameSpace getVariable [DEF_MARKERS_VARNAME, []];
+	{ deleteMarker _x } forEach _markers;
+	
+	missionNameSpace setVariable [DEF_HANDLER_VARNAME, nil];
+	missionNameSpace setVariable [DEF_PLACES_VARNAME, nil];
+	missionNameSpace setVariable [DEF_MARKERS_VARNAME, nil];
+};
+
+private _id = [DEF_HANDLER_VARNAME, "onEachFrame", 
+{
+	private _places = missionNameSpace getVariable [DEF_PLACES_VARNAME, []];
+	{
+		_x params ["_pos2D", "_value"];
+		
+		private _k = 10 / (player distance2D _pos2D);
+		
+		[1*_k, 1*_k, 0, true, 0.04*_k, "RobotoCondensed", "center", true, 0.005*_k, -0.035*_k] params [
+			"_width", 
+			"_height", 
+			"_angle", 
+			"_drawOutline",
+			"_textSize", 
+			"_font", 
+			"_textAlign", 
+			"_drawSideArrows", 
+			"_offsetX", 
+			"_offsetY"
+		];
+		
+		drawIcon3D [
+			"\a3\ui_f\data\igui\cfg\simpletasks\types\mine_ca.paa", 
+			[1,1,1,1], 
+			_pos2D, 
+			_width min 2,
+			_height min 2, 
+			_angle, 
+			str _value, 
+			_drawOutline, 
+			_textSize min 0.15, 
+			_font, 
+			_textAlign, 
+			_drawSideArrows//,
+			//_offsetX,
+			//_offsetY
+		];
+		
+		drawLine3D [player modelToWorldVisual [0,0,1], _pos2D, [1,0,0,1]];
+		
+	} forEach _places;
+}] call BIS_fnc_addStackedEventHandler;
+
+if (_id != DEF_HANDLER_VARNAME) then {
+	//-- Failed to add stacked event handler
+	missionNameSpace setVariable [DEF_HANDLER_VARNAME, nil];
+	missionNameSpace setVariable [DEF_PLACES_VARNAME, nil];
+	missionNameSpace setVariable [DEF_MARKERS_VARNAME, nil];
+	
+	systemChat "Failed to add stacked event handler";
+} else {
+	//-- Handler added
+	private _markers = [];
+	{
+		_x params ["_pos2D", "_value"];
+		private _marker = createMarkerLocal [str(round random(1000000)), _pos2D];
+		_marker setMarkerTypeLocal "loc_mine";
+		_marker setMarkerColor "ColorRed";
+		_marker setMarkerText str _value;
+		_markers pushBack _marker;
+	} forEach _places;
+	
+	missionNameSpace setVariable [DEF_HANDLER_VARNAME, _id];
+	missionNameSpace setVariable [DEF_PLACES_VARNAME, _places];
+	missionNameSpace setVariable [DEF_MARKERS_VARNAME, _markers];
+};
+
