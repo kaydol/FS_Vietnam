@@ -1,5 +1,5 @@
 
-#define PREDICTION_CONE 30
+#include "..\..\definitions.h"
 
 params ["_cluster", "_unitsToHideFrom", "_sufficientClusterShift", "_distanceToSpawn", "_groupsCount", "_groupSize", "_areaModules", ["_debug", false, [true]]];
 
@@ -25,24 +25,11 @@ if ( _isAmbush ) then
 {
 	/* If the cluster has been moving... */ 
 	// Getting a hidden position along the direction of movement 
-	_angleMin = abs( ( _trendDir - PREDICTION_CONE / 2 ) % 360 );
-	_angleMax = abs( ( _trendDir + PREDICTION_CONE / 2 ) % 360 );
+	_angleMin = abs( ( _trendDir - DEF_GOOK_MANAGER_AMBUSH_CONE_ANGLE / 2 ) % 360 );
+	_angleMax = abs( ( _trendDir + DEF_GOOK_MANAGER_AMBUSH_CONE_ANGLE / 2 ) % 360 );
 	_distanceToSpawn = _spawnDistanceMoving;
 	
-	// Spawn only sappers, so they would lay down traps in front of the advancing enemy cluster 
-	_proposedClasses = [
-		"vn_o_men_vc_local_09", 	// sapper
-		"vn_o_men_vc_local_23", 	// sapper
-		"vn_o_men_vc_local_30", 	// sapper
-		"vn_o_men_vc_09", 			// sapper
-		"vn_o_men_vc_regional_09", 	// sapper
-		"vn_o_men_vc_local_10",
-		"vn_o_men_vc_local_24",
-		"vn_o_men_vc_local_31",
-		"vn_o_men_vc_local_11",
-		"vn_o_men_vc_local_04",
-		"vn_o_men_vc_local_12"
-	];
+	_proposedClasses = DEF_GOOK_MANAGER_AMBUSH_PROPOSED_CLASSES;
 }
 else {
 	/* The cluster has been standing still for some time... */

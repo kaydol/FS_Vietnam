@@ -2,7 +2,7 @@
 #define JUKEBOX_PRESET_ARSENAL 0
 #define JUKEBOX_PRESET_CUSTOM 3
 
-params ["_logic", "_units", "_activated"];
+params ["_logic", ["_units", []], ["_activated", false]];
 
 if !(_activated) exitWith {};
 

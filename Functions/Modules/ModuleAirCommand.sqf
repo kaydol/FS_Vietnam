@@ -18,9 +18,9 @@ Author:
     kaydol
 ---------------------------------------------------------------------------- */
 
-if !(isServer || isDedicated) exitWith {};
+if !(isServer) exitWith {};
 
-params ["_module", "_units", "_activated"];
+params ["_module", ["_units", []], ["_activated", false]];
 
 if !(_activated) exitWith {};
 

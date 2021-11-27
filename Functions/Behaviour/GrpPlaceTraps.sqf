@@ -1,4 +1,6 @@
 
+#include "..\..\definitions.h"
+
 params ["_group"];
 
 /* The whole group is dead... Dear God, may them rest in peace */
@@ -8,8 +10,8 @@ if ({alive _x} count units _group <= 0) exitWith { };
 	First, see if the group has any traps 
 */
 
-_tripwires = getArray (configFile >> "CfgWeapons" >> "Put" >> "uns_ClassicMineWireMuzzle" >> "magazines");
-_punjis = getArray (configFile >> "CfgWeapons" >> "Put" >> "uns_punj1_muzzle" >> "magazines");
+_tripwires = getArray (configFile >> "CfgWeapons" >> "Put" >> DEF_PUT_MUZZLE_WIREMINE >> "magazines");
+_punjis = getArray (configFile >> "CfgWeapons" >> "Put" >> DEF_PUT_MUZZLE_PUNJI >> "magazines");
 _traps = _tripwires + _punjis;
 
 _hasTraps = {
