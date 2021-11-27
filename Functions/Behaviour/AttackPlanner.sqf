@@ -24,7 +24,19 @@ if ( _distanceTravelled > _sufficientClusterShift ) then
 	_angleMax = abs( ( _trendDir + PREDICTION_CONE / 2 ) % 360 );
 	
 	// Spawn only sappers, so they would lay down traps in front of the advancing enemy cluster 
-	_proposedClasses = ["uns_men_VC_regional_SAP2", "uns_men_VC_regional_SAP", "uns_men_VC_recon_SAP2", "uns_men_VC_recon_SAP", "uns_men_VC_local_SAP", "uns_men_VC_mainforce_SAP", "uns_men_VC_mainforce_68_SAP"];
+	_proposedClasses = [
+		"vn_o_men_vc_local_09", 	// sapper
+		"vn_o_men_vc_local_23", 	// sapper
+		"vn_o_men_vc_local_30", 	// sapper
+		"vn_o_men_vc_09", 			// sapper
+		"vn_o_men_vc_regional_09", 	// sapper
+		"vn_o_men_vc_local_10",
+		"vn_o_men_vc_local_24",
+		"vn_o_men_vc_local_31",
+		"vn_o_men_vc_local_11",
+		"vn_o_men_vc_local_04",
+		"vn_o_men_vc_local_12"
+	];
 }
 else {
 	/* The cluster has been standing still for some time... */
@@ -33,20 +45,20 @@ else {
 
 private _result = [_unitsToHideFrom, _cluster # 0, _distanceToSpawn, [_angleMin, _angleMax], 10, _debug] call FS_fnc_GetHiddenPos2;
 
-_areaModules = _areaModules apply { [position _x, _x getVariable "Radius"] };
-if (count (_areaModules select { _result distance2D _x # 0 < _x # 1 }) > 0) exitWith {
-	// The proposed coordinates fall into forbidden spawn areas
-	if ( _debug ) then {
-		_marker = createMarkerLocal [str(round random(1000000)), _result];
-		_marker setMarkerTypeLocal "mil_dot";
-		_marker setMarkerColor "ColorWhite";
-		_marker setMarkerText "Failed to spawn ambush in this safe area";
-	};
-};
-
 // If hidden position found
 if !( _result isEqualTo [] ) then 
 {
+	_areaModules = _areaModules apply { [position _x, _x getVariable "Radius"] };
+	if (count (_areaModules select { _result distance2D _x # 0 < _x # 1 }) > 0) exitWith {
+		// The proposed coordinates fall into forbidden spawn areas
+		if ( _debug ) then {
+			_marker = createMarkerLocal [str(round random(1000000)), _result];
+			_marker setMarkerTypeLocal "mil_dot";
+			_marker setMarkerColor "ColorWhite";
+			_marker setMarkerText "Failed to spawn ambush in this safe area";
+		};
+	};
+
 	if ( _target isEqualTo [] ) then {
 		_target = _result getDir _cluster # 0; // Passing the heading to look at to the FSM
 	};
