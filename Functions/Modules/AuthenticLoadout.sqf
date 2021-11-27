@@ -3,7 +3,7 @@
 	The unit is given Chinese voice though. Some units may get an RPG.
 */
 
-if (!(isServer || isDedicated)) exitWith {};
+if !(isServer) exitWith {};
 
 params ["_unit"];
 

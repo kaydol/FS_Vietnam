@@ -22,7 +22,7 @@ Author:
     kaydol
 ---------------------------------------------------------------------------- */
 
-if !(isServer || isDedicated) exitWith {};
+if !(isServer) exitWith {};
 
 params ["_module"];
 

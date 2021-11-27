@@ -416,12 +416,19 @@ class CfgVehicles
 				typeName = "NUMBER";
 				defaultValue = 30;
 			};
-			class SpawnDistance : Edit {
-				property = "SpawnDistance";
-				displayName = "Spawn Distance";
-				tooltip = "How far from players the gooks will be spawned.";
+			class SpawnDistanceMoving : Edit {
+				property = "SpawnDistanceMoving";
+				displayName = "Spawn Distance when target is moving";
+				tooltip = "Spawn distance when a group of players that is about to be attacked is on the move (when players have been moving through jungle for some time, etc). If players are moving, Gooks are always spawned in their path. When Garbage Collector module is present, be mindful of Gook removal distance to avoid spawned Gooks being instantly removed due to players being too far.";
 				typeName = "NUMBER";
 				defaultValue = 200;
+			};
+			class SpawnDistanceStationary : Edit {
+				property = "SpawnDistanceStationary";
+				displayName = "Spawn Distance when target is still";
+				tooltip = "Spawn distance when a group of players that is about to be attacked is stationary (when players are defending a spot). When players are stationary, Gooks are spawned randomly on the circle with this radius. When Garbage Collector module is present, be mindful of Gook removal distance to avoid spawned Gooks being instantly removed due to players being too far.";
+				typeName = "NUMBER";
+				defaultValue = 400;
 			};
 			class Debug : Checkbox {
 				property = "Debug";

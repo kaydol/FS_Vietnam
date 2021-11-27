@@ -34,7 +34,8 @@ _groupSizeVar = _logic getVariable "GroupSizeVar";
 _groupsCount = _logic getVariable "GroupsCount";
 _groupsCountVar = _logic getVariable "GroupsCountVar";
 _debug = _logic getVariable "Debug";
-_spawnDistance = _logic getVariable "SpawnDistance";
+_spawnDistanceMoving = _logic getVariable "SpawnDistanceMoving";
+_spawnDistanceStationary = _logic getVariable "SpawnDistanceStationary";
 _areaModules = synchronizedObjects _logic select { typeOf _x == "FS_GookArea_Module" };
 
 /*
@@ -110,7 +111,7 @@ while { true } do {
 		
 		/* 
 			The rule of majority:
-				Only a cluster that have inherited more than a half of the men of the parent cluster is considered its child
+				Only a cluster that has inherited more than a half of the men of the parent cluster is considered its child
 				The cluster that inherited < 50% of people is considered new 
 		*/
 		private _menInOldCluster = count (( _oldClusters # _indexInOldClusters ) # 1 );
@@ -152,8 +153,15 @@ while { true } do {
 				{
 					/* Enough time passed to understand whether the group is moving somewhere or not */
 					private _timeToSpawnGooks = ( call compile _spawnCondition ) && ({side _x == EAST && alive _x} count allUnits) <= _ailimit;
+					
+					systemChat format ["_spawnCondition=%1, AICount=%2, Decision=%3", call compile _spawnCondition, {side _x == EAST && alive _x} count allUnits, _timeToSpawnGooks];
+					
 					if ( _timeToSpawnGooks ) then 
 					{
+						if (_debug) then {
+							systemChat format ["(%1) Condition to spawn Gooks passed, looking for a place...", time];
+						};
+						
 						/* ☭ FINALLY! IT'S TIME TO OVERTHROW CAPITALISM, COMRADES ☭ (﻿ ͡° ͜ʖ ͡°) ☭
 										   
 										   ----/*~\              O      ----/*~\
@@ -169,7 +177,14 @@ while { true } do {
 						_groupSize = _groupSize + round random _groupSizeVar;
 						_groupsCount = _groupsCount + round random _groupsCountVar;
 						
-						[_next, _allPlayers, SUFFICIENT_CLUSTER_SHIFT, _spawnDistance, _groupsCount, _groupSize, _areaModules, _debug] spawn FS_fnc_AttackPlanner;
+						private _handle = [_next, _allPlayers, SUFFICIENT_CLUSTER_SHIFT, [_spawnDistanceMoving, _spawnDistanceStationary], _groupsCount, _groupSize, _areaModules, _debug] spawn FS_fnc_AttackPlanner;
+						
+						WaitUntil { scriptDone _handle }; 
+					} 
+					else {
+						if (_debug) then {
+							systemChat format ["(%1) Gooks could not be spawned because condition failed.", time];
+						};
 					};
 				};
 				
