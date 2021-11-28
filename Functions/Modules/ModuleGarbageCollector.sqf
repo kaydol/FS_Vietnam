@@ -131,44 +131,46 @@ while { true } do
 				_grp = _x;
 				// Find distance between the closest player and the calculated center point of the group
 				_allPlayers = call BIS_fnc_listPlayers;
-				_center2D = [units _grp] call FS_fnc_CalculateCenter2D;
-				_distToPlayers = selectMin ( _allPlayers apply { _x distance2D _center2D } );
-				
-				// Try to delete entire groups whose distance is beyond _gookRemovalDistance threshold
-				if ( _distToPlayers > _gookRemovalDistance ) then 
+				if !(_allPlayers isEqualTo []) then 
 				{
-					_unitPositions = units _grp apply { getPosASL _x };
-					_eyePositions = _allPlayers apply { eyePos _x };
+					_center2D = [units _grp] call FS_fnc_CalculateCenter2D;
+					_distToPlayers = selectMin ( _allPlayers apply { _x distance2D _center2D } );
 					
-					_canSee = False;
-					
-					for [{_i = 0},{_i<count _eyePositions},{_i=_i+1}] do {
-						for [{_j = 0},{_j<count _unitPositions},{_j=_j+1}] do {
-							_canSee = [objNull, "VIEW"] checkVisibility [_eyePositions # _i , _unitPositions # _j] > 0.3 ;
+					// Try to delete entire groups whose distance is beyond _gookRemovalDistance threshold
+					if ( _distToPlayers > _gookRemovalDistance ) then 
+					{
+						_unitPositions = units _grp apply { getPosASL _x };
+						_eyePositions = _allPlayers apply { eyePos _x };
+						
+						_canSee = False;
+						
+						for [{_i = 0},{_i<count _eyePositions},{_i=_i+1}] do {
+							for [{_j = 0},{_j<count _unitPositions},{_j=_j+1}] do {
+								_canSee = [objNull, "VIEW"] checkVisibility [_eyePositions # _i , _unitPositions # _j] > 0.3 ;
+								if ( _canSee ) exitWith {};
+							};
 							if ( _canSee ) exitWith {};
 						};
-						if ( _canSee ) exitWith {};
-					};
-					
-					// Players don't have a direct LOS with any of the group members
-					if !( _canSee ) then {
-						_occupiedVehicles = [];
-						{
-							if ( vehicle _x == _x ) then {
-								// Deleting soldiers on foot
-								deleteVehicle _x;
-							} else {
-								// Deleting soldiers in vehicles + their vehicles
-								_occupiedVehicles pushBackUnique vehicle _x;
-								_x remoteExec ["deleteVehicleCrew", vehicle _x]; // delete unit where its vehicle is local
-							};
-						}
-						forEach units _grp;
-						{ deleteVehicle _x; } forEach _occupiedVehicles;
-						_grp remoteExec ["deleteGroup", _grp]; // delete group where it's local
+						
+						// Players don't have a direct LOS with any of the group members
+						if !( _canSee ) then {
+							_occupiedVehicles = [];
+							{
+								if ( vehicle _x == _x ) then {
+									// Deleting soldiers on foot
+									deleteVehicle _x;
+								} else {
+									// Deleting soldiers in vehicles + their vehicles
+									_occupiedVehicles pushBackUnique vehicle _x;
+									_x remoteExec ["deleteVehicleCrew", vehicle _x]; // delete unit where its vehicle is local
+								};
+							}
+							forEach units _grp;
+							{ deleteVehicle _x; } forEach _occupiedVehicles;
+							_grp remoteExec ["deleteGroup", _grp]; // delete group where it's local
+						};
 					};
 				};
-				
 				sleep (1 + random 2);
 			};
 		}
