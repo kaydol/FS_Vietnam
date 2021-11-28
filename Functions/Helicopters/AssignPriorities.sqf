@@ -65,24 +65,12 @@ if ( _debug ) then {
 	// create markers on every cluster
 	for [{_i = 0},{_i < count _clusters_centers},{_i = _i + 1}] do {
 		_pos = _clusters_centers select _i;
-		_marker = createMarkerLocal [str(round random(1000000)), _pos];
-		_marker setMarkerTypeLocal "mil_dot";
-		_marker setMarkerColor "ColorBlue";
-		_marker setMarkerText str (_priorities # _i);
+		private _marker = [_pos, "mil_dot", "ColorBlue", str (_priorities # _i)] call FS_fnc_CreateDebugMarker;
 		_markers pushBack _marker;
 	};
 	// gradually increase transparency
-	[_markers] spawn {
-		params ["_markers"];
-		_lifetime = 30;
-		for [{_i = 0},{_i < _lifetime},{_i = _i + _lifetime / 10}] do {
-			sleep (_lifetime / 10);
-			{
-				_x setMarkerAlphaLocal linearConversion [0, _lifetime, _i, 1, 0];
-			} forEach _markers;
-		};
-		{ deleteMarker _x } forEach _markers;
-	};
+	// TODO should probably replace 30 with asessment rate 
+	[_markers, 30] spawn FS_fnc_FadeDebugMarkers;
 };
 
 _priorities 

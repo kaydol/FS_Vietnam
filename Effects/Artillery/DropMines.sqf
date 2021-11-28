@@ -57,10 +57,8 @@ for "_i" from 1 to _salvos do
 		_mine setVelocity _velocity;
 		
 		if ( _debug ) then {
-			private _mark = createMarker [format ["%1",random 10000], [(_position select 0) + _x, (_position select 1) + _y]];
-			_mark setMarkerType "mil_dot";
-			_mark setMarkerColor "ColorRed";
-			_markers pushBack _mark;
+			private _marker = [[(_position select 0) + _x, (_position select 1) + _y], "mil_dot", "ColorRed"] call FS_fnc_CreateDebugMarker;
+			_markers pushBack _marker;
 		};
 		
 		[_mine, _pos2] spawn 
@@ -78,18 +76,7 @@ for "_i" from 1 to _salvos do
 	sleep 6;
 };
 
-sleep 6;
-
 if ( _debug ) then {
 	// gradually increase transparency
-	_markers spawn {
-		_lifetime = 10;
-		for [{_i = 0},{_i < _lifetime},{_i = _i + _lifetime / 10}] do {
-			sleep (_lifetime / 10);
-			{
-				_x setMarkerAlphaLocal linearConversion [0, _lifetime, _i, 1, 0];
-			} forEach _this;
-		};
-		{ deleteMarker _x } forEach _this;
-	};
+	[_markers, 10, 6] spawn FS_fnc_FadeDebugMarkers;
 };

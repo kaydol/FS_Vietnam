@@ -57,6 +57,6 @@ for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do
 	
 	if ( _debug ) then {
 		// Group markers
-		[_NewGrp, 'o_inf'] spawn FS_fnc_GroupMarkers;
+		[_NewGrp, 'o_inf'] spawn FS_fnc_GrpAttachDebugMarkers;
 	};
 };

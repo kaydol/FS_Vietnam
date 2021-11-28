@@ -106,31 +106,24 @@ if ( _debug && !(_data isEqualTo []) ) then
 	// create markers on enemies with their cluster for label
 	for [{_i = 0},{_i < count _collection},{_i = _i + 1}] do {
 		_pos = _collection select _i;
-		_marker = createMarkerLocal [str(round random(1000000)), _pos];
-		_marker setMarkerTypeLocal "mil_box";
-		//_marker setMarkerText str ( _membership select _i );
-		_marker setMarkerColor "ColorBlack";
+		
+		private _marker = [_pos, "mil_box", "ColorBlack"/*,str ( _membership select _i )*/] call FS_fnc_CreateDebugMarker;
 		_markers pushBack _marker;
 	};
 	// create markers on every cluster
 	for [{_i = 0},{_i < count _clusters_centers},{_i = _i + 1}] do {
 		_pos = _clusters_centers select _i;
-		_marker = createMarkerLocal [str(round random(1000000)), _pos];
-		_marker setMarkerTypeLocal "mil_dot";
-		_marker setMarkerColor "ColorWhite";
+		
+		private _marker = [_pos, "mil_dot", "ColorWhite"] call FS_fnc_CreateDebugMarker;
 		_markers pushBack _marker;
 	};
 	// gradually increase transparency
-	[_markers, _lineEHs] spawn {
-		params ["_markers","_lineEHs"];
-		_lifetime = 30;
-		for [{_i = 0},{_i < _lifetime},{_i = _i + _lifetime / 10}] do {
-			sleep (_lifetime / 10);
-			{
-				_x setMarkerAlphaLocal linearConversion [0, _lifetime, _i, 1, 0];
-			} forEach _markers;
-		};
-		{ deleteMarker _x } forEach _markers;
+	// TODO should probably replace 30 with asessment rate 
+	[_markers, 30] spawn FS_fnc_FadeDebugMarkers;
+	
+	[_lineEHs, 30] spawn {
+		params ["_lineEHs", "_sleep"];
+		sleep _sleep;
 		{(findDisplay 12 displayCtrl 51) ctrlRemoveEventHandler ["Draw", _x]} forEach _lineEHs;
 	};
 };

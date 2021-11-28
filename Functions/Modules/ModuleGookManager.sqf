@@ -154,7 +154,7 @@ while { true } do {
 					/* Enough time passed to understand whether the group is moving somewhere or not */
 					private _timeToSpawnGooks = ( call compile _spawnCondition ) && ({side _x == EAST && alive _x} count allUnits) <= _ailimit;
 					
-					systemChat format ["_spawnCondition=%1, AICount=%2, Decision=%3", call compile _spawnCondition, {side _x == EAST && alive _x} count allUnits, _timeToSpawnGooks];
+					//systemChat format ["_spawnCondition=%1, AICount=%2, Decision=%3", call compile _spawnCondition, {side _x == EAST && alive _x} count allUnits, _timeToSpawnGooks];
 					
 					if ( _timeToSpawnGooks ) then 
 					{

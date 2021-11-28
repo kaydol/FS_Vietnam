@@ -3,7 +3,9 @@ class CfgPatches
 {
 	class FS_Vietnam
 	{
-		units[] = {"Invisible_Minigun_Turret"};
+		//-- Units available to spawn as Zeus must be in units[]
+		//-- Of course, they didn't write about it on the wiki
+		units[] = {"FS_NapalmCAS_Module", "FS_ArtyStrike_Module"};
 		weapons[] = {};
 		requiredAddons[] = {"A3_Data_F", "A3_Weapons_F_Mark", "weapons_f_vietnam_c"};
 		requiredVersion = 0.100000;
@@ -282,7 +284,7 @@ class CfgVehicles
 		displayName = "Air Command";
 		function = "FS_fnc_ModuleAirCommand";
 		class ModuleDescription : ModuleDescription {
-			description = "This module is required for Vietnam helicopter crews.";
+			description = "This module takes control of synced helicopters. It is possible to activate this module with a trigger.";
 			sync[] = {"Helicopters"};
 			class Helicopters {
 				description[] = { // Multi-line descriptions are supported
@@ -476,7 +478,7 @@ class CfgVehicles
 		function = "FS_fnc_ModuleArsenal";
 		isDisposable = 0; // 1 if modules is to be disabled once it's activated (i.e., repeated trigger activation won't work)
 		class ModuleDescription : ModuleDescription {
-			description = "This module opens a Virtual Arsenal at the mission start.";
+			description = "This module opens a Virtual Arsenal. It is possible to activate this module with a trigger.";
 			sync[] = {};
 		};
 		class Attributes : AttributesBase {
@@ -649,15 +651,16 @@ class CfgVehicles
 		_generalMacro = "FS_NapalmCAS_Module";
 		icon = "\a3\Modules_F_Curator\Data\iconCAS_ca.paa";
 		scope = 2;
-		scopeCurator = 0;
+		scopeCurator = 2;
+		curatorCanAttach = 0;
+		curatorCost = 20;
 		isGlobal = 1;
 		isTriggerActivated = 1;
 		portrait = "\a3\Modules_F_Curator\Data\portraitCAS_ca.paa";
-		curatorCost = 5;
 		displayName = "Napalm CAS";
 		function = "FS_fnc_ModuleNapalmCAS";
 		class ModuleDescription : ModuleDescription {
-			description = "";
+			description = "It is possible to activate this module with a trigger.";
 			sync[] = {};
 			position = 1;
 			direction = 1; 
@@ -710,15 +713,16 @@ class CfgVehicles
 		_generalMacro = "FS_ArtyStrike_Module";
 		icon = "\a3\Modules_F_Curator\Data\iconOrdnance_ca.paa";
 		scope = 2;
-		scopeCurator = 0;
+		scopeCurator = 2;
+		curatorCanAttach = 0;
+		curatorCost = 50;
 		isGlobal = 1;
 		isTriggerActivated = 1;
 		portrait = "\a3\Modules_F_Curator\Data\portraitOrdnance_ca.paa";
-		curatorCost = 5;
 		displayName = "Artillery Strike";
 		function = "FS_fnc_ModuleArtyStrike";
 		class ModuleDescription : ModuleDescription {
-			description = "";
+			description = "It is possible to activate this module with a trigger.";
 			sync[] = {};
 			position = 1;
 			direction = 0; 
@@ -787,7 +791,7 @@ class CfgVehicles
 		isGlobal = 2; // 0 for server only execution, 1 for global execution, 2 for persistent global execution
 		isTriggerActivated = 1;
 		class ModuleDescription : ModuleDescription {
-			description = "Module that runs on server and plays music for all connected clients";
+			description = "Module that runs on server and plays music for all connected clients. It is possible to activate this module with a trigger.";
 			sync[] = {};
 		};
 		class Attributes : AttributesBase {
@@ -964,6 +968,180 @@ class CfgVehicles
 			class ModuleDescription : ModuleDescription {};
 		};
 	};
+	
+	class FS_RespawnPoint_Module : FS_Vietnam_Module {
+		_generalMacro = "FS_RespawnPoint_Module";
+		scope = 2;
+		displayName = "Respawn Point";
+		function = "FS_fnc_ModuleRespawnPoint";
+		isDisposable = 1; // 1 if modules is to be disabled once it's activated (i.e., repeated trigger activation won't work)
+		isGlobal = 0; // 0 for server only execution, 1 for global execution, 2 for persistent global execution
+		isTriggerActivated = 1;
+		class ModuleDescription : ModuleDescription {
+			description = "This module essentually creates marker(s) named 'respawn_side_xxxxxx'. Marker(s) only exist as long as the condition is true. Side is defined by a synced Side logic. Synced vehicles have markers attached to them. If no vehicles are synced before module starts, module's position is used instead. It is possible to add and remove synchronized objects during gameplay (if module's position was used as spawn point, it will be deleted when first vehicle is synchronized). It is possible to activate this module with a trigger.";
+			sync[] = {"Vehicles", "Side"};
+			position = 1;
+			direction = 0;
+			class Vehicles {
+				description[] = { // Multi-line descriptions are supported
+					"This module can be synced with vehicles both at the start of the mission and on the fly. If no vehicle is synced before module starts, module's position is used as respawn point instead."
+				};
+				position = 1; // Position is taken into effect
+				direction = 0; // Direction is taken into effect
+				optional = 1; // Synced entity is optional
+				duplicate = 1; // Multiple entities of this type can be synced
+				synced[] = {"CAR", "TANK", "SEA", "AIR"}; 
+			};
+			class Side {
+				description[] = { // Multi-line descriptions are supported
+					"This module requires to be synced with a Side who owns it.",
+					"Make sure only one side is synced, or you may get unexpected results.",
+					"If no side was synced, the error will be displayed.",
+				};
+				position = 0; // Position is taken into effect
+				direction = 0; // Direction is taken into effect
+				optional = 0; // Synced entity is optional
+				duplicate = 0; // Multiple entities of this type can be synced
+				synced[] = {"SideBLUFOR_F", "SideOPFOR_F", "SideResistance_F"}; 
+			};
+		};
+		class Attributes : AttributesBase {
+			class VehicleMustBeAlive : Checkbox {
+				property = "VehicleMustBeAlive";
+				displayName = "Vehicle destruction deletes spawn";
+				tooltip = "If synced vehicle is destroyed, the spawn point that was attached to it will be deleted (otherwise spawn point will remain at the vehicle's last position).";
+				typeName = "BOOL";
+				defaultValue = "true";
+			};
+			class OverrideStopCondition : Checkbox {
+				property = "OverrideStopCondition";
+				displayName = "Override Stop condition";
+				tooltip = "If 'Vehicle destruction deletes spawn' is enabled and if vehicles were synchronized before module starts, exit the module when no alive vehicles are left. If you don't enable this option, the module will wait until Stop Condition turns true before exiting.";
+				typeName = "BOOL";
+				defaultValue = "false";
+			};
+			class DeleteOldBody : Checkbox {
+				property = "DeleteOldBody";
+				displayName = "Delete old body";
+				tooltip = "Delete body of the respawned person.";
+				typeName = "BOOL";
+				defaultValue = "true";
+			};
+			class SpawnAsPassenger : Checkbox {
+				property = "SpawnAsPassenger";
+				displayName = "Spawn as passenger";
+				tooltip = "If vehicles are synchronized, attempt to spawn player as passenger (vehicle must be alive), otherwise player will spawn in general vicinity of the vehicle. Disables respawn animations from the field below.";
+				typeName = "BOOL";
+				defaultValue = "false";
+			};
+			class RespawnAnimations : Edit {
+				property = "RespawnAnimations";
+				displayName = "Animations to play when respawned";
+				tooltip = "When players respawn on this spawn point on foot, make them play one of these randomly chosen animations. Leave as [] to disable. The animation will not be played for players in vehicles.";
+				defaultValue = "['Acts_Getting_Up_Player', 'Acts_Flashes_Recovery_1', 'Acts_Flashes_Recovery_2']";
+			};
+			class LandSearchRadius : Edit {
+				property = "LandSearchRadius";
+				displayName = "Land search radius";
+				tooltip = "If 'Spawn as passenger' is disabled and player spawns in water, look for the nearest land and teleport the player there. Respawn animation is only played when spawned on, or teleported to, land. This parameter is designed to spawn players on banks of the river if their respawn point happened to be in the river. Do not use this in open sea where the land is too far. A good way to determine is value would be to divide the maximum expected river wideness by 1.75";
+				typeName = "NUMBER";
+				defaultValue = "0";
+			};
+			class RespawnFromDarkness : Edit {
+				property = "RespawnFromDarkness";
+				displayName = "Respawn from darkness";
+				tooltip = "Waking up effect when players respawn on this spawn point. Set to 0 to disable. Adds a customizable duration of cutText 'BLACK IN' command upon respawn, which looks like a 'waking up' effect.";
+				typeName = "NUMBER";
+				defaultValue = "0";
+			};
+			class GodModeLength : Edit {
+				property = "GodModeLength";
+				displayName = "God mode time";
+				tooltip = "Makes respawned players immune to damage for this amount of seconds. Good to combine this with visual effects that add color tint.";
+				typeName = "NUMBER";
+				defaultValue = "0";
+			};
+			class VFXLength : Edit {
+				property = "VFXLength";
+				displayName = "Visual effect length";
+				tooltip = "";
+				typeName = "NUMBER";
+				defaultValue = "0";
+			};
+			class VFXPreset : Combo {
+				property = "VFXPreset";
+				displayName = "Visual effect preset";
+				tooltip = "Here you can select predefined color tints if you don't want to mess with the field below.";
+				class values
+				{
+					class Custom {
+						name = "Use value from the field below";
+						value = "[]";
+						default = 1;
+					};
+					class RedTint {
+						name = "Red tint";
+						value = "[8.0, 0.8, 0.8, 0.7]";
+					};
+					class GreenTint {
+						name = "Green tint";
+						value = "[0.8, 8.0, 0.8, 0.7]";
+					};
+					class BlueTint {
+						name = "Blue tint";
+						value = "[0.8, 0.8, 8.0, 0.7]";
+					};
+				};
+			};
+			class VFXCustom : Edit {
+				property = "VFXCustom";
+				displayName = "Visual effect color";
+				tooltip = "Custom color in format [R,G,B,ALPHA]. ALPHA is basically effect strength.";
+				defaultValue = "[]";
+			};
+			class ActivationNotification : Checkbox {
+				property = "ActivationNotification";
+				displayName = "Show activation notification";
+				tooltip = "";
+				typeName = "BOOL";
+				defaultValue = "true";
+			};
+			class DeactivationNotification : Checkbox {
+				property = "DeactivationNotification";
+				displayName = "Show deactivation notification";
+				tooltip = "";
+				typeName = "BOOL";
+				defaultValue = "true";
+			};
+			class Sleep : Edit {
+				property = "Sleep";
+				displayName = "Sleep";
+				tooltip = "Interval between condition checks in seconds. This value directly defines how often Respawn Point positions are updated to match current positions of synced vehicles. If you have no need to check condition\move respawn points very often, or have a very heavy condition function, you can show mercy to your server and increase this value.";
+				typeName = "NUMBER";
+				defaultValue = 3;
+			};
+			class StartCondition: Edit {
+				property = "StartCondition";
+				displayName = "Start condition";
+				tooltip = "Condition that has to be true in order for this module to start working. Condition is checked only on Server.";
+				defaultValue = "true";
+			};
+			class StopCondition: Edit {
+				property = "StopCondition";
+				displayName = "Stop condition";
+				tooltip = "Condition that has to be true in order for this module to stop working, after which all created Spawn Points will be removed and the module will delete itself. Condition is checked only on Server.";
+				defaultValue = "false";
+			};
+			class LoopConditions : Checkbox { //["Default"]
+				property = "LoopConditions";
+				displayName = "Loop conditions";
+				tooltip = "If enabled, instead of deleting itself, the module will restart after Stop Condition turned true. It allows a cycle: Start Condition -> Stop Condition -> Start Condition -> etc. Use this if you want to be able to stop and resume the work of the module.";
+				typeName = "BOOL";
+				defaultValue = "false";
+			};
+			class ModuleDescription : ModuleDescription {};
+		};
+	};
 };
 
 
@@ -983,7 +1161,6 @@ class CfgFunctions
 			class DirectionWrapper {file = "\FS_Vietnam\Functions\Misc\DirectionWrapper.sqf";};
 			class DistanceBetweenArrays {file = "\FS_Vietnam\Functions\Misc\DistanceBetweenArrays.sqf";};
 			class GetSideVariable {file = "\FS_Vietnam\Functions\Misc\GetSideVariable.sqf";};
-			class GroupMarkers {file = "\FS_Vietnam\Functions\Misc\GroupMarkers.sqf";};
 			class ObjectsGrabber {file = "\FS_Vietnam\Functions\Misc\ObjectsGrabber.sqf";};
 			class ObjectsMapper {file = "\FS_Vietnam\Functions\Misc\ObjectsMapper.sqf";};
 			class QueueCreate {file = "\FS_Vietnam\Functions\Misc\QueueCreate.sqf";};
@@ -1037,6 +1214,12 @@ class CfgFunctions
 			class PutEventHandler {file = "\FS_Vietnam\Functions\Traps\PutEventHandler.sqf";};
 		};
 		
+		class Markers {
+			class CreateDebugMarker {file = "\FS_Vietnam\Functions\Markers\CreateDebugMarker.sqf";};
+			class FadeDebugMarkers {file = "\FS_Vietnam\Functions\Markers\FadeDebugMarkers.sqf";};
+			class GrpAttachDebugMarkers {file = "\FS_Vietnam\Functions\Markers\GrpAttachDebugMarkers.sqf";};
+		};
+		
 		class Radio {
 			class AddCommsMenu {file = "\FS_Vietnam\Functions\Radio\AddCommsMenu.sqf";};
 			class CanReceive {file = "\FS_Vietnam\Functions\Radio\CanReceive.sqf";};
@@ -1088,6 +1271,7 @@ class CfgFunctions
 			class ModuleNapalmCAS {file = "\FS_Vietnam\Functions\Modules\ModuleNapalmCAS.sqf";};
 			class ModuleNapalmSettings {file = "\FS_Vietnam\Functions\Modules\ModuleNapalmSettings.sqf";};
 			class ModuleRadioSettings {file = "\FS_Vietnam\Functions\Modules\ModuleRadioSettings.sqf";};
+			class ModuleRespawnPoint {file = "\FS_Vietnam\Functions\Modules\ModuleRespawnPoint.sqf";};
 			class VisualizeModuleRadius3DEN {file = "\FS_Vietnam\Functions\Modules\VisualizeModuleRadius3DEN.sqf";};
 		};
 	};

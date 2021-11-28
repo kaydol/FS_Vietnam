@@ -53,19 +53,8 @@ for "_i" from 1 to 10 do
 		if (!_goodPositionFound) then {
 			// The proposed coordinates fall into forbidden spawn areas
 			if ( _debug ) then {
-				private _marker = createMarkerLocal [str(round random(1000000)), _result];
-				_marker setMarkerTypeLocal "mil_dot";
-				_marker setMarkerColor "ColorWhite";
-				_marker setMarkerText "Spawn blocked by safe area";
-				_marker spawn {
-					// gradually increase transparency
-					private _lifetime = 10;
-					for [{_j = 0},{_j < _lifetime},{_j = _j + _lifetime / 10}] do {
-						sleep (_lifetime / 10);
-						_this setMarkerAlphaLocal linearConversion [0, _lifetime, _j, 1, 0];
-					};
-					deleteMarker _this;
-				};
+				private _marker = [_result, "mil_dot", "ColorWhite", "Spawn blocked by safe area"] call FS_fnc_CreateDebugMarker;
+				[[_marker], 10] spawn FS_fnc_FadeDebugMarkers;
 			};
 		};
 	};
@@ -76,19 +65,8 @@ for "_i" from 1 to 10 do
 		};
 		
 		if ( _debug ) then {
-			private _marker = createMarkerLocal [str(round random(1000000)), _result];
-			_marker setMarkerTypeLocal "mil_dot";
-			_marker setMarkerColor "ColorRed";
-			_marker setMarkerText (["An attack from here!", "Ambush here!"] select _isAmbush);
-			_marker spawn {
-				// gradually increase transparency
-				_lifetime = 10;
-				for [{_i = 0},{_i < _lifetime},{_i = _i + _lifetime / 10}] do {
-					sleep (_lifetime / 10);
-					_this setMarkerAlphaLocal linearConversion [0, _lifetime, _i, 1, 0];
-				};
-				deleteMarker _this;
-			};
+			private _marker = [_result, "mil_dot", "ColorRed", ["An attack from here!", "Ambush here!"] select _isAmbush] call FS_fnc_CreateDebugMarker;
+			[[_marker], 10] spawn FS_fnc_FadeDebugMarkers;
 		};
 		
 		private _handler = [_result, _target, _groupSize, _groupsCount, _proposedClasses, _debug] spawn FS_fnc_SpawnGooks;

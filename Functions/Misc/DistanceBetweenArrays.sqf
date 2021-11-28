@@ -3,6 +3,8 @@ Function: FS_fnc_DistanceBetweenArrays
 
 Description:
 	Returns distance between closest elements of two arrays of elements.
+	In theory it should work faster if the second array is bigger than the first one
+	(as opposed to the other way around).
 	
 Parameters:
     _array1 - Contains a set of elements to process [Array of positions or objects].

@@ -38,7 +38,9 @@ _side = sideLogic;
 } 
 forEach _synced;
 
-if ( _side isEqualTo sideLogic ) exitWith { ["[Air Base] No Side has been synced, please sync a Side that will get access to this module"] call BIS_fnc_error };
+if ( _side isEqualTo sideLogic ) exitWith {
+	["[Air Base] No Side has been synced, please sync a Side that will get access to this module"] call BIS_fnc_error;
+};
 
 if (isNil{ FS_REFUELRELOAD_BASES }) then { 
 	FS_REFUELRELOAD_BASES = []; 

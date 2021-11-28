@@ -9,12 +9,12 @@ player setVariable ["UsesArsenalRoom", True, True];
 enableRadio False; 
 
 0 cutText ["", "BLACK", 0.00001, true];
-	
+player allowDamage false;
+
 if (isMultiplayer) then {
 	sleep 1; // If you don't do that in multiplayer, Arsenal will fail with BIS_fnc_SetIdentity "unit can't be null" error
 };
 
-player allowDamage false;
 private _returnPos = getPosATL player;
 private _returnDir = getDir player;
 

@@ -73,10 +73,7 @@ if (_id != DEF_HANDLER_VARNAME) then {
 	private _markers = [];
 	{
 		_x params ["_pos2D", "_value"];
-		private _marker = createMarkerLocal [str(round random(1000000)), _pos2D];
-		_marker setMarkerTypeLocal "loc_mine";
-		_marker setMarkerColor "ColorRed";
-		_marker setMarkerText str _value;
+		private _marker = [_pos2D, "loc_mine", "ColorRed", str _value] call FS_fnc_CreateDebugMarker;
 		_markers pushBack _marker;
 	} forEach _places;
 	
