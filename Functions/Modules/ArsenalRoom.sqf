@@ -1,14 +1,22 @@
 params ["_roomPos", "_allowAll", "_respawnLoadout", "_respawnLoadoutMsgStyle"];
 
-if (vehicle player != player) exitWith {};
+if (vehicle player != player || player isKindOf "VirtualCurator_F") exitWith {};
+
+waitUntil {time > 0 && !isNull player};
 
 player setVariable ["UsesArsenalRoom", True, True];
-_returnPos = getPosATL player;
-_returnDir = getDir player;
 
-sleep 0.001;
+enableRadio False; 
 
-//["TeleportToArsenalRoom", "Loading Arsenal"] call BIS_fnc_startLoadingScreen;
+0 cutText ["", "BLACK", 0.00001, true];
+	
+if (isMultiplayer) then {
+	sleep 1; // If you don't do that in multiplayer, Arsenal will fail with BIS_fnc_SetIdentity "unit can't be null" error
+};
+
+player allowDamage false;
+private _returnPos = getPosATL player;
+private _returnDir = getDir player;
 
 private _getPlayerShiftBasedOnGUID = {
 	params ["_beginPos", "_guid"];
@@ -36,33 +44,27 @@ private _getPlayerShiftBasedOnGUID = {
 };
 */
 
-_playerPosInRoom = [[-3.00293,-22.9119,0.00143862], clientOwner % 40] call _getPlayerShiftBasedOnGUID;
-_playerDirInRoom = 180.0;
+private _playerPosInRoom = [[-3.00293,-22.9119,0.00143862], clientOwner % 40] call _getPlayerShiftBasedOnGUID;
+private _playerDirInRoom = 180.0;
+
+
 
 player setPosASL ( _roomPos vectorAdd _playerPosInRoom );
 player setDir _playerDirInRoom;
 
-//"TeleportToArsenalRoom" call BIS_fnc_endLoadingScreen;
-
-sleep 0.001;
-
-enableRadio False; 
-
-if ( time < 1 ) then 
-{
-	/*
-		A workaround to prevent replacing player's gear with random shit if the module is run
-		in a freshly created mission right after mission start. We save player's gear and then
-		immediately load it after the Virtual Arsenal opens.
-	*/
-	[] spawn {
-		[player, [missionNameSpace, "FS_PLAYER_LOADOUT"]] call BIS_fnc_saveInventory;
-		waitUntil {!isNull (uinamespace getvariable ["BIS_fnc_arsenal_cam",objnull])};
-		[player, [missionNameSpace, "FS_PLAYER_LOADOUT"]] call BIS_fnc_LoadInventory;
-	};
+/*
+	A workaround to prevent replacing player's gear with random shit if the module is run
+	in a freshly created mission right after mission start. We save player's gear and then
+	immediately load it after the Virtual Arsenal opens.
+*/
+[] spawn {
+	[player, [missionNameSpace, "FS_PLAYER_LOADOUT"]] call BIS_fnc_saveInventory;
+	waitUntil {!isNull (uinamespace getvariable ["BIS_fnc_arsenal_cam",objnull])};
+	[player, [missionNameSpace, "FS_PLAYER_LOADOUT"]] call BIS_fnc_LoadInventory;
 };
 
 ['Open', _allowAll] call BIS_fnc_Arsenal;
+
 
 waitUntil {!isNull (uinamespace getvariable ["BIS_fnc_arsenal_cam",objnull])};
 /*
@@ -73,6 +75,7 @@ _cam camSetTarget objNull;
 _cam camSetFov 0.85;
 _cam camCommit 0;
 */
+
 0 cutText ["", "BLACK IN", 4, True, False];
 
 sleep 0.5; 
@@ -80,18 +83,11 @@ player switchMove "";
 
 waitUntil {isNull (uinamespace getvariable ["BIS_fnc_arsenal_cam",objnull])};
 
-startLoadingScreen ["Exiting Arsenal..."];
-
-//waitUntil { preloadCamera _returnPos };
-
-progressLoadingScreen 0.7; 
-
 player setPosATL _returnPos;
 player setDir _returnDir;
+player allowDamage true;
 
 player setVariable ["UsesArsenalRoom", False, True];
-
-endLoadingScreen;
 
 0 cutText ["", "BLACK IN", 4, True, False];
 

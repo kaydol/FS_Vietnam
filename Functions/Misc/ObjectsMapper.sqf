@@ -18,14 +18,22 @@ Author:
     kaydol
 ---------------------------------------------------------------------------- */
 
-params ["_pos", "_objects"];
+params ["_pos", "_objects", ["_createAsSimpleObjects", false]];
 
 {
-	private _obj = _x # 0 createVehicle [0,0,0];
-	_obj enableSimulation false;
-	_obj setVectorDirAndUp _x # 2;
-	_obj setPosASL (_pos vectorAdd _x # 1);
-	([_obj] + _x # 3) call BIS_fnc_SetPitchBank;
+	private "_obj";
+	_x params ["_type", "_relPos", "_dirUp", "_pitchBank"];
+	
+	if (_createAsSimpleObjects) then {
+		_obj = createSimpleObject [_type, [0,0,0]];
+	} else {
+		_obj = _type createVehicle [0,0,0];
+		_obj enableSimulationGlobal false;
+	};
+	
+	_obj setVectorDirAndUp _dirUp;
+	_obj setPosASL (_pos vectorAdd _relPos);
+	([_obj] + _pitchBank) call BIS_fnc_SetPitchBank;
 
 } forEach _objects; 
 

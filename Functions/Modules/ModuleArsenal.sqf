@@ -1,7 +1,7 @@
 
 params ["_module", ["_units", []], ["_activated", false]];
 
-_arsenalRoomAt = ASLToAGL [-100, -100, 40];
+_arsenalRoomAt = ASLToAGL [-100, -100, getTerrainHeightASL [50,50] + 50];
 
 if ( isServer && !(missionNameSpace getVariable ["ArsenalRoomCreated", false])) then {
 	/* Create Arsenal */
@@ -16,7 +16,7 @@ if (_activated && !(player getVariable ["UsesArsenalRoom", false])) then
 	_respawnLoadoutMsgStyle = _module getVariable "respawnLoadoutMsgStyle";
 
 	if (hasInterface) then {
-		waitUntil {missionNameSpace getVariable ["ArsenalRoomCreated", false]};
+		waitUntil {time > 0 && !isNull player && missionNameSpace getVariable ["ArsenalRoomCreated", false]};
 		[_arsenalRoomAt, _allowAll, _respawnLoadout, _respawnLoadoutMsgStyle] spawn FS_fnc_ArsenalRoom;
 	};
 };
