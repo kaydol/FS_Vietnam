@@ -1,11 +1,31 @@
 
+/* ----------------------------------------------------------------------------
+Function: FS_fnc_VisualizeBestPlaces
+
+Description:
+	This is a debug function that is used to work with selectBestPlaces command.
+	You can use it whenever you want to visualize the results of the expression 
+	you want to test. The function does not delete anything that it'd created,
+	that's why it's not suited for anything besides testing and debugging.
+	
+Parameters:
+    _pos - Position: Object, Position3D or Position2D
+    _expression - Expression, see https://community.bistudio.com/wiki/Ambient_Parameters 
+	
+Returns:
+    Nothing.
+
+Author:
+    kaydol
+---------------------------------------------------------------------------- */
+
 #define DEF_HANDLER_VARNAME "VisualizeBestPlaces_HandlerId"
 #define DEF_PLACES_VARNAME "VisualizeBestPlaces_Places"
 #define DEF_MARKERS_VARNAME "VisualizeBestPlaces_Markers"
 
-params ["_position", "_expression"];
+params ["_position", "_expression", ["_radius", 50], ["_precision", 1], ["_maxResults", 20]];
 
-private _places = selectBestPlaces [_position, 50, _expression, 1, 20];
+private _places = selectBestPlaces [_position, _radius, _expression, _precision, _maxResults];
 
 if (!isNil{missionNameSpace getVariable DEF_HANDLER_VARNAME}) then {
 	[DEF_HANDLER_VARNAME, "onEachFrame"] call BIS_fnc_removeStackedEventHandler;
