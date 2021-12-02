@@ -2,8 +2,8 @@
 
 if ( typeName _this == "GROUP" ) exitWith { false };
 
-if (isNil{RADIOCOMMS_ENTITIES_WITH_COMMS}) then {
-	RADIOCOMMS_ENTITIES_WITH_COMMS = getArray (ConfigFile >> "CfgVehicles" >> "FS_ModuleRadioSettings" >> "Attributes" >> "EntitiesWithComms" >> "defaultValue");
+if (isNil{RADIOCOMMS_OBJECTS_WITH_COMMS}) then {
+	RADIOCOMMS_OBJECTS_WITH_COMMS = getArray (ConfigFile >> "CfgVehicles" >> "FS_ModuleRadioSettings" >> "Attributes" >> "EntitiesWithComms" >> "defaultValue");
 };
 
 
@@ -11,11 +11,11 @@ private _hasComms = false;
 {
 	if (vehicle _this isKindOf _x) exitWith { _hasComms = true };
 } 
-forEach RADIOCOMMS_ENTITIES_WITH_COMMS;
+forEach RADIOCOMMS_OBJECTS_WITH_COMMS;
 
 if (_hasComms) exitWith { true };
 
 private _nearObjects = _this nearObjects RADIOCOMMS_AUDIBLE_RADIUS;
-_hasComms = count (_nearObjects select { toLowerANSI typeOf _x in (RADIOCOMMS_ENTITIES_WITH_COMMS apply {toLowerAnsi _x}) }) > 0;
+_hasComms = count (_nearObjects select { toLowerANSI typeOf _x in (RADIOCOMMS_OBJECTS_WITH_COMMS apply {toLowerAnsi _x}) }) > 0;
 
 _hasComms

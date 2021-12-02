@@ -19,7 +19,7 @@ if (isNil{RADIOCOMMS_AUDIBLE_RADIUS}) then {
 private _entities = _this nearObjects RADIOCOMMS_AUDIBLE_RADIUS;
 {
 	if ([side _x, side _this] call BIS_fnc_sideIsFriendly && [_x, true] call FS_fnc_CanReceive || 
-		typeOf _x in (RADIOCOMMS_ENTITIES_WITH_COMMS apply {toLowerAnsi _x})) exitWith {
+		typeOf _x in (RADIOCOMMS_OBJECTS_WITH_COMMS apply {toLowerAnsi _x})) exitWith {
 		_ableToReceiveRadioComms = true;
 	};
 	
