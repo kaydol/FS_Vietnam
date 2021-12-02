@@ -4,11 +4,12 @@
 
 params ["_module"];
 
-_removeDead = _module getVariable "removeDead";
-_trapsRemovalDistance = _module getVariable "trapsRemovalDistance";
-_trapsThreshold = _module getVariable "trapsThreshold";
-_gookRemovalDistance = _module getVariable "gookRemovalDistance";
-_removePreplacedUnits = _module getVariable "removePreplaced";
+private _removeDead = _module getVariable "removeDead";
+private _trapsRemovalDistance = _module getVariable "trapsRemovalDistance";
+private _trapsThreshold = _module getVariable "trapsThreshold";
+private _gookRemovalDistance = _module getVariable "gookRemovalDistance";
+private _removePreplacedUnits = _module getVariable "removePreplaced";
+private _debug = _module getVariable "Debug";
 
 if (!_removePreplacedUnits) then {
 	{
@@ -32,6 +33,8 @@ while { true } do
 	
 	if ( _removeDead >= 0 ) then
 	{
+		private _counter = 0;
+		
 		{
 			if !(isNull _x) then 
 			{
@@ -47,6 +50,7 @@ while { true } do
 					/* Do not remove bodies that are too close to the players */
 					if ( selectMin _distances > _removeDead ) then {
 						deleteVehicle _body;
+						_counter = _counter + 1;
 					};
 					
 					sleep (1 + random 2);
@@ -54,6 +58,10 @@ while { true } do
 			};
 		} 
 		forEach AllDead;
+		
+		if (_debug && _counter > 0) then {
+			systemChat format ["Removed %1 dead bodies", _counter];
+		};
 	};
 	
 	
@@ -65,7 +73,7 @@ while { true } do
 	//------------------------------------------------------//
 	// 	First remove traps that are too far from players	//
 	//------------------------------------------------------//
-	
+	private _removedTrapsCounter = 0;
 	if ( _trapsRemovalDistance >= 0 ) then {
 		{
 			_x params ["_mine", "_posAGL", "_orientation"];
@@ -79,6 +87,7 @@ while { true } do
 				if ( selectMin _distances > _trapsRemovalDistance ) then {
 					deleteVehicle _mine;
 					_gookTraps set [_forEachIndex, objNull];
+					_removedTrapsCounter = _removedTrapsCounter + 1;
 				};
 				
 				sleep (1 + random 2);
@@ -108,23 +117,28 @@ while { true } do
 			{
 				deleteVehicle _mine;
 				_gookTraps set [_i, objNull]; 
-				
+				_removedTrapsCounter = _removedTrapsCounter + 1;
 				sleep (1 + random 2);
 			};
 		};
 		
 		_gookTraps resize _trapsThreshold;
+	};	
+	if (_debug && _removedTrapsCounter > 0) then {
+		systemChat format ["Removed %1 traps", _counter];
 	};
 	
 	FS_AllGookTraps = _gookTraps select { !(_x isEqualTo objNull) }; // to get rid of objNulls 
-	
 	publicVariable "FS_AllGookTraps";
 	
 	//--------------------------//
 	// 	Remove strayed Gooks	//
 	//--------------------------//
 	
-	if ( _gookRemovalDistance >= 0 ) then {
+	if ( _gookRemovalDistance >= 0 ) then 
+	{
+		private _counter = 0;
+		
 		{
 			if ( side _x == EAST && count units _x > 0 && !(_x getVariable ["ExcludeGroupFromGarbageCollector", false]) ) then 
 			{
@@ -154,11 +168,15 @@ while { true } do
 						
 						// Players don't have a direct LOS with any of the group members
 						if !( _canSee ) then {
+							if (_debug) then {
+								systemChat format ["Deleting a whole group of %1", count units _grp];
+							};
 							_occupiedVehicles = [];
 							{
 								if ( vehicle _x == _x ) then {
 									// Deleting soldiers on foot
 									deleteVehicle _x;
+									_counter = _counter + 1;
 								} else {
 									// Deleting soldiers in vehicles + their vehicles
 									_occupiedVehicles pushBackUnique vehicle _x;
@@ -166,7 +184,10 @@ while { true } do
 								};
 							}
 							forEach units _grp;
-							{ deleteVehicle _x; } forEach _occupiedVehicles;
+							{
+								deleteVehicle _x;
+								_counter = _counter + 1;
+							} forEach _occupiedVehicles;
 							_grp remoteExec ["deleteGroup", _grp]; // delete group where it's local
 						};
 					};
@@ -175,8 +196,11 @@ while { true } do
 			};
 		}
 		forEach AllGroups;
+		
+		if (_debug && _counter > 0) then {
+			systemChat format ["Removed %1 strayed Gooks", _counter];
+		};
 	};
-	
 	
 	sleep 30;
 };
