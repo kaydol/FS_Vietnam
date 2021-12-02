@@ -370,6 +370,12 @@ class CfgVehicles
 			sync[] = {};
 		};
 		class Attributes : AttributesBase {
+			class AssignedCurator : Edit {
+				property = "AssignedCurator";
+				displayName = "Assigned Zeus Module";
+				tooltip = "Variable name of 'Zeus' module. Curator specified in the 'Zeus' module will be able to edit Gooks spawned by Gook Manager. Leave empty if you don't want Gooks that were spawned by Manager to be editable.";
+				defaultValue = "";
+			};
 			class AILimit : Edit {
 				property = "AILimit";
 				displayName = "AI limit";

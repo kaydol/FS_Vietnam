@@ -1,3 +1,22 @@
+/* ----------------------------------------------------------------------------
+Function: FS_fnc_ModuleArsenal
+
+Description:
+	This module creates a room at the corner of the map, then teleports players
+	each to their own specific coordinate in that room, and opens BIS Arsenal 
+	for them. As soon as players individually exit the Arsenal, they are 
+	teleported back to the position they were at when the Arsenal Module was 
+	launched. The room stays at the corner of the map forever.
+	
+Synced objects:
+	Triggers:	(OPTIONAL) You can activate the module with triggers.
+
+Returns:
+    Nothing.
+
+Author:
+    kaydol
+---------------------------------------------------------------------------- */
 
 params ["_module", ["_units", []], ["_activated", false]];
 

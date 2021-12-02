@@ -1,7 +1,7 @@
 
 #include "..\..\definitions.h"
 
-params ["_cluster", "_unitsToHideFrom", "_sufficientClusterShift", "_distanceToSpawn", "_groupsCount", "_groupSize", "_areaModules", ["_debug", false, [true]]];
+params ["_cluster", "_unitsToHideFrom", "_sufficientClusterShift", "_distanceToSpawn", "_groupsCount", "_groupSize", "_areaModules", "_assignedCurator", ["_debug", false, [true]]];
 
 _cluster params ["_clusterCenter", "_clusterUnits", "_queue"];
 
@@ -69,7 +69,7 @@ for "_i" from 1 to 10 do
 			[[_marker], 10] spawn FS_fnc_FadeDebugMarkers;
 		};
 		
-		private _handler = [_result, _target, _groupSize, _groupsCount, _proposedClasses, _debug] spawn FS_fnc_SpawnGooks;
+		private _handler = [_result, _target, _groupSize, _groupsCount, _proposedClasses, _assignedCurator, _debug] spawn FS_fnc_SpawnGooks;
 		waitUntil { sleep 2; scriptDone _handler };
 	};
 };

@@ -6,7 +6,8 @@ Description:
 	I may or may not expand this module with additional features if I decide to *go deeper*.
 	
 Synced objects:
-    "AIR":	Only sync helicopters, not planes. Can sync many.
+    Helicopters:	Only sync helicopters, not planes. Can sync many.
+	Triggers:		(OPTIONAL) You can activate the module with triggers.
 
 Parameters:
     _module - The module with helicopters synced to it. 

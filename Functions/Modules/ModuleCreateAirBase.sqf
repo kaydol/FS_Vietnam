@@ -7,13 +7,12 @@ Description:
 	and repairing capabilities.
 	
 Synced objects:
+
     "SideXXX_F":				Side this base belongs to. Must be an object with type 
 								"SideBLUFOR_F", "SideOPFOR_F" or "SideResistance_F".
+								
     "LocationRespawnPoint_F": 	(Optional) Defines a spawn position for new crew replacements to spawn at.
 								A new unit will spawn and run from here to the helicopter. Can sync many.
-
-Parameters:
-    _module - The module with a side synced to it.
 	
 Returns:
     Nothing.

@@ -1,5 +1,5 @@
 
-params [["_pos", [], [[]]], ["_target",[]], ["_groupSize", 5 + ceil random 6, [0]], ["_groupsCount", 1, [0]], ["_customClasses", [], [[]]], ["_debug", false, [true]]];
+params [["_pos", [], [[]]], ["_target",[]], ["_groupSize", 5 + ceil random 6, [0]], ["_groupsCount", 1, [0]], ["_customClasses", [], [[]]], "_assignedCurator", ["_debug", false, [true]]];
 
 private _baseclass = "O_T_Soldier_F"; // Chinese speaking asian
 private _pool = [];
@@ -24,6 +24,15 @@ if (_debug) then {
 	systemChat format ["Spawning %1 Gooks", _groupsCount * _groupSize];
 };
 
+private _validCurator = false;
+if (_assignedCurator isEqualType "" && !(_assignedCurator isEqualTo "")) then {
+	_assignedCurator = missionNameSpace getVariable ["_assignedCurator", objNull];
+};
+if (_assignedCurator isEqualType objNull && alive _assignedCurator) then {
+	_validCurator = true;
+};
+
+
 private _side = EAST;
 private _i = 0;
 
@@ -41,7 +50,7 @@ for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do
 			_baseclass = selectRandom _pool;
 		};
 		_baseclass createUnit [ASLToAGL _pos, _NewGrp, "", 0.3, "PRIVATE"];
-		sleep 0.75;
+		sleep 0.5;
 	};
 	
 	//-- Try to substitute Gook equpment with Tanoa assets 
@@ -49,6 +58,9 @@ for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do
 		for [{_j=0},{_j < _groupSize},{_j=_j+1}] do {
 			private _unit = units _NewGrp select _j;
 			_unit spawn FS_fnc_AuthenticLoadout;
+			if (_validCurator) then {
+				_assignedCurator addCuratorEditableObjects [[_unit], false];
+			};
 			sleep 0.5;
 		};
 	};

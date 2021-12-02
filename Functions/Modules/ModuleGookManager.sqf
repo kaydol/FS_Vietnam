@@ -37,6 +37,7 @@ _debug = _logic getVariable "Debug";
 _spawnDistanceMoving = _logic getVariable "SpawnDistanceMoving";
 _spawnDistanceStationary = _logic getVariable "SpawnDistanceStationary";
 _areaModules = synchronizedObjects _logic select { typeOf _x == "FS_GookArea_Module" };
+_assignedCurator = _logic getVariable "AssignedCurator";
 
 /*
 _fsm = _logic getVariable "fsm";
@@ -177,7 +178,7 @@ while { true } do {
 						_groupSize = _groupSize + round random _groupSizeVar;
 						_groupsCount = _groupsCount + round random _groupsCountVar;
 						
-						private _handle = [_next, _allPlayers, SUFFICIENT_CLUSTER_SHIFT, [_spawnDistanceMoving, _spawnDistanceStationary], _groupsCount, _groupSize, _areaModules, _debug] spawn FS_fnc_AttackPlanner;
+						private _handle = [_next, _allPlayers, SUFFICIENT_CLUSTER_SHIFT, [_spawnDistanceMoving, _spawnDistanceStationary], _groupsCount, _groupSize, _areaModules, _assignedCurator, _debug] spawn FS_fnc_AttackPlanner;
 						
 						WaitUntil { scriptDone _handle }; 
 					} 
