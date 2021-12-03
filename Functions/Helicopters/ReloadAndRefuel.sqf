@@ -118,7 +118,7 @@ else
 		if !(_aircraft call FS_fnc_IsScrambleNeeded) then {
 			[_aircraft, false] remoteExec ["allowDamage", _aircraft];
 			if (_debug) then {
-				systemChat "SOFT LANDING: GODMODE ON";
+				systemChat format ["(%1) SOFT LANDING: GODMODE ON", time];
 			};
 		};
 		
@@ -127,7 +127,7 @@ else
 		if !(_aircraft call FS_fnc_IsScrambleNeeded) then {
 			[_aircraft, true] remoteExec ["allowDamage", _aircraft];
 			if (_debug) then {
-				systemChat "SOFT LANDING: GODMODE OFF";
+				format ["(%1) SOFT LANDING: GODMODE OFF", time];
 			};
 		};
 	};
@@ -138,7 +138,7 @@ else
 	
 	// Terminating soft landing script if it hasn't finished
 	if !( scriptDone _softLanding ) then {
-		//systemchat "SOFTLANDING IS NOT DONE, TERMINATING BY FORCE";
+		systemchat format ["(%1) SOFTLANDING IS NOT DONE, TERMINATING BY FORCE", time];
 		terminate _softLanding;
 		if !(_aircraft call FS_fnc_IsScrambleNeeded) then {
 			[_aircraft, false] remoteExec ["allowDamage", _aircraft];

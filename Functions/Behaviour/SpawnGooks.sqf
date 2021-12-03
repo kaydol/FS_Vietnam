@@ -21,7 +21,7 @@ else {
 };
 
 if (_debug) then {
-	systemChat format ["Spawning %1 Gooks", _groupsCount * _groupSize];
+	systemChat format ["(%2) Spawning %1 Gooks", _groupsCount * _groupSize, time];
 };
 
 private _validCurator = false;

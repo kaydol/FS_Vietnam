@@ -69,7 +69,7 @@ if !( isNil{ _lifetime } ) then
 	[_side, _varname, _key, _lifetime] spawn {
 		params ["_side", "_varname", "_key", "_lifetime"];
 		sleep _lifetime;
-		//systemchat "Removing side variable " + _key;
+		//systemchat format ["(%1) Removing side variable %2", time, _key];
 		[_side, _varname, _key] call FS_fnc_UpdateSideVariable;
 	};
 };

@@ -1,4 +1,4 @@
-/*%FSM<COMPILE "D:\Games\SteamLibrary\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, GookGroup">*/
+/*%FSM<COMPILE "D:\SteamLibrary\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, GookGroup">*/
 /*%FSM<HEAD>*/
 /*
 item0[] = {"Start",0,250,-190.887299,-152.449432,-100.887352,-102.449432,0.000000,"Start"};
@@ -118,8 +118,8 @@ link47[] = {41,38};
 link48[] = {41,42};
 link49[] = {42,43};
 link50[] = {43,1};
-globals[] = {0.000000,0,0,0,0,640,480,1,56,6316128,1,741.482666,1913.249268,196.557129,-413.759918,1127,587,1};
-window[] = {0,-1,-1,-1,-1,915,156,1724,156,1,1145};
+globals[] = {0.000000,0,0,0,0,640,480,1,56,6316128,1,1198.931885,2053.149414,159.332214,-266.257782,1124,560,1};
+window[] = {0,-1,-1,-1,-1,939,180,1748,180,1,1145};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -653,7 +653,7 @@ class FSM
                          "};" \n
                          "" \n
                          "" \n
-                         "_scriptHandle = _group spawn FS_fnc_GrpPlaceTraps;" \n
+                         "_scriptHandle = [_group, _debug] spawn FS_fnc_GrpPlaceTraps;" \n
                          "" \n
                          ""/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;

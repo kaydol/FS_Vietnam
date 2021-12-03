@@ -1,11 +1,11 @@
 
 #include "..\..\definitions.h"
 
-params ["_unit"];
+params ["_unit", ["_debug", false]];
 
 if !(alive _unit) exitWith {};
 if !(local _unit) exitWith {
-	[_unit] remoteExec ["FS_fnc_PlaceTrap", _unit];
+	[_unit, _debug] remoteExec ["FS_fnc_PlaceTrap", _unit];
 };
 
 private _tripwires = getArray (configFile >> "CfgWeapons" >> "Put" >> DEF_PUT_MUZZLE_WIREMINE >> "magazines");

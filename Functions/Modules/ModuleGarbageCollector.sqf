@@ -60,7 +60,7 @@ while { true } do
 		forEach AllDead;
 		
 		if (_debug && _counter > 0) then {
-			systemChat format ["Removed %1 dead bodies", _counter];
+			systemChat format ["(%2) Removed %1 dead bodies", _counter, time];
 		};
 	};
 	
@@ -125,7 +125,7 @@ while { true } do
 		_gookTraps resize _trapsThreshold;
 	};	
 	if (_debug && _removedTrapsCounter > 0) then {
-		systemChat format ["Removed %1 traps", _counter];
+		systemChat format ["(%2) Removed %1 traps", _counter, time];
 	};
 	
 	FS_AllGookTraps = _gookTraps select { !(_x isEqualTo objNull) }; // to get rid of objNulls 
@@ -169,7 +169,7 @@ while { true } do
 						// Players don't have a direct LOS with any of the group members
 						if !( _canSee ) then {
 							if (_debug) then {
-								systemChat format ["Deleting a whole group of %1", count units _grp];
+								systemChat format ["(%2) Deleting a whole group of %1", count units _grp, time];
 							};
 							_occupiedVehicles = [];
 							{
@@ -198,7 +198,7 @@ while { true } do
 		forEach AllGroups;
 		
 		if (_debug && _counter > 0) then {
-			systemChat format ["Removed %1 strayed Gooks", _counter];
+			systemChat format ["(%2) Removed %1 strayed Gooks", _counter, time];
 		};
 	};
 	

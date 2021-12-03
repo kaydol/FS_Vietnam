@@ -1,7 +1,7 @@
 
 #include "..\..\definitions.h"
 
-params ["_group"];
+params ["_group", ["_debug", false]];
 
 /* The whole group is dead... Dear God, may them rest in peace */
 if ({alive _x} count units _group <= 0) exitWith { }; 
@@ -45,16 +45,16 @@ while { count _places > 0 && count _sappers > 0 } do
 		private _pop = ( _places # (count _places - 1) ) # 0;
 		_places resize (count _places - 1);
 		
-		[_x, _pop] spawn 
+		[_x, _pop, _debug] spawn 
 		{
-			params ["_sap", "_dest"];
+			params ["_sap", "_dest", "_debug"];
 			
 			[_sap] doMove _dest;
 
 			waitUntil { moveToCompleted _sap || moveToFailed _sap };
 			
 			if ( moveToCompleted _sap ) then {
-				_sap call FS_fnc_PlaceTrap;
+				[_sap, _debug] call FS_fnc_PlaceTrap;
 			};
 		};
 	} 

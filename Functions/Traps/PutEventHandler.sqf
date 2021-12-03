@@ -8,9 +8,12 @@ if ( _weapon == "Put" ) then
 	if !( isNil{ _id } ) then {
 		// Only remove this handler if it was stored in unit's namespace
 		_unit removeEventHandler ["Fired", _id]; 
+		_unit setVariable ["PutEventHandler", nil];
 	};
 	_projectile setVectorUp surfaceNormal position _projectile; // To fix some punji traps' wrong orientation
 	_projectile enableDynamicSimulation true;
+	
+	(side _unit) revealMine _projectile;
 	
 	if ( isNil { FS_AllGookTraps }) then {
 		FS_AllGookTraps = [];
@@ -19,6 +22,6 @@ if ( _weapon == "Put" ) then
 	FS_AllGookTraps pushBack _projectile;
 	
 	// For Garbage Collector
-	publicVariable "FS_AllGookTraps"; // *sigh*
+	publicVariable "FS_AllGookTraps";
 	
 };
