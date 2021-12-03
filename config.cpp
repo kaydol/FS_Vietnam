@@ -5,7 +5,7 @@ class CfgPatches
 	{
 		//-- Units available to spawn as Zeus must be in units[]
 		//-- Of course, they didn't write about it on the wiki
-		units[] = {"FS_NapalmCAS_Module", "FS_ArtyStrike_Module"};
+		units[] = {"FS_NapalmCAS_Module", "FS_ArtyStrike_Module", "FS_ForceToPlaceTraps_Module"};
 		weapons[] = {};
 		requiredAddons[] = {"A3_Data_F", "A3_Weapons_F_Mark", "weapons_f_vietnam_c"};
 		requiredVersion = 0.100000;
@@ -792,7 +792,28 @@ class CfgVehicles
 			};
 			class ModuleDescription : ModuleDescription {};
 		};
-		
+	};
+	
+	class FS_ForceToPlaceTraps_Module : FS_Vietnam_Module {
+		_generalMacro = "FS_ForceToPlaceTraps_Module";
+		icon = "\a3\Modules_F_Curator\Data\iconOrdnance_ca.paa";
+		scope = 2;
+		scopeCurator = 2;
+		curatorCanAttach = 0;
+		curatorCost = 0;
+		isGlobal = 0;
+		isTriggerActivated = 1;
+		displayName = "Force Sappers to Place Traps";
+		function = "FS_fnc_ModuleForceSappersToPlaceTraps";
+		class ModuleDescription : ModuleDescription {
+			description = "This module forces synchronized groups to place traps. The mines can be deleted by Garbage Collector module. This module is intended to be used primarily by Zeus, who can sync spawned groups to this module to force them to place traps. It is possible to activate this module with a trigger.";
+			sync[] = {"MAN"};
+			position = 0;
+			direction = 0; 
+		};
+		class Attributes : AttributesBase {
+			class ModuleDescription : ModuleDescription {};
+		};
 	};
 	
 	class FS_Jukebox_Module : FS_Vietnam_Module {
@@ -1276,6 +1297,7 @@ class CfgFunctions
 			class ModuleArsenal {file = "\FS_Vietnam\Functions\Modules\ModuleArsenal.sqf";};
 			class ModuleArtyStrike {file = "\FS_Vietnam\Functions\Modules\ModuleArtyStrike.sqf";};
 			class ModuleCreateAirBase {file = "\FS_Vietnam\Functions\Modules\ModuleCreateAirBase.sqf";};
+			class ModuleForceSappersToPlaceTraps {file = "\FS_Vietnam\Functions\Modules\ModuleForceSappersToPlaceTraps.sqf";};
 			class ModuleGarbageCollector {file = "\FS_Vietnam\Functions\Modules\ModuleGarbageCollector.sqf";};
 			class ModuleGookArea {file = "\FS_Vietnam\Functions\Modules\ModuleGookArea.sqf";};
 			class ModuleGookManager {file = "\FS_Vietnam\Functions\Modules\ModuleGookManager.sqf";};
@@ -1340,5 +1362,4 @@ class CfgWeapons
             sounds[] = {"StandardSound"};
         };
     };
-	
 };
