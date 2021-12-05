@@ -13,6 +13,12 @@ if ( _weapon == "Put" ) then
 	_projectile setVectorUp surfaceNormal position _projectile; // To fix some punji traps' wrong orientation
 	_projectile enableDynamicSimulation true;
 	
+	//-- "surfaceIsWater also detects pond objects, but only if they are loaded in memory 
+	//-- (normally only true if the objects are within the object view distance)"
+	if (surfaceIsWater position _projectile) then {
+		deleteVehicle _projectile;
+	};
+	
 	(side _unit) revealMine _projectile;
 	
 	if ( isNil { FS_AllGookTraps }) then {
