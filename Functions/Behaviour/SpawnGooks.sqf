@@ -1,5 +1,5 @@
 
-params [["_pos", [], [[]]], ["_target",[]], ["_groupSize", 5 + ceil random 6, [0]], ["_groupsCount", 1, [0]], ["_customClasses", [], [[]]], "_assignedCurator", ["_debug", false, [true]]];
+params [["_pos", [], [[]]], ["_target",[]], ["_groupSize", 5 + ceil random 6, [0]], ["_groupsCount", 1, [0]], ["_customClasses", [], [[]]], ["_assignedCurator", objNull], ["_debug", false, [true]]];
 
 private _baseclass = "O_T_Soldier_F"; // Chinese speaking asian
 private _pool = [];
@@ -25,8 +25,9 @@ if (_debug) then {
 };
 
 private _validCurator = false;
+//-- If _assignedCurator is given as a string, try to get the global variable out of it 
 if (_assignedCurator isEqualType "" && !(_assignedCurator isEqualTo "")) then {
-	_assignedCurator = missionNameSpace getVariable ["_assignedCurator", objNull];
+	_assignedCurator = missionNameSpace getVariable [_assignedCurator, objNull];
 };
 if (_assignedCurator isEqualType objNull && alive _assignedCurator) then {
 	_validCurator = true;
@@ -53,11 +54,13 @@ for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do
 		sleep 0.5;
 	};
 	
-	//-- Try to substitute Gook equpment with Tanoa assets 
-	if ( count _pool == 0 ) then {
+	if (_validCurator || count _pool == 0) then {
 		for [{_j=0},{_j < _groupSize},{_j=_j+1}] do {
 			private _unit = units _NewGrp select _j;
-			_unit spawn FS_fnc_AuthenticLoadout;
+			if ( count _pool == 0 ) then {
+				//-- Try to substitute Gook equpment with Tanoa assets 
+				_unit spawn FS_fnc_AuthenticLoadout;
+			};
 			if (_validCurator) then {
 				_assignedCurator addCuratorEditableObjects [[_unit], false];
 			};
