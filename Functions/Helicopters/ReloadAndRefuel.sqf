@@ -5,15 +5,15 @@ params ["_aircraft", "_debug"];
 	First, updating the stations to indicate that this aircraft
 	has left its station 
 */
-_side = _aircraft getVariable ["initSide", side _aircraft];
+private _side = _aircraft getVariable ["initSide", side _aircraft];
 [_side, "AIRSTATIONS", _aircraft] call FS_fnc_UpdateSideVariable;
 
-_group = group _aircraft;
-_bases = [];
+private _group = group _aircraft;
+private _bases = [];
 
-_needsMaintenance = _aircraft call FS_fnc_IsMaintenanceNeeded;
-_hasDead = {!alive _x} count crew _aircraft > 0;
-_hasAlive = {alive _x} count crew _aircraft > 0;
+private _needsMaintenance = _aircraft call FS_fnc_IsMaintenanceNeeded;
+private _hasDead = {!alive _x} count crew _aircraft > 0;
+private _hasAlive = {alive _x} count crew _aircraft > 0;
 
 if ( _hasDead && _hasAlive ) then {
 	[side _aircraft, "CrewMemberDown", nil, _aircraft] remoteExec ["FS_fnc_TransmitOverRadio", 2];
@@ -41,17 +41,15 @@ if ( !_hasDead && !_needsMaintenance ) then {
 
 /* Select the closest base */
 
-_distance = 999999999999;
-_closest_base = objNull;
+private _distance = 999999999999;
+private _closest_base = objNull;
 
 {
-	_synced = synchronizedObjects _x; 
-	
 	/* Only bases of the same side are taken into consideration */
 	
-	if ( ( _x call FS_fnc_GetModuleOwner ) == side _aircraft ) then 
+	if ( ( _x call FS_fnc_GetModuleOwner ) == _side ) then 
 	{
-		_dist =  _x distance _aircraft;
+		private _dist =  _x distance _aircraft;
 		if ( _dist < _distance ) then {
 			_distance = _dist;
 			_closest_base = _x;
@@ -70,19 +68,19 @@ if ( _closest_base isEqualTo objNull ) then
 }
 else
 {
-	_providesMaintenance = _closest_base getVariable ["providesMaintenance", False];
-	_refuelRearmTime = _closest_base getVariable ["refuelRearmTime", 60];
+	private _providesMaintenance = _closest_base getVariable ["providesMaintenance", False];
+	private _refuelRearmTime = _closest_base getVariable ["refuelRearmTime", 60];
 	
-	_providesCrew = _closest_base getVariable ["providesCrew", False];
-	_respawn_points = _closest_base getVariable ["respawn_points", []];
+	private _providesCrew = _closest_base getVariable ["providesCrew", False];
+	private _respawn_points = _closest_base getVariable ["respawn_points", []];
 	
-	_pos = getPos _closest_base;
+	private _pos = getPos _closest_base;
 	
 	while { count waypoints _group > 1 } do {
 		deleteWaypoint [_group, 1];
 	};
 	
-	_NewWP = _group addWaypoint [_pos, 0];
+	private _NewWP = _group addWaypoint [_pos, 0];
 	_NewWP setWaypointType "MOVE";
 	_NewWP setWaypointDescription "LAND AT BASE";
 	_NewWP setWaypointSpeed "FULL";	
@@ -207,17 +205,17 @@ else
 			
 			while {{!alive _x} count crew _aircraft > 0} do 
 			{
-				_respawn_at = [0,0,0];
+				private _respawn_at = [0,0,0];
 				if ( count _respawn_points > 0 ) then {
 					_respawn_at = selectRandom _respawn_points;
 				};
 				
-				_index = crew _aircraft findIf {!alive _x};
-				_dead_unit = crew _aircraft select _index;
+				private _index = crew _aircraft findIf {!alive _x};
+				private _dead_unit = crew _aircraft select _index;
 				
-				_class = typeOf _dead_unit;
+				private _class = typeOf _dead_unit;
 				_class createUnit [_respawn_at, _group, "", random 1, "PRIVATE"];
-				_newMan = units _group select ( units _group findIf { vehicle _x != _aircraft } );
+				private _newMan = units _group select ( units _group findIf { vehicle _x != _aircraft } );
 
 				[_newMan] orderGetIn true; 
 				
@@ -227,6 +225,10 @@ else
 				*/
 				if ( _respawn_at isEqualTo [0,0,0] ) then 
 				{
+					//-- Ah, YES, of course, moveInGunner\Driver\etc push dead bodies out of the seat while moveInAny does NOT, 
+					//-- and nobody bothered to mention that on the Wiki...
+					[_dead_unit, _aircraft] remoteExec ["deleteVehicleCrew", _aircraft];
+					sleep 1;
 					_newMan moveInAny _aircraft;
 				}
 				else 
@@ -234,7 +236,8 @@ else
 					waitUntil { sleep 0.5; { _x in _aircraft } count units _group == count crew _aircraft || !alive _aircraft };
 				};
 				
-				[_dead_unit, _aircraft] remoteExec ["deleteVehicleCrew", _aircraft];
+				//-- The body should be on the floor by now 
+				deleteVehicle _dead_unit;
 				
 				sleep 2;
 			};
