@@ -14,6 +14,7 @@ if ( _preventRecursion ) exitWith { false };
 
 if (isNil{RADIOCOMMS_AUDIBLE_RADIUS}) then {
 	RADIOCOMMS_AUDIBLE_RADIUS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_ModuleRadioSettings" >> "Attributes" >> "AudibleRadius" >> "defaultValue");
+	RADIOCOMMS_AUDIBLE_RADIUS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_ModuleRadioSettings" >> "Attributes" >> "AudibleRadius" >> "defaultValue");
 };
 
 private _entities = _this nearObjects RADIOCOMMS_AUDIBLE_RADIUS;
