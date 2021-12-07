@@ -1,12 +1,30 @@
 
-params ["_pos", "_unitsToHideFrom"];
+/* ----------------------------------------------------------------------------
+Function: FS_fnc_IsPosHidden
 
-private _cansee = False;
-private _p = _pos;
-_p = _p vectorAdd [0,0,1.8]; // elevate p to represent a height of a standing person
+Description:
+	
+	
+Parameters:
+    _pos - Position: position of the object being tested
+	_unitsToHideFrom - Array: array of units to check visibility against 
+	_objectToIgnore1 - Object: object to be ignored when checking visibility
+	_objectToIgnore2 - Object: object to be ignored when checking visibility
+	
+Returns:
+    BOOL - true if position can be seen by units.
+
+Author:
+    kaydol
+---------------------------------------------------------------------------- */
+
+params ["_posASL", "_unitsToHideFrom", ["_objectToIgnore1", objNull], ["_objectToIgnore2", objNull]];
+
+private _cansee = false;
+private _p = _posASL vectorAdd [0,0,1.8]; // elevate p to represent a height of a standing person
 
 {
-	_cansee = [objNull, "VIEW"] checkVisibility [eyePos _x, _p] > 0.3 ;
+	_cansee = [_objectToIgnore1, "VIEW", _objectToIgnore2] checkVisibility [eyePos _x, _p] > 0.3 ;
 	if ( _cansee ) exitWith {};
 }
 forEach _unitsToHideFrom;
