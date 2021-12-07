@@ -1,4 +1,4 @@
-/*%FSM<COMPILE "scriptedFSM.cfg, SniperSentry">*/
+/*%FSM<COMPILE "D:\SteamLibrary\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, SniperSentry">*/
 /*%FSM<HEAD>*/
 /*
 item0[] = {"Sentry_FSM",0,250,-40.348846,-149.418610,49.651154,-99.418610,0.000000,"Sentry FSM"};
@@ -8,7 +8,7 @@ item3[] = {"Knows_about_enem",4,218,373.284882,-263.651062,463.284882,-213.65110
 item4[] = {"No_known_enemies",8,218,383.472717,-44.445724,473.472565,5.554276,0.000000,"No known" \n "enemies"};
 item5[] = {"Snipers_are_dead",4,218,268.568146,-317.430573,358.568146,-267.430573,3.000000,"Snipers" \n "are dead"};
 item6[] = {"Exit",1,250,741.677490,-316.531097,831.677490,-266.531097,0.000000,"Exit"};
-item7[] = {"Sleep",2,4346,505.436157,-259.350464,595.436157,-209.350464,0.000000,"Sleep"};
+item7[] = {"Move_snipers_to",2,250,504.784943,-268.467590,595.436157,-206.094330,0.000000,"Move snipers" \n "to the closest" \n "corner of the " \n "platform"};
 item8[] = {"Has_time_passed",4,218,503.681763,-144.221222,593.681763,-94.221222,0.000000,"Has time" \n "passed?"};
 item9[] = {"Look_into__random",2,250,635.909729,-44.489441,725.909729,5.510559,0.000000,"Look into " \n "random direction"};
 item10[] = {"_",8,218,638.438477,-261.167419,728.438477,-211.167404,0.000000,""};
@@ -24,8 +24,8 @@ link8[] = {7,8};
 link9[] = {8,2};
 link10[] = {9,10};
 link11[] = {10,7};
-globals[] = {0.000000,0,0,0,0,640,480,1,16,6316128,1,-37.375618,863.285645,218.119324,-481.578064,735,571,1};
-window[] = {0,-1,-1,-32000,-32000,817,58,1633,58,1,755};
+globals[] = {0.000000,0,0,0,0,640,480,1,16,6316128,1,244.647278,891.297913,107.266052,-386.091431,734,560,1};
+window[] = {0,-1,-1,-1,-1,939,180,1755,180,1,755};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -44,7 +44,8 @@ class FSM
                          "{" \n
                          "	_x disableAI ""PATH"";" \n
                          "	_x setUnitPos ""MIDDLE"";" \n
-                         "} " \n
+                         "	_x setSpeaker ""NoVoice"";" \n
+                         "}" \n
                          "forEach units _group;" \n
                          "" \n
                          "/* Limit ROF */" \n
@@ -64,7 +65,12 @@ class FSM
                          "		};" \n
                          "	}];" \n
                          "} " \n
-                         "forEach units _group;"/*%FSM</STATEINIT""">*/;
+                         "forEach units _group;" \n
+                         "" \n
+                         "// See if this tree platform has building positions defined in config" \n
+                         "_buildingPositions = _tree call BIS_fnc_buildingPositions;" \n
+                         "_firstRun = true;" \n
+                         ""/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -105,7 +111,7 @@ class FSM
                                         priority = 3.000000;
                                         to="Exit";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"{ alive _x } count units _group == 0"/*%FSM</CONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"{ alive _x } count units _group == 0 || _buildingPositions isEqualTo []"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -114,7 +120,7 @@ class FSM
                                 {
                                         itemno = 3;
                                         priority = 1.000000;
-                                        to="Sleep";
+                                        to="Move_snipers_to";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"_potentialTargets = leader _group targets [True, 200, [WEST,sideEnemy,sideUnknown], _idleTime];" \n
                                          "count _potentialTargets > 0"/*%FSM</CONDITION""">*/;
@@ -147,32 +153,44 @@ class FSM
                         };
                 };
                 /*%FSM</STATE>*/
-                /*%FSM<STATE "Sleep">*/
-                class Sleep
+                /*%FSM<STATE "Move_snipers_to">*/
+                class Move_snipers_to
                 {
-                        name = "Sleep";
+                        name = "Move_snipers_to";
                         itemno = 7;
                         init = /*%FSM<STATEINIT""">*/"_time = time;" \n
                          "" \n
-                         "// See if this tree platform has building positions defined in config" \n
-                         "_buildingPositions = _tree call BIS_fnc_buildingPositions;" \n
-                         "if (_buildingPositions isEqualTo []) exitWith {};" \n
-                         "" \n
                          "// If there is only 1 building position, this sniper is already in it" \n
-                         "if (count _buildingPositions == 1) exitWith {};" \n
+                         "// ...unless it's the first run ever, then we have to do the initial setPos" \n
+                         "if (!_firstRun && count _buildingPositions == 1) exitWith {};" \n
                          "" \n
-                         "// Filter out positions that can be seen by players" \n
-                         "_unitsToHideFrom = switchableUnits + playableUnits;" \n
-                         "_safeTreePositions = _buildingPositions select { [_x, _unitsToHideFrom] call FS_fnc_IsPosHidden };" \n
-                         "if (_safeTreePositions isEqualTo []) exitWith {};" \n
+                         "// Exclude initial setPos from player visibility checks" \n
+                         "_safeTreePositions = [];" \n
+                         "if (_firstRun) then {" \n
+                         "	_firstRun = false;" \n
+                         "	_safeTreePositions = _buildingPositions;" \n
+                         "} else {" \n
+                         "	// Filter out positions that can be seen by players" \n
+                         "	_unitsToHideFrom = switchableUnits + playableUnits;" \n
+                         "	_safeTreePositions = _buildingPositions select { [ATLToASL _x, _unitsToHideFrom, _tree] call FS_fnc_IsPosHidden };" \n
+                         "};" \n
                          "" \n
                          "// Move snipers to building positions closest to the closest known target" \n
                          "for [{_i = 0},{_i < count units _group},{_i = _i + 1}] do {" \n
                          "	if (_safeTreePositions isEqualTo []) exitWith {};" \n
                          "	_unit = units _group select _i;" \n
-                         "	_data = [_safeTreePositions, _potentialTargets, true] call FS_fnc_DistanceBetweenArrays;" \n
-                         "	_closestSafePos = _data # 1 select 0;" \n
-                         "	_unit setPos _closestSafePos;" \n
+                         "" \n
+                         "	// If there are no known targets, select a random safe building pos" \n
+                         "	// otherwise select pos closest to the known enemy" \n
+                         "	_closestSafePos = [];" \n
+                         "	if (_potentialTargets isEqualTo []) then {" \n
+                         "		_closestSafePos = selectRandom _safeTreePositions;" \n
+                         "	} else {" \n
+                         "		_data = [_safeTreePositions, _potentialTargets, true] call FS_fnc_DistanceBetweenArrays;" \n
+                         "		_closestSafePos = _data # 1 select 0;" \n
+                         "	}; " \n
+                         "	" \n
+                         "	_unit setPosATL _closestSafePos;" \n
                          "	_safeTreePositions = _safeTreePositions - [_closestSafePos];" \n
                          "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -212,7 +230,7 @@ class FSM
                                 {
                                         itemno = 10;
                                         priority = 0.000000;
-                                        to="Sleep";
+                                        to="Move_snipers_to";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
