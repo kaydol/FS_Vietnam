@@ -21,12 +21,12 @@ Author:
 params ["_posASL", "_unitsToHideFrom", ["_objectToIgnore1", objNull], ["_objectToIgnore2", objNull]];
 
 private _cansee = false;
-private _p = _posASL vectorAdd [0,0,1.8]; // elevate p to represent a height of a standing person
 
 {
-	_cansee = [_objectToIgnore1, "VIEW", _objectToIgnore2] checkVisibility [eyePos _x, _p] > 0.3 ;
+	_cansee = [_objectToIgnore1, "VIEW", _objectToIgnore2] checkVisibility [eyePos _x, _posASL] > 0.3 ;
 	if ( _cansee ) exitWith {};
 }
 forEach _unitsToHideFrom;
 	
-_cansee 
+!_cansee 
+
