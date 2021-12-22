@@ -33,10 +33,8 @@ if (_assignedCurator isEqualType objNull && alive _assignedCurator) then {
 	_validCurator = true;
 };
 
-
 private _side = EAST;
 private _i = 0;
-
 for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do 
 {
 	private _NewGrp = createGroup _side;
@@ -55,7 +53,7 @@ for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do
 	};
 	
 	if (_validCurator || count _pool == 0) then {
-		for [{_j=0},{_j < _groupSize},{_j=_j+1}] do {
+		for [{_j=0},{_j < count units _NewGrp},{_j=_j+1}] do {
 			private _unit = units _NewGrp select _j;
 			if ( count _pool == 0 ) then {
 				//-- Try to substitute Gook equpment with Tanoa assets 
