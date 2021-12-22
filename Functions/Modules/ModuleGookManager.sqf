@@ -24,33 +24,22 @@ Author:
 
 params ["_logic"];
 
-_spawnCondition = _logic getVariable "SpawnCondition";
+private _spawnCondition = _logic getVariable "SpawnCondition";
 if !(_spawnCondition isEqualType "") then { _spawnCondition = str _spawnCondition; };
 
-_assessmentRate = _logic getVariable "Sleep";
-_ailimit = _logic getVariable "AILimit";
-_groupSize = _logic getVariable "GroupSize";
-_groupSizeVar = _logic getVariable "GroupSizeVar";
-_groupsCount = _logic getVariable "GroupsCount";
-_groupsCountVar = _logic getVariable "GroupsCountVar";
-_debug = _logic getVariable "Debug";
-_spawnDistanceMoving = _logic getVariable "SpawnDistanceMoving";
-_spawnDistanceStationary = _logic getVariable "SpawnDistanceStationary";
-_areaModules = synchronizedObjects _logic select { typeOf _x == "FS_GookArea_Module" };
-_assignedCurator = _logic getVariable "AssignedCurator";
+private _assessmentRate = _logic getVariable "Sleep";
+private _ailimit = _logic getVariable "AILimit";
+private _groupSize = _logic getVariable "GroupSize";
+private _groupSizeVar = _logic getVariable "GroupSizeVar";
+private _groupsCount = _logic getVariable "GroupsCount";
+private _groupsCountVar = _logic getVariable "GroupsCountVar";
+private _debug = _logic getVariable "Debug";
+private _spawnDistanceMoving = _logic getVariable "SpawnDistanceMoving";
+private _spawnDistanceStationary = _logic getVariable "SpawnDistanceStationary";
+private _areaModules = synchronizedObjects _logic select { typeOf _x == "FS_GookArea_Module" };
+private _assignedCurator = _logic getVariable "AssignedCurator";
 
-/*
-_fsm = _logic getVariable "fsm";
-if (isNil{ _fsm }) then 
-{
-	_fsm = [_logic, _spawnProbability, _sleep, _ailimit, _groupSize, _groupsCount, _debug] execFSM "\FS_Vietnam\FSM\GookManager.fsm";
-	_logic setVariable ["fsm", _fsm];
-};
-*/
-// Use to stop spawning new Gooks
-//_fsm setFSMVariable ["_moduleActive", false];
-
-private _scope = 3; // how many times we assess the movements before judging about a trend. Defines the length of the queue 
+private _scope = 4; // how many times we assess the movements before judging about a trend. Defines the length of the queue 
 private _previousClusterization = [];
 
 /*
@@ -175,10 +164,8 @@ while { true } do {
 								  / \   	 	    /\/    		  /\/ 
 								  \  \  	  	    \      		  \
 						*/
-						_groupSize = _groupSize + round random _groupSizeVar;
-						_groupsCount = _groupsCount + round random _groupsCountVar;
 						
-						private _handle = [_next, _allPlayers, SUFFICIENT_CLUSTER_SHIFT, [_spawnDistanceMoving, _spawnDistanceStationary], _groupsCount, _groupSize, _areaModules, _assignedCurator, _debug] spawn FS_fnc_AttackPlanner;
+						private _handle = [_next, _allPlayers, SUFFICIENT_CLUSTER_SHIFT, [_spawnDistanceMoving, _spawnDistanceStationary], _groupsCount + round random _groupsCountVar, _groupSize + round random _groupSizeVar, _areaModules, _assignedCurator, _debug] spawn FS_fnc_AttackPlanner;
 						
 						WaitUntil { scriptDone _handle }; 
 					} 
