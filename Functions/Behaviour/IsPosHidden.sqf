@@ -6,7 +6,7 @@ Description:
 	
 	
 Parameters:
-    _pos - Position: position of the object being tested
+    _posASL - PositionASL: ASL position of the object being tested
 	_unitsToHideFrom - Array: array of units to check visibility against 
 	_objectToIgnore1 - Object: object to be ignored when checking visibility
 	_objectToIgnore2 - Object: object to be ignored when checking visibility

@@ -6,11 +6,14 @@ Description:
 	This is a debug function that is used to work with selectBestPlaces command.
 	You can use it whenever you want to visualize the results of the expression 
 	you want to test. The function does not delete anything that it'd created,
-	that's why it's not suited for anything besides testing and debugging.
+	this is why it's not suited for anything besides testing and debugging.
 	
 Parameters:
-    _pos - Position: Object, Position3D or Position2D
-    _expression - Expression, see https://community.bistudio.com/wiki/Ambient_Parameters 
+    _pos - Object, Position3D or Position2D
+    _expression - STRING: Expression, see https://community.bistudio.com/wiki/Ambient_Parameters 
+	_radius - NUMBER: radius of searching.
+	_precision - NUMBER: grid size for searching.
+	_maxResults - NUMBER: this amount of positions will be drawn.
 	
 Returns:
     Nothing.

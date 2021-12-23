@@ -1,8 +1,13 @@
 
 #include "..\..\definitions.h"
 
-params ["_cluster", "_unitsToHideFrom", "_sufficientClusterShift", "_distanceToSpawn", "_groupsCount", "_groupSize", "_areaModules", "_assignedCurator", ["_debug", false, [true]]];
+#define DEF_THREAT_INFANTRY 0
+#define DEF_THREAT_VEHICLES 1
+#define DEF_THREAT_BUILDINGS 2
 
+params ["_cluster", "_unitsToHideFrom", "_sufficientClusterShift", "_distanceToSpawn", "_buildingsAndVehicles", "_groupsCount", "_groupSize", "_areaModules", "_assignedCurator", ["_debug", false, [true]]];
+
+_buildingsAndVehicles params ["_buildingClasses", "_vehicleClasses"];
 _cluster params ["_clusterCenter", "_clusterUnits", "_queue"];
 
 private _coordinates = [_queue] call FS_fnc_QueueGetData;
@@ -59,17 +64,116 @@ for "_i" from 1 to 10 do
 		};
 	};
 	
-	if (_goodPositionFound) exitWith {
+	if (_goodPositionFound) exitWith 
+	{
 		if ( _target isEqualTo [] ) then {
 			_target = _result getDir _clusterCenter; // Passing the heading to look at to the FSM
 		};
 		
-		if ( _debug ) then {
-			private _marker = [_result, "mil_dot", "ColorRed", ["An attack from here!", "Ambush here!"] select _isAmbush] call FS_fnc_CreateDebugMarker;
-			[[_marker], 10] spawn FS_fnc_FadeDebugMarkers;
+		private _handle = 0 spawn {};
+		private _possibleThreats = [DEF_THREAT_INFANTRY, DEF_THREAT_VEHICLES, DEF_THREAT_BUILDINGS];
+		
+		if (!_isAmbush || _buildingClasses isEqualTo []) then {
+			_possibleThreats = _possibleThreats select { _x != DEF_THREAT_BUILDINGS };
+		};
+		if (!_isAmbush || _vehicleClasses isEqualTo []) then {
+			_possibleThreats = _possibleThreats select { _x != DEF_THREAT_VEHICLES };
 		};
 		
-		private _handler = [_result, _target, _groupSize, _groupsCount, _proposedClasses, _assignedCurator, _debug] spawn FS_fnc_SpawnGooks;
-		waitUntil { sleep 2; scriptDone _handler };
+		
+		private _validCurator = false;
+		//-- If _assignedCurator is given as a string, try to get the global variable out of it 
+		if (_assignedCurator isEqualType "" && !(_assignedCurator isEqualTo "")) then {
+			_assignedCurator = missionNameSpace getVariable [_assignedCurator, objNull];
+		};
+		if (_assignedCurator isEqualType objNull && alive _assignedCurator) then {
+			_validCurator = true;
+		};
+		
+		
+		switch (selectRandom _possibleThreats) do 
+		{
+			case DEF_THREAT_INFANTRY: {
+				//-- Spawn infantry
+				_handle = [_result, _target, _groupSize, _groupsCount, _proposedClasses, _assignedCurator, _debug] spawn FS_fnc_SpawnGooks;
+				if ( _debug ) then {
+					private _marker = [_result, "mil_dot", "ColorRed", ["An attack from here!", "Ambush here!"] select _isAmbush] call FS_fnc_CreateDebugMarker;
+					[[_marker], 10] spawn FS_fnc_FadeDebugMarkers;
+				};
+			};
+			
+			case DEF_THREAT_VEHICLES: {
+				//-- Spawn vehicles 
+				private _created = [selectRandom _vehicleClasses, _result, DEF_GOOK_MANAGER_VEHICLES_BEST_PLACES, 1, _unitsToHideFrom, _debug] call FS_fnc_TrySpawnObjectBestPlaces;
+				if !(_created isEqualTo []) then {
+					private _markers = [];
+					_created apply 
+					{
+						// Make vehicle look at target 
+						// Twin spider holes have incorrect forward orientation
+						if (toLowerANSI typeOf _x in ["vn_o_vc_spiderhole_03", "vn_o_nva_spiderhole_03"]) then {
+							_x setDir ((_result getDir _clusterCenter)-90); 
+						} else {
+							_x setDir (_result getDir _clusterCenter); 
+						};
+						_x setPos getPos _x;
+						[_x, createGroup EAST] call BIS_fnc_spawnCrew;
+						if (_validCurator) then {
+							_assignedCurator addCuratorEditableObjects [[_x], true];
+						};
+						
+						if (_debug) then {
+							private _marker = _x call BIS_fnc_boundingBoxMarker;
+							if !(_marker isEqualTo "") then {
+								_marker setMarkerColor "ColorRed";
+								_markers pushBack _marker;
+							};
+							systemChat format ["(%1) Vehicle %2 spawned", time, typeOf _x];
+						};
+						true
+					};
+					if ( _debug ) then {
+						[_markers, 10] spawn FS_fnc_FadeDebugMarkers;
+					};
+				} else {
+					if ( _debug ) then {
+						systemChat format ["(%1) Failed to find a place to spawn any vehicles", time];
+					};
+				};
+			};
+			
+			case DEF_THREAT_BUILDINGS: {
+				//-- Spawn buildings
+				private _created = [selectRandom _buildingClasses, _result, DEF_GOOK_MANAGER_BUILDINGS_BEST_PLACES, 1, _unitsToHideFrom, _debug] call FS_fnc_TrySpawnObjectBestPlaces;
+				if !(_created isEqualTo []) then {
+					private _markers = [];
+					_created apply 
+					{
+						_x setDir random 360;
+						[_x, _assignedCurator] spawn FS_fnc_OccupyTree;
+						
+						if (_debug) then {
+							private _marker = _x call BIS_fnc_boundingBoxMarker;
+							if !(_marker isEqualTo "") then {
+								_marker setMarkerColor "ColorRed";
+								_markers pushBack _marker;
+							};
+							systemChat format ["(%1) Building %2 spawned", time, typeOf _x];
+						};
+						true
+					};
+					if ( _debug ) then {
+						[_markers, 10] spawn FS_fnc_FadeDebugMarkers;
+					};
+				} else {
+					if ( _debug ) then {
+						systemChat format ["(%1) Failed to find a place to spawn any buildings", time];
+					};
+				};
+			};
+			case default {};
+		};
+		
+		waitUntil { sleep 2; scriptDone _handle };
 	};
 };

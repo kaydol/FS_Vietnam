@@ -374,7 +374,7 @@ class CfgVehicles
 				property = "AssignedCurator";
 				displayName = "Assigned Zeus Module";
 				tooltip = "Variable name of 'Zeus' module. Curator specified in the 'Zeus' module will be able to edit Gooks spawned by Gook Manager. Leave empty if you don't want Gooks that were spawned by Manager to be editable.";
-				defaultValue = "";
+				defaultValue = "objNull";
 			};
 			class AILimit : Edit {
 				property = "AILimit";
@@ -423,6 +423,18 @@ class CfgVehicles
 				tooltip = "The Manager evaluates Spawn Condition to decide whether to spawn a group of Gooks or not, then spawns it if the condition is true. After that, the Manager waits some time, then the whole thing is repeated. This number defines how much time passes between condition evaluations.";
 				typeName = "NUMBER";
 				defaultValue = 30;
+			};
+			class SniperTreeClasses : Edit {
+				property = "SniperTreeClasses";
+				displayName = "Sniper Tree classes";
+				tooltip = "These buildings may be spawned in front of moving targets. Intended for sniper trees, but you can put any building with defined buildingPositions here. A sniper with special behavior will be placed in the building. Leave as [] to disable.";
+				defaultValue = "['Land_vn_o_snipertree_01','Land_vn_o_snipertree_02','Land_vn_o_snipertree_03','Land_vn_o_snipertree_04']";
+			};
+			class VehicleClasses : Edit {
+				property = "VehicleClasses";
+				displayName = "Vehicle classes";
+				tooltip = "These vehicles may be spawned in front of moving targets. Intended for spider holes (which are essentially static turrets), but you can put any crewed vehicle classes here. Leave as [] to disable.";
+				defaultValue = "['vn_o_vc_spiderhole_01','vn_o_vc_spiderhole_02','vn_o_vc_spiderhole_03','vn_o_nva_spiderhole_01','vn_o_nva_spiderhole_02','vn_o_nva_spiderhole_03']";
 			};
 			class SpawnDistanceMoving : Edit {
 				property = "SpawnDistanceMoving";
@@ -557,10 +569,10 @@ class CfgVehicles
 				typeName = "NUMBER";
 				defaultValue = 40;
 			};
-			class GookRemovalDistance : Edit {
-				property = "gookRemovalDistance";
-				displayName = "Gook removal distance";
-				tooltip = "Gooks that are too far from any of the players will be mercilessly deleted. Use -1 to disable gook removal.";
+			class RemovalDistance : Edit {
+				property = "removalDistance";
+				displayName = "Removal distance";
+				tooltip = "Entities that are too far from any of the players will be mercilessly deleted. Use -1 to disable removal.";
 				typeName = "NUMBER";
 				defaultValue = 300;
 			};
@@ -966,11 +978,11 @@ class CfgVehicles
 			sync[] = {};
 		};
 		class Attributes : AttributesBase {
-			class EntitiesWithComms : Edit {
-				property = "EntitiesWithComms";
+			class ObjectsWithComms : Edit {
+				property = "ObjectsWithComms";
 				displayName = "Entities with built-in radio comms";
 				tooltip = "An array of entities that grant nearby units access to the radio communication system, which enables them to transmit and receive addon-specific messages over radio.";
-				defaultValue = "['Air', 'Tank', 'uns_willys_base']";
+				defaultValue = "['Air', 'Tank', 'uns_willys_base', 'Land_vn_b_trench_bunker_03_04']";
 			};
 			class AudibleRadius : Edit {
 				property = "AudibleRadius";
@@ -983,7 +995,7 @@ class CfgVehicles
 				property = "RTOItemsAndBackpacks";
 				displayName = "RTO items and backpacks";
 				tooltip = "Items and backpacks that give full access to comms. Units with these items or backpacks are considered Radio Telephone Operators (RTOs).";
-				defaultValue = "['vn_o_pack_t884_01', 'vn_b_pack_lw_06', 'vn_b_pack_lw_06_m16_pl', 'vn_b_pack_prc77_01', 'vn_b_pack_03_02', 'vn_b_pack_03', 'vn_b_pack_t884_01', 'vn_b_pack_trp_04', 'UNS_ItemRadio_PRC_25', 'UNS_NVA_RTO', 'UNS_ARMY_RTO', 'UNS_ARMY_RTO2', 'UNS_SF_RTO', 'UNS_Alice_FR', 'UNS_USMC_RTO', 'UNS_USMC_RTO2']";
+				defaultValue = "['vn_o_pack_t884_01', 'vn_b_pack_03_xm177_pl', 'vn_b_pack_lw_06', 'vn_b_pack_lw_06_m16_pl', 'vn_b_pack_prc77_01', 'vn_b_pack_03_02', 'vn_b_pack_03', 'vn_b_pack_t884_01', 'vn_b_pack_trp_04', 'UNS_ItemRadio_PRC_25', 'UNS_NVA_RTO', 'UNS_ARMY_RTO', 'UNS_ARMY_RTO2', 'UNS_SF_RTO', 'UNS_Alice_FR', 'UNS_USMC_RTO', 'UNS_USMC_RTO2']";
 			};
 			class RequireRankingOfficer : Checkbox {
 				property = "RequireRankingOfficer";
@@ -1284,6 +1296,7 @@ class CfgFunctions
 			class PlaceTrap {file = "\FS_Vietnam\Functions\Behaviour\PlaceTrap.sqf";};
 			class SpawnGooks {file = "\FS_Vietnam\Functions\Behaviour\SpawnGooks.sqf";};
 			class Suspense {file = "\FS_Vietnam\Functions\Behaviour\Suspense.sqf";};
+			class TrySpawnObjectBestPlaces {file = "\FS_Vietnam\Functions\Behaviour\TrySpawnObjectBestPlaces.sqf";};
 			class UnitsReady {file = "\FS_Vietnam\Functions\Behaviour\UnitsReady.sqf";};
 		};
 		

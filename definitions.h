@@ -13,6 +13,8 @@
 
 //-- Places in forest next to trees, far from houses or water
 #define DEF_GOOK_MANAGER_TRAPS_BEST_PLACES "(forest + 2*trees) * (1-houses) * (1-sea) * (1-(waterDepth interpolate [0,1,0,100]))"
+#define DEF_GOOK_MANAGER_BUILDINGS_BEST_PLACES "forest*meadow*(1-trees)*(1-houses)*(1-sea)*(1-(waterDepth interpolate [0,1,0,100]))"
+#define DEF_GOOK_MANAGER_VEHICLES_BEST_PLACES "forest*(1-meadow)*(1-trees)*(1-houses)*(1-sea)*(1-(waterDepth interpolate [0,1,0,100]))"
 
 //-- Prefer semi-auto snipers because of the custom script for their ROF in FSM
 #define DEF_TREE_SNIPERS ["vn_o_men_vc_10", "vn_o_men_vc_regional_10", "vn_o_men_nva_65_24"]

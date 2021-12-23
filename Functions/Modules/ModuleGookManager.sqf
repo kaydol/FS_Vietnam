@@ -39,6 +39,12 @@ private _spawnDistanceStationary = _logic getVariable "SpawnDistanceStationary";
 private _areaModules = synchronizedObjects _logic select { typeOf _x == "FS_GookArea_Module" };
 private _assignedCurator = _logic getVariable "AssignedCurator";
 
+private _sniperTreeClasses = _logic getVariable "SniperTreeClasses";
+if (_sniperTreeClasses isEqualType "") then { _sniperTreeClasses = call compile _sniperTreeClasses; };
+private _vehicleClasses = _logic getVariable "VehicleClasses";
+if (_vehicleClasses isEqualType "") then { _vehicleClasses = call compile _vehicleClasses; };
+
+
 private _scope = 4; // how many times we assess the movements before judging about a trend. Defines the length of the queue 
 private _previousClusterization = [];
 
@@ -165,7 +171,7 @@ while { true } do {
 								  \  \  	  	    \      		  \
 						*/
 						
-						private _handle = [_next, _allPlayers, SUFFICIENT_CLUSTER_SHIFT, [_spawnDistanceMoving, _spawnDistanceStationary], _groupsCount + round random _groupsCountVar, _groupSize + round random _groupSizeVar, _areaModules, _assignedCurator, _debug] spawn FS_fnc_AttackPlanner;
+						private _handle = [_next, _allPlayers, SUFFICIENT_CLUSTER_SHIFT, [_spawnDistanceMoving, _spawnDistanceStationary], [_sniperTreeClasses, _vehicleClasses], _groupsCount + round random _groupsCountVar, _groupSize + round random _groupSizeVar, _areaModules, _assignedCurator, _debug] spawn FS_fnc_AttackPlanner;
 						
 						WaitUntil { scriptDone _handle }; 
 					} 
