@@ -7,20 +7,20 @@ params ["_logic", ["_units", []], ["_activated", false]];
 if !(_activated) exitWith {};
 
 /* A little hack to make the logic have a nice string-friendly name */
-_logicName = format ["ModuleJukebox_%1", round random 1000000];
+private _logicName = format ["ModuleJukebox_%1", round random 1000000];
 _logic call compile ( _logicName + "=_this" );
 
 /* Retreiving variables stored in the module */
-_announceTracks = _logic getVariable "AnnounceTracks";
-_playLocally = _logic getVariable "PlayLocally";
-_stopMusic = _logic getVariable "StopMusic";
-_startCondition = compile ( _logic getVariable "StartCondition" );
-_stopCondition = compile ( _logic getVariable "StopCondition" );
-_loopConditions = _logic getVariable "LoopConditions";
-_DisableACEVolumeUpdate = _logic getVariable "DisableACEVolumeUpdate";
-_presetMode = _logic getVariable "Preset";
-_customTracks = _logic getVariable "CustomTracks";
-_aceEnabled = isClass (configFile >> "CfgPatches" >> "ace_main");
+private _announceTracks = _logic getVariable "AnnounceTracks";
+private _playLocally = _logic getVariable "PlayLocally";
+private _stopMusic = _logic getVariable "StopMusic";
+private _startCondition = compile ( _logic getVariable "StartCondition" );
+private _stopCondition = compile ( _logic getVariable "StopCondition" );
+private _loopConditions = _logic getVariable "LoopConditions";
+private _DisableACEVolumeUpdate = _logic getVariable "DisableACEVolumeUpdate";
+private _presetMode = _logic getVariable "Preset";
+private _customTracks = _logic getVariable "CustomTracks";
+private _aceEnabled = isClass (configFile >> "CfgPatches" >> "ace_main");
 
 if ( !_playLocally && !isServer ) exitWith {};
 
@@ -43,7 +43,7 @@ if ( _aceEnabled && _DisableACEVolumeUpdate ) then
 };
 
 /* Construct a track pool based on selected preset */
-_pool = [];
+private _pool = [];
 
 switch _presetMode do {
 	case JUKEBOX_PRESET_ARSENAL: { 
@@ -73,7 +73,7 @@ if !( _pool isEqualTypeAll "" ) exitWith {
 forEach _pool;
 
 /* Adding weights */
-_poolWeighted = [];
+private _poolWeighted = [];
 _poolWeighted resize ( count _pool * 2 );
 
 for [{_i = 0},{_i < count _poolWeighted },{ _i = _i + 1}] do {
@@ -91,8 +91,8 @@ while { true } do
 	[_logic] call FS_fnc_JukeboxPlayMusic;
 
 	/* Add event handler that starts another track once the current one ends */
-	_code = compile format ["[%1] call FS_fnc_JukeboxPlayMusic;", _logicName];
-	_id = addMusicEventHandler ["MusicStop", _code];
+	private _code = compile format ["[%1] call FS_fnc_JukeboxPlayMusic;", _logicName];
+	private _id = addMusicEventHandler ["MusicStop", _code];
 
 	if ( _id == -1 ) exitWith {
 		["Error: addMusicEventHandler returned -1"] call BIS_fnc_error;
@@ -125,4 +125,8 @@ while { true } do
 
 };
 
-deleteVehicle _logic;
+//-- Deleting is not an option if the module is supposed to play locally
+//-- Deletion is global for all players
+if (!_playLocally) then {
+	deleteVehicle _logic;
+};

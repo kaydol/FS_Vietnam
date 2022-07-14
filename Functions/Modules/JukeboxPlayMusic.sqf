@@ -1,5 +1,9 @@
 
-params ["_logic"];
+params [["_logic", objNull]];
+
+if (isNull _logic) exitWith {
+	"Jukebox module was deleted, music couldn't be played" call BIS_fnc_Error;
+};
 
 private _announceTracks = _logic getVariable "AnnounceTracks";
 private _poolWeighted = _logic getVariable "TrackPool";
