@@ -2,27 +2,45 @@
 	This module can remove dead bodies, placed traps, and even alive enemies
 */
 
+#include "..\..\definitions.h"
+
 params ["_module"];
+
+private _sidesToRemove = _module getVariable "SidesToRemove";
+if (_sidesToRemove isEqualType "") then {
+	_sidesToRemove = call compile _sidesToRemove;
+};
 
 private _removeDead = _module getVariable "removeDead";
 private _trapsRemovalDistance = _module getVariable "trapsRemovalDistance";
 private _trapsThreshold = _module getVariable "trapsThreshold";
-private _gookRemovalDistance = _module getVariable "gookRemovalDistance";
+private _gookRemovalDistance = _module getVariable "removalDistance";
 private _removePreplacedUnits = _module getVariable "removePreplaced";
 private _debug = _module getVariable "Debug";
 
-if (!_removePreplacedUnits) then {
-	{
-		if (side _x == EAST && count (units _x arrayIntersect (playableUnits + switchableUnits)) == 0 ) then {
-			_x setVariable ["ExcludeGroupFromGarbageCollector", true, true];
+
+{
+	if (_removePreplacedUnits) then {
+		//-- Do not remove groups that have playable units in them 
+		private _grpHasPlayableUnits = !((units _x arrayIntersect (playableUnits + switchableUnits)) isEqualTo []);
+		if ( _hasPlayableUnits ) then {
+			_x setVariable [DEF_GC_EXCLUDE_GROUP_VAR, true, true];
 		};
-	} forEach AllGroups;
+	} 
+	else
 	{
-		private _vehicle = _x;
-		_vehicle setVariable ["ExcludeFromGarbageCollector", true, true];
-		{ _x setVariable ["ExcludeFromGarbageCollector", true, true]; } forEach crew _vehicle;
-	} forEach vehicles;
-};
+		//-- Do not remove all preplaced groups 
+		_x setVariable [DEF_GC_EXCLUDE_GROUP_VAR, true, true];
+	};
+} forEach AllGroups;
+
+//-- This is not used in any way right now 
+//{
+//	private _vehicle = _x;
+//	_vehicle setVariable [DEF_GC_EXCLUDE_VAR, true, true];
+//	{ _x setVariable [DEF_GC_EXCLUDE_VAR, true, true]; } forEach crew _vehicle;
+//} forEach vehicles;
+
 
 
 while { true } do 
@@ -38,11 +56,11 @@ while { true } do
 		{
 			if !(isNull _x) then 
 			{
-				_body = _x;
-				if !(_body getVariable ["ExcludeFromGarbageCollector", false]) then 
+				private _body = _x;
+				if !(_body getVariable [DEF_GC_EXCLUDE_VAR, false]) then 
 				{
-					_allPlayers = call BIS_fnc_listPlayers;
-					_distances = _allPlayers apply { _x distance _body };
+					private _allPlayers = call BIS_fnc_listPlayers;
+					private _distances = _allPlayers apply { _x distance _body };
 					
 					// Do not remove shot down helicopters
 					if (_body isKindOf "AIR") exitWith {};
@@ -60,7 +78,7 @@ while { true } do
 		forEach AllDead;
 		
 		if (_debug && _counter > 0) then {
-			systemChat format ["(%2) Removed %1 dead bodies", _counter, time];
+			systemChat format ["(%2) Removed %1 dead entities", _counter, time];
 		};
 	};
 	
@@ -68,7 +86,7 @@ while { true } do
 	if ( isNil { FS_AllGookTraps }) then {
 		FS_AllGookTraps = [];
 	};
-	_gookTraps = FS_AllGookTraps + (allSimpleObjects [] select {str _x find 'punji' > 0});
+	private _gookTraps = FS_AllGookTraps + (allSimpleObjects [] select {str _x find 'punji' > 0});
 	
 	//------------------------------------------------------//
 	// 	First remove traps that are too far from players	//
@@ -80,8 +98,8 @@ while { true } do
 			
 			if !(isNull _mine) then
 			{
-				_allPlayers = call BIS_fnc_listPlayers;
-				_distances = _allPlayers apply { _x distance _mine };
+				private _allPlayers = call BIS_fnc_listPlayers;
+				private _distances = _allPlayers apply { _x distance _mine };
 				
 				/* Do not remove mines that are too close to the players */
 				if ( selectMin _distances > _trapsRemovalDistance ) then {
@@ -108,7 +126,8 @@ while { true } do
 			all mines to all players and then removing the furthermost ones.
 		*/
 		_gookTraps = _gookTraps call BIS_fnc_arrayShuffle; 
-	
+		
+		private _i = 0;
 		for [{_i = _trapsThreshold},{ _i < count _gookTraps },{ _i = _i + 1}] do 
 		{
 			(_gookTraps # _i) params ["_mine", "_posAGL", "_orientation"];
@@ -125,7 +144,7 @@ while { true } do
 		_gookTraps resize _trapsThreshold;
 	};	
 	if (_debug && _removedTrapsCounter > 0) then {
-		systemChat format ["(%2) Removed %1 traps", _counter, time];
+		systemChat format ["(%2) Removed %1 traps", _removedTrapsCounter, time];
 	};
 	
 	FS_AllGookTraps = _gookTraps select { !(_x isEqualTo objNull) }; // to get rid of objNulls 
@@ -140,23 +159,23 @@ while { true } do
 		private _counter = 0;
 		
 		{
-			if ( side _x == EAST && count units _x > 0 && !(_x getVariable ["ExcludeGroupFromGarbageCollector", false]) ) then 
+			if ( side _x in _sidesToRemove && !((units _x) isEqualTo []) && !(_x getVariable [DEF_GC_EXCLUDE_GROUP_VAR, false]) ) then 
 			{
-				_grp = _x;
+				private _grp = _x;
 				// Find distance between the closest player and the calculated center point of the group
-				_allPlayers = call BIS_fnc_listPlayers;
+				private _allPlayers = call BIS_fnc_listPlayers;
 				if !(_allPlayers isEqualTo []) then 
 				{
-					_center2D = [units _grp] call FS_fnc_CalculateCenter2D;
-					_distToPlayers = selectMin ( _allPlayers apply { _x distance2D _center2D } );
+					private _center2D = [units _grp] call FS_fnc_CalculateCenter2D;
+					private _distToPlayers = selectMin ( _allPlayers apply { _x distance2D _center2D } );
 					
 					// Try to delete entire groups whose distance is beyond _gookRemovalDistance threshold
 					if ( _distToPlayers > _gookRemovalDistance ) then 
 					{
-						_unitPositions = units _grp apply { getPosASL _x };
-						_eyePositions = _allPlayers apply { eyePos _x };
+						private _unitPositions = units _grp apply { getPosASL _x };
+						private _eyePositions = _allPlayers apply { eyePos _x };
 						
-						_canSee = False;
+						private _canSee = False;
 						
 						for [{_i = 0},{_i<count _eyePositions},{_i=_i+1}] do {
 							for [{_j = 0},{_j<count _unitPositions},{_j=_j+1}] do {
@@ -167,28 +186,46 @@ while { true } do
 						};
 						
 						// Players don't have a direct LOS with any of the group members
-						if !( _canSee ) then {
+						if !( _canSee ) then 
+						{
 							if (_debug) then {
 								systemChat format ["(%2) Deleting a whole group of %1", count units _grp, time];
 							};
-							_occupiedVehicles = [];
+							
+							//-- First, collect all vehicles occupied by group
+							private _occupiedVehicles = [];
 							{
-								if ( vehicle _x == _x ) then {
-									// Deleting soldiers on foot
-									deleteVehicle _x;
-									_counter = _counter + 1;
-								} else {
-									// Deleting soldiers in vehicles + their vehicles
+								if ( !(isNull _x) && vehicle _x != _x ) then {
 									_occupiedVehicles pushBackUnique vehicle _x;
-									_x remoteExec ["deleteVehicleCrew", vehicle _x]; // delete unit where its vehicle is local
 								};
 							}
 							forEach units _grp;
+							
+							//-- Then delete vehicle crews where they are local 
 							{
-								deleteVehicle _x;
-								_counter = _counter + 1;
+								_counter = _counter + count (crew (vehicle _x));
+								(vehicle _x) remoteExec ["deleteVehicleCrew", vehicle _x]; 
 							} forEach _occupiedVehicles;
-							_grp remoteExec ["deleteGroup", _grp]; // delete group where it's local
+							
+							//-- Give time to propagate changes
+							sleep 1; 
+							
+							{
+								systemChat format ["(%1) Deleting vehicle %2", time, typeOf _x];
+								deleteVehicle _x;
+							} forEach _occupiedVehicles;
+							
+							//-- Delete whoever is left in the group 
+							{
+								if !(isNull _x) then {
+									deleteVehicle _x;
+									_counter = _counter + 1;
+								};
+							}
+							forEach units _grp;
+							
+							//-- Delete group where it's local
+							_grp remoteExec ["deleteGroup", _grp]; 
 						};
 					};
 				};
@@ -198,7 +235,7 @@ while { true } do
 		forEach AllGroups;
 		
 		if (_debug && _counter > 0) then {
-			systemChat format ["(%2) Removed %1 strayed Gooks", _counter, time];
+			systemChat format ["(%2) Removed %1 entities", _counter, time];
 		};
 	};
 	

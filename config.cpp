@@ -301,14 +301,14 @@ class CfgVehicles
 			class AssessmentRate : Edit {
 				property = "assessmentRate";
 				displayName = "Assessment rate";
-				tooltip = "Minimum time between pilot's assessments of the battlefield. Based on his assessment, the pilot decides if the use of airstrike and artillery is warranted. Decreasing this may negatively impact perfomance.";
+				tooltip = "Minimum time between pilot's assessments of the battlefield. Based on his assessment, the pilot decides if the use of airstrike and artillery is warranted. Decreasing this may negatively impact performance.";
 				typeName = "NUMBER";
 				defaultValue = 20;
 			};
 			class ArtilleryThreshold : Edit {
 				property = "artilleryThreshold";
 				displayName = "Concentration for artillery strike";
-				tooltip = "Minimum concetration of enemies for the pilot to consider an artillery strike.";
+				tooltip = "Minimum concentration of enemies for the pilot to consider an artillery strike.";
 				typeName = "NUMBER";
 				defaultValue = 10;
 			};
@@ -575,6 +575,12 @@ class CfgVehicles
 				tooltip = "Entities that are too far from any of the players will be mercilessly deleted. Use -1 to disable removal.";
 				typeName = "NUMBER";
 				defaultValue = 300;
+			};
+			class SidesToRemove : Edit {
+				property = "SidesToRemove";
+				displayName = "Sides to remove";
+				tooltip = "STRING";
+				defaultValue = "[EAST, CIVILIAN, INDEPENDENT]";
 			};
 			class RemovePreplaced : Checkbox {
 				property = "removePreplaced";
@@ -1050,6 +1056,17 @@ class CfgVehicles
 				duplicate = 0; // Multiple entities of this type can be synced
 				synced[] = {"SideBLUFOR_F", "SideOPFOR_F", "SideResistance_F"}; 
 			};
+			class LocationRespawnPoint_F {
+				description[] = { // Multi-line descriptions are supported
+					"If LocationRespawnPoint_F is synced, the players will be spawned on its place instead.",
+					"If multiple LocationRespawnPoint_F are synced, a random one will be chosen.",
+				};
+				position = 1; // Position is taken into effect
+				direction = 0; // Direction is taken into effect
+				optional = 1; // Synced entity is optional
+				duplicate = 1; // Multiple entities of this type can be synced
+				synced[] = {"LocationRespawnPoint_F"}; 
+			};
 		};
 		class Attributes : AttributesBase {
 			class VehicleMustBeAlive : Checkbox {
@@ -1089,7 +1106,7 @@ class CfgVehicles
 			class LandSearchRadius : Edit {
 				property = "LandSearchRadius";
 				displayName = "Land search radius";
-				tooltip = "If 'Spawn as passenger' is disabled and player spawns in water, look for the nearest land and teleport the player there. Respawn animation is only played when spawned on, or teleported to, land. This parameter is designed to spawn players on banks of the river if their respawn point happened to be in the river. Do not use this in open sea where the land is too far. A good way to determine is value would be to divide the maximum expected river wideness by 1.75";
+				tooltip = "If 'Spawn as passenger' is disabled and player spawns in water, look for the nearest land and teleport the player there. Respawn animation is only played when spawned on, or teleported to, land. This parameter is designed to spawn players on banks of the river if their respawn point happened to be in the river. Do not use this in open sea where the land is too far. A good way to determine this value would be to divide the maximum expected river wideness by 1.75";
 				typeName = "NUMBER";
 				defaultValue = "0";
 			};
