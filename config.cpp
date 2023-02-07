@@ -36,6 +36,26 @@ class CfgMusic {
 		name = "FS Arsenal Theme";
 		sound[] = {"\FS_Vietnam\Music\arsenal_5.ogg", db+0, 1.0};
 	};
+	class arsenal_6 {
+		name = "FS Arsenal Theme";
+		sound[] = {"\FS_Vietnam\Music\arsenal_6.ogg", db+0, 1.0};
+	};
+	class arsenal_7 {
+		name = "FS Arsenal Theme";
+		sound[] = {"\FS_Vietnam\Music\arsenal_7.ogg", db+0, 1.0};
+	};
+	class arsenal_8 {
+		name = "FS Arsenal Theme";
+		sound[] = {"\FS_Vietnam\Music\arsenal_8.ogg", db+0, 1.0};
+	};
+	class arsenal_9 {
+		name = "FS Arsenal Theme";
+		sound[] = {"\FS_Vietnam\Music\arsenal_9.ogg", db+0, 1.0};
+	};
+	class arsenal_10 {
+		name = "FS Arsenal Theme";
+		sound[] = {"\FS_Vietnam\Music\arsenal_10.ogg", db+0, 1.0};
+	};
 };
 
 
