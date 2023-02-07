@@ -35,7 +35,8 @@ if (_activated && !(player getVariable ["UsesArsenalRoom", false])) then
 	_respawnLoadoutMsgStyle = _module getVariable "respawnLoadoutMsgStyle";
 
 	if (hasInterface) then {
-		waitUntil {time > 0 && !isNull player && missionNameSpace getVariable ["ArsenalRoomCreated", false]};
+		"ArsenalRoom" cutText ["", "BLACK OUT", 0.0001];
+		waitUntil {time > 1 && !isNull player && missionNameSpace getVariable ["ArsenalRoomCreated", false]};
 		[_arsenalRoomAt, _allowAll, _respawnLoadout, _respawnLoadoutMsgStyle] spawn FS_fnc_ArsenalRoom;
 	};
 };

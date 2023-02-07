@@ -8,7 +8,7 @@ player setVariable ["UsesArsenalRoom", True, True];
 
 enableRadio False; 
 
-0 cutText ["", "BLACK", 0.00001, true];
+"ArsenalRoom" cutText ["", "BLACK", 0.00001, true];
 player allowDamage false;
 
 if (isMultiplayer) then {
@@ -47,8 +47,6 @@ private _getPlayerShiftBasedOnGUID = {
 private _playerPosInRoom = [[-3.00293,-22.9119,0.00143862], clientOwner % 40] call _getPlayerShiftBasedOnGUID;
 private _playerDirInRoom = 180.0;
 
-
-
 player setPosASL ( _roomPos vectorAdd _playerPosInRoom );
 player setDir _playerDirInRoom;
 
@@ -76,7 +74,7 @@ _cam camSetFov 0.85;
 _cam camCommit 0;
 */
 
-0 cutText ["", "BLACK IN", 4, True, False];
+"ArsenalRoom" cutText ["", "BLACK IN", 4, True, False];
 
 sleep 0.5; 
 player switchMove "";
@@ -89,7 +87,7 @@ player allowDamage true;
 
 player setVariable ["UsesArsenalRoom", False, True];
 
-0 cutText ["", "BLACK IN", 4, True, False];
+"ArsenalRoom" cutText ["", "BLACK IN", 4, True, False];
 
 if ( _respawnLoadout ) then {
 	[player, [missionNameSpace, "FS_PLAYER_LOADOUT"]] call BIS_fnc_saveInventory;
