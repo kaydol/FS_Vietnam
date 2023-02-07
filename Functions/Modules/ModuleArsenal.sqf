@@ -20,7 +20,7 @@ Author:
 
 params ["_module", ["_units", []], ["_activated", false]];
 
-_arsenalRoomAt = ASLToAGL [-100, -100, getTerrainHeightASL [50,50] + 50];
+private _arsenalRoomAt = ASLToAGL [-100, -100, getTerrainHeightASL [50,50] + 50];
 
 if ( isServer && !(missionNameSpace getVariable ["ArsenalRoomCreated", false])) then {
 	/* Create Arsenal */
@@ -30,10 +30,12 @@ if ( isServer && !(missionNameSpace getVariable ["ArsenalRoomCreated", false])) 
 
 if (_activated && !(player getVariable ["UsesArsenalRoom", false])) then 
 {
-	_allowAll = _module getVariable "allowAll";
-	_respawnLoadout = _module getVariable "respawnLoadout";
-	_respawnLoadoutMsgStyle = _module getVariable "respawnLoadoutMsgStyle";
+	if (vehicle player != player || player isKindOf "VirtualCurator_F") exitWith {};
 
+	private _allowAll = _module getVariable "allowAll";
+	private _respawnLoadout = _module getVariable "respawnLoadout";
+	private _respawnLoadoutMsgStyle = _module getVariable "respawnLoadoutMsgStyle";
+	
 	if (hasInterface) then {
 		"ArsenalRoom" cutText ["", "BLACK OUT", 0.0001];
 		waitUntil {time > 1 && !isNull player && missionNameSpace getVariable ["ArsenalRoomCreated", false]};
