@@ -12,8 +12,10 @@ if ( _preventRecursion ) exitWith { false };
 	or there is a vehicle nearby
 */
 
-if (isNil{RADIOCOMMS_AUDIBLE_RADIUS}) then {
-	RADIOCOMMS_AUDIBLE_RADIUS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_ModuleRadioSettings" >> "Attributes" >> "AudibleRadius" >> "defaultValue");
+if (isNil{RADIOCOMMS_OBJECTS_WITH_COMMS}) then {
+	RADIOCOMMS_OBJECTS_WITH_COMMS = getArray (ConfigFile >> "CfgVehicles" >> "FS_ModuleRadioSettings" >> "Attributes" >> "EntitiesWithComms" >> "defaultValue");
+};
+if (isNil{RADIOCOMMS_AUDIBLE_RADIUS}) then {	
 	RADIOCOMMS_AUDIBLE_RADIUS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_ModuleRadioSettings" >> "Attributes" >> "AudibleRadius" >> "defaultValue");
 };
 
