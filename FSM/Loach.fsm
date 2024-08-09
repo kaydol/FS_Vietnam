@@ -1,4 +1,4 @@
-/*%FSM<COMPILE "D:\Games\SteamLibrary\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, Loach">*/
+/*%FSM<COMPILE "D:\SteamLibrary\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, Loach">*/
 /*%FSM<HEAD>*/
 /*
 item0[] = {"Found_target_",4,218,-269.974854,-40.367981,-179.974915,9.632019,1.000000,"Found target?"};
@@ -13,7 +13,7 @@ item8[] = {"Break_Station",2,250,562.107605,-367.784729,652.107361,-317.784790,0
 item9[] = {"Ready_to_get_back",4,218,206.022614,-487.811371,296.022644,-437.811279,1.000000,"Ready to get" \n "back in action?"};
 item10[] = {"Aircraft_disable",4,218,403.777802,-460.331421,493.777802,-410.331360,5.000000,"Aircraft" \n "disabled"};
 item11[] = {"End",1,250,685.072266,-369.651367,775.072266,-319.651489,0.000000,"End"};
-item12[] = {"Scramble",3,4346,537.945068,-460.571777,627.945068,-410.571716,0.000000,"Scramble"};
+item12[] = {"Scramble",3,250,537.945068,-460.571777,627.945068,-410.571716,0.000000,"Scramble"};
 item13[] = {"_",8,218,684.309326,-460.978760,774.309326,-410.978699,0.000000,""};
 item14[] = {"Idle",3,250,-332.439392,-284.395691,-242.439392,-234.395691,0.000000,"Idle"};
 item15[] = {"Time__passed_",4,218,-414.474274,-232.550018,-324.474243,-182.550003,0.000000,"Time " \n "passed?"};
@@ -26,20 +26,19 @@ item21[] = {"Get_out_of_the_a",2,250,30.536560,-73.084106,120.536438,-23.084229,
 item22[] = {"Return",2,250,-63.487717,-198.267303,26.512299,-148.267365,0.000000,"Return"};
 item23[] = {"Delay",3,250,-506.369446,-283.567352,-416.368805,-233.567337,0.000000,"Delay"};
 item24[] = {"Out_of_the_area",4,218,34.155670,-146.810593,124.155701,-96.810623,0.000000,"Out of" \n "the area?"};
-item25[] = {"Refueled_but_not",8,218,645.500977,-264.587708,832.277283,-203.713974,0.000000,"Refueled but not reinforced"};
-item26[] = {"Time_has_passed",4,218,396.589661,-88.857880,486.589661,-38.857849,0.000000,"Time has" \n "passed?"};
-item27[] = {"Add_waypoints",3,250,-150.936249,-288.590485,-60.936249,-238.590424,0.000000,"Add waypoints"};
-item28[] = {"Asses___Finalize",2,250,558.089844,-103.987991,648.089844,-53.987991,0.000000,"Asses & Finalize" \n "target"};
-item29[] = {"Reached_",4,218,-6.828812,-279.196411,83.171188,-229.196457,0.000000,"Reached?"};
-item30[] = {"_",8,218,562.051270,38.536377,652.051270,88.536377,0.000000,""};
-item31[] = {"Fire_tasks_assigned",4,218,156.878906,-14.807800,246.878906,35.192200,1.000000,"Fire tasks" \n "assigned?"};
-item32[] = {"",7,210,-90.073860,61.206451,-82.073845,69.206459,0.000000,""};
-item33[] = {"Target_changed_",4,218,399.435883,-227.390289,489.435883,-177.390289,2.000000,"Target" \n "changed?"};
-item34[] = {"",7,210,226.005341,-358.969177,234.005341,-350.969177,0.000000,""};
-item35[] = {"",7,210,-13.223938,-336.654541,-5.223938,-328.654541,0.000000,""};
+item25[] = {"Time_has_passed",4,218,396.589661,-88.857880,486.589661,-38.857849,0.000000,"Time has" \n "passed?"};
+item26[] = {"Add_waypoints",3,250,-150.936249,-288.590485,-60.936249,-238.590424,0.000000,"Add waypoints"};
+item27[] = {"Asses___Finalize",2,250,558.089844,-103.987991,648.089844,-53.987991,0.000000,"Asses & Finalize" \n "target"};
+item28[] = {"Reached_",4,218,-6.828812,-279.196411,83.171188,-229.196457,0.000000,"Reached?"};
+item29[] = {"_",8,218,562.051270,38.536377,652.051270,88.536377,0.000000,""};
+item30[] = {"Fire_tasks_assigned",4,218,156.878906,-14.807800,246.878906,35.192200,1.000000,"Fire tasks" \n "assigned?"};
+item31[] = {"",7,210,-90.073860,61.206451,-82.073845,69.206459,0.000000,""};
+item32[] = {"Target_changed_",4,218,399.435883,-227.390289,489.435883,-177.390289,2.000000,"Target" \n "changed?"};
+item33[] = {"",7,210,226.005341,-358.969177,234.005341,-350.969177,0.000000,""};
+item34[] = {"",7,210,-13.223938,-336.654541,-5.223938,-328.654541,0.000000,""};
 link0[] = {0,18};
 link1[] = {1,17};
-link2[] = {2,27};
+link2[] = {2,26};
 link3[] = {3,4};
 link4[] = {4,0};
 link5[] = {4,5};
@@ -47,47 +46,45 @@ link6[] = {5,23};
 link7[] = {6,7};
 link8[] = {6,10};
 link9[] = {6,16};
-link10[] = {6,26};
-link11[] = {6,33};
+link10[] = {6,25};
+link11[] = {6,32};
 link12[] = {7,8};
 link13[] = {8,9};
 link14[] = {8,10};
-link15[] = {8,25};
-link16[] = {9,14};
-link17[] = {10,12};
-link18[] = {12,13};
-link19[] = {13,11};
-link20[] = {14,2};
-link21[] = {14,3};
-link22[] = {14,35};
-link23[] = {15,14};
-link24[] = {16,28};
-link25[] = {17,23};
-link26[] = {18,27};
-link27[] = {19,20};
-link28[] = {19,31};
-link29[] = {20,6};
-link30[] = {21,10};
-link31[] = {21,24};
-link32[] = {22,10};
-link33[] = {22,29};
-link34[] = {23,15};
-link35[] = {24,22};
-link36[] = {25,8};
-link37[] = {26,19};
-link38[] = {27,7};
-link39[] = {27,10};
-link40[] = {27,29};
-link41[] = {28,30};
-link42[] = {29,6};
-link43[] = {30,32};
-link44[] = {31,21};
-link45[] = {32,14};
-link46[] = {33,34};
-link47[] = {34,27};
-link48[] = {35,7};
-globals[] = {0.000000,0,0,0,0,640,480,1,63,6316128,1,-290.700928,852.092957,131.274750,-531.912476,996,578,1};
-window[] = {0,-1,-1,-1,-1,776,26,1418,26,1,1014};
+link15[] = {9,14};
+link16[] = {10,12};
+link17[] = {12,13};
+link18[] = {13,11};
+link19[] = {14,2};
+link20[] = {14,3};
+link21[] = {14,34};
+link22[] = {15,14};
+link23[] = {16,27};
+link24[] = {17,23};
+link25[] = {18,26};
+link26[] = {19,20};
+link27[] = {19,30};
+link28[] = {20,6};
+link29[] = {21,10};
+link30[] = {21,24};
+link31[] = {22,10};
+link32[] = {22,28};
+link33[] = {23,15};
+link34[] = {24,22};
+link35[] = {25,19};
+link36[] = {26,7};
+link37[] = {26,10};
+link38[] = {26,28};
+link39[] = {27,29};
+link40[] = {28,6};
+link41[] = {29,31};
+link42[] = {30,21};
+link43[] = {31,14};
+link44[] = {32,33};
+link45[] = {33,26};
+link46[] = {34,7};
+globals[] = {0.000000,0,0,0,0,640,480,1,63,6316128,1,-211.583496,913.920166,341.597839,-659.241577,957,851,1};
+window[] = {2,-1,-1,-1,-1,780,30,1756,30,3,978};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -197,7 +194,7 @@ class FSM
                                 /*%FSM<LINK "Target_changed_">*/
                                 class Target_changed_
                                 {
-                                        itemno = 33;
+                                        itemno = 32;
                                         priority = 2.000000;
                                         to="Add_waypoints";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
@@ -219,7 +216,7 @@ class FSM
                                 /*%FSM<LINK "Time_has_passed">*/
                                 class Time_has_passed
                                 {
-                                        itemno = 26;
+                                        itemno = 25;
                                         priority = 0.000000;
                                         to="Asses_and_assign";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
@@ -235,8 +232,37 @@ class FSM
                 {
                         name = "Break_Station";
                         itemno = 8;
-                        init = /*%FSM<STATEINIT""">*/"_breakStation = [_aircraft, _debug] spawn FS_fnc_ReloadAndRefuel;" \n
+                        init = /*%FSM<STATEINIT""">*/"" \n
+                         "_breakStation = [_aircraft, _debug] spawn FS_fnc_ReloadAndRefuel;" \n
                          "_aircraft setVariable [""reached_the_area"", false];" \n
+                         "" \n
+                         "if !(alive currentPilot _aircraft) then {" \n
+                         "	_copilotTurrets = allTurrets _aircraft select { getNumber ([_aircraft, _x] call BIS_fnc_turretConfig >> ""isCopilot"") > 0 };" \n
+                         "	_copilots = _copilotTurrets apply { _aircraft turretUnit _x };" \n
+                         "	_pilots = _copilots select {alive _x};" \n
+                         "" \n
+                         "	// in case the currentPilot was already a copilot and driver turret has no isCopilot=1 in config" \n
+                         "	if (alive driver _aircraft) then { _pilots pushBackUnique driver _aircraft };" \n
+                         "	" \n
+                         "	_newPilot = objNull;" \n
+                         "	if (count _pilots > 0) then {" \n
+                         "		// try to select a non player, select player only as a last resort" \n
+                         "		if (count (_pilots select {!isPlayer _x}) > 0 ) then {" \n
+                         "			_pilots = _pilots select {!isPlayer _x};" \n
+                         "		};" \n
+                         "		_newPilot = selectRandom _pilots;" \n
+                         "	};" \n
+                         "" \n
+                         "	if (_debug) then {" \n
+                         "		diag_log format [""Loach: Current pilot (%1) is dead, next pilot is %2"", currentPilot _aircraft, _newPilot];" \n
+                         "	};" \n
+                         "" \n
+                         "	if !(isNull _newPilot) then {" \n
+                         "		[group _newPilot, _newPilot] remoteExec [""selectLeader"", groupOwner group _newPilot];" \n
+                         "		//_newPilot action [""TakeVehicleControl"", _aircraft];" \n
+                         "		[_newPilot, _aircraft] remoteExec [""moveInDriver"", _newPilot];" \n
+                         "	};" \n
+                         "};" \n
                          "" \n
                          "if (_debug) then {" \n
                          "	[_aircraft, _debug] call FS_fnc_isMaintenanceNeeded;" \n
@@ -264,17 +290,6 @@ class FSM
                                         to="Idle";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"_aircraft call FS_fnc_CanPerformDuties && scriptDone _breakStation "/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-                                };
-                                /*%FSM</LINK>*/
-                                /*%FSM<LINK "Refueled_but_not">*/
-                                class Refueled_but_not
-                                {
-                                        itemno = 25;
-                                        priority = 0.000000;
-                                        to="Break_Station";
-                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"scriptDone _breakStation"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -374,7 +389,7 @@ class FSM
                                 /*%FSM<LINK "Fire_tasks_assigned">*/
                                 class Fire_tasks_assigned
                                 {
-                                        itemno = 31;
+                                        itemno = 30;
                                         priority = 1.000000;
                                         to="Get_out_of_the_a";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
@@ -454,7 +469,7 @@ class FSM
                                 /*%FSM<LINK "Reached_">*/
                                 class Reached_
                                 {
-                                        itemno = 29;
+                                        itemno = 28;
                                         priority = 0.000000;
                                         to="Search_in_progre";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
@@ -492,7 +507,7 @@ class FSM
                 class Add_waypoints
                 {
                         name = "Add_waypoints";
-                        itemno = 27;
+                        itemno = 26;
                         init = /*%FSM<STATEINIT""">*/"[_aircraft, _target, _debug] call FS_fnc_AssignWaypoints; " \n
                          "_aircraft setVariable [""reached_the_area"", false];" \n
                          "" \n
@@ -525,7 +540,7 @@ class FSM
                                 /*%FSM<LINK "Reached_">*/
                                 class Reached_
                                 {
-                                        itemno = 29;
+                                        itemno = 28;
                                         priority = 0.000000;
                                         to="Search_in_progre";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
@@ -540,7 +555,7 @@ class FSM
                 class Asses___Finalize
                 {
                         name = "Asses___Finalize";
-                        itemno = 28;
+                        itemno = 27;
                         init = /*%FSM<STATEINIT""">*/"_target = [_aircraft, _target] call FS_fnc_FinalizeTarget;" \n
                          "" \n
                          "if ( _assessmentsMade == 0 ) then {" \n
@@ -552,7 +567,7 @@ class FSM
                                 /*%FSM<LINK "_">*/
                                 class _
                                 {
-                                        itemno = 30;
+                                        itemno = 29;
                                         priority = 0.000000;
                                         to="Idle";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
