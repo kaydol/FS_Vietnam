@@ -484,6 +484,13 @@ class CfgVehicles
 				typeName = "BOOL";
 				defaultValue = "false";
 			};
+			class RevealTrapsToSides : Edit {
+				property = "RevealTrapsToSides";
+				displayName = "Reveal Traps to sides";
+				tooltip = "This affects mines placed by the vietnamese. Mines are always revealed to the side that placed it. You can add other sides to the list (for debug purposes).";
+				typeName = "STRING";
+				defaultValue = "[]";
+			};
 			class ModuleDescription : ModuleDescription {};
 		};
 	};

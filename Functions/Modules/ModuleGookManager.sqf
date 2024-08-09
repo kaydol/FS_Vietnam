@@ -34,6 +34,10 @@ private _groupSizeVar = _logic getVariable "GroupSizeVar";
 private _groupsCount = _logic getVariable "GroupsCount";
 private _groupsCountVar = _logic getVariable "GroupsCountVar";
 private _debug = _logic getVariable "Debug";
+
+private _revealTrapsToSides = _logic getVariable "RevealTrapsToSides";
+if (_revealTrapsToSides isEqualType "") then { _revealTrapsToSides = call compile _revealTrapsToSides; };
+
 private _spawnDistanceMoving = _logic getVariable "SpawnDistanceMoving";
 private _spawnDistanceStationary = _logic getVariable "SpawnDistanceStationary";
 private _areaModules = synchronizedObjects _logic select { typeOf _x == "FS_GookArea_Module" };
@@ -59,6 +63,23 @@ private _fnc_InsertNewQueue = {
 	private _queue = [_scope] call FS_fnc_QueueCreate; // Each cluster will store a queue of its previous positions
 	[_queue, _cluster # 0] call FS_fnc_QueuePush; // Storing the first position into a queue
 	_cluster pushBack _queue; // Storing the queue to the cluster 
+};
+
+if (_revealTrapsToSides isEqualType []) then {
+	[_revealTrapsToSides] spawn 
+	{
+		params ["_sides"];
+		if (count _sides <= 0) exitWith {};
+		while { true } do {
+			sleep 5;
+			if !(isNil{FS_AllGookTraps}) then {
+				{ 
+					private _mine = _x;
+					_sides apply { _x revealMine _mine };
+				} forEach FS_AllGookTraps;
+			};
+		};
+	};
 };
 
 while { true } do {
