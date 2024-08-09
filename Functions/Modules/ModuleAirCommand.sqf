@@ -25,13 +25,15 @@ params ["_module", ["_units", []], ["_activated", false]];
 
 if !(_activated) exitWith {};
 
-_assessmentRate = _module getVariable "assessmentRate";
-_artilleryThreshold = _module getVariable "artilleryThreshold";
-_artilleryCD = _module getVariable "artilleryCooldown";
-_napalmThreshold = _module getVariable "napalmThreshold";
-_napalmCD = _module getVariable "napalmCooldown";
-_ambientRadio = _module getVariable "AmbientRadio";
-_debug = _module getVariable "debug";
+private _assessmentRate = _module getVariable "assessmentRate";
+private _artilleryThreshold = _module getVariable "artilleryThreshold";
+private _artilleryCD = _module getVariable "artilleryCooldown";
+private _napalmThreshold = _module getVariable "napalmThreshold";
+private _napalmCD = _module getVariable "napalmCooldown";
+private _ambientRadio = _module getVariable "AmbientRadio";
+private _announceOnInit = _module getVariable "AnnounceOnInit";
+
+private _debug = _module getVariable "debug";
 
 // Used in FS_fnc_AssignFireTask
 SUPPORT_MINDISTANCE_ARTILLERY = _module getVariable "artilleryMinDist"; 
@@ -43,8 +45,8 @@ SUPPORT_MINDISTANCE_NAPALM = _module getVariable "napalmMinDist";
 // I do the actual thing on the gathered vehicles
 
 // Step 1. Gather aircrafts of all synced objects
-_synced = synchronizedObjects _module; 
-_aircrafts = [];
+private _synced = synchronizedObjects _module; 
+private _aircrafts = [];
 {
 	if ( typeOf _x isKindOf "Air" || vehicle _x isKindOf "Air" ) then 
 	{ 
@@ -70,6 +72,15 @@ forEach _synced;
 }
 forEach _aircrafts;
 
+
+// Step 3. Announce if needed 
+if ( _announceOnInit ) then 
+{
+	private _sides = _synced apply { side _x } select { _x isEqualType WEST };
+	_sides = _sides arrayIntersect _sides; // get unique elements 
+
+	{ [_x, "NewPilot"] remoteExec ["FS_fnc_TransmitOverRadio", 2]} forEach _sides;
+};
 
 
 

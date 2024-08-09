@@ -367,6 +367,13 @@ class CfgVehicles
 				typeName = "NUMBER";
 				defaultValue = 150;
 			};
+			class AnnounceOnInit : Checkbox {
+				property = "announceOnInit";
+				displayName = "Announce activation";
+				tooltip = "A radio message will be played when the module is first activated.";
+				typeName = "BOOL";
+				defaultValue = "false";
+			};
 			class Debug : Checkbox {
 				property = "debug";
 				displayName = "Debug";
