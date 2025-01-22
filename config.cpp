@@ -1036,7 +1036,7 @@ class CfgVehicles
 				property = "RTOItemsAndBackpacks";
 				displayName = "RTO items and backpacks";
 				tooltip = "Items and backpacks that give full access to comms. Units with these items or backpacks are considered Radio Telephone Operators (RTOs).";
-				defaultValue = "['vn_b_pack_trp_04_02', 'vn_o_pack_t884_01', 'vn_b_pack_03_xm177_pl', 'vn_b_pack_lw_06', 'vn_b_pack_lw_06_m16_pl', 'vn_b_pack_prc77_01', 'vn_b_pack_03_02', 'vn_b_pack_03', 'vn_b_pack_t884_01', 'vn_b_pack_trp_04', 'UNS_ItemRadio_PRC_25', 'UNS_NVA_RTO', 'UNS_ARMY_RTO', 'UNS_ARMY_RTO2', 'UNS_SF_RTO', 'UNS_Alice_FR', 'UNS_USMC_RTO', 'UNS_USMC_RTO2']";
+				defaultValue = "['vn_o_pack_t884_01', 'vn_b_pack_trp_04_02', 'vn_o_pack_t884_01', 'vn_b_pack_03_xm177_pl', 'vn_b_pack_lw_06', 'vn_b_pack_lw_06_m16_pl', 'vn_b_pack_prc77_01', 'vn_b_pack_03_02', 'vn_b_pack_03', 'vn_b_pack_t884_01', 'vn_b_pack_trp_04', 'UNS_ItemRadio_PRC_25', 'UNS_NVA_RTO', 'UNS_ARMY_RTO', 'UNS_ARMY_RTO2', 'UNS_SF_RTO', 'UNS_Alice_FR', 'UNS_USMC_RTO', 'UNS_USMC_RTO2']";
 			};
 			class RequireRankingOfficer : Checkbox {
 				property = "RequireRankingOfficer";

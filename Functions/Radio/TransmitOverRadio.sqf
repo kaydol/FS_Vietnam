@@ -56,7 +56,7 @@ private _boardingEnded = 	["mp_groundsupport_10_boardingended_BHQ_0",
 					"mp_groundsupport_10_boardingended_BHQ_1", 
 					"mp_groundsupport_10_boardingended_BHQ_2"];
 
-private _crewMemberDown = 	["pilotDownNoisy"];					
+private _crewMemberDown = 	["pilotDownNoisy"];
 					
 private _text = "";
 private _message = "";

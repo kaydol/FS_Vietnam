@@ -8,7 +8,7 @@
 if ( _this call FS_fnc_HasCommSystem ) exitWith { true };
 
 if (isNil{RADIOCOMMS_ITEMS_BACKPACKS}) then {
-	RADIOCOMMS_ITEMS_BACKPACKS = getArray (ConfigFile >> "CfgVehicles" >> "FS_ModuleRadioSettings" >> "Attributes" >> "RTOItemsAndBackpacks" >> "defaultValue");
+	RADIOCOMMS_ITEMS_BACKPACKS = call compile getText (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "RTOItemsAndBackpacks" >> "defaultValue");
 };
 
 private _hasRTO = false; 

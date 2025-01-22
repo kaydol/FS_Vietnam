@@ -3,10 +3,10 @@
 if ( typeName _this == "GROUP" ) exitWith { false };
 
 if (isNil{RADIOCOMMS_OBJECTS_WITH_COMMS}) then {
-	RADIOCOMMS_OBJECTS_WITH_COMMS = getArray (ConfigFile >> "CfgVehicles" >> "FS_ModuleRadioSettings" >> "Attributes" >> "EntitiesWithComms" >> "defaultValue");
+	RADIOCOMMS_OBJECTS_WITH_COMMS = getArray (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "EntitiesWithComms" >> "defaultValue");
 };
 if (isNil{RADIOCOMMS_AUDIBLE_RADIUS}) then {	
-	RADIOCOMMS_AUDIBLE_RADIUS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_ModuleRadioSettings" >> "Attributes" >> "AudibleRadius" >> "defaultValue");
+	RADIOCOMMS_AUDIBLE_RADIUS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "AudibleRadius" >> "defaultValue");
 };
 
 
