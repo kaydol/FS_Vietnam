@@ -208,8 +208,10 @@ class CfgVehicles
 		Modules
 	*/
 	class Logic;
-	class Module_F : Logic {
-		class AttributesBase {
+	class Module_F: Logic
+	{
+		class AttributesBase
+		{
 			class Default;
 			class Edit; // Default edit box (i.e., text input field)
 			class Combo; // Default combo box (i.e., drop-down menu)
@@ -219,9 +221,17 @@ class CfgVehicles
 			class Units; // Selection of units on which the module is applied
 		};
 		// Description base classes
-		class ModuleDescription {
-			class Anything;
-			class AnyBrain;
+		class ModuleDescription
+		{
+			class Anything; // Any object - persons, vehicles, static objects, etc.
+			class AnyBrain; // Any AI or player. Not empty objects
+			class EmptyDetector; // Any trigger
+			class AnyPerson; // Any person. Not vehicles or static objects.
+			class AnyVehicle; // Any vehicle. No persons or static objects.
+			class GroupModifiers; // ?
+			class AnyStaticObject; // Any static object. Not persons or vehicles.
+			class AnyAI; //	Any AI unit. Not players or empty objects
+			class AnyPlayer; // Any player. Not AI units or empty objects
 		};
 	};
 	
@@ -1240,6 +1250,115 @@ class CfgVehicles
 			class ModuleDescription : ModuleDescription {};
 		};
 	};
+	
+	
+	class FS_ModuleAtmosphereChanger : FS_Vietnam_Module {
+		_generalMacro = "FS_ModuleAtmosphereChanger";
+		scope = 2;
+		scopeCurator = 2;
+		is3DEN = 1;
+		isDisposable = 1; // 1 if modules is to be disabled once it's activated (i.e., repeated trigger activation won't work)
+		isGlobal = 2; // 0 for server only execution, 1 for global execution, 2 for persistent global execution
+		displayName = "Atmosphere Changer";
+		function = "FS_fnc_ModuleAtmosphereChanger";
+		isTriggerActivated = 1; // 1 for module waiting until all synced triggers are activated
+		class ModuleDescription : ModuleDescription {
+			description = "Module that can change how atmosphere looks when certain conditions are met or when player enters certain areas.";
+			sync[] = {};
+			class EmptyDetector : EmptyDetector {
+				optional = 1;
+			};
+		};
+		class Attributes : AttributesBase {
+			class Rain: CheckboxNumber {
+				property = "ModuleAtmosphereChanger_Rain";
+				displayName = "Rain";
+				tooltip = "Enables rain.";
+				typeName = "NUMBER";
+				defaultValue = "1";
+			};
+			class CCPreset: Combo {
+				property = "ModuleAtmosphereChanger_Preset";
+				displayName = "Color Correction preset"; 
+				tooltip = "";
+				typeName = "NUMBER"; 
+				defaultValue = "0";
+				class Values
+				{
+					class Option_00 {
+						name = "No color correction";
+						value = 0;
+						default = 1;
+					};
+					class Option_01 {
+						name = "Custom";
+						value = 1;
+					};
+					class Option_02 {
+						name = "Darken";
+						value = 2;
+					};
+					class Option_03 {
+						name = "Yellow";
+						value = 3;
+					};
+				};
+			};
+			class CCCustomTint: Edit {
+				property = "ModuleAtmosphereChanger_CCCustomTint";
+				displayName = "Custom Color Correction";
+				tooltip = "Format is [Red, Green, Blue, Brightness]. The bigger the color number, the more prevalent this color component will be. In other words, for the picture to have green tint, make the Green component slightly bigger than the other two.";
+				defaultValue = "[0.0,0.0,0.0,0.0]";
+			};
+			class Fog: CheckboxNumber {
+				property = "ModuleAtmosphereChanger_Fog";
+				displayName = "Enable Fog";
+				tooltip = "";
+				defaultValue = "1";
+			};
+			class FogParams: Edit {
+				property = "ModuleAtmosphereChanger_FogParams";
+				displayName = "Fog Parameters";
+				tooltip = "Format is [_fogValue, _fogDecay]. Height of the fog is adjusted automatically with the Z coordinate of the viewer.";
+				defaultValue = "[0.2, 0.001]";
+			};
+			class EnableDust: CheckboxNumber {
+				property = "ModuleAtmosphereChanger_EnableDust";
+				displayName = "Enable Dust Clouds";
+				tooltip = "";
+				defaultValue = "1";
+			};
+			class Radius : Edit {
+				property = "ModuleAtmosphereChanger_Radius";
+				displayName = "Radius";
+				tooltip = "If this is > 0, the atmospheric changes will occur only while the player is within this radius. If radius = 0, the changes are happening globally on the whole map.";
+				typeName = "NUMBER";
+				defaultValue = 0;
+			};
+			class StartCondition: Edit {
+				property = "ModuleAtmosphereChanger_StartCondition";
+				displayName = "Start condition";
+				tooltip = "Condition that has to be true in order for this module to start working. Condition is checked every second, locally.";
+				defaultValue = "true";
+			};
+			class StopCondition: Edit {
+				property = "ModuleAtmosphereChanger_StopCondition";
+				displayName = "Stop condition";
+				tooltip = "Condition that has to be true in order for this module to stop working, after which the module will delete itself. Condition is checked every second, locally.";
+				defaultValue = "false";
+			};
+			class LoopConditions : CheckboxNumber { //["Default"]
+				property = "ModuleAtmosphereChanger_LoopConditions";
+				displayName = "Loop conditions";
+				tooltip = "If enabled, instead of deleting itself, the module will restart after Stop Condition turned true. It allows a cycle: Start Condition -> Stop Condition -> Start Condition -> etc. Use this if you want to be able to stop and resume the work of the module.";
+				typeName = "NUMBER";
+				defaultValue = 1;
+			};
+			class ModuleDescription : ModuleDescription {};
+		};
+	};
+	
+	
 };
 
 
@@ -1358,6 +1477,7 @@ class CfgFunctions
 			class AuthenticLoadout {file = "\FS_Vietnam\Functions\Modules\AuthenticLoadout.sqf";};
 			class GetModuleOwner {file = "\FS_Vietnam\Functions\Modules\GetModuleOwner.sqf";};
 			class JukeboxPlayMusic {file = "\FS_Vietnam\Functions\Modules\JukeboxPlayMusic.sqf";};
+			class ModuleAtmosphereChanger {file = "\FS_Vietnam\Functions\Modules\ModuleAtmosphereChanger.sqf"; };
 			class ModuleAirCommand {file = "\FS_Vietnam\Functions\Modules\ModuleAirCommand.sqf";};
 			class ModuleArsenal {file = "\FS_Vietnam\Functions\Modules\ModuleArsenal.sqf";};
 			class ModuleArtyStrike {file = "\FS_Vietnam\Functions\Modules\ModuleArtyStrike.sqf";};
