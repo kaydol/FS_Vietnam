@@ -77,7 +77,9 @@ if (_activated) then {
 	_plane setcombatmode "blue";
 	
 	/* Removing all but Napalm bombs */
-	{_plane setPylonLoadOut [_x, ""]} forEach ["pylon3", "pylon4", "pylon5", "pylon6", "pylon7", "pylon8", "pylon13"]; 
+	for "_i" from 1 to 100 do {
+		_plane setPylonLoadout [_i, "vn_bomb_f4_out_500_blu1b_fb_mag_x4", true];
+	};
 	
 	_vectorDir = [_planePos,_pos] call bis_fnc_vectorFromXtoY;
 	_velocity = [_vectorDir,_speed] call bis_fnc_vectorMultiply;
@@ -93,19 +95,6 @@ if (_activated) then {
 		};
 	} foreach _currentWeapons;
 
-				
-	_ehFired = _plane addeventhandler [
-		"fired",
-		{
-			private ["_bomb","_plane","_napalmBomb"]; 
-			_plane = _this select 0; 													  
-			_bomb = _this select 6;
-			_napalmBomb = "Uns_Napalm_500";
-			[_plane,_bomb,_napalmBomb] remoteExec ["FS_fnc_NapalmReplaceBomb", 0];
-	 
-		}
-	];
-	_plane setvariable ["ehFired",_ehFired];
 	_plane setvariable ["logic",_logic];
 	_logic setvariable ["plane",_plane];								 
 

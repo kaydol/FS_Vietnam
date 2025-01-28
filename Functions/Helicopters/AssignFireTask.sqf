@@ -53,6 +53,9 @@ if ( !_taskAssigned && _estimatedVictims >= _napalmThreshold && _distanceTofrien
 		_params set [count _params, _debug]; 
 		_params call FS_fnc_DropNapalm;
 		
+		//-- Update last time the support was used
+		[_side, "FIRETASKS", [format["%1_LAST_TIME", _supportName], time]] call FS_fnc_UpdateSideVariable;
+		
 		// Updating global variable that stores all fire tasks that are in progress
 		[_side, "FIRETASKS", [_supportName, [_caller, _target]], _napalmCD] call FS_fnc_UpdateSideVariable;
 		// Sending a radio warning
@@ -72,7 +75,10 @@ if ( !_taskAssigned && _estimatedVictims >= _artilleryThreshold && _distanceTofr
 	
 	if ( _supportAvailable ) then 
 	{
-		[_coordinates, _estimatedVictims, 50, nil, nil, 18, _debug] spawn FS_fnc_DropMines;
+		[_coordinates, 5, 50, nil, nil, 18, _debug] spawn FS_fnc_DropMines;
+		
+		//-- Update last time the support was used
+		[_side, "FIRETASKS", [format["%1_LAST_TIME", _supportName], time]] call FS_fnc_UpdateSideVariable;
 		
 		// Updating global variable that stores all fire tasks that are in progress
 		[_side, "FIRETASKS", [_supportName, [_caller, _target]], _artilleryCD] call FS_fnc_UpdateSideVariable;
