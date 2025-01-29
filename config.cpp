@@ -1359,6 +1359,20 @@ class CfgVehicles
 	};
 	
 	
+	class FS_GodmodeSynchronizer_Module : FS_Vietnam_Module {
+		_generalMacro = "FS_GodmodeSynchronizer_Module";
+		scope = 2;
+		isGlobal = 2; // Persistent global execution
+		displayName = "Godmode Synchronizer Module";
+		function = "FS_fnc_ModuleGodmodeSynchronizer";
+		class ModuleDescription : ModuleDescription {
+			description = "Use this when you want to give an object a godmode (allowDamage=false) for X amount of seconds and you have multiple sources of godmode that can possibly interfere with each other. If you don't know what that is, then you don't need it. This module runs on each machine and manages godmode for local units. Refer to the comments in module's function for more info.";
+			sync[] = {};
+		};
+		class Attributes : AttributesBase {
+			class ModuleDescription : ModuleDescription {};
+		};
+	};
 };
 
 
@@ -1491,6 +1505,8 @@ class CfgFunctions
 			class ModuleNapalmCAS {file = "\FS_Vietnam\Functions\Modules\ModuleNapalmCAS.sqf";};
 			class ModuleNapalmSettings {file = "\FS_Vietnam\Functions\Modules\ModuleNapalmSettings.sqf";};
 			class ModuleRadioSettings {file = "\FS_Vietnam\Functions\Modules\ModuleRadioSettings.sqf";};
+			class AddGodmodeTimespan {file = "\FS_Vietnam\Functions\Modules\AddGodmodeTimespan.sqf";};
+			class ModuleGodmodeSynchronizer {file = "\FS_Vietnam\Functions\Modules\ModuleGodmodeSynchronizer.sqf";};
 			class ModuleRespawnPoint {file = "\FS_Vietnam\Functions\Modules\ModuleRespawnPoint.sqf";};
 			class VisualizeModuleRadius3DEN {file = "\FS_Vietnam\Functions\Modules\VisualizeModuleRadius3DEN.sqf";};
 		};
