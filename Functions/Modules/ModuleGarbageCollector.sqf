@@ -4,6 +4,10 @@
 
 #include "..\..\definitions.h"
 
+#define DEF_DEBUG_MARKER_COLOR "colorGreen"
+#define DEF_DEBUG_MARKER_TYPE "mil_dot"
+
+
 params ["_module"];
 
 private _sidesToRemove = _module getVariable "SidesToRemove";
@@ -59,6 +63,12 @@ while { true } do
 				private _body = _x;
 				if !(_body getVariable [DEF_GC_EXCLUDE_VAR, false]) then 
 				{
+					if (_debug) then 
+					{
+						private _marker = [[getPos _body select 0, getPos _body select 1], DEF_DEBUG_MARKER_TYPE, DEF_DEBUG_MARKER_COLOR, format ["Deleted %1", typeOf _body]] call FS_fnc_CreateDebugMarker;
+						[[_marker], 10, 6] spawn FS_fnc_FadeDebugMarkers; // gradually increase transparency
+					};
+				
 					private _allPlayers = call BIS_fnc_listPlayers;
 					private _distances = _allPlayers apply { _x distance _body };
 					
@@ -103,6 +113,13 @@ while { true } do
 				
 				/* Do not remove mines that are too close to the players */
 				if ( selectMin _distances > _trapsRemovalDistance ) then {
+				
+					if (_debug) then 
+					{
+						private _marker = [[getPos _mine select 0, getPos _mine select 1], DEF_DEBUG_MARKER_TYPE, DEF_DEBUG_MARKER_COLOR, format ["Deleted %1", typeOf _mine]] call FS_fnc_CreateDebugMarker;
+						[[_marker], 10, 6] spawn FS_fnc_FadeDebugMarkers; // gradually increase transparency
+					};
+				
 					deleteVehicle _mine;
 					_gookTraps set [_forEachIndex, objNull];
 					_removedTrapsCounter = _removedTrapsCounter + 1;
@@ -134,6 +151,12 @@ while { true } do
 			
 			if !(_mine isEqualTo objNull) then 
 			{
+				if (_debug) then 
+				{
+					private _marker = [[getPos _mine select 0, getPos _mine select 1], DEF_DEBUG_MARKER_TYPE, DEF_DEBUG_MARKER_COLOR, format ["Deleted %1", typeOf _mine]] call FS_fnc_CreateDebugMarker;
+					[[_marker], 10, 6] spawn FS_fnc_FadeDebugMarkers; // gradually increase transparency
+				};
+				
 				deleteVehicle _mine;
 				_gookTraps set [_i, objNull]; 
 				_removedTrapsCounter = _removedTrapsCounter + 1;
@@ -211,6 +234,12 @@ while { true } do
 							sleep 1; 
 							
 							{
+								if (_debug) then 
+								{
+									private _marker = [[getPos _x select 0, getPos _x select 1], DEF_DEBUG_MARKER_TYPE, DEF_DEBUG_MARKER_COLOR, format ["Deleted %1", typeOf _x]] call FS_fnc_CreateDebugMarker;
+									[[_marker], 10, 6] spawn FS_fnc_FadeDebugMarkers; // gradually increase transparency
+								};
+							
 								systemChat format ["(%1) Deleting vehicle %2", time, typeOf _x];
 								deleteVehicle _x;
 							} forEach _occupiedVehicles;
@@ -218,6 +247,13 @@ while { true } do
 							//-- Delete whoever is left in the group 
 							{
 								if !(isNull _x) then {
+								
+									if (_debug) then 
+									{
+										private _marker = [[getPos _x select 0, getPos _x select 1], DEF_DEBUG_MARKER_TYPE, DEF_DEBUG_MARKER_COLOR, format ["Deleted %1", typeOf _x]] call FS_fnc_CreateDebugMarker;
+										[[_marker], 10, 6] spawn FS_fnc_FadeDebugMarkers; // gradually increase transparency
+									};
+								
 									deleteVehicle _x;
 									_counter = _counter + 1;
 								};
