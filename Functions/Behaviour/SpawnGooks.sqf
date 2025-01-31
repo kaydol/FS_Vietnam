@@ -48,7 +48,7 @@ for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do
 		if ( count _pool > 0 ) then {
 			_baseclass = selectRandom _pool;
 		};
-		_baseclass createUnit [ASLToAGL _pos, _NewGrp, "", 0.3, "PRIVATE"];
+		_baseclass createUnit [ASLToAGL _pos, _NewGrp, "", 0, "PRIVATE"];
 		sleep 0.5;
 	};
 	
