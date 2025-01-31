@@ -49,6 +49,18 @@ private _vehicleClasses = _logic getVariable "VehicleClasses";
 if (_vehicleClasses isEqualType "") then { _vehicleClasses = call compile _vehicleClasses; };
 
 
+private _garbageCollector = allMissionObjects "FS_GarbageCollector_Module";
+if (count _garbageCollector > 0) then {
+	_garbageCollector = _garbageCollector # 0;
+	private _trapsRemovalDistance = _garbageCollector getVariable "trapsRemovalDistance";
+	private _gookRemovalDistance = _garbageCollector getVariable "removalDistance";
+	private _spawnDistance = _spawnDistanceMoving max _spawnDistanceStationary;
+	if (_gookRemovalDistance - 50 < _spawnDistance) then {
+		[format ["Decrease Garbage Collector Removal Distance (%1) or decrease Gook Manager Spawn Distance (%2)", _gookRemovalDistance, _spawnDistance]] call BIS_fnc_error;
+	};
+};
+
+
 private _scope = 4; // how many times we assess the movements before judging about a trend. Defines the length of the queue 
 private _previousClusterization = [];
 
