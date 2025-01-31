@@ -22,7 +22,6 @@ private _gookRemovalDistance = _module getVariable "removalDistance";
 private _removePreplacedUnits = _module getVariable "removePreplaced";
 private _debug = _module getVariable "Debug";
 
-
 {
 	if (_removePreplacedUnits) then {
 		//-- Do not remove groups that have playable units in them 
@@ -30,11 +29,13 @@ private _debug = _module getVariable "Debug";
 		if ( _hasPlayableUnits ) then {
 			_x setVariable [DEF_GC_EXCLUDE_GROUP_VAR, true, true];
 		};
-	} 
+	}
 	else
 	{
 		//-- Do not remove all preplaced groups 
-		_x setVariable [DEF_GC_EXCLUDE_GROUP_VAR, true, true];
+		if (isNil{ _x getVariable DEF_GC_EXCLUDE_GROUP_VAR}) then {
+			_x setVariable [DEF_GC_EXCLUDE_GROUP_VAR, true, true];
+		};
 	};
 } forEach AllGroups;
 
