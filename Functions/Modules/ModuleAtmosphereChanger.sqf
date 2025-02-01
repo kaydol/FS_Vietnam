@@ -50,6 +50,7 @@ switch _mode do {
 		
 		
 		private _radius = _logic getVariable "Radius";
+		private _transitionTime = _logic getVariable "TransitionTime";
 		private _startCondition = _logic getVariable ["StartCondition", "true"];
 		private _stopCondition = _logic getVariable ["StopCondition", "false"];
 		private _loopConditions = ( _logic getVariable ["LoopConditions", 0] ) == 1;
@@ -87,7 +88,7 @@ switch _mode do {
 			private _ppCCBase = [0.199, 0.587, 0.114, 0.0];
 			private _ppCCOut = [1, 1, 0, [0.0, 0.0, 0.0, 0.0], [1.0, 1.0, 1.0, 1.0], _ppCCBase];
 			private _emitter = objNull;
-			private _transitionTime = 0;
+			
 			private _oldOvercast = 0;
 			private _oldGusts = 0;
 			private _oldRain = 0;

@@ -418,7 +418,7 @@ class CfgVehicles
 				displayName = "AI limit";
 				tooltip = "How many alive Gooks can be present on the map simultaneously. Reduce to ease lags, increase if you have a very powerful CPU.";
 				typeName = "NUMBER";
-				defaultValue = 20;
+				defaultValue = 50;
 			};
 			class GroupSize : Edit {
 				property = "GroupSize";
@@ -439,7 +439,7 @@ class CfgVehicles
 				displayName = "Groups Count";
 				tooltip = "How many groups of Gooks can be spawned at once.";
 				typeName = "NUMBER";
-				defaultValue = 1;
+				defaultValue = 2;
 			};
 			class GroupsCountVar : Edit {
 				property = "GroupsCountVar";
@@ -485,7 +485,7 @@ class CfgVehicles
 				displayName = "Spawn Distance (target stationary)";
 				tooltip = "Spawn distance when a group of players that is about to be attacked is stationary (when players are defending a spot). When players are stationary, Gooks are spawned randomly on the circle with this radius. When Garbage Collector module is present, be mindful of Gook removal distance to avoid spawned Gooks being instantly removed due to players being too far.";
 				typeName = "NUMBER";
-				defaultValue = 400;
+				defaultValue = 300;
 			};
 			class Debug : Checkbox {
 				property = "Debug";
@@ -616,7 +616,7 @@ class CfgVehicles
 			class RemovalDistance : Edit {
 				property = "removalDistance";
 				displayName = "Removal distance";
-				tooltip = "Entities that are too far from any of the players will be mercilessly deleted. Use -1 to disable removal.";
+				tooltip = "Entities that are too far from any of the players will be mercilessly deleted. Make sure this value is greater than Spawn Distance in Gook Manager, otherwise enemies spawned by the Gook Manager will be deleted right after spawn. Use -1 to disable removal.";
 				typeName = "NUMBER";
 				defaultValue = 300;
 			};
@@ -1334,6 +1334,13 @@ class CfgVehicles
 				tooltip = "If this is > 0, the atmospheric changes will occur only while the player is within this radius. If radius = 0, the changes are happening globally on the whole map.";
 				typeName = "NUMBER";
 				defaultValue = 0;
+			};
+			class TransitionTime : Edit {
+				property = "ModuleAtmosphereChanger_TransitionTime";
+				displayName = "Transition Time";
+				tooltip = "A value of 0 means instant weather\color\fog change.";
+				typeName = "NUMBER";
+				defaultValue = 3;
 			};
 			class StartCondition: Edit {
 				property = "ModuleAtmosphereChanger_StartCondition";
