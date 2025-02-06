@@ -749,14 +749,10 @@ class CfgVehicles
 				typeName = "STRING";
 				class values
 				{
-					class uns_A7N_CAS {
-						name = "A-7C Corsair II (CAS)";
-						value = "uns_A7N_CAS";
+					class vn_b_air_f4b_navy_cas {
+						name = "F4B Phantom II (CAS)";
+						value = "vn_b_air_f4b_navy_cas";
 						default = 1;
-					};
-					class uns_F4J_CAS {
-						name = "F-4J Phantom II (CAS)";
-						value = "uns_F4J_CAS";
 					};
 				};
 			};

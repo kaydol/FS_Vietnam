@@ -1,6 +1,13 @@
+
+#define DEF_SHIFT_POS_BY 300
+
 _logic = _this select 0;
 _units = _this select 1;
 _activated = _this select 2;
+
+
+_logic setPos ([getPos _logic, DEF_SHIFT_POS_BY, direction _logic] call bis_fnc_relpos);
+
 
 //--- Terminate on client (unless it's curator who created the module)
 if (!isserver && {local _x} count (objectcurators _logic) == 0) exitwith {};
