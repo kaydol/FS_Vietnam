@@ -1472,7 +1472,6 @@ class CfgFunctions
 			class GetHiddenPos2 {file = "\FS_Vietnam\Functions\Behaviour\GetHiddenPos2.sqf";};
 			class GookSenses {file = "\FS_Vietnam\Functions\Behaviour\GookSenses.sqf";};
 			class GrpFiredNear {file = "\FS_Vietnam\Functions\Behaviour\GrpFiredNear.sqf";};
-			class GrpFiredNearExec {file = "\FS_Vietnam\Functions\Behaviour\GrpFiredNearExec.sqf";};
 			class GrpHideInTrees {file = "\FS_Vietnam\Functions\Behaviour\GrpHideInTrees.sqf";};
 			class GrpNearestEnemy {file = "\FS_Vietnam\Functions\Behaviour\GrpNearestEnemy.sqf";};
 			class GrpPlaceTraps {file = "\FS_Vietnam\Functions\Behaviour\GrpPlaceTraps.sqf";};
