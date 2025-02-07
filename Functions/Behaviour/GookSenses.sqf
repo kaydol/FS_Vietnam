@@ -6,24 +6,26 @@
 	live up to an image of their vigilant and cunning real counterparts.
 */
 
-params ["_group"];
+params ["_group", ["_radius", 200], ["_debug", false]];
+
+if (_radius <= 0) exitWith {};
 
 while { true } do 
 {
-	_alive = units _group select { alive _x };
+	private _alive = units _group select { alive _x };
 	if ( _alive isEqualTo [] ) exitWith {};
-	_rndAlive = selectRandom _alive;
+	private _rndAlive = selectRandom _alive;
 	
-	_objectsToReveal = getPos _rndAlive nearEntities ["Land", 200] select { !(_x isKindOf "Animal") };
+	private _objectsToReveal = getPos _rndAlive nearEntities ["Land", _radius] select { !(_x isKindOf "Animal") };
 	
 	{
-		_knowledge = _rndAlive knowsAbout _x;
+		private _knowledge = _rndAlive knowsAbout _x;
 		_knowledge = ( _knowledge + 0.1 ) min 4;
 		_rndAlive reveal [_x, _knowledge];
 	}
 	forEach _objectsToReveal;
 	
-	sleep 10;
+	sleep 5;
 };
 
 

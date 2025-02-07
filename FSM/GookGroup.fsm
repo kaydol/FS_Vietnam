@@ -136,7 +136,7 @@ class FSM
                          "_sleep = 5;" \n
                          "" \n
                          "_group spawn FS_fnc_GrpFiredNear;" \n
-                         "//_group spawn FS_fnc_GookSenses;" \n
+                         "[_group, _gookSensesRadius, _debug] spawn FS_fnc_GookSenses;" \n
                          "" \n
                          "// If _target is a direction, rotate" \n
                          "// leader to face it " \n

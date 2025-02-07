@@ -487,6 +487,13 @@ class CfgVehicles
 				typeName = "NUMBER";
 				defaultValue = 300;
 			};
+			class GookSensesRadius : Edit {
+				property = "GookSensesRadius";
+				displayName = "Gook Sense Radius";
+				tooltip = "Gook Senses (tm) is a mechanic that incrementally increases the knowledge of the enemy over time when the enemy is in radius of the gook group. Use -1 or 0 to disable.";
+				typeName = "NUMBER";
+				defaultValue = 200;
+			};
 			class Debug : Checkbox {
 				property = "Debug";
 				displayName = "Debug";

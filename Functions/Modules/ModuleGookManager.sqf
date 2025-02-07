@@ -40,6 +40,7 @@ if (_revealTrapsToSides isEqualType "") then { _revealTrapsToSides = call compil
 
 private _spawnDistanceMoving = _logic getVariable "SpawnDistanceMoving";
 private _spawnDistanceStationary = _logic getVariable "SpawnDistanceStationary";
+private _gookSensesRadius = _logic getVariable "GookSensesRadius";
 private _areaModules = synchronizedObjects _logic select { typeOf _x == "FS_GookArea_Module" };
 private _assignedCurator = _logic getVariable "AssignedCurator";
 
@@ -204,7 +205,7 @@ while { true } do {
 								  \  \  	  	    \      		  \
 						*/
 						
-						private _handle = [_next, _allPlayers, SUFFICIENT_CLUSTER_SHIFT, [_spawnDistanceMoving, _spawnDistanceStationary], [_sniperTreeClasses, _vehicleClasses], _groupsCount + round random _groupsCountVar, _groupSize + round random _groupSizeVar, _areaModules, _assignedCurator, _debug] spawn FS_fnc_AttackPlanner;
+						private _handle = [_next, _allPlayers, SUFFICIENT_CLUSTER_SHIFT, [_spawnDistanceMoving, _spawnDistanceStationary], _gookSensesRadius, [_sniperTreeClasses, _vehicleClasses], _groupsCount + round random _groupsCountVar, _groupSize + round random _groupSizeVar, _areaModules, _assignedCurator, _debug] spawn FS_fnc_AttackPlanner;
 						
 						WaitUntil { scriptDone _handle }; 
 					} 

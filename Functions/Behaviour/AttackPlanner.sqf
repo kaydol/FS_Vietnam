@@ -5,7 +5,7 @@
 #define DEF_THREAT_VEHICLES 1
 #define DEF_THREAT_BUILDINGS 2
 
-params ["_cluster", "_unitsToHideFrom", "_sufficientClusterShift", "_distanceToSpawn", "_buildingsAndVehicles", "_groupsCount", "_groupSize", "_areaModules", "_assignedCurator", ["_debug", false, [true]]];
+params ["_cluster", "_unitsToHideFrom", "_sufficientClusterShift", "_distanceToSpawn", "_gookSensesRadius", "_buildingsAndVehicles", "_groupsCount", "_groupSize", "_areaModules", "_assignedCurator", ["_debug", false, [true]]];
 
 _buildingsAndVehicles params ["_buildingClasses", "_vehicleClasses"];
 _cluster params ["_clusterCenter", "_clusterUnits", "_queue"];
@@ -95,7 +95,7 @@ for "_i" from 1 to 10 do
 		{
 			case DEF_THREAT_INFANTRY: {
 				//-- Spawn infantry
-				_handle = [_result, _target, _groupSize, _groupsCount, _proposedClasses, _assignedCurator, _debug] spawn FS_fnc_SpawnGooks;
+				_handle = [_result, _target, _gookSensesRadius, _groupSize, _groupsCount, _proposedClasses, _assignedCurator, _debug] spawn FS_fnc_SpawnGooks;
 				if ( _debug ) then {
 					private _marker = [_result, "mil_dot", "ColorRed", ["An attack from here!", "Ambush here!"] select _isAmbush] call FS_fnc_CreateDebugMarker;
 					[[_marker], 10] spawn FS_fnc_FadeDebugMarkers;
@@ -133,7 +133,7 @@ for "_i" from 1 to 10 do
 						true
 					};
 					if ( _debug ) then {
-						[_markers, 10] spawn FS_fnc_FadeDebugMarkers;
+						[_markers, 100] spawn FS_fnc_FadeDebugMarkers;
 					};
 				} else {
 					if ( _debug ) then {
@@ -163,7 +163,7 @@ for "_i" from 1 to 10 do
 						true
 					};
 					if ( _debug ) then {
-						[_markers, 10] spawn FS_fnc_FadeDebugMarkers;
+						[_markers, 100] spawn FS_fnc_FadeDebugMarkers;
 					};
 				} else {
 					if ( _debug ) then {

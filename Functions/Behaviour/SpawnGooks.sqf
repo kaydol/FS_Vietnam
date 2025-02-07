@@ -1,5 +1,5 @@
 
-params [["_pos", [], [[]]], ["_target",[]], ["_groupSize", 5 + ceil random 6, [0]], ["_groupsCount", 1, [0]], ["_customClasses", [], [[]]], ["_assignedCurator", objNull], ["_debug", false, [true]]];
+params [["_pos", [], [[]]], ["_target",[]], ["_gookSensesRadius", 200], ["_groupSize", 5 + ceil random 6, [0]], ["_groupsCount", 1, [0]], ["_customClasses", [], [[]]], ["_assignedCurator", objNull], ["_debug", false, [true]]];
 
 private _baseclass = "O_T_Soldier_F"; // Chinese speaking asian
 private _pool = [];
@@ -66,7 +66,7 @@ for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do
 		};
 	};
 	
-	[_NewGrp, _target] execFSM "\FS_Vietnam\FSM\GookGroup.fsm";
+	[_NewGrp, _target, _gookSensesRadius, _debug] execFSM "\FS_Vietnam\FSM\GookGroup.fsm";
 	
 	if ( _debug ) then {
 		// Group markers
