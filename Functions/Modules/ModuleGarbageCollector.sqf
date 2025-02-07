@@ -39,12 +39,14 @@ private _debug = _module getVariable "Debug";
 	};
 } forEach AllGroups;
 
-//-- This is not used in any way right now 
-//{
-//	private _vehicle = _x;
-//	_vehicle setVariable [DEF_GC_EXCLUDE_VAR, true, true];
-//	{ _x setVariable [DEF_GC_EXCLUDE_VAR, true, true]; } forEach crew _vehicle;
-//} forEach vehicles;
+
+//-- This is used to prevent the dead bodies of helicopter crews to be deleted 
+//-- a dead body is required for the helicopter to be reinforced at the base 
+{
+	private _vehicle = _x;
+	_vehicle setVariable [DEF_GC_EXCLUDE_VAR, true, true];
+	{ _x setVariable [DEF_GC_EXCLUDE_VAR, true, true]; } forEach crew _vehicle;
+} forEach Vehicles;
 
 
 
@@ -64,12 +66,6 @@ while { true } do
 				private _body = _x;
 				if !(_body getVariable [DEF_GC_EXCLUDE_VAR, false]) then 
 				{
-					if (_debug) then 
-					{
-						private _marker = [[getPos _body select 0, getPos _body select 1], DEF_DEBUG_MARKER_TYPE, DEF_DEBUG_MARKER_COLOR, format ["Deleted %1", typeOf _body]] call FS_fnc_CreateDebugMarker;
-						[[_marker], 10, 6] spawn FS_fnc_FadeDebugMarkers; // gradually increase transparency
-					};
-				
 					private _allPlayers = call BIS_fnc_listPlayers;
 					private _distances = _allPlayers apply { _x distance _body };
 					
@@ -80,6 +76,12 @@ while { true } do
 					if ( selectMin _distances > _removeDead ) then {
 						deleteVehicle _body;
 						_counter = _counter + 1;
+						
+						if (_debug) then 
+						{
+							private _marker = [[getPos _body select 0, getPos _body select 1], DEF_DEBUG_MARKER_TYPE, DEF_DEBUG_MARKER_COLOR, format ["Deleted %1", typeOf _body]] call FS_fnc_CreateDebugMarker;
+							[[_marker], 10, 6] spawn FS_fnc_FadeDebugMarkers; // gradually increase transparency
+						};
 					};
 					
 					sleep (1 + random 2);
