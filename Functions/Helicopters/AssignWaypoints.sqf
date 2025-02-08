@@ -12,7 +12,7 @@ if (_debug) then {
 _side = _aircraft getVariable ["initSide", side _aircraft];
 [_side, "AIRSTATIONS", [_aircraft, _target]] call FS_fnc_UpdateSideVariable;
 
-_distance = 100;
+_distance = 200;
 _distance_step = 0;
 _waypoints = 2;
 _group = group _aircraft;

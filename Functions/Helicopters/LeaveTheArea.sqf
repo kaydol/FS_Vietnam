@@ -3,7 +3,7 @@ params ["_aircraft", ["_debug", false]];
 
 _group = group _aircraft;
 
-_pos = _aircraft getPos [1000, getDir _aircraft];
+_pos = _aircraft getPos [500, getDir _aircraft];
 
 // Set reached_the_area to False to indicate leaving the scouting area
 _aircraft setVariable ["reached_the_area", false];
