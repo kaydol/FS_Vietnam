@@ -48,9 +48,20 @@ while { _aircraft call FS_fnc_CanPerformDuties } do
 	//forEach _friendly_aircrafts;
 	
 	
-	//_objectsToReveal = getPos _aircraft nearEntities ["Land", 300] select { !(_x isKindOf "Animal") }; // WallHack
-	_objectsToReveal = _aircraft targets [False, 300]; // More Fair as it only returns known objects
+	_objectsToReveal = getPos _aircraft nearEntities ["Land", 300] select { !(_x isKindOf "Animal") }; // WallHack
+	
+	// Version 1: Fair but the aircraft it almost blind 
+	//_objectsToReveal = _aircraft targets [False, 300]; // More Fair as it only returns known objects
+	
+	// Version 2: Wallhack 
+	// Reveal units to the aircraft
 	_objectsToReveal = _objectsToReveal select { getPosATL _x select 2 < 3 }; // Only reveal objects on Land (not snipers on trees)
+	if (count crew _aircraft > 0) then {
+		private _grp = group ((crew _aircraft) select 0);
+		{_grp reveal [_x, 3]} forEach _objectsToReveal;
+	};
+	
+	
 	{
 		/* Informing friendlies */
 		_grp = _x;
@@ -73,7 +84,7 @@ while { _aircraft call FS_fnc_CanPerformDuties } do
 	}
 	forEach _friendlyGroups;
 	
-	sleep 5;
+	sleep 3;
 	
 };
 
