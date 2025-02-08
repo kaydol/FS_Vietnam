@@ -1,6 +1,10 @@
 
 params ["_aircraft", "_assessmentRate", "_supportParams", ["_debug", false, [true]]];
 
+if (_debug) then {
+	diag_log "Asses";
+};
+
 _side = _aircraft getVariable ["initSide", side _aircraft];
 
 _taskAssigned = False;

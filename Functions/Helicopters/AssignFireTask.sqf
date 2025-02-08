@@ -58,6 +58,7 @@ if ( !_taskAssigned && _estimatedVictims >= _napalmThreshold && _distanceTofrien
 		
 		// Updating global variable that stores all fire tasks that are in progress
 		[_side, "FIRETASKS", [_supportName, [_caller, _target]], _napalmCD] call FS_fnc_UpdateSideVariable;
+		
 		// Sending a radio warning
 		[_side, "InboundTactical"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
 	
@@ -82,6 +83,7 @@ if ( !_taskAssigned && _estimatedVictims >= _artilleryThreshold && _distanceTofr
 		
 		// Updating global variable that stores all fire tasks that are in progress
 		[_side, "FIRETASKS", [_supportName, [_caller, _target]], _artilleryCD] call FS_fnc_UpdateSideVariable;
+		
 		// Sending a radio warning
 		[_side, "InboundArty"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
 		

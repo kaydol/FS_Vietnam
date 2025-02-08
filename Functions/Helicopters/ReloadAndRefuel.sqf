@@ -15,8 +15,26 @@ private _needsMaintenance = _aircraft call FS_fnc_IsMaintenanceNeeded;
 private _hasDead = {!alive _x} count crew _aircraft > 0;
 private _hasAlive = {alive _x} count crew _aircraft > 0;
 
-if ( _hasDead && _hasAlive ) then {
-	[side _aircraft, "CrewMemberDown", nil, _aircraft] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+/* Send radio message */ 
+if ( _hasAlive ) then 
+{
+	if ( _hasDead ) then 
+	{
+		[side _aircraft, "CrewMemberDown", nil, _aircraft] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+	}
+	else 
+	{
+		if (_needsMaintenance) then {
+			// Getting repairs, ammo and fuel 
+			[side _aircraft, "CrewMemberDown", nil, _aircraft] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+		} 
+		else 
+		{
+			// Crew member injured
+			[side _aircraft, "CrewMemberInjured", nil, _aircraft] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+		};
+	
+	};
 };
 
 /* 
@@ -116,7 +134,7 @@ else
 		if !(_aircraft call FS_fnc_IsScrambleNeeded) then {
 			[_aircraft, false] remoteExec ["allowDamage", _aircraft];
 			if (_debug) then {
-				systemChat format ["(%1) SOFT LANDING: GODMODE ON", time];
+				diag_log "Pilot: SOFT LANDING - GODMODE ON";
 			};
 		};
 		
@@ -125,10 +143,12 @@ else
 		if !(_aircraft call FS_fnc_IsScrambleNeeded) then {
 			[_aircraft, true] remoteExec ["allowDamage", _aircraft];
 			if (_debug) then {
-				format ["(%1) SOFT LANDING: GODMODE OFF", time];
+				diag_log "Pilot: SOFT LANDING - GODMODE OFF";
 			};
 		};
 	};
+	
+	diag_log format ["Pilot: crew damage before landing is %1", crew _aircraft apply {damage _x}];
 	
 	while {((getPos _aircraft select 2) > 1 || _aircraft distance _pos > 200 || !(unitReady _aircraft)) && !(_aircraft call FS_fnc_IsScrambleNeeded)} do {
 		sleep 1;
@@ -136,12 +156,14 @@ else
 	
 	// Terminating soft landing script if it hasn't finished
 	if !( scriptDone _softLanding ) then {
-		systemchat format ["(%1) SOFTLANDING IS NOT DONE, TERMINATING BY FORCE", time];
+		diag_log "Pilot: SOFTLANDING IS NOT DONE, TERMINATING BY FORCE";
 		terminate _softLanding;
 		if !(_aircraft call FS_fnc_IsScrambleNeeded) then {
 			[_aircraft, false] remoteExec ["allowDamage", _aircraft];
 		};
 	};
+	
+	diag_log format ["Pilot: crew damage after landing is %1", crew _aircraft apply {damage _x}];
 	
 	if !( _aircraft call FS_fnc_IsScrambleNeeded ) then 
 	{
@@ -172,12 +194,11 @@ else
 			*/
 			[_aircraft, 1] remoteExec ["setVehicleAmmoDef", 0];
 			
-			/* Healing the crew */
-			{ if (alive _x) then { [_x, 0] remoteExec ["setDamage", _x]; }; } forEach crew _aircraft;
-			 
 			/* Partially fixing all broken parts */
 			private _repairTo = 1 - (missionNameSpace getVariable ["MAINTENANCE_REPAIR_EFFECTIVENESS", 0.75]);
 			getAllHitPointsDamage _aircraft params ["_names", "_selections", "_damage"];
+			
+			diag_log format ["Pilot: aircraft damage before repair is %1", _damage];
 			
 			for [{_i = 0},{_i < count _damage},{_i = _i + 1}] do {
 				if ( ( _damage select _i ) > 0 ) then {
@@ -195,11 +216,20 @@ else
 				4 enableChannel [true, true]; 
 				_speaker sideChat _msg;
 			}] remoteExec ["call", 0];
+			
+			diag_log format ["Pilot: aircraft damage after repair is %1", _damage];
 		};
+		
+		/* Healing the crew */
+		diag_log format ["Pilot: crew damage before healing is %1", crew _aircraft apply {damage _x}];
+		{ if (alive _x) then { _x setDamage 0; }; } forEach crew _aircraft;
+		diag_log format ["Pilot: crew damage after healing is %1", crew _aircraft apply {damage _x}];
 		
 		/* Getting replacement crew */
 		if ( _hasDead && _providesCrew ) then 
 		{
+			diag_log "Pilot: getting replacement crew";
+		
 			[side _aircraft, "BoardingStarted", _aircraft] remoteExec ["FS_fnc_TransmitOverRadio", 2];
 			sleep 4;
 			
@@ -225,6 +255,8 @@ else
 				*/
 				if ( _respawn_at isEqualTo [0,0,0] ) then 
 				{
+					diag_log "Pilot: no Respawn Point synced to Air Base, teleport new crew members inside";
+					
 					//-- Ah, YES, of course, moveInGunner\Driver\etc push dead bodies out of the seat while moveInAny does NOT, 
 					//-- and nobody bothered to mention that on the Wiki...
 					[_dead_unit, _aircraft] remoteExec ["deleteVehicleCrew", _aircraft];
@@ -233,6 +265,8 @@ else
 				}
 				else 
 				{
+					diag_log "Pilot: waiting for crew to get inside";
+					
 					waitUntil { sleep 0.5; { _x in _aircraft } count units _group == count crew _aircraft || !alive _aircraft };
 				};
 				
@@ -246,11 +280,13 @@ else
 				[side _aircraft, "BoardingEnded", _aircraft] remoteExec ["FS_fnc_TransmitOverRadio", 2];
 			};
 			sleep 4;
+			
+			diag_log "Pilot: crew replacement is finished successfully";
 		};
 		
 		/* Waiting for daytime */
 		if ( !_hasDead && !_needsMaintenance ) then {
-			if ( _debug ) then {
+			if ( _debug && !(call FS_fnc_IsEnoughDaylight) ) then {
 				diag_log "Pilot: Landed for the night"
 			};
 			waitUntil { sleep 5; _aircraft call FS_fnc_IsScrambleNeeded || call FS_fnc_IsEnoughDaylight };
@@ -277,6 +313,13 @@ else
 				[side _this, "NewPilot"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
 			};
 		};
+	} 
+	else 
+	{
+		// Aircraft destroyed or can not move 
+		// Aircraft got damaged 
+		// One of the crew members is too injured or a dead body is inside    
+		// Nighttime 
 	};
 };
 

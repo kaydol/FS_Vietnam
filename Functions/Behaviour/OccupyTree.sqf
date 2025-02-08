@@ -36,7 +36,7 @@ Author:
 
 #include "..\..\definitions.h"
 
-params ["_tree", ["_assignedCurator", objNull]];
+params ["_tree", ["_assignedCurator", objNull], ["_debug", false]];
 
 private _buildingPositions = _tree call BIS_fnc_buildingPositions;
 if (_buildingPositions isEqualTo []) exitWith {
@@ -63,14 +63,18 @@ _class createUnit [_buildingPositions # 0, _newGrp, "", 1, "PRIVATE"];
 private _unit = units _newGrp select 0;
 _unit triggerDynamicSimulation false; 
 
+//-- Disable RNG movement when used with RNG AI addon 
+if (isClass (configFile >> "CfgPatches" >> "RNG_mod")) then {
+	_unit setVariable ["RNG_disabled",true,true]; 
+};
 
 if (_validCurator) then {
 	_assignedCurator addCuratorEditableObjects [units _newGrp, false];
 };
 
 //-- Exclude live tree snipers from Garbage Collector 
-_newGrp setVariable [DEF_GC_EXCLUDE_GROUP_VAR, true, true];
+//_newGrp setVariable [DEF_GC_EXCLUDE_GROUP_VAR, true, true];
 
-[_unit, _tree] execFSM "\FS_Vietnam\FSM\TreeSniper.fsm"; 
+[_unit, _tree, _debug] execFSM "\FS_Vietnam\FSM\TreeSniper.fsm"; 
 
 

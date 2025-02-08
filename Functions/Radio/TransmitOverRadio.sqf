@@ -56,7 +56,8 @@ private _boardingEnded = 	["mp_groundsupport_10_boardingended_BHQ_0",
 					"mp_groundsupport_10_boardingended_BHQ_1", 
 					"mp_groundsupport_10_boardingended_BHQ_2"];
 
-private _crewMemberDown = 	["pilotDownNoisy"];
+private _crewMemberDown = 		["RadioMsgStatic"];
+private _crewMemberInjured = 	["RadioMsgStatic"];
 					
 private _text = "";
 private _message = "";
@@ -96,8 +97,19 @@ switch ( _messageType ) do
 		_message = selectRandom _boardingEnded;
 	};
 	case "CrewMemberDown": {
-		_text = "All elements, priority message... pilot in need of medevac... repeat... pilot down, requesting medevac, respond ASAP, out.";
+		_text = "Crew member is wounded, we are RTB!";
 		_message = selectRandom _crewMemberDown;
+		_speaker = "";
+	};
+	case "CrewMemberInjured": {
+		_text = "Crew member is injured, we are RTB!";
+		_message = selectRandom _crewMemberInjured;
+		_speaker = "";
+	};
+	case "RefuelAndResupply": {
+		_text = "We are RTB to conduct repairs and resupply.";
+		_message = selectRandom _crewMemberInjured;
+		_speaker = "";
 	};
 	default { _message = "RadioMsgStatic"; };
 };
