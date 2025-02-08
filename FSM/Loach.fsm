@@ -1,4 +1,4 @@
-/*%FSM<COMPILE "D:\SteamLibrary\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, Loach">*/
+/*%FSM<COMPILE "scriptedFSM.cfg, Loach">*/
 /*%FSM<HEAD>*/
 /*
 item0[] = {"Found_target_",4,218,-269.974854,-40.367981,-179.974915,9.632019,1.000000,"Found target?"};
@@ -27,7 +27,7 @@ item22[] = {"Return",2,250,-63.487717,-198.267303,26.512299,-148.267365,0.000000
 item23[] = {"Delay",3,250,-506.369446,-283.567352,-416.368805,-233.567337,0.000000,"Delay"};
 item24[] = {"Out_of_the_area",4,218,34.155670,-146.810593,124.155701,-96.810623,0.000000,"Out of" \n "the area?"};
 item25[] = {"Time_has_passed",4,218,396.589661,-88.857880,486.589661,-38.857849,0.000000,"Time has" \n "passed?"};
-item26[] = {"Add_waypoints",3,250,-150.936249,-288.590485,-60.936249,-238.590424,0.000000,"Add waypoints"};
+item26[] = {"Add_waypoints",3,4346,-150.936249,-288.590485,-60.936249,-238.590424,0.000000,"Add waypoints"};
 item27[] = {"Asses___Finalize",2,250,558.089844,-103.987991,648.089844,-53.987991,0.000000,"Asses & Finalize" \n "target"};
 item28[] = {"Reached_",4,218,-6.828812,-279.196411,83.171188,-229.196457,0.000000,"Reached?"};
 item29[] = {"_",8,218,562.051270,38.536377,652.051270,88.536377,0.000000,""};
@@ -83,8 +83,8 @@ link43[] = {31,14};
 link44[] = {32,33};
 link45[] = {33,26};
 link46[] = {34,7};
-globals[] = {0.000000,0,0,0,0,640,480,1,63,6316128,1,-211.583496,913.920166,341.597839,-659.241577,957,851,1};
-window[] = {2,-1,-1,-1,-1,780,30,1756,30,3,978};
+globals[] = {0.000000,0,0,0,0,640,480,1,63,6316128,1,-758.592041,400.972809,139.595764,-444.737152,1147,578,1};
+window[] = {0,-1,-1,-32000,-32000,1012,212,1938,262,1,1165};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -129,7 +129,7 @@ class FSM
                          "_target = [_aircraft, _prevtarget, _debug] call FS_fnc_ChooseTarget;" \n
                          "" \n
                          "if (_debug) then {" \n
-                         "	diag_log format [""Loach: New Target is %1"", _target];" \n
+                         "	diag_log format [""Node: Find target. New Target is %1"", _target];" \n
                          "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
@@ -141,7 +141,7 @@ class FSM
                                         priority = 1.000000;
                                         to="Add_waypoints";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"[_aircraft, _target] call FS_fnc_ValidateTarget"/*%FSM</CONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"[_aircraft, _target, _debug] call FS_fnc_ValidateTarget"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -165,7 +165,11 @@ class FSM
                         name = "Search_in_progre";
                         itemno = 6;
                         init = /*%FSM<STATEINIT""">*/"_time = time;" \n
-                         "_workingTarget = _target;"/*%FSM</STATEINIT""">*/;
+                         "_workingTarget = _target;" \n
+                         "" \n
+                         "if (_debug) then {" \n
+                         "	diag_log ""Node: Search in progress"";" \n
+                         "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -301,7 +305,9 @@ class FSM
                 {
                         name = "End";
                         itemno = 11;
-                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        init = /*%FSM<STATEINIT""">*/"if (_debug) then {" \n
+                         "	diag_log ""Node: End"";" \n
+                         "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -313,7 +319,7 @@ class FSM
                 {
                         name = "Scramble";
                         itemno = 12;
-                        init = /*%FSM<STATEINIT""">*/"_aircraft spawn FS_fnc_Scramble"/*%FSM</STATEINIT""">*/;
+                        init = /*%FSM<STATEINIT""">*/"[_aircraft, _debug] spawn FS_fnc_Scramble"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -336,7 +342,9 @@ class FSM
                 {
                         name = "Idle";
                         itemno = 14;
-                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        init = /*%FSM<STATEINIT""">*/"if (_debug) then {" \n
+                         "	diag_log ""Node: Idle"";" \n
+                         "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -358,7 +366,7 @@ class FSM
                                         priority = 1.000000;
                                         to="Add_waypoints";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"[_aircraft, _target] call FS_fnc_ValidateTarget"/*%FSM</CONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"[_aircraft, _target, _debug] call FS_fnc_ValidateTarget"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -416,7 +424,7 @@ class FSM
                 {
                         name = "Get_out_of_the_a";
                         itemno = 21;
-                        init = /*%FSM<STATEINIT""">*/"_aircraft call FS_fnc_LeaveTheArea;" \n
+                        init = /*%FSM<STATEINIT""">*/"[_aircraft, _debug] call FS_fnc_LeaveTheArea;" \n
                          ""/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
@@ -451,7 +459,11 @@ class FSM
                 {
                         name = "Return";
                         itemno = 22;
-                        init = /*%FSM<STATEINIT""">*/"_aircraft setVariable [""reached_the_area"", False]"/*%FSM</STATEINIT""">*/;
+                        init = /*%FSM<STATEINIT""">*/"_aircraft setVariable [""reached_the_area"", False];" \n
+                         "" \n
+                         "if (_debug) then {" \n
+                         "	diag_log ""Node: Return"";" \n
+                         "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -485,7 +497,11 @@ class FSM
                 {
                         name = "Delay";
                         itemno = 23;
-                        init = /*%FSM<STATEINIT""">*/"_time = time;"/*%FSM</STATEINIT""">*/;
+                        init = /*%FSM<STATEINIT""">*/"_time = time;" \n
+                         "" \n
+                         "if (_debug) then {" \n
+                         "	diag_log ""Node: Delay"";" \n
+                         "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -556,7 +572,7 @@ class FSM
                 {
                         name = "Asses___Finalize";
                         itemno = 27;
-                        init = /*%FSM<STATEINIT""">*/"_target = [_aircraft, _target] call FS_fnc_FinalizeTarget;" \n
+                        init = /*%FSM<STATEINIT""">*/"_target = [_aircraft, _target, _debug] call FS_fnc_FinalizeTarget;" \n
                          "" \n
                          "if ( _assessmentsMade == 0 ) then {" \n
                          "	_taskAssigned = [_aircraft, _assessmentRate, _supportThresholds, _debug] call FS_fnc_Asses;" \n
