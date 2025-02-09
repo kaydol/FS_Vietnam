@@ -962,7 +962,7 @@ class CfgVehicles
 			class DisableACEVolumeUpdate : Checkbox { //["Default"]
 				property = "DisableACEVolumeUpdate";
 				displayName = "ACE compatibility";
-				tooltip = "ACE addon deafness system overrides smooth music volume changes, resulting in arsenal music ending abruptly. When enabled, this will disable ACE's deafness while the player is in the arsenal, then enable it back after the music was silenced.";
+				tooltip = "ACE addon deafness system overrides smooth music volume changes, resulting in music ending abruptly. When enabled, this will disable ACE's deafness while music is played by this module, then enable it back after the music has stopped.";
 				typeName = "BOOL";
 				defaultValue = "false";
 			};
@@ -1380,6 +1380,13 @@ class CfgVehicles
 			sync[] = {};
 		};
 		class Attributes : AttributesBase {
+			class Debug : Checkbox {
+				property = "Debug";
+				displayName = "Debug";
+				tooltip = "";
+				typeName = "BOOL";
+				defaultValue = "false"; //true - 1, false - 0
+			};
 			class ModuleDescription : ModuleDescription {};
 		};
 	};
