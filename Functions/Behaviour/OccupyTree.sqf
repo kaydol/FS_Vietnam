@@ -75,6 +75,6 @@ if (_validCurator) then {
 //-- Exclude live tree snipers from Garbage Collector 
 //_newGrp setVariable [DEF_GC_EXCLUDE_GROUP_VAR, true, true];
 
-[_unit, _tree, _debug] execFSM "\FS_Vietnam\FSM\TreeSniper.fsm"; 
+[_unit, _tree, nil, _debug] execFSM "\FS_Vietnam\FSM\TreeSniper.fsm"; 
 
 
