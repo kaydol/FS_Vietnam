@@ -5,6 +5,8 @@ if !( canMove _aircraft ) exitWith { False };
 if !( call FS_fnc_IsEnoughDaylight ) exitWith { False };
 if ( _aircraft call FS_fnc_IsMaintenanceNeeded ) exitWith { False };
 if ( {!alive _x} count crew _aircraft > 0 ) exitWith { False };
+if ( count crew _aircraft == 0 ) exitWith { False };
+if !( alive currentPilot _aircraft ) exitWith { False };
 
 // Check crew HEALTH 
 private _can = True;
