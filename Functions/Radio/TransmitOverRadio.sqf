@@ -81,7 +81,7 @@ switch ( _messageType ) do
 		_message = selectRandom _tacticalInbound;
 	};
 	case "ChopperDown": {
-		_text = "DAMN! They shot our bird! REPEAT, friendly helo is DOWN!";
+		_text = "All contacts! We have a helo down, I repeat, we have a helo down!";
 		_message = selectRandom _chopperDown;
 	};
 	case "NewPilot": { 
@@ -99,17 +99,14 @@ switch ( _messageType ) do
 	case "CrewMemberDown": {
 		_text = "Crew member is wounded, we are RTB!";
 		_message = selectRandom _crewMemberDown;
-		_speaker = "";
 	};
 	case "CrewMemberInjured": {
 		_text = "Crew member is injured, we are RTB!";
 		_message = selectRandom _crewMemberInjured;
-		_speaker = "";
 	};
 	case "RefuelAndResupply": {
 		_text = "We are RTB to conduct repairs and resupply.";
 		_message = selectRandom _crewMemberInjured;
-		_speaker = "";
 	};
 	default { _message = "RadioMsgStatic"; };
 };

@@ -29,6 +29,7 @@ private _debug = _logic getVariable "Debug";
 #include "GodmodeSynchronizerDefinitions.h"
 
 [_debug] spawn {
+
 	params ["_debug"];
 
 	private _fnc_get = {
