@@ -1,4 +1,4 @@
-/*%FSM<COMPILE "D:\SteamLibrary\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, SniperSentry">*/
+/*%FSM<COMPILE "scriptedFSM.cfg, SniperSentry">*/
 /*%FSM<HEAD>*/
 /*
 item0[] = {"Sentry_FSM",0,250,-40.348846,-149.418610,49.651154,-99.418610,0.000000,"Sentry FSM"};
@@ -24,8 +24,8 @@ link8[] = {7,8};
 link9[] = {8,2};
 link10[] = {9,10};
 link11[] = {10,7};
-globals[] = {0.000000,0,0,0,0,640,480,1,16,6316128,1,244.647278,891.297913,107.266052,-386.091431,734,560,1};
-window[] = {0,-1,-1,-1,-1,939,180,1755,180,1,755};
+globals[] = {0.000000,0,0,0,0,640,480,1,16,6316128,1,-115.566391,666.880981,249.307770,-373.889252,737,587,1};
+window[] = {0,-1,-1,-32000,-32000,1109,162,1737,350,1,755};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -37,7 +37,9 @@ class FSM
                 {
                         name = "Sentry_FSM";
                         itemno = 0;
-                        init = /*%FSM<STATEINIT""">*/"params [""_group"", ""_tree"", [""_idleTime"", 20]];" \n
+                        init = /*%FSM<STATEINIT""">*/"params [""_group"", ""_tree"", [""_idleTime"", 3], [""_debug"", false]];" \n
+                         "" \n
+                         "[_group, 200, _debug] spawn FS_fnc_GookSenses;" \n
                          "" \n
                          "_time = time;" \n
                          "" \n
@@ -162,7 +164,8 @@ class FSM
                          "" \n
                          "// If there is only 1 building position, this sniper is already in it" \n
                          "// ...unless it's the first run ever, then we have to do the initial setPos" \n
-                         "if (!_firstRun && count _buildingPositions == 1) exitWith {};" \n
+                         "if (!_firstRun /*&& count _buildingPositions == 1*/) exitWith {};" \n
+                         "// disabled pos migration because they fall through the floor on some trees" \n
                          "" \n
                          "// Exclude initial setPos from player visibility checks" \n
                          "_safeTreePositions = [];" \n
@@ -190,9 +193,15 @@ class FSM
                          "		_closestSafePos = _data # 1 select 0;" \n
                          "	}; " \n
                          "	" \n
+                         "  if (_debug) then {" \n
+                         "    systemChat format [""Tree Sniper: move to %1"", _closestSafePos];" \n
+                         "  };" \n
+                         "" \n
                          "	_unit setPosATL _closestSafePos;" \n
                          "	_safeTreePositions = _safeTreePositions - [_closestSafePos];" \n
-                         "};"/*%FSM</STATEINIT""">*/;
+                         "};" \n
+                         "" \n
+                         ""/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -203,7 +212,7 @@ class FSM
                                         priority = 0.000000;
                                         to="Reset";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"time - _time > _idleTime"/*%FSM</CONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"(time - _time) > _idleTime"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/

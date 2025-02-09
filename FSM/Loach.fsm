@@ -27,7 +27,7 @@ item22[] = {"Return",2,250,-63.487717,-198.267303,26.512299,-148.267365,0.000000
 item23[] = {"Delay",3,250,-506.369446,-283.567352,-416.368805,-233.567337,0.000000,"Delay"};
 item24[] = {"Out_of_the_area",4,218,34.155670,-146.810593,124.155701,-96.810623,0.000000,"Out of" \n "the area?"};
 item25[] = {"Time_has_passed",4,218,396.589661,-88.857880,486.589661,-38.857849,0.000000,"Time has" \n "passed?"};
-item26[] = {"Add_waypoints",3,4346,-150.936249,-288.590485,-60.936249,-238.590424,0.000000,"Add waypoints"};
+item26[] = {"Add_waypoints",3,250,-150.936249,-288.590485,-60.936249,-238.590424,0.000000,"Add waypoints"};
 item27[] = {"Asses___Finalize",2,250,558.089844,-103.987991,648.089844,-53.987991,0.000000,"Asses & Finalize" \n "target"};
 item28[] = {"Reached_",4,218,-6.828812,-279.196411,83.171188,-229.196457,0.000000,"Reached?"};
 item29[] = {"_",8,218,562.051270,38.536377,652.051270,88.536377,0.000000,""};
@@ -83,8 +83,8 @@ link43[] = {31,14};
 link44[] = {32,33};
 link45[] = {33,26};
 link46[] = {34,7};
-globals[] = {0.000000,0,0,0,0,640,480,1,63,6316128,1,-758.592041,400.972809,139.595764,-444.737152,1147,578,1};
-window[] = {0,-1,-1,-32000,-32000,1012,212,1938,262,1,1165};
+globals[] = {0.000000,0,0,0,0,640,480,1,63,6316128,1,-228.860962,930.704651,50.632034,-533.700073,1147,578,1};
+window[] = {0,-1,-1,-1,-1,1100,162,1888,350,1,1165};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -129,7 +129,7 @@ class FSM
                          "_target = [_aircraft, _prevtarget, _debug] call FS_fnc_ChooseTarget;" \n
                          "" \n
                          "if (_debug) then {" \n
-                         "	diag_log format [""Node: Find target. New Target is %1"", _target];" \n
+                         "	diag_log format [""Pilot: New Target is %1"", _target];" \n
                          "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
@@ -168,7 +168,7 @@ class FSM
                          "_workingTarget = _target;" \n
                          "" \n
                          "if (_debug) then {" \n
-                         "	diag_log ""Node: Search in progress"";" \n
+                         "	diag_log ""Pilot: Search in progress"";" \n
                          "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
@@ -258,7 +258,7 @@ class FSM
                          "	};" \n
                          "" \n
                          "	if (_debug) then {" \n
-                         "		diag_log format [""Loach: Current pilot (%1) is dead, next pilot is %2"", currentPilot _aircraft, _newPilot];" \n
+                         "		diag_log format [""Pilot: Current pilot (%1) is dead, next pilot is %2"", currentPilot _aircraft, _newPilot];" \n
                          "	};" \n
                          "" \n
                          "	if !(isNull _newPilot) then {" \n
@@ -270,7 +270,7 @@ class FSM
                          "" \n
                          "if (_debug) then {" \n
                          "	[_aircraft, _debug] call FS_fnc_isMaintenanceNeeded;" \n
-                         "	diag_log ""Loach: Reload & Refuel"";" \n
+                         "	diag_log ""Pilot: Reload & Refuel"";" \n
                          "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
@@ -306,7 +306,7 @@ class FSM
                         name = "End";
                         itemno = 11;
                         init = /*%FSM<STATEINIT""">*/"if (_debug) then {" \n
-                         "	diag_log ""Node: End"";" \n
+                         "	diag_log ""Pilot: End"";" \n
                          "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
@@ -343,7 +343,7 @@ class FSM
                         name = "Idle";
                         itemno = 14;
                         init = /*%FSM<STATEINIT""">*/"if (_debug) then {" \n
-                         "	diag_log ""Node: Idle"";" \n
+                         "	diag_log ""Pilot: Idle"";" \n
                          "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
@@ -462,7 +462,7 @@ class FSM
                         init = /*%FSM<STATEINIT""">*/"_aircraft setVariable [""reached_the_area"", False];" \n
                          "" \n
                          "if (_debug) then {" \n
-                         "	diag_log ""Node: Return"";" \n
+                         "	diag_log ""Pilot: Return"";" \n
                          "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
@@ -500,7 +500,7 @@ class FSM
                         init = /*%FSM<STATEINIT""">*/"_time = time;" \n
                          "" \n
                          "if (_debug) then {" \n
-                         "	diag_log ""Node: Delay"";" \n
+                         "	diag_log ""Pilot: Delay"";" \n
                          "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links

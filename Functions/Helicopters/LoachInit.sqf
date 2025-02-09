@@ -1,5 +1,5 @@
 
-params ["_aircraft", "_debug"];
+params ["_aircraft", ["_debug", false]];
 
 _aircraft flyInHeight 65;
 _aircraft flyInHeightASL [65, 65, 65];
@@ -34,7 +34,7 @@ while { _aircraft call FS_fnc_CanPerformDuties } do
 		} forEach _aircrafts;
 		
 		if (_debug) then {
-			diag_log format ["Friendly aircrafts %1", _friendly_aircrafts];
+			diag_log format ["Pilot: Friendly aircrafts %1", _friendly_aircrafts];
 		};
 	};
 	_k = ( _k + 1 ) % 10;

@@ -43,7 +43,26 @@ while { _numberOfProjectiles > 0 } do
 			_smoker = "#particlesource" createVehicleLocal getPos _this;
 			_smoker setParticleCircle [0, [0, 0, 0]];
 			_smoker setParticleRandom [2, [0, 0, 0], [0.2, 0.2, 0.5], 0.3, 0.5, [0, 0, 0, 0.5], 0, 0];
-			_smoker setParticleParams [["\A3\data_f\cl_basic.p3d", 1, 0, 1], "", "Billboard", 1, 7, [0, 0, 0], [0, 0, 0.5], 0, 10.1, 7.9, 0.01, [0, 3], [[1,1,1,0], [1,1,1,1], [1,1,1,0.5], [1,1,1,0.25], [1,1,1,0]], [0.125], 1, 0, "", "", _this];
+			_smoker setParticleParams [["\A3\data_f\cl_basic.p3d", 1, 0, 1], // p3dPath, Ntieth, Index, FrameCount, Loop
+				 "", // animationName (obsolete parameter that was meant to play .rtm anims, should be empty)
+				 "Billboard", // particleType ("Billboard" or "SpaceObject")
+				 1, // timerPeriod
+				 7, // lifeTime
+				 [0, 0, 0], // position
+				 [0, 0, 0.5], // moveVelocity
+				 0, // rotationVelocity (rotations per second)
+				 10.1, // weight (weight of the particle, kg)
+				 7.9, // volume (volume of the particle in m3)
+				 0.01, // rubbing (determines how much particles blown by winds)
+				 [0, 3], // size (array of particle size along its lifetime)
+				 [[1,1,1,0], [1,1,1,1], [1,1,1,0.5], [1,1,1,0.25], [1,1,1,0]], // color (array of [RGBA] arrays)
+				 [0.125], // animationSpeed
+				 1, // randomDirectionPeriod
+				 0, // randomDirectionIntensity
+				 "", // onTimerScript
+				 "", // beforeDestroyScript
+				 _this // this (if this parameter isn't objNull, the particle source will be attached to the object, the generation of particles stops when beyond Object View Distance)
+			];
 			_smoker setDropInterval 0.02;
 			
 			sleep 1.5;

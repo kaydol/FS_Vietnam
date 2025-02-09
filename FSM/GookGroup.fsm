@@ -99,7 +99,7 @@ link42[] = {36,37};
 link43[] = {37,1};
 link44[] = {38,6};
 globals[] = {0.000000,0,0,0,0,640,480,1,57,6316128,1,-249.008514,771.846558,188.830826,-411.612640,998,587,1};
-window[] = {0,-1,-1,-32000,-32000,913,482,2348,154,1,1016};
+window[] = {0,-1,-1,-1,-1,1045,286,2152,286,1,1016};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -461,7 +461,9 @@ class FSM
                 {
                         name = "All_died";
                         itemno = 20;
-                        init = /*%FSM<STATEINIT""">*/"if (_debug) then { diag_log ""GookGroup: All died""; };"/*%FSM</STATEINIT""">*/;
+                        init = /*%FSM<STATEINIT""">*/"if (_debug) then { " \n
+                         " diag_log format [""GookGroup %1 size %2: All died"", _group, {alive _x} count units _group]; " \n
+                         "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
