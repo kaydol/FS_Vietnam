@@ -311,6 +311,7 @@ class CfgVehicles
 		portrait = "\a3\Modules_f\data\portraitHQ_ca.paa";
 		scope = 2;
 		isTriggerActivated = 1;
+		isDisposable = 0;
 		displayName = "Air Command";
 		function = "FS_fnc_ModuleAirCommand";
 		class ModuleDescription : ModuleDescription {
@@ -328,6 +329,32 @@ class CfgVehicles
 			};
 		};
 		class Attributes : AttributesBase {
+			class RespawnDestroyedAircrafts : Checkbox {
+				property = "RespawnDestroyedAircrafts";
+				displayName = "Respawn destroyed aircrafts";
+				tooltip = "If true, a new aircraft will be spawned to replace the destroyed one. It will be spawned at a random Air Base or at [0,0,0].";
+				typeName = "BOOL";
+				defaultValue = "false";
+			};
+			class RespawnDelay : Edit {
+				property = "RespawnDelay";
+				displayName = "Respawn delay";
+				tooltip = "How much to wait before respawning an aircraft.";
+				typeName = "NUMBER";
+				defaultValue = 60;
+			};
+			class HunterClasses : Edit {
+				property = "HunterClasses";
+				displayName = "Hunter classes";
+				tooltip = "The Hunter-Killer pair usually consists of one OH6 (hunter) and one Cobra (killer). If Respawn is enabled, use these classes to replace the hunter (chosen at random).";
+				defaultValue = "['vn_b_air_oh6a_01']";
+			};
+			class KillerClasses : Edit {
+				property = "KillerClasses";
+				displayName = "Killer classes";
+				tooltip = "The Hunter-Killer pair usually consists of one OH6 (hunter) and one Cobra (killer). If Respawn is enabled, use these classes to replace the killer (chosen at random).";
+				defaultValue = "['vn_b_air_ah1g_01']";
+			};
 			class AssessmentRate : Edit {
 				property = "assessmentRate";
 				displayName = "Assessment rate";
