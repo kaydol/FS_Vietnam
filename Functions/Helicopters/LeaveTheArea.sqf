@@ -22,6 +22,3 @@ _NewWP setWaypointStatements ["true", "vehicle this setVariable ['reached_the_ar
 //while { count waypoints _group > 2 } do {
 //	deleteWaypoint [_group, 1];
 //};
-if ( _debug ) then {
-	diag_log "Scout is leaving the area now";
-};

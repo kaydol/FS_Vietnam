@@ -17,15 +17,15 @@ forEach crew _aircraft;
 // The side has to be saved to find out which side this aircraft served to before it got destroyed
 _aircraft setVariable ["initSide", side _aircraft]; 
 
-_friendly_aircrafts = [];
-_k = 0;
+private _friendly_aircrafts = [];
+private _k = 0;
 
 while { _aircraft call FS_fnc_CanPerformDuties } do 
 {
 	if ( _k == 0 ) then 
 	{
 		_friendly_aircrafts = [];
-		_aircrafts = getPos _aircraft nearEntities ["Air", 1500];
+		private _aircrafts = getPos _aircraft nearEntities ["Air", 1500];
 		{
 			if ([side _x, side _aircraft] call BIS_fnc_sideIsFriendly ) then 
 			{
@@ -41,14 +41,14 @@ while { _aircraft call FS_fnc_CanPerformDuties } do
 	
 	
 	/* Adding crews of known friendly aircrafts */
-	_friendlyGroups = allGroups select { [side _x, side _aircraft] call BIS_fnc_SideIsFriendly };
+	private _friendlyGroups = allGroups select { [side _x, side _aircraft] call BIS_fnc_SideIsFriendly };
 	//{
 	//	_friendlyGroups pushBackUnique group _x;
 	//}
 	//forEach _friendly_aircrafts;
 	
 	
-	_objectsToReveal = getPos _aircraft nearEntities ["Land", 300] select { !(_x isKindOf "Animal") }; // WallHack
+	private _objectsToReveal = getPos _aircraft nearEntities ["Land", 300] select { !(_x isKindOf "Animal") }; // WallHack
 	
 	// Version 1: Fair but the aircraft it almost blind 
 	//_objectsToReveal = _aircraft targets [False, 300]; // More Fair as it only returns known objects
