@@ -12,6 +12,26 @@ _aircraft flyInHeightASL [65, 65, 65];
 }
 forEach crew _aircraft;
 
+
+// Draw arrow to the next waypoint on map
+if (_debug) then {
+	
+	private _code = compile format [" 
+	
+	private _aircraft = %1 ;
+	private _group = group _aircraft;
+	
+	if (!isNull _aircraft && count waypoints _group > 1) then {
+		_this select 0 drawArrow [_aircraft, waypointPosition [_group, currentWaypoint _group], [0,0,1,1]] 
+	};
+	
+	", _aircraft call BIS_fnc_objectVar];
+	
+	_handler = findDisplay 12 displayCtrl 51 ctrlAddEventHandler ["Draw", _code];
+	
+};
+
+
 //driver _aircraft disableAI "AUTOCOMBAT";
 
 // The side has to be saved to find out which side this aircraft served to before it got destroyed
