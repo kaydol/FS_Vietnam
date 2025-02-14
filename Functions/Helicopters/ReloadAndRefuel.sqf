@@ -246,7 +246,11 @@ else
 				private _class = typeOf _dead_unit;
 				_class createUnit [_respawn_at, _group, "", random 1, "PRIVATE"];
 				private _newMan = units _group select ( units _group findIf { vehicle _x != _aircraft } );
-
+				
+				if (isClass (configFile >> "CfgPatches" >> "RNG_mod")) then {
+					_newMan setVariable ["RNG_disabled",true,true]; 
+				};
+				
 				[_newMan] orderGetIn true; 
 				
 				/* 

@@ -8,6 +8,9 @@ _aircraft flyInHeightASL [65, 65, 65];
 {
 	if !(isPlayer _x) then {
 		_x setSpeaker "NoVoice";
+		if (isClass (configFile >> "CfgPatches" >> "RNG_mod")) then {
+			_x setVariable ["RNG_disabled",true,true]; 
+		};
 	};
 }
 forEach crew _aircraft;
