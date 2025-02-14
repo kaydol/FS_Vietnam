@@ -103,7 +103,7 @@ forEach _synced;
 				/* Aircraft destroyed, spawn a new one at the closest base */ 
 				/* Select the closest base */
 				
-				private _side = side _aircraft;
+				private _side = _aircraft getVariable ["initSide", side _aircraft];
 				private _bases = FS_REFUELRELOAD_BASES;
 				private _distance = 999999999999;
 				private _closest_base = objNull;

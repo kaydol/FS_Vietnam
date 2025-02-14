@@ -20,18 +20,18 @@ if ( _hasAlive ) then
 {
 	if ( _hasDead ) then 
 	{
-		[side _aircraft, "CrewMemberDown"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+		[_side, "CrewMemberDown"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
 	}
 	else 
 	{
 		if (_needsMaintenance) then {
 			// Getting repairs, ammo and fuel 
-			[side _aircraft, "CrewMemberDown"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+			[_side, "CrewMemberDown"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
 		} 
 		else 
 		{
 			// Crew member injured
-			[side _aircraft, "CrewMemberInjured"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+			[_side, "CrewMemberInjured"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
 		};
 	
 	};

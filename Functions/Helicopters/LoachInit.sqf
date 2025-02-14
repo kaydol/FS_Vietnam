@@ -47,7 +47,7 @@ while { _aircraft call FS_fnc_CanPerformDuties } do
 		_friendly_aircrafts = [];
 		private _aircrafts = getPos _aircraft nearEntities ["Air", 1500];
 		{
-			if ([side _x, side _aircraft] call BIS_fnc_sideIsFriendly ) then 
+			if ([side _x, _aircraft getVariable ["initSide", side _aircraft]] call BIS_fnc_sideIsFriendly ) then 
 			{
 				_friendly_aircrafts pushBack _x;
 			};
