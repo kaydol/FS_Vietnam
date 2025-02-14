@@ -1,90 +1,85 @@
 /*%FSM<COMPILE "scriptedFSM.cfg, Loach">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"Found_target_",4,218,-269.974854,-40.367981,-179.974915,9.632019,1.000000,"Found target?"};
+item0[] = {"Found_target_",4,218,-150.487396,-141.569641,-60.487457,-91.569641,1.000000,"Found target?"};
 item1[] = {"Start",0,250,-782.509888,-283.804291,-692.509827,-233.804306,0.000000,"Start"};
-item2[] = {"Is_target_still",4,218,-233.612885,-229.661652,-143.612869,-179.661652,1.000000,"Is target still" \n "valid"};
-item3[] = {"No_target_",8,218,-332.342987,-212.141861,-242.343094,-162.141861,0.000000,"No target?"};
+item2[] = {"Timeout_",4,218,-31.559540,-224.065109,58.440460,-174.065155,0.000000,"Timeout?"};
+item3[] = {"_",8,218,-332.342987,-212.141861,-242.343094,-162.141861,0.000000,""};
 item4[] = {"Find_target",2,250,-333.551147,-141.690964,-243.551117,-91.690964,0.000000,"Find target"};
-item5[] = {"Can_t_find_targe",8,218,-402.369537,-40.471451,-312.369537,9.528549,0.000000,"Can't find" \n "target"};
-item6[] = {"Search_in_progre",2,250,205.971649,-214.033752,295.971649,-164.033752,0.000000,"Search" \n "in progress"};
-item7[] = {"Have_to_break_station",4,218,403.989532,-367.592957,493.989532,-317.592957,4.000000,"Have to break" \n "station?"};
-item8[] = {"Break_Station",2,250,562.107605,-367.784729,652.107361,-317.784790,0.000000,"Break Station"};
-item9[] = {"Ready_to_get_back",4,218,206.022614,-487.811371,296.022644,-437.811279,1.000000,"Ready to get" \n "back in action?"};
-item10[] = {"Aircraft_disable",4,218,403.777802,-460.331421,493.777802,-410.331360,5.000000,"Aircraft" \n "disabled"};
-item11[] = {"End",1,250,685.072266,-369.651367,775.072266,-319.651489,0.000000,"End"};
-item12[] = {"Scramble",3,250,537.945068,-460.571777,627.945068,-410.571716,0.000000,"Scramble"};
-item13[] = {"_",8,218,684.309326,-460.978760,774.309326,-410.978699,0.000000,""};
-item14[] = {"Idle",3,250,-332.439392,-284.395691,-242.439392,-234.395691,0.000000,"Idle"};
+item5[] = {"Can_t_find_targe",8,218,-508.020721,-142.059128,-418.020721,-92.059128,0.000000,"Can't find" \n "target"};
+item6[] = {"__Long__On_stati",2,250,93.880737,-288.580566,183.880737,-238.580597,0.000000,"(Long)" \n "On station"};
+item7[] = {"Have_to_break_station",4,218,-25.166718,-411.007965,64.833282,-361.007965,4.000000,"Have to break" \n "station?"};
+item8[] = {"__Long__Break_St",2,250,-28.341873,-585.698303,61.657883,-535.698303,0.000000,"(Long)" \n "Break Station"};
+item9[] = {"Ready_to_get_back",4,218,-331.143097,-587.262573,-241.143066,-537.262451,1.000000,"Ready to get" \n "back in action?"};
+item10[] = {"Aircraft_disable",4,218,239.556976,-411.300262,329.556976,-361.300201,5.000000,"Aircraft" \n "disabled"};
+item11[] = {"End",1,250,534.430054,-644.085693,624.430054,-594.085754,0.000000,"End"};
+item12[] = {"Scramble",3,250,395.885681,-411.102234,485.885681,-361.102173,0.000000,"Scramble"};
+item13[] = {"_",8,218,400.571106,-645.750427,490.571106,-595.750488,0.000000,""};
+item14[] = {"Reset",3,250,-332.439392,-284.395691,-242.439392,-234.395691,0.000000,"Reset"};
 item15[] = {"Time__passed_",4,218,-414.474274,-232.550018,-324.474243,-182.550003,0.000000,"Time " \n "passed?"};
-item16[] = {"Last_waypoint__r",4,218,397.001068,-162.258270,487.001068,-112.258270,1.000000,"Last" \n "waypoint " \n "reached"};
+item16[] = {"Last_waypoint__r",4,218,245.537628,-321.661987,335.537628,-271.661987,1.000000,"Last" \n "waypoint " \n "reached"};
 item17[] = {"_",8,218,-661.672302,-279.434875,-571.672302,-229.434845,0.000000,""};
-item18[] = {"",7,210,-135.844513,-16.346268,-127.844513,-8.346268,0.000000,""};
-item19[] = {"Asses_and_assign",2,250,273.235229,-55.926575,363.235229,-5.926758,0.000000,"Asses and" \n "assign fire tasks"};
-item20[] = {"Contunue__search",8,218,157.127014,-85.320862,247.127014,-35.320862,0.000000,"Contunue " \n "search"};
-item21[] = {"Get_out_of_the_a",2,250,30.536560,-73.084106,120.536438,-23.084229,0.000000,"Get out" \n "of the area"};
-item22[] = {"Return",2,250,-63.487717,-198.267303,26.512299,-148.267365,0.000000,"Return"};
-item23[] = {"Delay",3,250,-506.369446,-283.567352,-416.368805,-233.567337,0.000000,"Delay"};
-item24[] = {"Out_of_the_area",4,218,34.155670,-146.810593,124.155701,-96.810623,0.000000,"Out of" \n "the area?"};
-item25[] = {"Time_has_passed",4,218,396.589661,-88.857880,486.589661,-38.857849,0.000000,"Time has" \n "passed?"};
-item26[] = {"Add_waypoints",3,250,-150.936249,-288.590485,-60.936249,-238.590424,0.000000,"Add waypoints"};
-item27[] = {"Asses___Finalize",2,250,558.089844,-103.987991,648.089844,-53.987991,0.000000,"Asses & Finalize" \n "target"};
-item28[] = {"Reached_",4,218,-6.828812,-279.196411,83.171188,-229.196457,0.000000,"Reached?"};
-item29[] = {"_",8,218,562.051270,38.536377,652.051270,88.536377,0.000000,""};
-item30[] = {"Fire_tasks_assigned",4,218,156.878906,-14.807800,246.878906,35.192200,1.000000,"Fire tasks" \n "assigned?"};
-item31[] = {"",7,210,-90.073860,61.206451,-82.073845,69.206459,0.000000,""};
-item32[] = {"Target_changed_",4,218,399.435883,-227.390289,489.435883,-177.390289,2.000000,"Target" \n "changed?"};
-item33[] = {"",7,210,226.005341,-358.969177,234.005341,-350.969177,0.000000,""};
-item34[] = {"",7,210,-13.223938,-336.654541,-5.223938,-328.654541,0.000000,""};
-link0[] = {0,18};
+item18[] = {"Timeout_",4,218,235.242157,-585.815369,325.242157,-535.815063,0.000000,"Timeout?"};
+item19[] = {"Self_destruct",2,250,236.856873,-506.172302,326.856873,-456.172241,0.000000,"Self" \n "destruct"};
+item20[] = {"__Long__Get_out",2,250,90.576233,-45.395569,180.576111,4.604309,0.000000,"(Long) Get out" \n "of the area"};
+item21[] = {"__Long__Delay",3,250,-506.369446,-283.567352,-416.368805,-233.567337,0.000000,"(Long)" \n "Delay"};
+item22[] = {"Out_of_the_area",4,218,-101.016327,-45.770477,-11.016296,4.229492,1.000000,"Out of" \n "the area?"};
+item23[] = {"Time_has_passed",4,218,243.772095,-245.331192,333.772095,-195.331161,0.000000,"Time has" \n "passed?"};
+item24[] = {"__Long__Add_wayp",3,250,-150.004654,-286.798279,-60.004654,-236.798401,0.000000,"(Long)" \n "Add waypoints"};
+item25[] = {"Asses___Finalize",2,250,391.804382,-286.181458,481.804382,-236.181458,0.000000,"Asses & Finalize" \n "target"};
+item26[] = {"Reached_",4,218,-31.107224,-285.726318,58.892776,-235.726349,1.000000,"Reached?"};
+item27[] = {"_",8,218,415.495361,40.263641,505.495361,90.263641,0.000000,""};
+item28[] = {"Fire_tasks_assigned",4,218,341.654419,-44.230133,431.654419,5.769867,1.000000,"Fire tasks" \n "assigned?"};
+item29[] = {"",7,210,-90.073860,61.206451,-82.073845,69.206459,0.000000,""};
+item30[] = {"Timeout_",4,218,-32.570190,-140.837372,57.429810,-90.837372,0.000000,"Timeout?"};
+link0[] = {0,24};
 link1[] = {1,17};
-link2[] = {2,26};
+link2[] = {2,6};
 link3[] = {3,4};
 link4[] = {4,0};
 link5[] = {4,5};
-link6[] = {5,23};
+link6[] = {5,21};
 link7[] = {6,7};
 link8[] = {6,10};
 link9[] = {6,16};
-link10[] = {6,25};
-link11[] = {6,32};
-link12[] = {7,8};
-link13[] = {8,9};
-link14[] = {8,10};
+link10[] = {6,23};
+link11[] = {7,8};
+link12[] = {8,9};
+link13[] = {8,10};
+link14[] = {8,18};
 link15[] = {9,14};
 link16[] = {10,12};
 link17[] = {12,13};
 link18[] = {13,11};
-link19[] = {14,2};
-link20[] = {14,3};
-link21[] = {14,34};
-link22[] = {15,14};
-link23[] = {16,27};
-link24[] = {17,23};
-link25[] = {18,26};
-link26[] = {19,20};
-link27[] = {19,30};
-link28[] = {20,6};
-link29[] = {21,10};
-link30[] = {21,24};
-link31[] = {22,10};
-link32[] = {22,28};
-link33[] = {23,15};
-link34[] = {24,22};
-link35[] = {25,19};
-link36[] = {26,7};
-link37[] = {26,10};
-link38[] = {26,28};
-link39[] = {27,29};
-link40[] = {28,6};
-link41[] = {29,31};
-link42[] = {30,21};
-link43[] = {31,14};
-link44[] = {32,33};
-link45[] = {33,26};
-link46[] = {34,7};
-globals[] = {0.000000,0,0,0,0,640,480,1,63,6316128,1,-228.860962,930.704651,50.632034,-533.700073,1147,578,1};
-window[] = {0,-1,-1,-1,-1,1100,162,1888,350,1,1165};
+link19[] = {14,3};
+link20[] = {14,7};
+link21[] = {15,14};
+link22[] = {16,25};
+link23[] = {17,21};
+link24[] = {18,19};
+link25[] = {19,10};
+link26[] = {20,7};
+link27[] = {20,10};
+link28[] = {20,22};
+link29[] = {20,30};
+link30[] = {21,7};
+link31[] = {21,10};
+link32[] = {21,15};
+link33[] = {22,14};
+link34[] = {23,25};
+link35[] = {24,2};
+link36[] = {24,7};
+link37[] = {24,10};
+link38[] = {24,26};
+link39[] = {25,27};
+link40[] = {25,28};
+link41[] = {26,6};
+link42[] = {27,29};
+link43[] = {28,20};
+link44[] = {29,14};
+link45[] = {30,14};
+globals[] = {0.000000,0,0,0,0,640,480,1,75,6316128,1,-600.545715,378.682190,95.033661,-575.995605,1147,786,1};
+window[] = {0,-1,-1,-1,-1,1010,52,1778,52,1,1165};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -111,7 +106,7 @@ class FSM
                                 {
                                         itemno = 17;
                                         priority = 0.000000;
-                                        to="Delay";
+                                        to="__Long__Delay";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -139,7 +134,7 @@ class FSM
                                 {
                                         itemno = 0;
                                         priority = 1.000000;
-                                        to="Add_waypoints";
+                                        to="__Long__Add_wayp";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"[_aircraft, _target, _debug] call FS_fnc_ValidateTarget"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -150,7 +145,7 @@ class FSM
                                 {
                                         itemno = 5;
                                         priority = 0.000000;
-                                        to="Delay";
+                                        to="__Long__Delay";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -159,16 +154,15 @@ class FSM
                         };
                 };
                 /*%FSM</STATE>*/
-                /*%FSM<STATE "Search_in_progre">*/
-                class Search_in_progre
+                /*%FSM<STATE "__Long__On_stati">*/
+                class __Long__On_stati
                 {
-                        name = "Search_in_progre";
+                        name = "__Long__On_stati";
                         itemno = 6;
                         init = /*%FSM<STATEINIT""">*/"_time = time;" \n
-                         "_workingTarget = _target;" \n
                          "" \n
                          "if (_debug) then {" \n
-                         "	diag_log ""Pilot: Search in progress"";" \n
+                         "	diag_log ""Pilot: On station"";" \n
                          "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
@@ -189,20 +183,9 @@ class FSM
                                 {
                                         itemno = 7;
                                         priority = 4.000000;
-                                        to="Break_Station";
+                                        to="__Long__Break_St";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"!(_aircraft call FS_fnc_CanPerformDuties)"/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-                                };
-                                /*%FSM</LINK>*/
-                                /*%FSM<LINK "Target_changed_">*/
-                                class Target_changed_
-                                {
-                                        itemno = 32;
-                                        priority = 2.000000;
-                                        to="Add_waypoints";
-                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"!(_workingTarget isEqualTo _target)"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -214,31 +197,34 @@ class FSM
                                         to="Asses___Finalize";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"count waypoints group _aircraft == 2"/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                        action=/*%FSM<ACTION""">*/"if (_debug) then {" \n
+                                         "	diag_log ""Pilot: Last waypoint reached"";" \n
+                                         "};"/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
                                 /*%FSM<LINK "Time_has_passed">*/
                                 class Time_has_passed
                                 {
-                                        itemno = 25;
+                                        itemno = 23;
                                         priority = 0.000000;
-                                        to="Asses_and_assign";
+                                        to="Asses___Finalize";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"time - _time > _assessmentRate"/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                        action=/*%FSM<ACTION""">*/"if (_debug) then {" \n
+                                         "	diag_log ""Pilot: Time has passed"";" \n
+                                         "};"/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
                         };
                 };
                 /*%FSM</STATE>*/
-                /*%FSM<STATE "Break_Station">*/
-                class Break_Station
+                /*%FSM<STATE "__Long__Break_St">*/
+                class __Long__Break_St
                 {
-                        name = "Break_Station";
+                        name = "__Long__Break_St";
                         itemno = 8;
                         init = /*%FSM<STATEINIT""">*/"" \n
-                         "_breakStation = [_aircraft, _debug] spawn FS_fnc_ReloadAndRefuel;" \n
-                         "_aircraft setVariable [""reached_the_area"", false];" \n
+                         "_time = time;" \n
                          "" \n
                          "if !(alive currentPilot _aircraft) then {" \n
                          "	_copilotTurrets = allTurrets _aircraft select { getNumber ([_aircraft, _x] call BIS_fnc_turretConfig >> ""isCopilot"") > 0 };" \n
@@ -268,6 +254,9 @@ class FSM
                          "	};" \n
                          "};" \n
                          "" \n
+                         "_breakStation = [_aircraft, _debug] spawn FS_fnc_ReloadAndRefuel;" \n
+                         "_aircraft setVariable [""reached_the_area"", false];" \n
+                         "" \n
                          "if (_debug) then {" \n
                          "	[_aircraft, _debug] call FS_fnc_isMaintenanceNeeded;" \n
                          "	diag_log ""Pilot: Reload & Refuel"";" \n
@@ -291,10 +280,25 @@ class FSM
                                 {
                                         itemno = 9;
                                         priority = 1.000000;
-                                        to="Idle";
+                                        to="Reset";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"_aircraft call FS_fnc_CanPerformDuties && scriptDone _breakStation "/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Timeout_">*/
+                                class Timeout_
+                                {
+                                        itemno = 18;
+                                        priority = 0.000000;
+                                        to="Self_destruct";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"" \n
+                                         "time - _time > 300" \n
+                                         ""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"if (_debug) then {" \n
+                                         "	diag_log ""Pilot: Timed out while refueling and reloading"";" \n
+                                         "};"/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
                         };
@@ -307,7 +311,10 @@ class FSM
                         itemno = 11;
                         init = /*%FSM<STATEINIT""">*/"if (_debug) then {" \n
                          "	diag_log ""Pilot: End"";" \n
-                         "};"/*%FSM</STATEINIT""">*/;
+                         "};" \n
+                         "" \n
+                         "" \n
+                         ""/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -337,13 +344,13 @@ class FSM
                         };
                 };
                 /*%FSM</STATE>*/
-                /*%FSM<STATE "Idle">*/
-                class Idle
+                /*%FSM<STATE "Reset">*/
+                class Reset
                 {
-                        name = "Idle";
+                        name = "Reset";
                         itemno = 14;
                         init = /*%FSM<STATEINIT""">*/"if (_debug) then {" \n
-                         "	diag_log ""Pilot: Idle"";" \n
+                         "	diag_log ""Pilot: Reset"";" \n
                          "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
@@ -353,25 +360,14 @@ class FSM
                                 {
                                         itemno = 7;
                                         priority = 4.000000;
-                                        to="Break_Station";
+                                        to="__Long__Break_St";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"!(_aircraft call FS_fnc_CanPerformDuties)"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
-                                /*%FSM<LINK "Is_target_still">*/
-                                class Is_target_still
-                                {
-                                        itemno = 2;
-                                        priority = 1.000000;
-                                        to="Add_waypoints";
-                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"[_aircraft, _target, _debug] call FS_fnc_ValidateTarget"/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-                                };
-                                /*%FSM</LINK>*/
-                                /*%FSM<LINK "No_target_">*/
-                                class No_target_
+                                /*%FSM<LINK "_">*/
+                                class _
                                 {
                                         itemno = 3;
                                         priority = 0.000000;
@@ -384,85 +380,16 @@ class FSM
                         };
                 };
                 /*%FSM</STATE>*/
-                /*%FSM<STATE "Asses_and_assign">*/
-                class Asses_and_assign
+                /*%FSM<STATE "Self_destruct">*/
+                class Self_destruct
                 {
-                        name = "Asses_and_assign";
+                        name = "Self_destruct";
                         itemno = 19;
-                        init = /*%FSM<STATEINIT""">*/"_assessmentsMade = _assessmentsMade + 1;" \n
-                         "_taskAssigned = [_aircraft, _assessmentRate, _supportThresholds, _debug] call FS_fnc_Asses;"/*%FSM</STATEINIT""">*/;
-                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
-                        class Links
-                        {
-                                /*%FSM<LINK "Fire_tasks_assigned">*/
-                                class Fire_tasks_assigned
-                                {
-                                        itemno = 30;
-                                        priority = 1.000000;
-                                        to="Get_out_of_the_a";
-                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"_taskAssigned "/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-                                };
-                                /*%FSM</LINK>*/
-                                /*%FSM<LINK "Contunue__search">*/
-                                class Contunue__search
-                                {
-                                        itemno = 20;
-                                        priority = 0.000000;
-                                        to="Search_in_progre";
-                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-                                };
-                                /*%FSM</LINK>*/
-                        };
-                };
-                /*%FSM</STATE>*/
-                /*%FSM<STATE "Get_out_of_the_a">*/
-                class Get_out_of_the_a
-                {
-                        name = "Get_out_of_the_a";
-                        itemno = 21;
-                        init = /*%FSM<STATEINIT""">*/"[_aircraft, _debug] call FS_fnc_LeaveTheArea;" \n
-                         ""/*%FSM</STATEINIT""">*/;
-                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
-                        class Links
-                        {
-                                /*%FSM<LINK "Aircraft_disable">*/
-                                class Aircraft_disable
-                                {
-                                        itemno = 10;
-                                        priority = 5.000000;
-                                        to="Scramble";
-                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"_aircraft call FS_fnc_IsScrambleNeeded"/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-                                };
-                                /*%FSM</LINK>*/
-                                /*%FSM<LINK "Out_of_the_area">*/
-                                class Out_of_the_area
-                                {
-                                        itemno = 24;
-                                        priority = 0.000000;
-                                        to="Return";
-                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"_aircraft getVariable [""reached_the_area"", False]"/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-                                };
-                                /*%FSM</LINK>*/
-                        };
-                };
-                /*%FSM</STATE>*/
-                /*%FSM<STATE "Return">*/
-                class Return
-                {
-                        name = "Return";
-                        itemno = 22;
-                        init = /*%FSM<STATEINIT""">*/"_aircraft setVariable [""reached_the_area"", False];" \n
+                        init = /*%FSM<STATEINIT""">*/"" \n
+                         "_aircraft setDamage 1;" \n
                          "" \n
                          "if (_debug) then {" \n
-                         "	diag_log ""Pilot: Return"";" \n
+                         "	diag_log ""Pilot: Self destructing"";" \n
                          "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
@@ -478,56 +405,21 @@ class FSM
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
-                                /*%FSM<LINK "Reached_">*/
-                                class Reached_
-                                {
-                                        itemno = 28;
-                                        priority = 0.000000;
-                                        to="Search_in_progre";
-                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"_aircraft getVariable [""reached_the_area"", False]"/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/"_assessmentsMade = 0;"/*%FSM</ACTION""">*/;
-                                };
-                                /*%FSM</LINK>*/
                         };
                 };
                 /*%FSM</STATE>*/
-                /*%FSM<STATE "Delay">*/
-                class Delay
+                /*%FSM<STATE "__Long__Get_out">*/
+                class __Long__Get_out
                 {
-                        name = "Delay";
-                        itemno = 23;
+                        name = "__Long__Get_out";
+                        itemno = 20;
                         init = /*%FSM<STATEINIT""">*/"_time = time;" \n
                          "" \n
-                         "if (_debug) then {" \n
-                         "	diag_log ""Pilot: Delay"";" \n
-                         "};"/*%FSM</STATEINIT""">*/;
-                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
-                        class Links
-                        {
-                                /*%FSM<LINK "Time__passed_">*/
-                                class Time__passed_
-                                {
-                                        itemno = 15;
-                                        priority = 0.000000;
-                                        to="Idle";
-                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"time - _time > 3 "/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
-                                };
-                                /*%FSM</LINK>*/
-                        };
-                };
-                /*%FSM</STATE>*/
-                /*%FSM<STATE "Add_waypoints">*/
-                class Add_waypoints
-                {
-                        name = "Add_waypoints";
-                        itemno = 26;
-                        init = /*%FSM<STATEINIT""">*/"[_aircraft, _target, _debug] call FS_fnc_AssignWaypoints; " \n
-                         "_aircraft setVariable [""reached_the_area"", false];" \n
+                         "[_aircraft, _debug] call FS_fnc_LeaveTheArea;" \n
                          "" \n
-                         ""/*%FSM</STATEINIT""">*/;
+                         "if ( _debug ) then {" \n
+                         "	diag_log ""Pilot: Task asigned, leaving the area"";" \n
+                         "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -547,7 +439,119 @@ class FSM
                                 {
                                         itemno = 7;
                                         priority = 4.000000;
-                                        to="Break_Station";
+                                        to="__Long__Break_St";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!(_aircraft call FS_fnc_CanPerformDuties)"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Out_of_the_area">*/
+                                class Out_of_the_area
+                                {
+                                        itemno = 22;
+                                        priority = 1.000000;
+                                        to="Reset";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"_aircraft getVariable [""reached_the_area"", False]"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Timeout_">*/
+                                class Timeout_
+                                {
+                                        itemno = 30;
+                                        priority = 0.000000;
+                                        to="Reset";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"time - _time > 60"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "__Long__Delay">*/
+                class __Long__Delay
+                {
+                        name = "__Long__Delay";
+                        itemno = 21;
+                        init = /*%FSM<STATEINIT""">*/"_time = time;" \n
+                         "" \n
+                         "if (_debug) then {" \n
+                         "	diag_log ""Pilot: Delay"";" \n
+                         "};"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Aircraft_disable">*/
+                                class Aircraft_disable
+                                {
+                                        itemno = 10;
+                                        priority = 5.000000;
+                                        to="Scramble";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"_aircraft call FS_fnc_IsScrambleNeeded"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Have_to_break_station">*/
+                                class Have_to_break_station
+                                {
+                                        itemno = 7;
+                                        priority = 4.000000;
+                                        to="__Long__Break_St";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!(_aircraft call FS_fnc_CanPerformDuties)"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Time__passed_">*/
+                                class Time__passed_
+                                {
+                                        itemno = 15;
+                                        priority = 0.000000;
+                                        to="Reset";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"time - _time > 3 "/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "__Long__Add_wayp">*/
+                class __Long__Add_wayp
+                {
+                        name = "__Long__Add_wayp";
+                        itemno = 24;
+                        init = /*%FSM<STATEINIT""">*/"[_aircraft, _target, _debug] call FS_fnc_AssignWaypoints; " \n
+                         "_aircraft setVariable [""reached_the_area"", false, true];" \n
+                         "" \n
+                         "_time = time;" \n
+                         "" \n
+                         "if (_debug) then {" \n
+                         "	diag_log ""Pilot: Waypoints assigned, going to the area"";" \n
+                         "};"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Aircraft_disable">*/
+                                class Aircraft_disable
+                                {
+                                        itemno = 10;
+                                        priority = 5.000000;
+                                        to="Scramble";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"_aircraft call FS_fnc_IsScrambleNeeded"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Have_to_break_station">*/
+                                class Have_to_break_station
+                                {
+                                        itemno = 7;
+                                        priority = 4.000000;
+                                        to="__Long__Break_St";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"!(_aircraft call FS_fnc_CanPerformDuties)"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -556,12 +560,29 @@ class FSM
                                 /*%FSM<LINK "Reached_">*/
                                 class Reached_
                                 {
-                                        itemno = 28;
-                                        priority = 0.000000;
-                                        to="Search_in_progre";
+                                        itemno = 26;
+                                        priority = 1.000000;
+                                        to="__Long__On_stati";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"_aircraft getVariable [""reached_the_area"", False]"/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/"_assessmentsMade = 0;"/*%FSM</ACTION""">*/;
+                                        action=/*%FSM<ACTION""">*/"if (_debug) then {" \n
+                                         "	diag_log ""Pilot: Area reached, starting search pattern"";" \n
+                                         "};"/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Timeout_">*/
+                                class Timeout_
+                                {
+                                        itemno = 2;
+                                        priority = 0.000000;
+                                        to="__Long__On_stati";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"" \n
+                                         "time - _time > 30" \n
+                                         ""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"if (_debug) then {" \n
+                                         "	diag_log ""Pilot: Timed out while reaching the area"";" \n
+                                         "};"/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
                         };
@@ -571,21 +592,32 @@ class FSM
                 class Asses___Finalize
                 {
                         name = "Asses___Finalize";
-                        itemno = 27;
-                        init = /*%FSM<STATEINIT""">*/"_target = [_aircraft, _target, _debug] call FS_fnc_FinalizeTarget;" \n
+                        itemno = 25;
+                        init = /*%FSM<STATEINIT""">*/"" \n
+                         "_target = [_aircraft, _target, _debug] call FS_fnc_FinalizeTarget;" \n
+                         "_taskAssigned = [_aircraft, _assessmentRate, _supportThresholds, _debug] call FS_fnc_Asses;" \n
                          "" \n
-                         "if ( _assessmentsMade == 0 ) then {" \n
-                         "	_taskAssigned = [_aircraft, _assessmentRate, _supportThresholds, _debug] call FS_fnc_Asses;" \n
-                         "};"/*%FSM</STATEINIT""">*/;
+                         ""/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
+                                /*%FSM<LINK "Fire_tasks_assigned">*/
+                                class Fire_tasks_assigned
+                                {
+                                        itemno = 28;
+                                        priority = 1.000000;
+                                        to="__Long__Get_out";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"_taskAssigned "/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
                                 /*%FSM<LINK "_">*/
                                 class _
                                 {
-                                        itemno = 29;
+                                        itemno = 27;
                                         priority = 0.000000;
-                                        to="Idle";
+                                        to="Reset";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;

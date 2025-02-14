@@ -26,7 +26,7 @@ if ( _hasAlive ) then
 	{
 		if (_needsMaintenance) then {
 			// Getting repairs, ammo and fuel 
-			[_side, "CrewMemberDown"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+			[_side, "RefuelAndResupply"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
 		} 
 		else 
 		{
@@ -102,9 +102,11 @@ else
 	_NewWP setWaypointType "MOVE";
 	_NewWP setWaypointDescription "LAND AT BASE";
 	_NewWP setWaypointSpeed "FULL";	
-	_NewWP setWaypointBehaviour "AWARE";	
-	_NewWP setWaypointCombatMode "RED";	
+	_NewWP setWaypointBehaviour "CARELESS";	
+	_NewWP setWaypointCombatMode "BLUE";	
 	_NewWP setWaypointCompletionRadius 50;
+	
+	//_group setCurrentWaypoint [_group, 1];
 	
 	/* 
 		Set reached_the_area to False to indicate leaving the scouting area.

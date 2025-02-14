@@ -1,5 +1,5 @@
 
-#define DEF_SHIFT_POS_BY 300
+#define DEF_SHIFT_POS_BY 350
 
 _logic = _this select 0;
 _units = _this select 1;
@@ -27,7 +27,7 @@ if (_activated) then {
 		_logic setpos position _logic;
 	};
 	if !(isserver) exitwith {};
-
+	
 	_planeClass = _logic getvariable ["vehicle","B_Plane_CAS_01_F"];
 	_planeCfg = configfile >> "cfgvehicles" >> _planeClass;
 	if !(isclass _planeCfg) exitwith {["Vehicle class '%1' not found",_planeClass] call bis_fnc_error; false};
@@ -86,6 +86,7 @@ if (_activated) then {
 	/* Removing all but Napalm bombs */
 	for "_i" from 1 to 100 do {
 		_plane setPylonLoadout [_i, "vn_bomb_f4_out_500_blu1b_fb_mag_x4", true];
+		//_plane setPylonLoadout [_i, "vn_bomb_f4_out_500_blu1b_fb_mag_x1", true];
 	};
 	
 	_vectorDir = [_planePos,_pos] call bis_fnc_vectorFromXtoY;

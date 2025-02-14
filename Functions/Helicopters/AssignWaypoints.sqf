@@ -29,7 +29,7 @@ for[{_i = 0},{_i <= _waypoints},{_i = _i + 1}] do
 	_NewWP setWaypointSpeed "NORMAL";	
 	_NewWP setWaypointBehaviour "AWARE";	
 	_NewWP setWaypointCombatMode "RED";	
-	_NewWP setWaypointCompletionRadius 100;
+	_NewWP setWaypointCompletionRadius 200;
 	_NewWP setWaypointStatements ["true", "vehicle this setVariable ['reached_the_area', true]; deleteWaypoint [group this, currentWaypoint (group this)]"];
 	
 };
@@ -41,5 +41,5 @@ private _NewWP = _group addWaypoint [_pos, 0];
 _NewWP setWaypointSpeed "NORMAL";	
 _NewWP setWaypointBehaviour "AWARE";	
 _NewWP setWaypointCombatMode "RED";
-_NewWP setWaypointCompletionRadius 100;
+_NewWP setWaypointCompletionRadius 150;
 _NewWP setWaypointStatements ["true", "deleteWaypoint [group this, currentWaypoint (group this)]"];

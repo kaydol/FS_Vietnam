@@ -30,6 +30,8 @@ if (_debug) then {
 	
 	", _aircraft call BIS_fnc_objectVar];
 	
+	waitUntil { sleep 1; !isNull findDisplay 12 };
+	
 	_handler = findDisplay 12 displayCtrl 51 ctrlAddEventHandler ["Draw", _code];
 	
 };
@@ -71,14 +73,14 @@ while { _aircraft call FS_fnc_CanPerformDuties } do
 	//forEach _friendly_aircrafts;
 	
 	
-	private _objectsToReveal = getPos _aircraft nearEntities ["Land", 300] select { !(_x isKindOf "Animal") }; // WallHack
+	private _objectsToReveal = [];
 	
 	// Version 1: Fair but the aircraft it almost blind 
 	//_objectsToReveal = _aircraft targets [False, 300]; // More Fair as it only returns known objects
 	
 	// Version 2: Wallhack 
 	// Reveal units to the aircraft
-	_objectsToReveal = _objectsToReveal select { getPosATL _x select 2 < 3 }; // Only reveal objects on Land (not snipers on trees)
+	_objectsToReveal = getPos _aircraft nearEntities ["Land", 300] select { !(_x isKindOf "Animal") && !(isObjectHidden _x) && ((getPosATL _x) select 2) < 2 }; // WallHack but only reveal objects on Land (not snipers on trees)
 	if (count crew _aircraft > 0) then {
 		private _grp = group ((crew _aircraft) select 0);
 		{_grp reveal [_x, 3]} forEach _objectsToReveal;

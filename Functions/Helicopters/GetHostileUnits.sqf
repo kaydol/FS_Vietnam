@@ -16,7 +16,7 @@ _enemies = [];
 	_x params ["_accuracy", "_target", "_targetSide", "_targetType", "_targetPosition", "_targetAge"];
 	_isEnemy = (side _target == sideUnknown) || [_side, _targetSide] call BIS_fnc_sideIsEnemy;
 	
-	if ( _isEnemy && _target isKindOf "Land" ) then {
+	if ( _isEnemy && _target isKindOf "Land" && !(isObjectHidden _target) ) then {
 		_enemies pushBack _targetPosition;
 	};
 }

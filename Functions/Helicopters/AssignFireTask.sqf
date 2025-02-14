@@ -63,6 +63,12 @@ if ( !_taskAssigned && _estimatedVictims >= _napalmThreshold && _distanceTofrien
 		[_side, "InboundTactical"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
 	
 		_taskAssigned = True; 
+	} 
+	else 
+	{
+		if (_debug) then {
+			diag_log format ["Pilot: A suitable target for NAPALM strike exists, but support was on cooldown"];
+		};
 	};
 };
 
@@ -76,7 +82,7 @@ if ( !_taskAssigned && _estimatedVictims >= _artilleryThreshold && _distanceTofr
 	
 	if ( _supportAvailable ) then 
 	{
-		[_coordinates, 5, 50, nil, nil, 18, _debug] spawn FS_fnc_DropMines;
+		[_coordinates, 2, 50, nil, nil, 18, _debug] spawn FS_fnc_DropMines;
 		
 		//-- Update last time the support was used
 		[_side, "FIRETASKS", [format["%1_LAST_TIME", _supportName], time]] call FS_fnc_UpdateSideVariable;
@@ -89,10 +95,14 @@ if ( !_taskAssigned && _estimatedVictims >= _artilleryThreshold && _distanceTofr
 		
 		_taskAssigned = True;
 	
+	}
+	else 
+	{
+		if (_debug) then {
+			diag_log format ["Pilot: A suitable target for ARTILLERY strike exists, but support was on cooldown"];
+		};
 	};
 };
-
-
 
 _taskAssigned
 

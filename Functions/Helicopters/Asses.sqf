@@ -1,4 +1,7 @@
 
+#define DEF_NAPALM_STRIKE_LENGTH 150
+
+
 params ["_aircraft", "_assessmentRate", "_supportParams", ["_debug", false, [true]]];
 
 private _side = _aircraft getVariable ["initSide", side _aircraft];
@@ -31,16 +34,17 @@ if ( count _friendlyUnits > 0 ) then {
 
 // try to select 2 near located clusters to hit them with a single line of bombs
 // orientating the line of strike to hit maximum amount of targets
-_estimatedFACvictims = 0;
-_bestLineForFAC = [];
+private _estimatedFACvictims = 0;
+private _bestLineForFAC = [];
 
 for [{_i = 0},{_i < count _clusters_centers},{_i = _i + 1}] do {
-	_pos1 = _clusters_centers select _i;
-	_size1 = _cluster_sizes select _i;
+	private _pos1 = _clusters_centers select _i;
+	private _size1 = _cluster_sizes select _i;
 	for [{_j = 0},{_j < count _clusters_centers},{_j = _j + 1}] do {
-		_pos2 = _clusters_centers select _j;
-		_size2 = _cluster_sizes select _j;
-		if (_i != _j && _size1 > 0 && _size2 > 0 && _size1 + _size2 > _estimatedFACvictims && _pos1 distance _pos2 < 150) then 
+		private _pos2 = _clusters_centers select _j;
+		private _size2 = _cluster_sizes select _j;
+		// finding cluster combo with the most victims 
+		if (_i != _j && _size1 > 0 && _size2 > 0 && _size1 + _size2 > _estimatedFACvictims && _pos1 distance _pos2 < DEF_NAPALM_STRIKE_LENGTH) then 
 		{
 			_bestLineForFAC = [_pos1, _pos2];
 			_estimatedFACvictims = _size1 + _size2;
@@ -80,6 +84,7 @@ while { ! _taskAssigned && _i < count _clusters_centers} do
 	if ( _coordinates isEqualTypeAll 0 ) then { _dbaInput = [_coordinates] }; // if only 1 pos is given, wrap it into an array 
 	private _proximity = [_friendlyUnits, _dbaInput, True] call FS_fnc_DistanceBetweenArrays;
 	private _closestFriend = (_proximity select 1) select 0;
+	
 	_taskAssigned = [_aircraft, _coordinates, _size, _supportParams, _closestFriend, _debug] call FS_fnc_AssignFireTask;
 	
 	_i = _i + 1;

@@ -17,7 +17,7 @@ private _friendlyUnits = [];
 {
 	private _add = [];
 	if ( _x call FS_fnc_CanTransmit || { _aircraft knowsAbout _x > 0 } count units _x > 0 ) then { 
-		_add = units _x select {vehicle _x isKindOf "LAND"}; 
+		_add = units _x select {vehicle _x isKindOf "LAND" && !(isObjectHidden _x)}; 
 	};
 	_friendlyUnits = _friendlyUnits + _add;
 }

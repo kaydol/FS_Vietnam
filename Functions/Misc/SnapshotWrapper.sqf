@@ -23,7 +23,7 @@ Author:
 
 params ["_side", "_varname", "_time", "_arguments", "_function"];
 
-_variable = [_side, _varname, _time] call FS_fnc_Snapshots;
+private _variable = [_side, _varname, _time] call FS_fnc_Snapshots;
 
 if ( _variable isEqualTo [] ) then 
 {
