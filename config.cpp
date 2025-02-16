@@ -993,6 +993,13 @@ class CfgVehicles
 				typeName = "BOOL";
 				defaultValue = "false";
 			};
+			class Debug : Checkbox {
+				property = "Debug";
+				displayName = "Debug";
+				tooltip = "";
+				typeName = "BOOL";
+				defaultValue = "false"; //true - 1, false - 0
+			};
 			class ModuleDescription : ModuleDescription {};
 		};
 	};

@@ -6,9 +6,7 @@ params ["_logic", ["_units", []], ["_activated", false]];
 
 if !(_activated) exitWith {};
 
-/* A little hack to make the logic have a nice string-friendly name */
-private _logicName = format ["ModuleJukebox_%1", round random 1000000];
-_logic call compile ( _logicName + "=_this" );
+private _logicName = _logic call BIS_fnc_objectVar;
 
 /* Retreiving variables stored in the module */
 private _announceTracks = _logic getVariable "AnnounceTracks";
@@ -21,6 +19,7 @@ private _DisableACEVolumeUpdate = _logic getVariable "DisableACEVolumeUpdate";
 private _presetMode = _logic getVariable "Preset";
 private _customTracks = _logic getVariable "CustomTracks";
 private _aceEnabled = isClass (configFile >> "CfgPatches" >> "ace_main");
+private _debug = _logic getVariable "Debug";
 
 if ( !_playLocally && !isServer ) exitWith {};
 
@@ -88,10 +87,14 @@ while { true } do
 	/* Wait until a user-defined condition is true */
 	WaitUntil { sleep 1; call _startCondition }; 
 	
-	[_logic] call FS_fnc_JukeboxPlayMusic;
-
+	if (_debug) then {
+		diag_log format ["Jukebox %1: Start Condition is true, start playing...", _logic];
+	};
+	
+	[_logic, _debug] call FS_fnc_JukeboxPlayMusic;
+	
 	/* Add event handler that starts another track once the current one ends */
-	private _code = compile format ["[%1] call FS_fnc_JukeboxPlayMusic;", _logicName];
+	private _code = compile format ["[%1, %2] call FS_fnc_JukeboxPlayMusic;", _logicName, _debug];
 	private _id = addMusicEventHandler ["MusicStop", _code];
 
 	if ( _id == -1 ) exitWith {
@@ -101,12 +104,19 @@ while { true } do
 	/* Wait until a user-defined condition is true */
 	WaitUntil { sleep 1; call _stopCondition };
 
+	if (_debug) then {
+		diag_log format ["Jukebox %1: Stop Condition is true", _logic];
+	};
+
 	removeMusicEventHandler ["MusicStop", _id];
 
 	/* If enabled, stop the currently playing track */
 	if ( _stopMusic ) then 
 	{
 		if ( _playLocally ) then {
+			if (_debug) then {
+				diag_log format ["Jukebox %1: Stopping music locally", _logic];
+			};
 			3 fadeMusic 0;
 			sleep 3;
 			playMusic "";
@@ -114,6 +124,9 @@ while { true } do
 		} 
 		else 
 		{
+			if (_debug) then {
+				diag_log format ["Jukebox %1: Stopping music globally", _logic];
+			};
 			[3,0] remoteExec ["fadeMusic", 0];
 			sleep 3;
 			[""] remoteExec ["playMusic", 0];
@@ -122,11 +135,18 @@ while { true } do
 	};
 	
 	if !( _loopConditions ) exitWith {};
+	
+	if (_debug) then {
+		diag_log format ["Jukebox %1: Restarting the conditions loop", _logic];
+	};
 
 };
 
 //-- Deleting is not an option if the module is supposed to play locally
 //-- Deletion is global for all players
 if (!_playLocally) then {
+	if (_debug) then {
+		diag_log format ["Jukebox %1: Deleting module & exiting...", _logic];
+	};
 	deleteVehicle _logic;
 };

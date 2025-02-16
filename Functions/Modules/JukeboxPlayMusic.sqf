@@ -1,5 +1,5 @@
 
-params [["_logic", objNull]];
+params [["_logic", objNull], ["_debug", false]];
 
 if (isNull _logic) exitWith {
 	"Jukebox module was deleted, music couldn't be played" call BIS_fnc_Error;
@@ -14,9 +14,17 @@ if ( !_playLocally && !isServer ) exitWith {};
 /* 1) If there is only one track in the pool, let it have non-zero weight */
 if ( count _poolWeighted == 2 ) then { _poolWeighted set [1, 1] };
 
+if (_debug) then {
+	diag_log format ["Jukebox %1: Weighted pool is %2", _logic, _poolWeighted];
+};
+
 /* 2) Select the first track */
 private _newTrack = selectRandomWeighted _poolWeighted;
 private _newTrackID = _poolWeighted findIf { _x isEqualTo _newTrack };
+
+if (_debug) then {
+	diag_log format ["Jukebox %1: New track is %2", _logic, _newTrack];
+};
 
 /* 3) Increase all the weights by the increment */
 if (count _poolWeighted > 2) then { // do nothing if there is only 1 track in the pool
@@ -40,8 +48,14 @@ _logic setVariable ["TrackPool", _poolWeighted];
 
 /* 6) Run the track locally or on all connected clients */
 if ( _playLocally ) then {
+	if (_debug) then {
+		diag_log format ["Jukebox %1: Start playing %2 locally", _logic, _newTrack];
+	};
 	playMusic _newTrack;
 } else {
+	if (_debug) then {
+		diag_log format ["Jukebox %1: Start playing %2 globally", _logic, _newTrack];
+	};
 	[_newTrack] remoteExec ["playMusic", 0];
 };
 
