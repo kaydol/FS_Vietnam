@@ -21,7 +21,7 @@ else {
 };
 
 if (_debug) then {
-	systemChat format ["(%2) Spawning %1 Gooks", _groupsCount * _groupSize, time];
+	diag_log format ["Gook Manager: Spawning %1 Gooks", _groupsCount * _groupSize, time];
 };
 
 private _validCurator = false;
@@ -62,6 +62,10 @@ for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do
 			if (_validCurator) then {
 				_assignedCurator addCuratorEditableObjects [[_unit], false];
 			};
+			
+			//-- Remove toolkit to prevent players from defusing traps easily  
+			_unit removeItem "vn_b_item_toolkit";
+			
 			sleep 0.5;
 		};
 	};

@@ -7,7 +7,7 @@ if !(isServer) exitWith {};
 
 params ["_unit"];
 
-comment "Exported from Arsenal by Fess";
+comment "Exported from Arsenal by Admin";
 
 comment "Remove existing items";
 removeAllWeapons _unit;
