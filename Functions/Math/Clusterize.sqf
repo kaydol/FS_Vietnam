@@ -8,11 +8,12 @@ Parameters:
     _collection - Contains a set of elements to process [Array of positions or objects].
     _maxClusterDiam - The two furthermost points of each cluster won't be farther than this threshold [Number].
 	_precalculatedClusters - (Optional) If the clusterization of some of the data was already done before, it can be used to speed up the clusterization of new elements [Array of [_clusterCenter, _belongingElements]]. Use [] for kMeans.
-	_algo - (Optional) Either "Agglomerative" or "kMeans" [String].
 	_debug - (Optional) True or False. Draws lines and markers on all elements and centers of the clusters [Boolean].
+	_algo - (Optional) Either "Agglomerative" or "kMeans" [String].
 	
 Returns:
     Array of arrays, [_clusters_centers, _cluster_sizes, _membership]
+	_membership is an array with the same size as _collection and it contains the ID of cluster each element belongs to
 
 Examples:
 	(begin example)
@@ -60,7 +61,7 @@ switch ( _algo ) do {
 	};
 	case "Agglomerative": {
 		
-		_clusters = [_collection, _maxClusterDiam, _precalculatedClusters] call FS_fnc_AgglomerativeClustering;
+		private _clusters = [_collection, _maxClusterDiam, _precalculatedClusters] call FS_fnc_AgglomerativeClustering;
 		
 		/* 
 			Breaks _clusters into [_cluster_centers, _cluster_sizes, _membership] 
@@ -76,8 +77,19 @@ switch ( _algo ) do {
 			_cluster_content = _x # 1;
 			_cluster_sizes pushBack count _cluster_content;
 			
-			for [{_i = 0},{_i < count _cluster_content},{_i = _i + 1}] do {
-				_membership set [_collection find _cluster_content # _i, _forEachIndex];
+			private  _i = 0;
+			for [{_i = 0},{_i < count _cluster_content},{_i = _i + 1}] do 
+			{
+				private _objectIsOwnedByClusterWithThisId = _collection find (_cluster_content # _i);
+				
+				if (_debug && !(_objectIsOwnedByClusterWithThisId isEqualType 0)) then 
+				{
+					diag_log format ["Could not find %1 in array %2", (_cluster_content # _i), _collection];
+					//systemChat format ["Could not find %1 in array %2", (_cluster_content # _i), _collection];
+					//hint format ["Could not find %1 in array %2", (_cluster_content # _i), _collection];
+				};
+				
+				_membership set [_objectIsOwnedByClusterWithThisId, _forEachIndex];
 			};
 		}
 		forEach _clusters;
@@ -94,14 +106,22 @@ if ( _debug && !(_data isEqualTo []) ) then
 	diag_log format ["Clusterize.sqf result is: %1", _data] ;
 	_data params ["_clusters_centers", "_cluster_sizes", "_membership"];
 
-	_lineEHs = [];
-	_markers = [];
-	for [{_i = 0},{_i < count _collection},{_i = _i + 1}] do {
+	private _lineEHs = [];
+	private _markers = [];
+	
+	private  _i = 0;
+	for [{_i = 0},{_i < count _collection},{_i = _i + 1}] do 
+	{
 		_pos1 = _collection select _i;
 		if !( _pos1 isEqualType [] ) then { _pos1 = getPos _pos1; };
-		_pos2 = _clusters_centers select ( _membership select _i );
-		_id = (findDisplay 12 displayCtrl 51) ctrlAddEventHandler ["Draw", format ["(_this select 0) drawLine [%1,%2,[1,1,1,1]];", _pos1, _pos2] ]; //<-- sometimes there is a very rare error with undefined _pos2 here
-		_lineEHs pushBack _id;
+		
+		// sometimes _membership can have <null> values in it 
+		if (( _membership select _i ) isEqualType 0) then 
+		{
+			_pos2 = _clusters_centers select ( _membership select _i );
+			private _id = (findDisplay 12 displayCtrl 51) ctrlAddEventHandler ["Draw", format ["(_this select 0) drawLine [%1,%2,[1,1,1,1]];", _pos1, _pos2] ];
+			_lineEHs pushBack _id;
+		};
 	};
 	// create markers on enemies with their cluster for label
 	for [{_i = 0},{_i < count _collection},{_i = _i + 1}] do {
