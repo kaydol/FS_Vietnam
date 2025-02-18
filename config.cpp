@@ -95,6 +95,7 @@ class CfgCloudlets {
 		interval = 1000;
 		lifeTime = 0;
 		beforeDestroyScript = "\FS_Vietnam\Effects\Napalm\CustomNapalm.sqf";
+		particleShape = "\A3\data_f\ParticleEffects\Universal\Universal";
 	};
 	
 };
