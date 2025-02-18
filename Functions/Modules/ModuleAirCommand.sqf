@@ -40,6 +40,9 @@ private _napalmThreshold = _module getVariable "napalmThreshold";
 private _napalmCD = _module getVariable "napalmCooldown";
 private _ambientRadio = _module getVariable "AmbientRadio";
 private _announceOnInit = _module getVariable "AnnounceOnInit";
+private _markersToMarkWith = _module getVariable "MarkersToMarkWith";
+if (_markersToMarkWith isEqualType "") then { _markersToMarkWith = call compile _markersToMarkWith; };
+private _minClusterSizeToMark = _module getVariable "MinClusterSizeToMark";
 
 private _debug = _module getVariable "debug";
 
@@ -77,7 +80,8 @@ forEach _synced;
 	
 	if !(_fsmInProgress) then 
 	{
-		private _fsmHandle = [_x, _assessmentRate, [_artilleryThreshold, _artilleryCD, _napalmThreshold, _napalmCD], objNull, _debug] execFSM "\FS_Vietnam\FSM\Loach.fsm";
+		private _target = objNull;
+		private _fsmHandle = [_x, _assessmentRate, [_artilleryThreshold, _artilleryCD, _napalmThreshold, _napalmCD], _target, _markersToMarkWith, _minClusterSizeToMark, _debug] execFSM "\FS_Vietnam\FSM\Loach.fsm";
 		
 		_x setVariable ["AirCommandFSMHandle", _fsmHandle, true];
 		

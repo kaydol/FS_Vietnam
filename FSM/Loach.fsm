@@ -26,7 +26,7 @@ item21[] = {"__Long__Delay",3,250,-506.369446,-283.567352,-416.368805,-233.56733
 item22[] = {"Out_of_the_area",4,218,-101.016327,-45.770477,-11.016296,4.229492,1.000000,"Out of" \n "the area?"};
 item23[] = {"Time_has_passed",4,218,243.772095,-245.331192,333.772095,-195.331161,0.000000,"Time has" \n "passed?"};
 item24[] = {"__Long__Add_wayp",3,250,-150.004654,-286.798279,-60.004654,-236.798401,0.000000,"(Long)" \n "Add waypoints"};
-item25[] = {"Asses___Finalize",2,250,391.804382,-286.181458,481.804382,-236.181458,0.000000,"Asses & Finalize" \n "target"};
+item25[] = {"Asses___Finalize",2,4346,391.804382,-286.181458,481.804382,-236.181458,0.000000,"Asses & Finalize" \n "target"};
 item26[] = {"Reached_",4,218,-31.107224,-285.726318,58.892776,-235.726349,1.000000,"Reached?"};
 item27[] = {"_",8,218,415.495361,40.263641,505.495361,90.263641,0.000000,""};
 item28[] = {"Fire_tasks_assigned",4,218,341.654419,-44.230133,431.654419,5.769867,1.000000,"Fire tasks" \n "assigned?"};
@@ -78,8 +78,8 @@ link42[] = {27,29};
 link43[] = {28,20};
 link44[] = {29,14};
 link45[] = {30,14};
-globals[] = {0.000000,0,0,0,0,640,480,1,75,6316128,1,-600.545715,378.682190,95.033661,-575.995605,1147,786,1};
-window[] = {0,-1,-1,-1,-1,1010,52,1778,52,1,1165};
+globals[] = {0.000000,0,0,0,0,640,480,1,75,6316128,1,-91.721191,887.506836,206.017990,-465.009460,1147,786,1};
+window[] = {0,-1,-1,-1,-1,1270,312,2038,312,1,1165};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -91,8 +91,18 @@ class FSM
                 {
                         name = "Start";
                         itemno = 1;
-                        init = /*%FSM<STATEINIT""">*/"params [""_aircraft"", ""_assessmentRate"", ""_supportThresholds"", [""_target"", objNull], [""_debug"", false]];" \n
+                        init = /*%FSM<STATEINIT""">*/"params [" \n
+                         "  ""_aircraft"", " \n
+                         "  ""_assessmentRate"", " \n
+                         "  ""_supportThresholds"", " \n
+                         "  [""_target"", objNull], " \n
+                         "  [""_markersToMarkWith"", []], " \n
+                         "  [""_minClusterSizeToMark"", 0], " \n
+                         "  [""_debug"", false]" \n
+                         "];" \n
+                         "" \n
                          "_prevtarget = objNull;" \n
+                         "" \n
                          "[_aircraft, _debug] spawn FS_fnc_LoachInit;" \n
                          "" \n
                          "" \n
@@ -595,8 +605,15 @@ class FSM
                         itemno = 25;
                         init = /*%FSM<STATEINIT""">*/"" \n
                          "_target = [_aircraft, _target, _debug] call FS_fnc_FinalizeTarget;" \n
-                         "_taskAssigned = [_aircraft, _assessmentRate, _supportThresholds, _debug] call FS_fnc_Asses;" \n
                          "" \n
+                         "_taskAssigned = [" \n
+                         "  _aircraft, " \n
+                         "  _assessmentRate, " \n
+                         "  _supportThresholds," \n
+                         "  _markersToMarkWith," \n
+                         "  _minClusterSizeToMark, " \n
+                         "  _debug" \n
+                         "] call FS_fnc_Asses;" \n
                          ""/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links

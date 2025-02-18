@@ -2,7 +2,7 @@
 #define DEF_NAPALM_STRIKE_LENGTH 150
 
 
-params ["_aircraft", "_assessmentRate", "_supportParams", ["_debug", false, [true]]];
+params ["_aircraft", "_assessmentRate", "_supportParams", ["_markersToMarkWith", []], ["_minSizeToMark", 0], ["_debug", false, [true]]];
 
 private _side = _aircraft getVariable ["initSide", side _aircraft];
 
@@ -16,6 +16,24 @@ if ( count _hostileUnits == 0 ) exitWith { /* All clear */ _taskAssigned };
 /* Clusterizing the enemies */
 private _hostileClusters = [_side, "HOSTILE_CLUSTERS", _assessmentRate, [_hostileUnits, 70, [], _debug], "FS_fnc_Clusterize"] call FS_fnc_SnapshotWrapper;
 _hostileClusters params ["_clusters_centers", "_cluster_sizes", "_membership"];
+
+/* Draw markers on enemy cluster centers */
+if (!(_markersToMarkWith isEqualTo []) && count _clusters_centers > 0) then 
+{
+	private _color = "ColorOPFOR";
+	if (_side == EAST) then { _color = "ColorBLUFOR"; };
+	
+	private _markers = [];
+	{
+		private _clusterSize = _cluster_sizes # _forEachIndex;
+		if (_clusterSize > _minSizeToMark) then {
+			private _marker = [_x, selectRandom _markersToMarkWith, _color] call FS_fnc_CreateDebugMarker;
+			_markers pushBack _marker;
+		};
+	} 
+	forEach _clusters_centers;
+	[_markers, _assessmentRate] spawn FS_fnc_FadeDebugMarkers;
+};
 
 
 /*	NOTE:

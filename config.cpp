@@ -411,6 +411,19 @@ class CfgVehicles
 				typeName = "BOOL";
 				defaultValue = "false";
 			};
+			class MarkersToMarkWith : Edit {
+				property = "MarkersToMarkWith";
+				displayName = "Mark with markers";
+				tooltip = "Mark centers of enemy clusters with these markers";
+				defaultValue = "['hd_unknown','hd_warning']";
+			};
+			class MinClusterSizeToMark : Edit {
+				property = "MinClusterSizeToMark";
+				displayName = "Min cluster size to mark";
+				tooltip = "Only enemy groups with this size or bigger will be marked. Useful to set it to > 1 to avoid marking lone tree snipers on the map.";
+				typeName = "NUMBER";
+				defaultValue = 7;
+			};
 			class Debug : Checkbox {
 				property = "debug";
 				displayName = "Debug";
@@ -1288,7 +1301,6 @@ class CfgVehicles
 		};
 	};
 	
-	
 	class FS_ModuleAtmosphereChanger : FS_Vietnam_Module {
 		_generalMacro = "FS_ModuleAtmosphereChanger";
 		scope = 2;
@@ -1401,7 +1413,6 @@ class CfgVehicles
 			class ModuleDescription : ModuleDescription {};
 		};
 	};
-	
 	
 	class FS_GodmodeSynchronizer_Module : FS_Vietnam_Module {
 		_generalMacro = "FS_GodmodeSynchronizer_Module";
