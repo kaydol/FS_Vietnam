@@ -51,9 +51,9 @@ while { count _places > 0 && count _sappers > 0 } do
 			
 			[_sap] doMove _dest;
 
-			waitUntil { moveToCompleted _sap || moveToFailed _sap };
+			waitUntil { !alive _sap || moveToCompleted _sap || moveToFailed _sap || _group call FS_fnc_IsGroupSpotted };
 			
-			if ( moveToCompleted _sap ) then {
+			if ( alive _sap && moveToCompleted _sap ) then {
 				[_sap, _debug] call FS_fnc_PlaceTrap;
 			};
 		};

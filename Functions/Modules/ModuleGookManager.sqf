@@ -18,9 +18,14 @@ Author:
 ---------------------------------------------------------------------------- */
 
 #define VAR_NAME "AMBUSH_PLANNER_CLUSTERS"
-#define SUFFICIENT_CLUSTER_SHIFT (_assessmentRate * 0.5)
-#define MAX_CLUSTER_SHIFT_PER_ASSESSMENT (_assessmentRate * 6)
+#define SUFFICIENT_CLUSTER_SHIFT (_assessmentRate * 2)
+#define MAX_CLUSTER_SHIFT_PER_ASSESSMENT (_assessmentRate * 7)
 #define DEBUG_ARROWS_COUNT _scope
+
+#define DEF_INFANTRY_PRESET_TANOA 1
+#define DEF_INFANTRY_PRESET_SOG 2
+#define DEF_INFANTRY_PRESET_IMS 3
+#define DEF_INFANTRY_PRESET_CUSTOM 4
 
 params ["_logic"];
 
@@ -28,26 +33,65 @@ private _spawnCondition = _logic getVariable "SpawnCondition";
 if !(_spawnCondition isEqualType "") then { _spawnCondition = str _spawnCondition; };
 
 private _assessmentRate = _logic getVariable "Sleep";
-private _ailimit = _logic getVariable "AILimit";
+private _fnc_getAILimit = { params ["_logic"]; _logic getVariable "AILimit" };
 private _groupSize = _logic getVariable "GroupSize";
 private _groupSizeVar = _logic getVariable "GroupSizeVar";
 private _groupsCount = _logic getVariable "GroupsCount";
 private _groupsCountVar = _logic getVariable "GroupsCountVar";
-private _debug = _logic getVariable "Debug";
-
-private _revealTrapsToSides = _logic getVariable "RevealTrapsToSides";
-if (_revealTrapsToSides isEqualType "") then { _revealTrapsToSides = call compile _revealTrapsToSides; };
-
 private _spawnDistanceMoving = _logic getVariable "SpawnDistanceMoving";
 private _spawnDistanceStationary = _logic getVariable "SpawnDistanceStationary";
 private _gookSensesRadius = _logic getVariable "GookSensesRadius";
 private _areaModules = synchronizedObjects _logic select { typeOf _x == "FS_GookArea_Module" };
 private _assignedCurator = _logic getVariable "AssignedCurator";
+private _debug = _logic getVariable "Debug";
+private _revealTrapsToSides = _logic getVariable "RevealTrapsToSides";
+if (_revealTrapsToSides isEqualType "") then { _revealTrapsToSides = call compile _revealTrapsToSides; };
 
 private _sniperTreeClasses = _logic getVariable "SniperTreeClasses";
 if (_sniperTreeClasses isEqualType "") then { _sniperTreeClasses = call compile _sniperTreeClasses; };
 private _vehicleClasses = _logic getVariable "VehicleClasses";
 if (_vehicleClasses isEqualType "") then { _vehicleClasses = call compile _vehicleClasses; };
+private _infantryClassesPreset = _logic getVariable "InfantryClassesPreset";
+
+
+private _infantryClasses = [];
+
+
+switch _infantryClassesPreset do {
+	case DEF_INFANTRY_PRESET_TANOA: { 
+		_infantryClasses = ["O_T_Soldier_F"];
+	};
+	case DEF_INFANTRY_PRESET_SOG: { 
+		{
+			if (isClass (ConfigFile >> "CfgPatches" >> _x)) then {
+				private _units = ((getArray( ConfigFile >> "CfgPatches" >> _x >> "units")) apply {toLowerANSI _x}) select {_x find "vn_o_men_" >= 0};
+				if !( _units isEqualTo [] ) then { _infantryClasses pushBack _units };
+			};
+		}
+		forEach ["characters_f_vietnam_c"]; // can add more CfgPatches here
+		
+		_infantryClasses = flatten _infantryClasses;
+	};
+	case DEF_INFANTRY_PRESET_IMS: {
+		_infantryClasses = [ "O_soldier_Melee_Hybrid" ];
+	};
+	case DEF_INFANTRY_PRESET_CUSTOM: { 
+		private _customInfantryClasses = _logic getVariable "CustomInfantryClasses";
+		if (_customInfantryClasses isEqualType "") then { _customInfantryClasses = call compile _customInfantryClasses; };
+		_infantryClasses = _customInfantryClasses;
+		
+		if (count _infantryClasses == 0) then {
+			"Custom Infantry classes array is empty, no infantry will be spawned by Gook Manager" call BIS_fnc_error
+		};
+	};
+	default {};
+};
+
+private _spawnedObjectsInitCode = _logic getVariable "SpawnedObjectsInitCode";
+if (_spawnedObjectsInitCode isEqualType "") then { _spawnedObjectsInitCode = compile _spawnedObjectsInitCode; };
+
+
+//------------------------------------------------------------------------------------
 
 
 private _garbageCollector = allMissionObjects "FS_GarbageCollector_Module";
@@ -179,14 +223,11 @@ while { true } do {
 				
 				// Now we can analyze the movement of this cluster to predict it's route (newest positions are stored on the left of the queue)
 				private _coordinates = [_queue] call FS_fnc_QueueGetData;
-				if ( count _coordinates == _scope ) then 
+				if ( count _coordinates == _scope ) then // Enough time passed to understand whether the group is moving somewhere or not
 				{
-					/* Enough time passed to understand whether the group is moving somewhere or not */
-					private _timeToSpawnGooks = ( call compile _spawnCondition ) && ({side _x == EAST && alive _x} count allUnits) <= _ailimit;
-					
-					//systemChat format ["_spawnCondition=%1, AICount=%2, Decision=%3", call compile _spawnCondition, {side _x == EAST && alive _x} count allUnits, _timeToSpawnGooks];
-					
-					if ( _timeToSpawnGooks ) then 
+					private _existingUnitsCount = ({side _x == EAST && alive _x && !isObjectHidden _x} count allUnits);
+
+					if ( ( call compile _spawnCondition ) && _existingUnitsCount < (_logic call _fnc_getAILimit) ) then 
 					{
 						if (_debug) then {
 							systemChat format ["(%1) Condition to spawn Gooks passed, looking for a place...", time];
@@ -205,13 +246,33 @@ while { true } do {
 								  \  \  	  	    \      		  \
 						*/
 						
-						private _handle = [_next, _allPlayers, SUFFICIENT_CLUSTER_SHIFT, [_spawnDistanceMoving, _spawnDistanceStationary], _gookSensesRadius, [_sniperTreeClasses, _vehicleClasses], _groupsCount + round random _groupsCountVar, _groupSize + round random _groupSizeVar, _areaModules, _assignedCurator, _debug] spawn FS_fnc_AttackPlanner;
+						private _handle = [
+								_next, 
+								_allPlayers, 
+								SUFFICIENT_CLUSTER_SHIFT, 
+								[_spawnDistanceMoving, _spawnDistanceStationary],
+								_gookSensesRadius, 
+								[_infantryClasses, _sniperTreeClasses, _vehicleClasses],
+								_spawnedObjectsInitCode,								
+								_groupsCount + round random _groupsCountVar, 
+								_groupSize + round random _groupSizeVar, 
+								_areaModules,
+								_assignedCurator,
+								_debug
+							] spawn FS_fnc_AttackPlanner;
 						
 						WaitUntil { scriptDone _handle }; 
-					} 
-					else {
-						if (_debug) then {
-							systemChat format ["(%1) Gooks could not be spawned because condition failed.", time];
+					}
+					else 
+					{
+						if (_debug) then 
+						{
+							if (_existingUnitsCount >= (_logic call _fnc_getAILimit)) then {
+								private _attributeName = getText(configFile >> "CfgVehicles" >> typeOf _logic >> "Attributes" >> "AILimit" >> "displayName" );
+								systemChat format ["(%1) Gooks could not be spawned because '%2' is reached (%3).", time, _attributeName, _existingUnitsCount];
+							} else {
+								systemChat format ["(%1) Gooks could not be spawned because 'Condition to spawn' returned False.", time];
+							};
 						};
 					};
 				};

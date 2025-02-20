@@ -5,9 +5,9 @@
 #define DEF_THREAT_VEHICLES 1
 #define DEF_THREAT_BUILDINGS 2
 
-params ["_cluster", "_unitsToHideFrom", "_sufficientClusterShift", "_distanceToSpawn", "_gookSensesRadius", "_buildingsAndVehicles", "_groupsCount", "_groupSize", "_areaModules", "_assignedCurator", ["_debug", false, [true]]];
+params ["_cluster", "_unitsToHideFrom", "_sufficientClusterShift", "_distanceToSpawn", "_gookSensesRadius", "_classes", "_spawnedObjectsInitCode", "_groupsCount", "_groupSize", "_areaModules", "_assignedCurator", ["_debug", false, [true]]];
 
-_buildingsAndVehicles params ["_buildingClasses", "_vehicleClasses"];
+_classes params ["_infantryClasses", "_buildingClasses", "_vehicleClasses"];
 _cluster params ["_clusterCenter", "_clusterUnits", "_queue"];
 
 private _coordinates = [_queue] call FS_fnc_QueueGetData;
@@ -18,7 +18,6 @@ private _trendDir = _coordinates # (count _coordinates - 1) getDir _coordinates 
 private _target = [];
 private _angleMin = 0;
 private _angleMax = 360;
-private _proposedClasses = [];
 
 _distanceToSpawn params ["_spawnDistanceMoving", "_spawnDistanceStationary"];
 
@@ -33,8 +32,6 @@ if ( _isAmbush ) then
 	_angleMin = abs( ( _trendDir - DEF_GOOK_MANAGER_AMBUSH_CONE_ANGLE / 2 ) % 360 );
 	_angleMax = abs( ( _trendDir + DEF_GOOK_MANAGER_AMBUSH_CONE_ANGLE / 2 ) % 360 );
 	_distanceToSpawn = _spawnDistanceMoving;
-	
-	_proposedClasses = DEF_GOOK_MANAGER_AMBUSH_PROPOSED_CLASSES;
 }
 else {
 	/* The cluster has been standing still for some time... */
@@ -73,9 +70,13 @@ for "_i" from 1 to 10 do
 		private _handle = 0 spawn {};
 		private _possibleThreats = [DEF_THREAT_INFANTRY, DEF_THREAT_VEHICLES, DEF_THREAT_BUILDINGS];
 		
+		/* Spawn buildings and vehicles only in ambushes so that the players will be likely to stumble on them */
+		
+		// Remove buildings from the possible threats if it's not an ambush or if there are no building classes given 
 		if (!_isAmbush || _buildingClasses isEqualTo []) then {
 			_possibleThreats = _possibleThreats select { _x != DEF_THREAT_BUILDINGS };
 		};
+		// Remove vehicles from the possible threats if it's not an ambush or if there are no vehicle classes given 
 		if (!_isAmbush || _vehicleClasses isEqualTo []) then {
 			_possibleThreats = _possibleThreats select { _x != DEF_THREAT_VEHICLES };
 		};
@@ -95,7 +96,18 @@ for "_i" from 1 to 10 do
 		{
 			case DEF_THREAT_INFANTRY: {
 				//-- Spawn infantry
-				_handle = [_result, _target, _gookSensesRadius, _groupSize, _groupsCount, _proposedClasses, _assignedCurator, _debug] spawn FS_fnc_SpawnGooks;
+				_handle = [
+					_result, 
+					if (_isAmbush) then {[]} else {_target}, 
+					_gookSensesRadius, 
+					_groupSize, 
+					_groupsCount, 
+					_infantryClasses, 
+					_spawnedObjectsInitCode, 
+					_assignedCurator, 
+					_debug
+				] spawn FS_fnc_SpawnGooks;
+				
 				if ( _debug ) then {
 					private _marker = [_result, "mil_dot", "ColorRed", ["An attack from here!", "Ambush here!"] select _isAmbush] call FS_fnc_CreateDebugMarker;
 					[[_marker], 10] spawn FS_fnc_FadeDebugMarkers;
@@ -118,6 +130,7 @@ for "_i" from 1 to 10 do
 						};
 						_x setPos getPos _x;
 						[_x, createGroup EAST] call BIS_fnc_spawnCrew;
+						_x spawn _spawnedObjectsInitCode;
 						if (_validCurator) then {
 							_assignedCurator addCuratorEditableObjects [[_x], true];
 						};
@@ -151,11 +164,12 @@ for "_i" from 1 to 10 do
 					{
 						_x setDir random 360;
 						[_x, _assignedCurator] spawn FS_fnc_OccupyTree;
-						
+						_x spawn _spawnedObjectsInitCode;
 						if (_debug) then {
 							private _marker = _x call BIS_fnc_boundingBoxMarker;
 							if !(_marker isEqualTo "") then {
 								_marker setMarkerColor "ColorRed";
+								_marker setMarkerText (typeOf _x);
 								_markers pushBack _marker;
 							};
 							systemChat format ["(%1) Building %2 spawned", time, typeOf _x];

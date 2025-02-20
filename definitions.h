@@ -9,7 +9,7 @@
 #define DEF_GOOK_MANAGER_AMBUSH_CONE_ANGLE 30
 
 //-- Prefer sappers, so they would lay down traps in front of the advancing enemy cluster 
-#define DEF_GOOK_MANAGER_AMBUSH_PROPOSED_CLASSES ["vn_o_men_vc_local_09","vn_o_men_vc_local_23","vn_o_men_vc_local_30","vn_o_men_vc_09","vn_o_men_vc_regional_09", "vn_o_men_vc_local_10","vn_o_men_vc_local_24","vn_o_men_vc_local_31","vn_o_men_vc_local_11","vn_o_men_vc_local_04","vn_o_men_vc_local_12"]
+//#define DEF_GOOK_MANAGER_AMBUSH_PROPOSED_CLASSES ["vn_o_men_vc_local_09","vn_o_men_vc_local_23","vn_o_men_vc_local_30","vn_o_men_vc_09","vn_o_men_vc_regional_09", "vn_o_men_vc_local_10","vn_o_men_vc_local_24","vn_o_men_vc_local_31","vn_o_men_vc_local_11","vn_o_men_vc_local_04","vn_o_men_vc_local_12"]
 
 //-- Places in forest next to trees, far from houses or water
 #define DEF_GOOK_MANAGER_TRAPS_BEST_PLACES "(forest + 2*trees) * (1-houses) * (1-sea) * (1-(waterDepth interpolate [0,1,0,100]))"

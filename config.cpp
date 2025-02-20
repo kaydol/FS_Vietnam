@@ -502,6 +502,38 @@ class CfgVehicles
 				typeName = "NUMBER";
 				defaultValue = 30;
 			};
+			class InfantryClassesPreset : Combo {
+				property = "InfantryClassesPreset";
+				displayName = "Infantry clases";
+				tooltip = "";
+				typeName = "NUMBER";
+				class values
+				{
+					class Tanoa {
+						name = "Use Vanilla infantry (use Init code to change equipment!)";
+						value = 1;
+						default = 1;
+					};
+					class SOG {
+						name = "Use VC infantry from SOG CDLC";
+						value = 2;
+					};
+					class ImprovedMeleeSystemAddon {
+						name = "Use infantry from Improved Melee System (use Init code to change equipment!)";
+						value = 3;
+					};
+					class Custom {
+						name = "Use infantry from the Custom Infantry classes field below";
+						value = 4;
+					};
+				};
+			};
+			class CustomInfantryClasses : Edit {
+				property = "CustomInfantryClasses";
+				displayName = "Custom Infantry classes";
+				tooltip = "";
+				defaultValue = "[]";
+			};
 			class SniperTreeClasses : Edit {
 				property = "SniperTreeClasses";
 				displayName = "Sniper Tree classes";
@@ -513,6 +545,12 @@ class CfgVehicles
 				displayName = "Vehicle classes";
 				tooltip = "These vehicles may be spawned in front of moving targets. Intended for spider holes (which are essentially static turrets), but you can put any crewed vehicle classes here. Leave as [] to disable.";
 				defaultValue = "['vn_o_vc_spiderhole_01','vn_o_vc_spiderhole_02','vn_o_vc_spiderhole_03','vn_o_nva_spiderhole_01','vn_o_nva_spiderhole_02','vn_o_nva_spiderhole_03']";
+			};
+			class SpawnedObjectsInitCode : Edit {
+				property = "SpawnedObjectsInitCode";
+				displayName = "Spawned objects Init code";
+				tooltip = "Spawned object\unit will be stored in the _this variable.";
+				defaultValue = "_this spawn FS_fnc_AuthenticLoadout";
 			};
 			class SpawnDistanceMoving : Edit {
 				property = "SpawnDistanceMoving";
@@ -531,7 +569,7 @@ class CfgVehicles
 			class GookSensesRadius : Edit {
 				property = "GookSensesRadius";
 				displayName = "Gook Sense Radius";
-				tooltip = "Gook Senses (tm) is a mechanic that incrementally increases the knowledge of the enemy over time when the enemy is in radius of the gook group. Use -1 or 0 to disable.";
+				tooltip = "Gook Senses (tm) is a mechanic that incrementally increases the knowledge about the enemy over time when the enemy is in radius of the gook group. Use -1 or 0 to disable.";
 				typeName = "NUMBER";
 				defaultValue = 200;
 			};
@@ -1531,6 +1569,7 @@ class CfgFunctions
 			class GetHiddenPos {file = "\FS_Vietnam\Functions\Behaviour\GetHiddenPos.sqf";};
 			class GetHiddenPos2 {file = "\FS_Vietnam\Functions\Behaviour\GetHiddenPos2.sqf";};
 			class GookSenses {file = "\FS_Vietnam\Functions\Behaviour\GookSenses.sqf";};
+			class GrabThemByTheBelt {file = "\FS_Vietnam\Functions\Behaviour\GrabThemByTheBelt.sqf";};
 			class GrpFiredNear {file = "\FS_Vietnam\Functions\Behaviour\GrpFiredNear.sqf";};
 			class GrpHideInTrees {file = "\FS_Vietnam\Functions\Behaviour\GrpHideInTrees.sqf";};
 			class GrpNearestEnemy {file = "\FS_Vietnam\Functions\Behaviour\GrpNearestEnemy.sqf";};
