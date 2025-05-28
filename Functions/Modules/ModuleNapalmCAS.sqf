@@ -103,8 +103,8 @@ if (_activated) then {
 		};
 	} foreach _currentWeapons;
 
-	_plane setvariable ["logic",_logic];
-	_logic setvariable ["plane",_plane];								 
+	_plane setvariable ["logic",_logic, true];
+	_logic setvariable ["plane",_plane, true];
 
 	//--- Show hint
 	[[["Curator","PlaceOrdnance"],nil,nil,nil,nil,nil,nil,true],"bis_fnc_advHint",objectcurators _logic] call bis_fnc_mp;
