@@ -21,3 +21,5 @@
 
 #define DEF_GC_EXCLUDE_VAR "ExcludeFromGarbageCollector"
 #define DEF_GC_EXCLUDE_GROUP_VAR "ExcludeGroupFromGarbageCollector"
+
+#define DEF_SNIPER_FSM_HANDLE "SniperFSM"

@@ -17,6 +17,8 @@ Author:
     kaydol
 ---------------------------------------------------------------------------- */
 
+#include "..\..\definitions.h"
+
 #define VAR_NAME "AMBUSH_PLANNER_CLUSTERS"
 #define SUFFICIENT_CLUSTER_SHIFT (_assessmentRate * 2)
 #define MAX_CLUSTER_SHIFT_PER_ASSESSMENT (_assessmentRate * 7)
@@ -225,7 +227,7 @@ while { true } do {
 				private _coordinates = [_queue] call FS_fnc_QueueGetData;
 				if ( count _coordinates == _scope ) then // Enough time passed to understand whether the group is moving somewhere or not
 				{
-					private _existingUnitsCount = ({side _x == EAST && alive _x && !isObjectHidden _x} count allUnits);
+					private _existingUnitsCount = ({side _x == EAST && alive _x && !isObjectHidden _x && isNil{_x getVariable DEF_SNIPER_FSM_HANDLE} } count allUnits);
 
 					if ( ( call compile _spawnCondition ) && _existingUnitsCount < (_logic call _fnc_getAILimit) ) then 
 					{
