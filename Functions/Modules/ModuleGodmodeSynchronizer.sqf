@@ -5,13 +5,13 @@
 
 	Runs locally and applies godmode to local units.
 	
-	From the user perspective, all you need to do is plop down a Godmode Synchronizer Module 
+	From the user perspective, all you need to do is place down a Godmode Synchronizer Module 
 	and then hand out godmodes with the use of FS_fnc_AddGodmodeTimespan:
 		
 		[_localOrRemoteObject, _godmodeLength] remoteExec ["FS_fnc_AddGodmodeTimespan", _localOrRemoteObject];
 		
 	There is a small delay (0.1s) before the module applies godmode on its own, so you might want to do a 
-	manual "allowDamage=true" if you want it to work immediately. Like so:
+	manual "allowDamage=false" if you want it to work immediately. Like so:
 	
 		_localOrRemoteObject allowDamage false;
 		[_localOrRemoteObject, _godmodeLength] remoteExec ["FS_fnc_AddGodmodeTimespan", _localOrRemoteObject];
@@ -76,7 +76,7 @@ private _debug = _logic getVariable "Debug";
 	private _fnc_processGodmode = {
 		
 		private _keys = [DEF_GODMODE_TIMESPANS] call _fnc_getKeys;
-		
+
 		private _oldObjects = [];
 		private _newObjects = [];
 		
@@ -93,19 +93,29 @@ private _debug = _logic getVariable "Debug";
 		}
 		foreach _keys;
 		
+		if (_debug) then {
+			diag_log format ["(ModuleGodModeSynchronizer @ %1) _oldObjects = %2", clientOwner, _oldObjects];
+			diag_log format ["(ModuleGodModeSynchronizer @ %1) _newObjects = %2", clientOwner, _newObjects];
+		};
+		
 		{
-			if !(_x in _newObjects) then 
+			if !(_x in _newObjects) then
 			{
 				_x allowDamage true;
 				
 				if (_debug) then {
-					systemChat format ["(%1) %2 godmode expired", time, typeOf _x];
+					diag_log format ["(ModuleGodModeSynchronizer @ %1) %2 godmode expired", clientOwner, _x];
 				};
-			} 
-			else 
+			}
+			else
 			{
-				if (_x in _newObjects && local _x && isDamageAllowed _x) then {
+				if (local _x && isDamageAllowed _x) then 
+				{
 					_x allowDamage false;
+					
+					if (_debug) then {
+						diag_log format ["(ModuleGodModeSynchronizer @ %1) %2 godmode applied", clientOwner, _x];
+					};
 				};
 			};
 		} forEach _oldObjects;

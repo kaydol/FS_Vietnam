@@ -23,13 +23,28 @@ private _fnc_set = {
 };
 
 
-params ["_affectedObject", "_godmodeLength"];
+params ["_affectedObject", "_godmodeLength", ["_debug", false]];
 
-// Idk if diag_frameNo is good enough of a key to eliminate the possibility of collisions. Probably not.
-[DEF_GODMODE_TIMESPANS, diag_frameNo, [_affectedObject, time + _godmodeLength]] call _fnc_set;
+private _uniqueId = missionNameSpace getVariable [DEF_GODMODE_COUNTER, 0];
+missionNameSpace setVariable [DEF_GODMODE_COUNTER, _uniqueId + 1];
+
+[DEF_GODMODE_TIMESPANS, _uniqueId, [_affectedObject, time + _godmodeLength]] call _fnc_set;
+
+if (_debug) then 
+{
+	if (clientOwner != owner _affectedObject) then 
+	{
+		diag_log format ["(ModuleGodModeSynchronizer @ %1) ERROR: Received call to give godmode to %2, but its owner is %3!", clientOwner, _affectedObject, owner _affectedObject];
+	}
+	else 
+	{
+		diag_log format ["(ModuleGodModeSynchronizer @ %1) Received call to give godmode to %2", clientOwner, _affectedObject];
+	};
+};
 
 if ((allMissionObjects "Logic") findIf { typeOf _x == "FS_GodmodeSynchronizer_Module" } < 0) then {
 	["Godmode Synchronizer Module is required for this to work properly"] call BIS_fnc_error;
+	diag_log format ["(ModuleGodModeSynchronizer @ %1) ERROR: Godmode Synchronizer Module is required for this to work properly", clientOwner];
 };
 
 
