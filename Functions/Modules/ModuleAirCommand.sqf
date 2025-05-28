@@ -90,7 +90,15 @@ forEach _synced;
 			[_x, _module, _respawnDelay, _hunterClasses, _debug] spawn 
 			{
 				params ["_aircraft", "_module", "_respawnDelay", "_hunterClasses", "_debug"];
-				waitUntil { sleep 1; completedFSM (_aircraft getVariable "AirCommandFSMHandle") };
+				waitUntil { 
+					sleep 1; 
+					private _check = false;
+					if (!_check) then { _check = isNil {_aircraft}; };
+					if (!_check) then { _check = isNull _aircraft; };
+					if (!_check) then { _check = completedFSM (_aircraft getVariable "AirCommandFSMHandle"); };
+					_check
+				};
+				
 				
 				sleep _respawnDelay;
 				
