@@ -10,7 +10,7 @@ private _poolWeighted = _logic getVariable "TrackPool";
 private _playLocally = _logic getVariable "PlayLocally";
 
 if ( !_playLocally && !isServer ) exitWith {};
-	
+
 /* 1) If there is only one track in the pool, let it have non-zero weight */
 if ( count _poolWeighted == 2 ) then { _poolWeighted set [1, 1] };
 

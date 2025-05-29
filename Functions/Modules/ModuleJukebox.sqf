@@ -31,7 +31,7 @@ if ( _aceEnabled && _DisableACEVolumeUpdate ) then
 			WaitUntil { sleep 1; !isNil{ ace_hearing_disableVolumeUpdate }};
 			ace_hearing_disableVolumeUpdate = false;
 		};
-	} 
+	}
 	else {
 		{
 			WaitUntil { sleep 1; !isNil{ ace_hearing_disableVolumeUpdate }};
@@ -114,13 +114,29 @@ while { true } do
 	if ( _stopMusic ) then 
 	{
 		if ( _playLocally ) then {
+		
+			/* Check if the music was stopped because another Jukebox got activated */
+			private _otherJukeboxes = (allMissionObjects "FS_Jukebox_Module") select {_x != _logic && call compile ( _x getVariable "StartCondition" )};
+			
+			//private _debugInfo = (allMissionObjects "FS_Jukebox_Module") apply {[_x, _x getVariable "StartCondition", call compile (_x getVariable "StartCondition")]};
+			//diag_log format ["Jukebox %1: other jukeboxes=%2", _logic, _otherJukeboxes];
+			//diag_log format ["Jukebox %1: all jukeboxes=%2", _logic, _debugInfo];
+			//diag_log format ["Jukebox %1: active jukeboxes=%2", _logic, _debugInfo select {_x # 2}];
+			
 			if (_debug) then {
 				diag_log format ["Jukebox %1: Stopping music locally", _logic];
 			};
-			3 fadeMusic 0;
-			sleep 3;
-			playMusic "";
-			0 fadeMusic 1;
+			
+			if (_otherJukeboxes isEqualTo []) then {
+				3 fadeMusic 0;
+				sleep 3;
+				playMusic "";
+				0 fadeMusic 1;
+			} else {
+				if (_debug) then {
+					diag_log format ["Jukebox %1: It seems that the music was stopped because another Jukebox (%2) started playing. Skipping", _logic, _otherJukeboxes # 0]; 
+				};
+			};
 		} 
 		else 
 		{
