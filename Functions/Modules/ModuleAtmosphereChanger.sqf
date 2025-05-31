@@ -1,4 +1,6 @@
 
+#include "..\..\definitions.h"
+
 #define DEF_CC_PRESET_DISABLED 0
 #define DEF_CC_PRESET_CUSTOM 1
 #define DEF_CC_PRESET_DARKEN 2
@@ -64,15 +66,15 @@ switch _mode do {
 		if (_stopCondition isEqualType false) then { _stopCondition = {_stopCondition} };
 		if (_stopCondition isEqualType "") then { _stopCondition = compile _stopCondition };
 		
-		_fnc_distanceCheck = {
+		private _fnc_distanceCheck = {
 			params ["_logic", "_inside"];
-			if (isNull _logic || isNull player) exitWith { !_inside }; // always outside
+			if (isNull _logic || isNull DEF_CURRENT_PLAYER) exitWith { !_inside }; // always outside
 			_radius = _logic getVariable "Radius";
 			if (_radius <= 0) exitWith { _inside }; // if _radius == 0 then always inside
 			call (
 				[
-					{player distance _logic > _radius}, // if _inside == false 
-					{player distance _logic <= _radius} // if _inside == true
+					{DEF_CURRENT_PLAYER distance _logic > _radius}, // if _inside == false 
+					{DEF_CURRENT_PLAYER distance _logic <= _radius} // if _inside == true
 				] select _inside
 			)
 		};
@@ -134,7 +136,7 @@ switch _mode do {
 						_transitionTime setOvercast _overcast;
 						sleep _transitionTime;
 						// the fog base will be constantly adjusting to player's height above sea 
-						_transitionTime setFog [_fogValue, _fogDecay, getPosASL player select 2];
+						_transitionTime setFog [_fogValue, _fogDecay, getPosASL DEF_CURRENT_PLAYER select 2];
 						sleep _transitionTime;
 					};
 				};
@@ -155,7 +157,7 @@ switch _mode do {
 			
 			if (_enableDust) then 
 			{
-				_emitter = "#particlesource" createVehicleLocal getpos player;
+				_emitter = "#particlesource" createVehicleLocal getpos DEF_CURRENT_PLAYER;
 				
 				//particle_emitter_0 setParticleParams [["\A3\data_f\ParticleEffects\Universal\Universal.p3d",16,12,13,0],"","Billboard",1,10,[0,0,0],[0,0,0.2],0,0.0525,0.04,0.05,[1.6,3.5],[[0.5,0.4,0.3,0],[0.499251,0.414643,0.336079,0],[0.5,0.4,0.3,0.06],[0.5,0.4,0.3,0.05],[0.5,0.4,0.3,0.015],[0.6,0.5,0.4,0]],[1000],0.1,0.05,"","","",0,false,0,[[0,0,0,0],[0,0,0,0]]];
 				
@@ -178,7 +180,7 @@ switch _mode do {
 					0.05, // randomDirectionIntensity
 					"", // onTimerScript
 					"", // beforeDestroyScript
-					player, // this (if this parameter isn't objNull, the particle source will be attached to the object, the generation of particles stops when beyond Object View Distance)
+					DEF_CURRENT_PLAYER, // this (if this parameter isn't objNull, the particle source will be attached to the object, the generation of particles stops when beyond Object View Distance)
 					0, // angle (optional)
 					false, // onSurface (optional)
 					0, // bounceOnSurface (optional, default -1. Coef of bounce in collision with ground, 0..1 for collisions, -1 to disable collision. Should be used soberly as it has a significant impact on performance)

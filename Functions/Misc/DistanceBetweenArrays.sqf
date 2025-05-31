@@ -31,15 +31,15 @@ Author:
 
 params [["_array1", []], ["_array2", []], ["_verbose", false, [true]], ["_distance2D", false, [true]]];
 
-_closestFromArray1 = objNull;
-_closestFromArray2 = objNull;
-_minDistance = -1;
-_index1 = -1;
-_index2 = -1;
+private _closestFromArray1 = objNull;
+private _closestFromArray2 = objNull;
+private _minDistance = -1;
+private _index1 = -1;
+private _index2 = -1;
 
 if (count _array1 > 0 && count _array2 > 0) then 
 {
-	_minDistance = ( _array1 select 0 ) distance ( _array2 select 0 );
+	_minDistance = if (_distance2D) then [{( _array1 select 0 ) distance2D ( _array2 select 0 )},{( _array1 select 0 ) distance ( _array2 select 0 )}];;
 	{
 		_elem = _x;
 		_temp = _forEachIndex;

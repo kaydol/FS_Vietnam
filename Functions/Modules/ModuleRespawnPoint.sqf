@@ -48,6 +48,8 @@ Author:
     kaydol
 ---------------------------------------------------------------------------- */
 
+#include "..\..\definitions.h"
+
 #define DEF_FILTER_CONDITION  { !(_x isKindOf "Man") && !(_x isKindOf "Logic") && !(_x isKindOf "EmptyDetector")}
 
 params ["_logic", ["_units", []], ["_activated", false]];
@@ -115,12 +117,12 @@ _synced = _synced apply {[_x, ""]};
 //-- Add ONE event handler that will serve multiple modules 
 {
 	if !(hasInterface) exitWith {};
-	private _respawnEH = player getVariable "ModuleRespawnPoint_RespawnEH";
+	private _respawnEH = DEF_CURRENT_PLAYER getVariable "ModuleRespawnPoint_RespawnEH";
 	if !(isNil{_respawnEH}) exitWith {};
 	
 	//-- "Respawn" EH is persisted across multiple respawns
 	//-- We do not indulge in wasting resources 
-	_respawnEH = player addEventHandler ["Respawn", {
+	_respawnEH = DEF_CURRENT_PLAYER addEventHandler ["Respawn", {
 		_this spawn 
 		{
 			params ["_unit", "_corpse"];
@@ -259,12 +261,12 @@ _synced = _synced apply {[_x, ""]};
 					params ["_unit", "_vehicle"];
 					private _i = 0;
 					for [{_i = 0},{_i < 10},{_i = _i + 1}] do {
-						if (vehicle player == _vehicle || !alive _vehicle) exitWith {}; 
+						if (vehicle DEF_CURRENT_PLAYER == _vehicle || !alive _vehicle) exitWith {}; 
 						_unit moveInCargo _vehicle;
 						sleep 0.1;
 					};
 					//-- One last try 
-					if (vehicle player != _vehicle && alive _vehicle) then {
+					if (vehicle DEF_CURRENT_PLAYER != _vehicle && alive _vehicle) then {
 						_unit moveInAny _vehicle;
 					};
 				};
@@ -313,7 +315,7 @@ _synced = _synced apply {[_x, ""]};
 			
 				if (count _respawnAnimations > 0 && !_posInWater) then {
 					private _anim = selectRandom _respawnAnimations; 
-					[player, _anim] remoteExec ["switchMove", 0]; 
+					[DEF_CURRENT_PLAYER, _anim] remoteExec ["switchMove", 0]; 
 				};
 			};
 			

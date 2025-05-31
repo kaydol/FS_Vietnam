@@ -19,6 +19,8 @@ Author:
     kaydol
 ---------------------------------------------------------------------------- */
 
+#include "..\..\definitions.h"
+
 if !(hasInterface) exitWith {};
 
 params ["_unit", ["_deathSound", ""], ["_smokeDelay", 0], ["_screamingTime", 10]];
@@ -37,7 +39,7 @@ if ( _screaming && _deathSound != "" ) then
 		_speaker = "#particlesource" createVehicleLocal getPos _unit;
 		_speaker attachTo [_unit, [0,0,0], "head_hit"];
 
-		if ( _unit != player ) then 
+		if ( _unit != DEF_CURRENT_PLAYER ) then 
 		{
 			_unit setRandomLip true;
 			_speaker Say3D [_deathSound, 200];

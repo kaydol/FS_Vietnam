@@ -20,6 +20,8 @@
 	
 */
 
+#include "..\..\definitions.h"
+
 if !(isServer) exitWith {};
 
 params ["_side", "_messageType", ["_vehicle", objNull], ["_speaker", "HQ"]];
@@ -121,12 +123,12 @@ switch ( _messageType ) do
 	
 	if !(isNull _vehicle) then {
 		// If the target of the message is a specific vehicle, check if it has radio comm system and player is in it
-		if (_vehicle call FS_fnc_HasCommSystem && (player == _vehicle || player in _vehicle)) then {
+		if (_vehicle call FS_fnc_HasCommSystem && (DEF_CURRENT_PLAYER == _vehicle || DEF_CURRENT_PLAYER in _vehicle)) then {
 			_canReceiveMessage = true;
 		};
 	} else {
 		// If the message is being broadcasted to everybody (not only 1 vehicle) then check if player has radio or RTO backpack
-		if (player call FS_fnc_CanReceive) then {
+		if (DEF_CURRENT_PLAYER call FS_fnc_CanReceive) then {
 			_canReceiveMessage = true;
 		};
 	};

@@ -18,27 +18,32 @@ Author:
     kaydol
 ---------------------------------------------------------------------------- */
 
-params ["_module", ["_units", []], ["_activated", false]];
+#include "..\..\definitions.h"
 
-private _arsenalRoomAt = ASLToAGL [-100, -100, getTerrainHeightASL [50,50] + 50];
+_this spawn {
 
-if ( isServer && !(missionNameSpace getVariable ["ArsenalRoomCreated", false])) then {
-	/* Create Arsenal */
-	[_arsenalRoomAt] call FS_fnc_ArsenalRoomCreate;
-	missionNameSpace setVariable ["ArsenalRoomCreated", true, true];
-};
+	params ["_module", ["_units", []], ["_activated", false]];
 
-if (_activated && !(player getVariable ["UsesArsenalRoom", false])) then 
-{
-	if (vehicle player != player || player isKindOf "VirtualCurator_F") exitWith {};
+	private _arsenalRoomAt = ASLToAGL [-100, -100, getTerrainHeightASL [50,50] + 50];
 
-	private _allowAll = _module getVariable "allowAll";
-	private _respawnLoadout = _module getVariable "respawnLoadout";
-	private _respawnLoadoutMsgStyle = _module getVariable "respawnLoadoutMsgStyle";
-	
-	if (hasInterface) then {
-		"ArsenalRoom" cutText ["", "BLACK OUT", 0.0001];
-		waitUntil {time > 1 && !isNull player && missionNameSpace getVariable ["ArsenalRoomCreated", false]};
-		[_arsenalRoomAt, _allowAll, _respawnLoadout, _respawnLoadoutMsgStyle] spawn FS_fnc_ArsenalRoom;
+	if ( isServer && !(missionNameSpace getVariable ["ArsenalRoomCreated", false])) then {
+		/* Create Arsenal */
+		[_arsenalRoomAt] call FS_fnc_ArsenalRoomCreate;
+		missionNameSpace setVariable ["ArsenalRoomCreated", true, true];
+	};
+
+	if (_activated && !(DEF_CURRENT_PLAYER getVariable ["UsesArsenalRoom", false])) then 
+	{
+		if (vehicle DEF_CURRENT_PLAYER != DEF_CURRENT_PLAYER || DEF_CURRENT_PLAYER isKindOf "VirtualCurator_F") exitWith {};
+
+		private _allowAll = _module getVariable "allowAll";
+		private _respawnLoadout = _module getVariable "respawnLoadout";
+		private _respawnLoadoutMsgStyle = _module getVariable "respawnLoadoutMsgStyle";
+		
+		if (hasInterface) then {
+			"ArsenalRoom" cutText ["", "BLACK OUT", 0.0001];
+			waitUntil {time > 1 && !isNull DEF_CURRENT_PLAYER && missionNameSpace getVariable ["ArsenalRoomCreated", false]};
+			[_arsenalRoomAt, _allowAll, _respawnLoadout, _respawnLoadoutMsgStyle] spawn FS_fnc_ArsenalRoom;
+		};
 	};
 };

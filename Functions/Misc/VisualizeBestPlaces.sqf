@@ -22,6 +22,8 @@ Author:
     kaydol
 ---------------------------------------------------------------------------- */
 
+#include "..\..\definitions.h"
+
 #define DEF_HANDLER_VARNAME "VisualizeBestPlaces_HandlerId"
 #define DEF_PLACES_VARNAME "VisualizeBestPlaces_Places"
 #define DEF_MARKERS_VARNAME "VisualizeBestPlaces_Markers"
@@ -47,7 +49,7 @@ private _id = [DEF_HANDLER_VARNAME, "onEachFrame",
 	{
 		_x params ["_pos2D", "_value"];
 		
-		private _k = 10 / (player distance2D _pos2D);
+		private _k = 10 / (DEF_CURRENT_PLAYER distance2D _pos2D);
 		
 		[1*_k, 1*_k, 0, true, 0.04*_k, "RobotoCondensed", "center", true, 0.005*_k, -0.035*_k] params [
 			"_width", 
@@ -79,7 +81,7 @@ private _id = [DEF_HANDLER_VARNAME, "onEachFrame",
 			//_offsetY
 		];
 		
-		drawLine3D [player modelToWorldVisual [0,0,1], _pos2D, [1,0,0,1]];
+		drawLine3D [DEF_CURRENT_PLAYER modelToWorldVisual [0,0,1], _pos2D, [1,0,0,1]];
 		
 	} forEach _places;
 }] call BIS_fnc_addStackedEventHandler;
