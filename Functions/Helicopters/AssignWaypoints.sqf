@@ -12,7 +12,6 @@ private _distance = 200;
 private _distance_step = 0;
 private _waypoints = 2;
 private _group = group _aircraft;
-_group allowFleeing 1;
 
 private _dir = [(getDir _aircraft) + ([_aircraft, _target] call BIS_fnc_relativeDirTo)] call FS_fnc_DirectionWrapper; 
 private _next_dir = 0;

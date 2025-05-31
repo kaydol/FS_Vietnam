@@ -1,13 +1,18 @@
 
 params ["_aircraft", ["_debug", false]];
 
+private _group = group _aircraft;
+_group allowFleeing 0; // 1 is maximum cowardice and 0 minimum. A value of 0 will disable fleeing all together
+
 _aircraft flyInHeight 65;
 _aircraft flyInHeightASL [65, 65, 65];
 
-// Disable radio spam
+
 {
-	if !(isPlayer _x) then {
-		_x setSpeaker "NoVoice";
+	if !(isPlayer _x) then 
+	{
+		_x setSpeaker "NoVoice"; // Disable radio spam
+		
 		if (isClass (configFile >> "CfgPatches" >> "RNG_mod")) then {
 			_x setVariable ["RNG_disabled",true,true]; 
 		};
