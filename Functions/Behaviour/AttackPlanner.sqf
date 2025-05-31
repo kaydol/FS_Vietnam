@@ -132,7 +132,7 @@ for "_i" from 1 to 10 do
 						[_x, createGroup EAST] call BIS_fnc_spawnCrew;
 						_x spawn _spawnedObjectsInitCode;
 						if (_validCurator) then {
-							_assignedCurator addCuratorEditableObjects [[_x], true];
+							[_assignedCurator, [[_x], true]] remoteExec ["addCuratorEditableObjects", 2];
 						};
 						
 						if (_debug) then {
@@ -174,6 +174,11 @@ for "_i" from 1 to 10 do
 							};
 							systemChat format ["(%1) Building %2 spawned", time, typeOf _x];
 						};
+						
+						if (_validCurator) then {
+							[_assignedCurator, [[_x], true]] remoteExec ["addCuratorEditableObjects", 2];
+						};
+						
 						true
 					};
 					if ( _debug ) then {

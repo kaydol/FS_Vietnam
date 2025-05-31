@@ -41,7 +41,7 @@ for [{_i=0},{_i < _groupsCount},{_i=_i+1}] do
 			_unit spawn _spawnedObjectsInitCode;
 			
 			if (_validCurator) then {
-				_assignedCurator addCuratorEditableObjects [[_unit], false];
+				[_assignedCurator, [[_unit], false]] remoteExec ["addCuratorEditableObjects", 2];
 			};
 			
 			//-- Remove toolkit to prevent players from defusing traps easily  

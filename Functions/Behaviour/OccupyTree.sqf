@@ -69,7 +69,7 @@ if (isClass (configFile >> "CfgPatches" >> "RNG_mod")) then {
 };
 
 if (_validCurator) then {
-	_assignedCurator addCuratorEditableObjects [units _newGrp, false];
+	[_assignedCurator, [units _newGrp, false]] remoteExec ["addCuratorEditableObjects", 2];
 };
 
 //-- Exclude live tree snipers from Garbage Collector 
