@@ -94,6 +94,8 @@ else
 	
 	private _pos = getPos _closest_base;
 	
+	[_group, currentWaypoint _group] setWaypointPosition [getPosASL ((units _group) select 0), -1];
+	sleep 0.1; // Delay added as per recommendation from https://community.bistudio.com/wiki/deleteWaypoint
 	{ deleteWaypoint _x } forEachReversed waypoints _group;
 	
 	private _NewWP = _group addWaypoint [_pos, 0];
