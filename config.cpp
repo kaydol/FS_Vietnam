@@ -14,6 +14,57 @@ class CfgPatches
 	};
 };
 
+
+class FS_HealthBar_HUD_RscProgress
+{
+	x = 0.275;
+	y = 0.44;
+	w = 0.2;
+	h = 0.04;
+	
+	access = 0;
+	type = 8;
+	style = 0x00;
+	default = 0;
+	blinkingPeriod = 0;
+
+	texture = "#(argb,8,8,3)color(1,1,1,1)";
+	colorBar[] = {1,1,1,1};
+	colorFrame[] = {0,0,0,1};
+	
+	tooltipColorShade[] = {0,0,0,1};
+	tooltipColorText[] = {1,1,1,1};
+	tooltipColorBox[] = {1,1,1,1};
+};
+
+class RscTitles
+{
+	// Used for showing radio status such as No signal, Can Receive, Can Transmit 
+	class FS_Vietnam_Radio_HUD {
+		idd = -1;
+		duration = 1e+1000;
+		fadeIn = 0;
+		fadeOut = 0;
+		name = "FS_Vietnam_Radio_HUD";
+		onLoad = "uiNamespace setVariable['FS_Vietnam_Radio_HUD',_this select 0]";
+		onUnload = "uiNamespace setVariable['FS_Vietnam_Radio_HUD',displayNull]";
+		onDestroy =  "uiNamespace setVariable['FS_Vietnam_Radio_HUD',displayNull]";
+	};
+	
+	// Used for health bars 
+	class FS_HealthBar_HUD
+	{
+		idd = -1;
+		duration = 1e+1000;
+		fadeIn = 0;
+		fadeOut = 0;
+		name = "FS_HealthBar_HUD";
+		onLoad = "uiNamespace setVariable['FS_HealthBar_HUD',_this select 0]";
+		onUnload = "uiNamespace setVariable['FS_HealthBar_HUD',displayNull]";
+		onDestroy =  "uiNamespace setVariable['FS_HealthBar_HUD',displayNull]";
+	};
+};
+
 class CfgMusic {
 	tracks[] = {""};
 	class arsenal_1 {
@@ -1561,6 +1612,7 @@ class CfgFunctions
 			class TransmitDistress {file = "\FS_Vietnam\Functions\Radio\TransmitDistress.sqf";};
 			class TransmitOverRadio {file = "\FS_Vietnam\Functions\Radio\TransmitOverRadio.sqf";};
 			class TransmitSitrep {file = "\FS_Vietnam\Functions\Radio\TransmitSitrep.sqf";};
+			class RadioPostInit {file = "\FS_Vietnam\Functions\Radio\RadioPostInit.sqf"; postInit=1; };
 		};
 		
 		class Behaviour {
@@ -1610,6 +1662,12 @@ class CfgFunctions
 			class ModuleGodmodeSynchronizer {file = "\FS_Vietnam\Functions\Modules\ModuleGodmodeSynchronizer.sqf";};
 			class ModuleRespawnPoint {file = "\FS_Vietnam\Functions\Modules\ModuleRespawnPoint.sqf";};
 			class VisualizeModuleRadius3DEN {file = "\FS_Vietnam\Functions\Modules\VisualizeModuleRadius3DEN.sqf";};
+		};
+		
+		class Healthbars {
+			class HealthbarsAdd {file = "\FS_Vietnam\Functions\Healthbars\HealthbarsAdd.sqf";};
+			class HealthbarsRemove {file = "\FS_Vietnam\Functions\Healthbars\HealthbarsRemove.sqf";};
+			class HealthbarsGetSize {file = "\FS_Vietnam\Functions\Healthbars\HealthbarsGetSize.sqf";};
 		};
 	};
 };

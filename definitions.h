@@ -23,3 +23,5 @@
 #define DEF_GC_EXCLUDE_GROUP_VAR "ExcludeGroupFromGarbageCollector"
 
 #define DEF_SNIPER_FSM_HANDLE "SniperFSM"
+
+#define DEF_CURRENT_PLAYER (missionNameSpace getVariable ["bis_fnc_moduleRemoteControl_unit", player])
