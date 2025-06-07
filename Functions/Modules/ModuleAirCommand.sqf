@@ -46,7 +46,8 @@ private _enableIntroduction = _module getVariable "EnableIntroduction";
 private _markersToMarkWith = _module getVariable "MarkersToMarkWith";
 if (_markersToMarkWith isEqualType "") then { _markersToMarkWith = call compile _markersToMarkWith; };
 private _minClusterSizeToMark = _module getVariable "MinClusterSizeToMark";
-
+private _makeCaptive = _module getVariable "MakeCaptive";
+private _godmode = _module getVariable "Godmode";
 private _debug = _module getVariable "debug";
 
 if (_debug) then {
@@ -69,9 +70,25 @@ private _aircrafts = [];
 	if ( typeOf _x isKindOf "Air" || vehicle _x isKindOf "Air" ) then 
 	{ 
 		_aircrafts pushBackUnique vehicle _x;
+		if (_godmode) then {
+			[_x, 99999999] remoteExec ["FS_fnc_AddGodmodeTimespan", _x];
+		};
 	};
 }
 forEach _synced;
+
+if (_makeCaptive) then {
+	{
+		private _crew = crew _x;
+		{ 
+			_x setCaptive true; 
+			if (_debug) then {
+				diag_log format ["Air Command Module: Made %1 captive", _x];
+			};
+		} forEach _crew;
+	} forEach _aircrafts;
+};
+
 
 // Step 2. Run scripts on synced aircrafts
 {

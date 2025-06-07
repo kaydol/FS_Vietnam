@@ -507,6 +507,20 @@ class CfgVehicles
 				typeName = "NUMBER";
 				defaultValue = 7;
 			};
+			class MakeCaptive : Checkbox {
+				property = "MakeCaptive";
+				displayName = "Make Captive";
+				tooltip = "Make the crews count as civilians so that AI won't be shooting at them (the crews will still shoot at the enemy).";
+				typeName = "BOOL";
+				defaultValue = "false";
+			};
+			class Godmode : Checkbox {
+				property = "Godmode";
+				displayName = "Godmode";
+				tooltip = "Give permanent godmode to both the aircrafts and the crews.";
+				typeName = "BOOL";
+				defaultValue = "false";
+			};
 			class Debug : Checkbox {
 				property = "debug";
 				displayName = "Debug";
