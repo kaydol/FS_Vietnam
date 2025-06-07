@@ -119,6 +119,20 @@ class CfgSounds {
 
 };
 
+class CfgHQIdentities {
+	class Godspeed {
+		name = "Godspeed";
+		pitch = 1;
+		speaker = "Male03EN";
+	};
+};
+
+class CfgRadio {
+	
+	#include "CfgRadio.hpp"
+	
+};
+
 
 /*
 	Editor category
@@ -407,6 +421,30 @@ class CfgVehicles
 				tooltip = "The Hunter-Killer pair usually consists of one OH6 (hunter) and one Cobra (killer). If Respawn is enabled, use these classes to replace the killer (chosen at random).";
 				defaultValue = "['vn_b_air_ah1g_01']";
 			};
+			class CallSign : Combo {
+				property = "CallSign";
+				displayName = "Hunter group callsign";
+				tooltip = "Sets the call sign of the hunter's crew group. Affects introduction and support announcements that will be played over the radio.";
+				class values
+				{
+					class NoCallSign {
+						name = "Not set (use generic radio transmissions)";
+						value = "";
+						default = 1;
+					};
+					class GodspeedToNigga {
+						name = "Godspeed talking to Group Nigga";
+						value = "Godspeed_nigga";
+					};
+				};
+			};
+			class EnableIntroduction : Checkbox {
+				property = "EnableIntroduction";
+				displayName = "Enable Introduction";
+				tooltip = "Pilots will calmly introduce themselves on the radio when the module is first activated.";
+				typeName = "BOOL";
+				defaultValue = "false";
+			};
 			class AssessmentRate : Edit {
 				property = "assessmentRate";
 				displayName = "Assessment rate";
@@ -455,13 +493,6 @@ class CfgVehicles
 				tooltip = "Minimum distance between the center of a cluster of enemies and the nearest friendly unit while considering a napalm strike. Low values may result in casualties from friendly fire.";
 				typeName = "NUMBER";
 				defaultValue = 150;
-			};
-			class AnnounceOnInit : Checkbox {
-				property = "announceOnInit";
-				displayName = "Announce activation";
-				tooltip = "A radio message will be played when the module is first activated.";
-				typeName = "BOOL";
-				defaultValue = "false";
 			};
 			class MarkersToMarkWith : Edit {
 				property = "MarkersToMarkWith";
@@ -1580,6 +1611,7 @@ class CfgFunctions
 			class Scramble {file = "\FS_Vietnam\Functions\Helicopters\Scramble.sqf";};
 			class SurvivedPilots {file = "\FS_Vietnam\Functions\Helicopters\SurvivedPilots.sqf";};
 			class ValidateTarget {file = "\FS_Vietnam\Functions\Helicopters\ValidateTarget.sqf";};
+			class GetProblems {file = "\FS_Vietnam\Functions\Helicopters\GetProblems.sqf";};
 		};
 		
 		class Support {

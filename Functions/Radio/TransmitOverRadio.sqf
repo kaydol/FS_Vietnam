@@ -1,123 +1,133 @@
 
 /*
 	Transmits text and\or plays audio if player has radio
-	
-	Usage:
-		[_side, _messageType] remoteExec ["FS_fnc_TransmitOverRadio", 2];
-		[_side, _messageType, _vehicle, _speaker] remoteExec ["FS_fnc_TransmitOverRadio", 2];
-	
-	_side is what side will receive the broadcast.
-	
-	_vehicle is to be passed if you want only the passengers of that vehicle to receive the message. Could be either a unit or a vehicle the unit is inside of. Default: objNull
-		
-	_messageType is either of of :
-		"RequestCAS", "InboundArty", "InboundCAS", "InboundTactical", "ChopperDown", "NewPilot", "BoardingStarted"
-	
-	_speaker can be either a unit or an identity, e.g. "Base", "HQ", "PAPA_BEAR", "AirBase", "BLU". Default: "HQ"
-	
-	Example:
-		[WEST, "NewPilot"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
-	
 */
 
 #include "..\..\definitions.h"
 
 if !(isServer) exitWith {};
 
-params ["_side", "_messageType", ["_vehicle", objNull], ["_speaker", "HQ"]];
+params ["_side", ["_prefix", ""], "_messageType", ["_vehicle", objNull], ["_speaker", objNull]];
 
-private _casRequested = ["mp_groundsupport_01_casrequested_BHQ_0", 
-				"mp_groundsupport_01_casrequested_BHQ_1", 
-				"mp_groundsupport_01_casrequested_BHQ_2"];
-				
-private _artyInbound = 	["mp_groundsupport_45_artillery_BHQ_0", 
-				"mp_groundsupport_45_artillery_BHQ_1", 
-				"mp_groundsupport_45_artillery_BHQ_2"];
-				
-private _casInbound = 	["mp_groundsupport_50_cas_BHQ_0", 
-				"mp_groundsupport_50_cas_BHQ_1", 
-				"mp_groundsupport_50_cas_BHQ_2"];
-				
-private _tacticalInbound = 	["mp_groundsupport_70_tacticalstrikeinbound_BHQ_0", 
-					"mp_groundsupport_70_tacticalstrikeinbound_BHQ_1", 
-					"mp_groundsupport_70_tacticalstrikeinbound_BHQ_2", 
-					"mp_groundsupport_70_tacticalstrikeinbound_BHQ_3", 
-					"mp_groundsupport_70_tacticalstrikeinbound_BHQ_4"];		
-					
-private _chopperDown = 	["mp_groundsupport_65_chopperdown_BHQ_2"];
-				
-private _newPilot = ["mp_groundsupport_05_newpilot_BHQ_0", 
-			"mp_groundsupport_05_newpilot_BHQ_1", 
-			"mp_groundsupport_05_newpilot_BHQ_2"];
+private _data = createHashMapFromArray [
+	[toLowerANSI DEF_RADIO_TRANSMISSION_PREFIX_NONE, createHashMapFromArray [
+		 [toLowerANSI "Arty_North", 		["mp_groundsupport_45_artillery_BHQ_0", "mp_groundsupport_45_artillery_BHQ_1", "mp_groundsupport_45_artillery_BHQ_2"]]
+		,[toLowerANSI "Arty_North_East", 	["mp_groundsupport_45_artillery_BHQ_0", "mp_groundsupport_45_artillery_BHQ_1", "mp_groundsupport_45_artillery_BHQ_2"]]
+		,[toLowerANSI "Arty_East", 			["mp_groundsupport_45_artillery_BHQ_0", "mp_groundsupport_45_artillery_BHQ_1", "mp_groundsupport_45_artillery_BHQ_2"]]
+		,[toLowerANSI "Arty_South_East", 	["mp_groundsupport_45_artillery_BHQ_0", "mp_groundsupport_45_artillery_BHQ_1", "mp_groundsupport_45_artillery_BHQ_2"]]
+		,[toLowerANSI "Arty_South", 		["mp_groundsupport_45_artillery_BHQ_0", "mp_groundsupport_45_artillery_BHQ_1", "mp_groundsupport_45_artillery_BHQ_2"]]
+		,[toLowerANSI "Arty_South_West", 	["mp_groundsupport_45_artillery_BHQ_0", "mp_groundsupport_45_artillery_BHQ_1", "mp_groundsupport_45_artillery_BHQ_2"]]
+		,[toLowerANSI "Arty_West", 			["mp_groundsupport_45_artillery_BHQ_0", "mp_groundsupport_45_artillery_BHQ_1", "mp_groundsupport_45_artillery_BHQ_2"]]
+		,[toLowerANSI "Arty_North_West", 	["mp_groundsupport_45_artillery_BHQ_0", "mp_groundsupport_45_artillery_BHQ_1", "mp_groundsupport_45_artillery_BHQ_2"]]
+		
+		,[toLowerANSI "Napalm_North", 		["mp_groundsupport_70_tacticalstrikeinbound_BHQ_0", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_1", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_2", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_3", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_4"]]
+		,[toLowerANSI "Napalm_North_East", 	["mp_groundsupport_70_tacticalstrikeinbound_BHQ_0", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_1", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_2", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_3", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_4"]]
+		,[toLowerANSI "Napalm_East", 		["mp_groundsupport_70_tacticalstrikeinbound_BHQ_0", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_1", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_2", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_3", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_4"]]
+		,[toLowerANSI "Napalm_South_East", 	["mp_groundsupport_70_tacticalstrikeinbound_BHQ_0", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_1", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_2", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_3", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_4"]]
+		,[toLowerANSI "Napalm_South", 		["mp_groundsupport_70_tacticalstrikeinbound_BHQ_0", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_1", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_2", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_3", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_4"]]
+		,[toLowerANSI "Napalm_South_West", 	["mp_groundsupport_70_tacticalstrikeinbound_BHQ_0", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_1", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_2", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_3", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_4"]]
+		,[toLowerANSI "Napalm_West", 		["mp_groundsupport_70_tacticalstrikeinbound_BHQ_0", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_1", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_2", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_3", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_4"]]
+		,[toLowerANSI "Napalm_North_West", 	["mp_groundsupport_70_tacticalstrikeinbound_BHQ_0", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_1", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_2", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_3", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_4"]]
+		
+		,[toLowerANSI "Introduction", 		["mp_groundsupport_05_newpilot_BHQ_0", "mp_groundsupport_05_newpilot_BHQ_1", "mp_groundsupport_05_newpilot_BHQ_2"]]
+		,[toLowerANSI "Replacement", 		["mp_groundsupport_05_newpilot_BHQ_0", "mp_groundsupport_05_newpilot_BHQ_1", "mp_groundsupport_05_newpilot_BHQ_2"]]
+		,[toLowerANSI "RefuelAndResupply", 	["RadioMsgStatic"]]
+		,[toLowerANSI "Returned", 			["mp_groundsupport_05_newpilot_BHQ_0", "mp_groundsupport_05_newpilot_BHQ_1", "mp_groundsupport_05_newpilot_BHQ_2"]]
+		
+		,[toLowerANSI "RequestCAS", 		["mp_groundsupport_01_casrequested_BHQ_0", "mp_groundsupport_01_casrequested_BHQ_1", "mp_groundsupport_01_casrequested_BHQ_2"]]
+		,[toLowerANSI "InboundCAS", 		["mp_groundsupport_50_cas_BHQ_0", "mp_groundsupport_50_cas_BHQ_1", "mp_groundsupport_50_cas_BHQ_2"]]
+		,[toLowerANSI "ChopperDown", 		["mp_groundsupport_65_chopperdown_BHQ_2"]]
+		,[toLowerANSI "BoardingStarted", 	["mp_groundsupport_05_boardingstarted_BHQ_0","mp_groundsupport_05_boardingstarted_BHQ_1", "mp_groundsupport_05_boardingstarted_BHQ_2"]]
+		,[toLowerANSI "BoardingEnded", 		["mp_groundsupport_10_boardingended_BHQ_0", "mp_groundsupport_10_boardingended_BHQ_1", "mp_groundsupport_10_boardingended_BHQ_2"]]
+		,[toLowerANSI "CrewMemberInjured", 	["RadioMsgStatic"]]
+	]]
+	,[toLowerANSI DEF_RADIO_TRANSMISSION_PREFIX_GODSPEED_NIGGA, createHashMapFromArray [
+		 [toLowerANSI "Arty_North", 		["artillery_north"]]
+		,[toLowerANSI "Arty_North_East", 	["artillery_north_east"]]
+		,[toLowerANSI "Arty_East", 			["artillery_east"]]
+		,[toLowerANSI "Arty_South_East", 	["artillery_south_east"]]
+		,[toLowerANSI "Arty_South", 		["artillery_south"]]
+		,[toLowerANSI "Arty_South_West", 	["artillery_south_west"]]
+		,[toLowerANSI "Arty_West", 			["artillery_west"]]
+		,[toLowerANSI "Arty_North_West", 	["artillery_north_west"]]
+		
+		,[toLowerANSI "Napalm_North", 		["napalm_north"]]
+		,[toLowerANSI "Napalm_North_East", 	["napalm_north_east"]]
+		,[toLowerANSI "Napalm_East", 		["napalm_east"]]
+		,[toLowerANSI "Napalm_South_East", 	["napalm_south_east"]]
+		,[toLowerANSI "Napalm_South", 		["napalm_south"]]
+		,[toLowerANSI "Napalm_South_West", 	["napalm_south_west"]]
+		,[toLowerANSI "Napalm_West", 		["napalm_west"]]
+		,[toLowerANSI "Napalm_North_West", 	["napalm_north_west"]]
+		
+		,[toLowerANSI "Introduction", 		["introduction_1", "introduction_2", "introduction_3"]]
+		,[toLowerANSI "Replacement", 		["replacement_1"]] 												// TODO cfgRadio
+		,[toLowerANSI "RefuelAndResupply", 	["resupply_1"]] 												// TODO cfgRadio
+		,[toLowerANSI "Returned", 			["returned_1", "returned_2", "returned_3"]]
+		
+		//,[toLowerANSI "RequestCAS", 		["RadioMsgStatic"]]
+		//,[toLowerANSI "InboundCAS", 		["RadioMsgStatic"]]
+		//,[toLowerANSI "ChopperDown", 		["RadioMsgStatic"]]
+		//,[toLowerANSI "BoardingStarted", 	["RadioMsgStatic"]]
+		//,[toLowerANSI "BoardingEnded", 		["RadioMsgStatic"]]
+		
+		,[toLowerANSI "InjuredCrewChief", 	["injured_crew_chief_1"]]
+		,[toLowerANSI "InjuredCopilot", 	["injured_copilot_1"]]
+		,[toLowerANSI "Injured", 			["injured_1"]]
+		,[toLowerANSI "Damaged", 			["vehicle_damaged_1"]]
+	]]
+];
 
-private _boardingStarted = 	["mp_groundsupport_05_boardingstarted_BHQ_0",
-					"mp_groundsupport_05_boardingstarted_BHQ_1", 
-					"mp_groundsupport_05_boardingstarted_BHQ_2"];
-			
-private _boardingEnded = 	["mp_groundsupport_10_boardingended_BHQ_0",
-					"mp_groundsupport_10_boardingended_BHQ_1", 
-					"mp_groundsupport_10_boardingended_BHQ_2"];
 
-private _crewMemberDown = 		["RadioMsgStatic"];
-private _crewMemberInjured = 	["RadioMsgStatic"];
-					
-private _text = "";
-private _message = "";
-					
-switch ( _messageType ) do 
-{
-	case "RequestCAS": { 
-		_text = "Requesting CAS at these coordinates!";
-		_message = selectRandom _casRequested;
-	};
-	case "InboundArty": { 
-		_text = "Friendly artillery strike is INBOUND!";
-		_message = selectRandom _artyInbound;
-	};
-	case "InboundCAS": {
-		_text = "Friendly CAS strike is INBOUND!";
-		_message = selectRandom _casInbound;
-	};
-	case "InboundTactical": { 
-		_text = "Friendly tactical strike is INBOUND!";
-		_message = selectRandom _tacticalInbound;
-	};
-	case "ChopperDown": {
-		_text = "All contacts! We have a helo down, I repeat, we have a helo down!";
-		_message = selectRandom _chopperDown;
-	};
-	case "NewPilot": { 
-		_text = "All land units be advised, we have a new air-asset coming in the area now.";
-		_message = selectRandom _newPilot;
-	};
-	case "BoardingStarted": { 
-		_text = "Troops are boarding your helicopter.";
-		_message = selectRandom _boardingStarted;
-	};
-	case "BoardingEnded": { 
-		_text = "All troops are on-board, you're clear for take-off.";
-		_message = selectRandom _boardingEnded;
-	};
-	case "CrewMemberDown": {
-		_text = "Crew member is wounded, we are RTB!";
-		_message = selectRandom _crewMemberDown;
-	};
-	case "CrewMemberInjured": {
-		_text = "Crew member is injured, we are RTB!";
-		_message = selectRandom _crewMemberInjured;
-	};
-	case "RefuelAndResupply": {
-		_text = "We are RTB to conduct repairs and resupply.";
-		_message = selectRandom _crewMemberInjured;
-	};
-	default { _message = "RadioMsgStatic"; };
+private _dictionary = _data get DEF_RADIO_TRANSMISSION_PREFIX_NONE;
+if ((toLowerANSI _prefix) in _data) then {
+	_dictionary = _data get toLowerANSI _prefix;
 };
 
-[[_side, _message, _text, _vehicle, _speaker], {
+
+private _text = "";
+private _cfgRadio = "RadioMsgStatic";
+
+
+if ( (toLowerANSI _messageType) in _dictionary ) then 
+{
+	private _pool = _dictionary get toLowerANSI _messageType;
+	
+	switch (toLowerANSI _messageType) do {
+		case toLowerANSI "InjuredCrewChief": { _prefix = (_prefix splitString "_" select 0); };
+		case toLowerANSI "InjuredCopilot": { _prefix = (_prefix splitString "_" select 0); };
+		case toLowerANSI "Injured": { _prefix = (_prefix splitString "_" select 0); };
+		case toLowerANSI "Damaged": { _prefix = (_prefix splitString "_" select 0); };
+		default {};
+	};
+	
+	_cfgRadio = _prefix + "_" + selectRandom _pool;
+	if (isText(ConfigFile >> "CfgRadio" >> _cfgRadio >> "text")) then {
+		private _str = getText (ConfigFile >> "CfgRadio" >> _cfgRadio >> "text");
+		_text = _str;
+	};
+	diag_log format ["TransmitOverRadio: %1", _cfgRadio];
+};
+
+
+if (_speaker isEqualTo objNull && _prefix isNotEqualTo "") then 
+{
+	if (_prefix find "_" > 0) then {
+		_prefix = _prefix splitString "_" select 0;
+	};
+	
+	private _isClass = isClass(ConfigFile >> "CfgHQIdentities" >> _prefix);
+	if (_isClass) then {
+		_speaker = _prefix;
+	};
+};
+
+
+[[_side, _cfgRadio, _text, _vehicle, _speaker], {
 	
 	if !(hasInterface) exitWith {};
 	
-	params ["_side", "_message", "_text", "_vehicle", "_speaker"];
+	params ["_side", "_cfgRadio", "_text", "_vehicle", "_speaker"];
 	
 	private _canReceiveMessage = false;
 	
@@ -136,11 +146,11 @@ switch ( _messageType ) do
 	if !( _canReceiveMessage ) exitWith {};
 	
 	if ( _speaker isEqualType "" ) then {
-		[_side, _speaker] sideRadio _message;
-		[_side, _speaker] sideChat _text;
+		if (_cfgRadio isNotEqualTo "") then {	[_side, _speaker] sideRadio _cfgRadio;	};
+		if (_text isNotEqualTo "") then 	{	[_side, _speaker] sideChat _text;		};
 	} else {
-		[_side, "HQ"] sideRadio _message;
-		_speaker sideChat _text;
+		if (_cfgRadio isNotEqualTo "") then {	[_side, "HQ"] sideRadio _cfgRadio;		};
+		if (_text isNotEqualTo "") then 	{	_speaker sideChat _text;				};
 	};
 	
 }] remoteExec ["call", 0];
