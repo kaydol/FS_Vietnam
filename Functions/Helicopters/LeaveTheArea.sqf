@@ -8,6 +8,8 @@ _pos = _aircraft getPos [500, getDir _aircraft];
 // Set reached_the_area to False to indicate leaving the scouting area
 _aircraft setVariable ["reached_the_area", false];
 
+{ deleteWaypoint _x } forEachReversed waypoints _group;
+
 _NewWP = _group addWaypoint [_pos, 0, 1];
 _NewWP setWaypointType "MOVE";
 _NewWP setWaypointSpeed "NORMAL";	

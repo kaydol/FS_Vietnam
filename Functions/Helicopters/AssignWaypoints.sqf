@@ -18,6 +18,8 @@ private _dir = [(getDir _aircraft) + ([_aircraft, _target] call BIS_fnc_relative
 private _next_dir = 0;
 private _pos = [];
 
+{ deleteWaypoint _x } forEachReversed waypoints _group;
+
 for[{_i = 0},{_i <= _waypoints},{_i = _i + 1}] do 
 {
 	_next_dir = [_dir + _i * 360/_waypoints] call FS_fnc_DirectionWrapper;

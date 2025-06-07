@@ -94,9 +94,7 @@ else
 	
 	private _pos = getPos _closest_base;
 	
-	while { count waypoints _group > 1 } do {
-		deleteWaypoint [_group, 1];
-	};
+	{ deleteWaypoint _x } forEachReversed waypoints _group;
 	
 	private _NewWP = _group addWaypoint [_pos, 0];
 	_NewWP setWaypointType "MOVE";

@@ -24,7 +24,7 @@ if (_debug) then {
 	private _aircraft = %1 ;
 	private _group = group _aircraft;
 	
-	if (!isNull _aircraft && count waypoints _group > 1) then {
+	if (!isNull _aircraft && count waypoints _group > 0) then {
 		_this select 0 drawArrow [_aircraft, waypointPosition [_group, currentWaypoint _group], [0,0,1,1]] 
 	};
 	
