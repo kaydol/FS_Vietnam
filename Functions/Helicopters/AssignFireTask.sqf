@@ -4,8 +4,10 @@
 	This function assigns fire missions
 */
 
+#include "..\..\definitions.h"
+
 params [
-	"_caller", 
+	"_aircraft", 
 	"_coordinates", 
 	"_estimatedVictims",
 	"_supportParams",	
@@ -13,7 +15,7 @@ params [
 	["_debug", false, [true]]
 ];
 
-private _side = _caller getVariable ["initSide", side _caller];
+private _side = _aircraft getVariable ["initSide", side _aircraft];
 private _multipleCoordinates = _coordinates isEqualTypeAll [];
 private _distanceTofriendlies = 1e6;
 
@@ -57,11 +59,27 @@ if ( !_taskAssigned && _estimatedVictims >= _napalmThreshold && _distanceTofrien
 		[_side, "FIRETASKS", [format["%1_LAST_TIME", _supportName], time]] call FS_fnc_UpdateSideVariable;
 		
 		// Updating global variable that stores all fire tasks that are in progress
-		[_side, "FIRETASKS", [_supportName, [_caller, _target]], _napalmCD] call FS_fnc_UpdateSideVariable;
+		[_side, "FIRETASKS", [_supportName, [_aircraft, _target]], _napalmCD] call FS_fnc_UpdateSideVariable;
 		
-		// Sending a radio warning
-		[_side, "InboundTactical"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
-	
+		if (_closestFriend isNotEqualTo objNull) then 
+		{
+			private _relativeDir = _closestFriend getDir (_params # 0);
+			private _messageType = "";
+			
+			if ((_relativeDir >= 337.5 && _relativeDir <= 360) || 
+			    (_relativeDir >= 0 && _relativeDir < 22.5)) then { _messageType = "napalm_north" };
+			if (_relativeDir >= 22.5 && _relativeDir < 67.5) then { _messageType = "napalm_north_east" };
+			if (_relativeDir >= 67.5 && _relativeDir < 112.5) then { _messageType = "napalm_east" };
+			if (_relativeDir >= 112.5 && _relativeDir < 157.5) then { _messageType = "napalm_south_east" };
+			if (_relativeDir >= 157.5 && _relativeDir < 202.5) then { _messageType = "napalm_south" };
+			if (_relativeDir >= 202.5 && _relativeDir < 247.5) then { _messageType = "napalm_south_west" };
+			if (_relativeDir >= 247.5 && _relativeDir < 292.5) then { _messageType = "napalm_west" };
+			if (_relativeDir >= 292.5 && _relativeDir < 337.5) then { _messageType = "napalm_north_west" };
+			
+			// Sending a radio warning
+			[_side, _aircraft getVariable DEF_RADIO_TRANSMISSION_PREFIX_VAR, _messageType] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+		};
+		
 		_taskAssigned = True; 
 	} 
 	else 
@@ -88,13 +106,28 @@ if ( !_taskAssigned && _estimatedVictims >= _artilleryThreshold && _distanceTofr
 		[_side, "FIRETASKS", [format["%1_LAST_TIME", _supportName], time]] call FS_fnc_UpdateSideVariable;
 		
 		// Updating global variable that stores all fire tasks that are in progress
-		[_side, "FIRETASKS", [_supportName, [_caller, _target]], _artilleryCD] call FS_fnc_UpdateSideVariable;
+		[_side, "FIRETASKS", [_supportName, [_aircraft, _target]], _artilleryCD] call FS_fnc_UpdateSideVariable;
 		
-		// Sending a radio warning
-		[_side, "InboundArty"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+		if (_closestFriend isNotEqualTo objNull) then 
+		{
+			private _relativeDir = _closestFriend getDir (_params # 0);
+			private _messageType = "";
+			
+			if ((_relativeDir >= 337.5 && _relativeDir <= 360) || 
+			    (_relativeDir >= 0 && _relativeDir < 22.5)) then { _messageType = "arty_north" };
+			if (_relativeDir >= 22.5 && _relativeDir < 67.5) then { _messageType = "arty_north_east" };
+			if (_relativeDir >= 67.5 && _relativeDir < 112.5) then { _messageType = "arty_east" };
+			if (_relativeDir >= 112.5 && _relativeDir < 157.5) then { _messageType = "arty_south_east" };
+			if (_relativeDir >= 157.5 && _relativeDir < 202.5) then { _messageType = "arty_south" };
+			if (_relativeDir >= 202.5 && _relativeDir < 247.5) then { _messageType = "arty_south_west" };
+			if (_relativeDir >= 247.5 && _relativeDir < 292.5) then { _messageType = "arty_west" };
+			if (_relativeDir >= 292.5 && _relativeDir < 337.5) then { _messageType = "arty_north_west" };
+			
+			// Sending a radio warning
+			[_side, _aircraft getVariable DEF_RADIO_TRANSMISSION_PREFIX_VAR, _messageType] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+		};
 		
 		_taskAssigned = True;
-	
 	}
 	else 
 	{

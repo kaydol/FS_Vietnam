@@ -19,9 +19,11 @@ Author:
     kaydol
 ---------------------------------------------------------------------------- */
 
+#include "..\..\definitions.h"
+
 if !(isServer) exitWith {};
 
-params ["_module", ["_units", []], ["_activated", false]];
+params ["_module", ["_units", []], ["_activated", false], ["_firstRun", true]];
 
 if !(_activated) exitWith {};
 
@@ -33,13 +35,14 @@ if (_hunterClasses isEqualType "") then { _hunterClasses = call compile _hunterC
 private _killerClasses = _module getVariable "KillerClasses";
 if (_killerClasses isEqualType "") then { _killerClasses = call compile _killerClasses; };
 
+private _radioTransmissionPrefix = _module getVariable "CallSign";
 private _assessmentRate = _module getVariable "assessmentRate";
 private _artilleryThreshold = _module getVariable "artilleryThreshold";
 private _artilleryCD = _module getVariable "artilleryCooldown";
 private _napalmThreshold = _module getVariable "napalmThreshold";
 private _napalmCD = _module getVariable "napalmCooldown";
 private _ambientRadio = _module getVariable "AmbientRadio";
-private _announceOnInit = _module getVariable "AnnounceOnInit";
+private _enableIntroduction = _module getVariable "EnableIntroduction";
 private _markersToMarkWith = _module getVariable "MarkersToMarkWith";
 if (_markersToMarkWith isEqualType "") then { _markersToMarkWith = call compile _markersToMarkWith; };
 private _minClusterSizeToMark = _module getVariable "MinClusterSizeToMark";
@@ -72,41 +75,56 @@ forEach _synced;
 
 // Step 2. Run scripts on synced aircrafts
 {
+	private _aircraft = _x;
 	private _fsmInProgress = false;
 	
-	if (!isNil{_x getVariable "AirCommandFSMHandle"}) then {
-		_fsmInProgress = !completedFSM (_x getVariable "AirCommandFSMHandle");
+	if (!isNil{_aircraft getVariable "AirCommandFSMHandle"}) then {
+		_fsmInProgress = !completedFSM (_aircraft getVariable "AirCommandFSMHandle");
 	};
 	
 	if !(_fsmInProgress) then 
 	{
 		private _target = objNull;
-		private _fsmHandle = [_x, _assessmentRate, [_artilleryThreshold, _artilleryCD, _napalmThreshold, _napalmCD], _target, _markersToMarkWith, _minClusterSizeToMark, _debug] execFSM "\FS_Vietnam\FSM\Loach.fsm";
+		private _fsmHandle = [_aircraft, _assessmentRate, [_artilleryThreshold, _artilleryCD, _napalmThreshold, _napalmCD], _target, _markersToMarkWith, _minClusterSizeToMark, _debug] execFSM "\FS_Vietnam\FSM\Loach.fsm";
 		
-		_x setVariable ["AirCommandFSMHandle", _fsmHandle, true];
+		_aircraft setVariable ["AirCommandFSMHandle", _fsmHandle, true];
+		
+		if (_radioTransmissionPrefix != DEF_RADIO_TRANSMISSION_PREFIX_NONE) then {
+			_aircraft setVariable [DEF_RADIO_TRANSMISSION_PREFIX_VAR, _radioTransmissionPrefix, true];
+			[group driver _aircraft, [_radioTransmissionPrefix splitString "_" select 0]] remoteExec ["setGroupId", 0];
+		};
+		
+		// Step 3. Announce if needed 
+		if ( _firstRun && _enableIntroduction ) then 
+		{
+			[_aircraft getVariable ["initSide", side _aircraft], _aircraft getVariable DEF_RADIO_TRANSMISSION_PREFIX_VAR, "Introduction"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+		};
+		
+		if (!_firstRun) then {
+			[_aircraft getVariable ["initSide", side _aircraft], _aircraft getVariable DEF_RADIO_TRANSMISSION_PREFIX_VAR, "Replacement"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+		};
 		
 		if (_respawnDestroyedAircrafts) then 
 		{
-			[_x, _module, _respawnDelay, _hunterClasses, _debug] spawn 
+			// All aircrafts are considered HUNTERS for now and will use _hunterClasses
+			[_aircraft, _module, _respawnDelay, _hunterClasses, _aircraft getVariable ["initSide", side _aircraft], getPos _aircraft, _debug] spawn 
 			{
-				params ["_aircraft", "_module", "_respawnDelay", "_hunterClasses", "_debug"];
-				waitUntil { 
+				params ["_aircraft", "_module", "_respawnDelay", "_hunterClasses", "_side", "_posOfDeath", "_debug"];
+				waitUntil {
 					sleep 1; 
 					private _check = false;
 					if (!_check) then { _check = isNil {_aircraft}; };
 					if (!_check) then { _check = isNull _aircraft; };
 					if (!_check) then { _check = completedFSM (_aircraft getVariable "AirCommandFSMHandle"); };
+					_posOfDeath = getPos _aircraft;
 					_check
 				};
-				
 				
 				sleep _respawnDelay;
 				
 				if (isNull _module) exitWith {
 					"Air Command Module: could not respawn aircraft, because the module was deleted" call BIS_fnc_Error;
 				};
-				
-				//_module synchronizeObjectsRemove [_aircraft];
 				
 				if (_debug) then {
 					diag_log "Air Command Module: Spawning new aircraft...";
@@ -115,20 +133,19 @@ forEach _synced;
 				/* Aircraft destroyed, spawn a new one at the closest base */ 
 				/* Select the closest base */
 				
-				private _side = _aircraft getVariable ["initSide", side _aircraft];
 				private _bases = FS_REFUELRELOAD_BASES;
 				private _distance = 999999999999;
 				private _closest_base = objNull;
 
 				{
 					/* Only bases of the same side are taken into consideration */
-					
-					if ( ( _aircraft call FS_fnc_GetModuleOwner ) == _side ) then 
+					private _baseModule = _x;
+					if ( ( _baseModule call FS_fnc_GetModuleOwner ) == _side ) then 
 					{
-						private _dist =  _x distance _aircraft;
+						private _dist =  _baseModule distance _posOfDeath;
 						if ( _dist < _distance ) then {
 							_distance = _dist;
-							_closest_base = _x;
+							_closest_base = _baseModule;
 						};
 					};
 				}
@@ -139,7 +156,7 @@ forEach _synced;
 				
 				if ( _closest_base isEqualTo objNull ) then 
 				{
-					// No airports defined in the editor
+					// No air bases defined in the editor
 					if ( _debug ) then {
 						diag_log "Air Command Module: No bases to spawn a new aircraft";
 					};
@@ -164,23 +181,9 @@ forEach _synced;
 				};
 				
 				_module synchronizeObjectsAdd [_newAircraft];
-				[_module, [], true] spawn FS_fnc_ModuleAirCommand;
+				[_module, [], true, false] spawn FS_fnc_ModuleAirCommand;
 			};
 		};
 	};
 }
 forEach (_aircrafts select { _x call FS_fnc_CanPerformDuties });
-
-
-// Step 3. Announce if needed 
-if ( _announceOnInit ) then 
-{
-	private _sides = _synced apply { side _x } select { _x isEqualType WEST };
-	_sides = _sides arrayIntersect _sides; // get unique elements 
-
-	{ [_x, "NewPilot"] remoteExec ["FS_fnc_TransmitOverRadio", 2]} forEach _sides;
-};
-
-
-
-

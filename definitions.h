@@ -25,3 +25,8 @@
 #define DEF_SNIPER_FSM_HANDLE "SniperFSM"
 
 #define DEF_CURRENT_PLAYER (missionNameSpace getVariable ["bis_fnc_moduleRemoteControl_unit", player])
+
+#define DEF_RADIO_TRANSMISSION_PREFIX_VAR "FS_Radio_Transmission_Prefix"
+#define DEF_RADIO_TRANSMISSION_PREFIX_NONE ""
+#define DEF_RADIO_TRANSMISSION_PREFIX_GODSPEED_NIGGA "godspeed_nigga"
+

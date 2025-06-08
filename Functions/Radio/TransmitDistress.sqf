@@ -1,4 +1,6 @@
 
+#include "..\..\definitions.h"
+
 params ["_caller"];
 
 if !( _caller call FS_fnc_HasRadioAround ) exitWith {};
@@ -7,7 +9,7 @@ if ( _caller getVariable ["DISTRESSED", False] ) exitWith {};
 
 [_caller, "DISTRESSED", True, 180, nil, True] spawn FS_fnc_SetVarLifespan;
 
-// [side _caller, "RequestCAS"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+// [side _caller, "", "RequestCAS"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
 
 /*
 "to_c01_m01_brief_001_br_briefing_a_OLYMPOS_0"
