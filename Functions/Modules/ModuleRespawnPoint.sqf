@@ -183,8 +183,7 @@ _synced = _synced apply {[_x, ""]};
 			private _landSearchRadius = _module getVariable "LandSearchRadius";
 			
 			if ( _godModeLength > 0 ) then {
-				_unit allowDamage false;
-				
+				[_unit, _godModeLength] remoteExec ["FS_fnc_AddGodmodeTimespan", _unit];
 				// ["RespawnAdded", [localize "STR_FS_PERK_EFFECT", format ["%1 : %2 %3", localize "STR_FS_LvlFeatures_SpawnProtection", CONST_RESPAWN_GODMODETIME, localize "STR_FS_PERK_seconds"],"\a3\Ui_f\data\GUI\Cfg\CommunicationMenu\instructor_ca.paa"]] call BIS_fnc_showNotification;
 			};
 			
@@ -318,16 +317,9 @@ _synced = _synced apply {[_x, ""]};
 					[DEF_CURRENT_PLAYER, _anim] remoteExec ["switchMove", 0]; 
 				};
 			};
-			
-			if (_godModeLength > 0) then {
-				[_unit, _godModeLength] spawn {
-					sleep (_this # 1);
-					(_this # 0) allowDamage true;
-				};
-			};
 		};
 	}];
-	player setVariable ["ModuleRespawnPoint_RespawnEH", _respawnEH];
+	DEF_CURRENT_PLAYER setVariable ["ModuleRespawnPoint_RespawnEH", _respawnEH];
 
 } remoteExec ["call", 0, true];
 
