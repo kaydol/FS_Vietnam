@@ -3,7 +3,11 @@ params ["_object", ["_preventRecursion", false]];
 
 if ( _object call FS_fnc_CanTransmit ) exitWith { true };
 
-private _ableToReceiveRadioComms = "ItemRadio" in assignedItems _object;
+if (isNil{RADIOCOMMS_PERSONAL_RADIOS}) then {
+	RADIOCOMMS_PERSONAL_RADIOS = call compile getText (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "PersonalRadios" >> "defaultValue");
+};
+
+private _ableToReceiveRadioComms = ((RADIOCOMMS_PERSONAL_RADIOS apply {toLowerANSI _x}) arrayIntersect ((assignedItems _object) apply {toLowerANSI _x})) isNotEqualTo [];
 if ( _ableToReceiveRadioComms ) exitWith { true };
 if ( _preventRecursion ) exitWith { false };
 
@@ -13,15 +17,15 @@ if ( _preventRecursion ) exitWith { false };
 */
 
 if (isNil{RADIOCOMMS_OBJECTS_WITH_COMMS}) then {
-	RADIOCOMMS_OBJECTS_WITH_COMMS = getArray (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "EntitiesWithComms" >> "defaultValue");
+	RADIOCOMMS_OBJECTS_WITH_COMMS = call compile getText (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "EntitiesWithComms" >> "defaultValue");
 };
-if (isNil{RADIOCOMMS_AUDIBLE_RADIUS}) then {	
+if (isNil{RADIOCOMMS_AUDIBLE_RADIUS}) then {
 	RADIOCOMMS_AUDIBLE_RADIUS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "AudibleRadius" >> "defaultValue");
 };
 
-private _entities = _this nearObjects RADIOCOMMS_AUDIBLE_RADIUS;
+private _entities = _object nearObjects RADIOCOMMS_AUDIBLE_RADIUS;
 {
-	if ([side _x, side _this] call BIS_fnc_sideIsFriendly && [_x, true] call FS_fnc_CanReceive || 
+	if ([side _x, side _object] call BIS_fnc_sideIsFriendly && [_x, true] call FS_fnc_CanReceive || 
 		typeOf _x in (RADIOCOMMS_OBJECTS_WITH_COMMS apply {toLowerAnsi _x})) exitWith {
 		_ableToReceiveRadioComms = true;
 	};

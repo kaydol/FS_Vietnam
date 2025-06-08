@@ -1220,23 +1220,29 @@ class CfgVehicles
 				tooltip = "An array of entities that grant nearby units access to the radio communication system, which enables them to transmit and receive addon-specific messages over radio.";
 				defaultValue = "['Air', 'Tank', 'uns_willys_base', 'Land_vn_b_trench_bunker_03_04']";
 			};
-			class AudibleRadius : Edit {
-				property = "AudibleRadius";
-				displayName = "Audible radius";
-				tooltip = "Units within this distance from RTOs or objects & vehicles specified in the field above will be given access to comms.";
-				typeName = "NUMBER";
-				defaultValue = 10;
-			};
 			class RTOItemsAndBackpacks : Edit {
 				property = "RTOItemsAndBackpacks";
 				displayName = "RTO items and backpacks";
-				tooltip = "Items and backpacks that give full access to comms. Units with these items or backpacks are considered Radio Telephone Operators (RTOs).";
+				tooltip = "Items and backpacks that give full access to comms. That includes receiving addon-specific radio messages as well as broadcast your position, making your group known to the helicopters. Units with these items or backpacks are considered Radio Telephone Operators (RTOs).";
 				defaultValue = "['vn_b_pack_03_02_xm177_pl', 'vn_o_pack_t884_01', 'vn_b_pack_trp_04_02', 'vn_o_pack_t884_01', 'vn_b_pack_03_xm177_pl', 'vn_b_pack_lw_06', 'vn_b_pack_lw_06_m16_pl', 'vn_b_pack_prc77_01', 'vn_b_pack_03_02', 'vn_b_pack_03', 'vn_b_pack_t884_01', 'vn_b_pack_trp_04', 'UNS_ItemRadio_PRC_25', 'UNS_NVA_RTO', 'UNS_ARMY_RTO', 'UNS_ARMY_RTO2', 'UNS_SF_RTO', 'UNS_Alice_FR', 'UNS_USMC_RTO', 'UNS_USMC_RTO2']";
+			};
+			class AudibleRadius : Edit {
+				property = "AudibleRadius";
+				displayName = "Audible radius";
+				tooltip = "Units within this distance from RTOs or objects & vehicles with comms will be given access to comms.";
+				typeName = "NUMBER";
+				defaultValue = 10;
+			};
+			class PersonalRadios : Edit {
+				property = "PersonalRadios";
+				displayName = "Personal Radios";
+				tooltip = "Personal radios allow you to receive radio transmissions, but do not allow you to transmit (you will not be able to broadcast your position or make your group known to the helicopters).";
+				defaultValue = "['ItemRadio', 'vn_b_item_radio_urc10']";
 			};
 			class RequireRankingOfficer : Checkbox {
 				property = "RequireRankingOfficer";
-				displayName = "Require Ranking Officer";
-				tooltip = "Some support missions can be called only by a ranking officer. Ranking officer is the most senior officer in the group.";
+				displayName = "Sitreps Require Ranking Officer";
+				tooltip = "Only ranking officers will be able to provide sitreps. Ranking officer is the most senior officer in the whole group. A situational report is a short message that provides info to the HQ.";
 				typeName = "BOOL";
 				defaultValue = "true";
 			};
