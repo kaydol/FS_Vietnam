@@ -1,4 +1,4 @@
-/*%FSM<COMPILE "scriptedFSM.cfg, Loach">*/
+/*%FSM<COMPILE "E:\SteamLibrary\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, Loach">*/
 /*%FSM<HEAD>*/
 /*
 item0[] = {"Found_target_",4,218,-150.487396,-141.569641,-60.487457,-91.569641,1.000000,"Found target?"};
@@ -26,7 +26,7 @@ item21[] = {"__Long__Delay",3,250,-506.369446,-283.567352,-416.368805,-233.56733
 item22[] = {"Out_of_the_area",4,218,-101.016327,-45.770477,-11.016296,4.229492,1.000000,"Out of" \n "the area?"};
 item23[] = {"Time_has_passed",4,218,243.772095,-245.331192,333.772095,-195.331161,0.000000,"Time has" \n "passed?"};
 item24[] = {"__Long__Add_wayp",3,250,-150.004654,-286.798279,-60.004654,-236.798401,0.000000,"(Long)" \n "Add waypoints"};
-item25[] = {"Asses___Finalize",2,4346,391.804382,-286.181458,481.804382,-236.181458,0.000000,"Asses & Finalize" \n "target"};
+item25[] = {"Asses___Finalize",2,250,391.804382,-286.181458,481.804382,-236.181458,0.000000,"Asses & Finalize" \n "target"};
 item26[] = {"Reached_",4,218,-31.107224,-285.726318,58.892776,-235.726349,1.000000,"Reached?"};
 item27[] = {"_",8,218,415.495361,40.263641,505.495361,90.263641,0.000000,""};
 item28[] = {"Fire_tasks_assigned",4,218,341.654419,-44.230133,431.654419,5.769867,1.000000,"Fire tasks" \n "assigned?"};
@@ -78,8 +78,8 @@ link42[] = {27,29};
 link43[] = {28,20};
 link44[] = {29,14};
 link45[] = {30,14};
-globals[] = {0.000000,0,0,0,0,640,480,1,75,6316128,1,-91.721191,887.506836,206.017990,-465.009460,1147,786,1};
-window[] = {0,-1,-1,-1,-1,1270,312,2038,312,1,1165};
+globals[] = {0.000000,0,0,0,0,640,480,1,75,6316128,1,-492.117432,487.110535,145.403214,-525.623291,1147,786,1};
+window[] = {0,-1,-1,-1,-1,1218,260,1986,260,1,1165};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -588,7 +588,7 @@ class FSM
                                         to="__Long__On_stati";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"" \n
-                                         "time - _time > 30" \n
+                                         "time - _time > 180" \n
                                          ""/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/"if (_debug) then {" \n
                                          "	diag_log ""Pilot: Timed out while reaching the area"";" \n
