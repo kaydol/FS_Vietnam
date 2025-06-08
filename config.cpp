@@ -1504,7 +1504,7 @@ class CfgVehicles
 				property = "ModuleAtmosphereChanger_Fog";
 				displayName = "Enable Fog";
 				tooltip = "";
-				defaultValue = "1";
+				defaultValue = "0";
 			};
 			class FogParams: Edit {
 				property = "ModuleAtmosphereChanger_FogParams";
@@ -1516,7 +1516,19 @@ class CfgVehicles
 				property = "ModuleAtmosphereChanger_EnableDust";
 				displayName = "Enable Dust Clouds";
 				tooltip = "";
-				defaultValue = "1";
+				defaultValue = "0";
+			};
+			class EnableSnow: CheckboxNumber {
+				property = "ModuleAtmosphereChanger_EnableSnow";
+				displayName = "Enable Snow";
+				tooltip = "";
+				defaultValue = "0";
+			};
+			class EnableSteam: CheckboxNumber {
+				property = "ModuleAtmosphereChanger_EnableSteam";
+				displayName = "Enable Steamy Breath";
+				tooltip = "";
+				defaultValue = "0";
 			};
 			class Radius : Edit {
 				property = "ModuleAtmosphereChanger_Radius";
@@ -1550,6 +1562,13 @@ class CfgVehicles
 				tooltip = "If enabled, instead of deleting itself, the module will restart after Stop Condition turned true. It allows a cycle: Start Condition -> Stop Condition -> Start Condition -> etc. Use this if you want to be able to stop and resume the work of the module.";
 				typeName = "NUMBER";
 				defaultValue = 1;
+			};
+			class Debug : Checkbox {
+				property = "Debug";
+				displayName = "Debug";
+				tooltip = "";
+				typeName = "BOOL";
+				defaultValue = "false"; //true - 1, false - 0
 			};
 			class ModuleDescription : ModuleDescription {};
 		};
