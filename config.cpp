@@ -1111,13 +1111,13 @@ class CfgVehicles
 			class StartCondition: Edit {
 				property = "StartCondition";
 				displayName = "Start condition";
-				tooltip = "Condition that has to be true in order for this module to start working. Condition is checked every second and only on Server.";
+				tooltip = "Condition that has to be true in order for this module to start working. Condition is checked every second and only on Server. Module is stored in the _this variable.";
 				defaultValue = "true";
 			};
 			class StopCondition: Edit {
 				property = "StopCondition";
 				displayName = "Stop condition";
-				tooltip = "Condition that has to be true in order for this module to stop working, after which the module will delete itself. Condition is checked every second and only on Server.";
+				tooltip = "Condition that has to be true in order for this module to stop working, after which the module will delete itself. Condition is checked every second and only on Server. Module is stored in the _this variable.";
 				defaultValue = "false";
 			};
 			class LoopConditions : Checkbox { //["Default"]
@@ -1422,13 +1422,13 @@ class CfgVehicles
 			class StartCondition: Edit {
 				property = "StartCondition";
 				displayName = "Start condition";
-				tooltip = "Condition that has to be true in order for this module to start working. Condition is checked only on Server.";
+				tooltip = "Condition that has to be true in order for this module to start working. Condition is checked only on Server. Module is stored in the _this variable.";
 				defaultValue = "true";
 			};
 			class StopCondition: Edit {
 				property = "StopCondition";
 				displayName = "Stop condition";
-				tooltip = "Condition that has to be true in order for this module to stop working, after which all created Spawn Points will be removed and the module will delete itself. Condition is checked only on Server.";
+				tooltip = "Condition that has to be true in order for this module to stop working, after which all created Spawn Points will be removed and the module will delete itself. Condition is checked only on Server. Module is stored in the _this variable.";
 				defaultValue = "false";
 			};
 			class LoopConditions : Checkbox { //["Default"]
@@ -1535,13 +1535,13 @@ class CfgVehicles
 			class StartCondition: Edit {
 				property = "ModuleAtmosphereChanger_StartCondition";
 				displayName = "Start condition";
-				tooltip = "Condition that has to be true in order for this module to start working. Condition is checked every second, locally.";
+				tooltip = "Condition that has to be true in order for this module to start working. Condition is checked every second, locally. Module is stored in the _this variable.";
 				defaultValue = "true";
 			};
 			class StopCondition: Edit {
 				property = "ModuleAtmosphereChanger_StopCondition";
 				displayName = "Stop condition";
-				tooltip = "Condition that has to be true in order for this module to stop working, after which the module will delete itself. Condition is checked every second, locally.";
+				tooltip = "Condition that has to be true in order for this module to stop working, after which the module will delete itself. Condition is checked every second, locally. Module is stored in the _this variable.";
 				defaultValue = "false";
 			};
 			class LoopConditions : CheckboxNumber { //["Default"]

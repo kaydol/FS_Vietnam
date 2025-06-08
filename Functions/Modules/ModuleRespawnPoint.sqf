@@ -327,9 +327,9 @@ _synced = _synced apply {[_x, ""]};
 while { true } do 
 {
 	/* Wait until a user-defined condition is true */
-	WaitUntil { sleep _sleep; call _startCondition }; 
+	WaitUntil { sleep _sleep; _logic call _startCondition }; 
 	
-	while {sleep _sleep; ! call _stopCondition || (_overrideStopCondition && _synced isEqualTo []) || isNull _logic } do {
+	while {sleep _sleep; !(_logic call _stopCondition) || (_overrideStopCondition && _synced isEqualTo []) || isNull _logic } do {
 		
 		if (isNull _logic) exitWith {};
 		

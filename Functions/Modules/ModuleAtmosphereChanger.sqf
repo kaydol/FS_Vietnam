@@ -82,7 +82,7 @@ switch _mode do {
 		while { true } do 
 		{
 			/* Wait until a user-defined condition is true */
-			WaitUntil { sleep 0.5; call _startCondition && [_moduleForDistanceChecks, true] call _fnc_distanceCheck }; 
+			WaitUntil { sleep 0.5; _logic call _startCondition && [_moduleForDistanceChecks, true] call _fnc_distanceCheck }; 
 			
 			// Defining variables to make them visible outside of the switch-case block
 			private _handle = 0 spawn {};
@@ -211,7 +211,7 @@ switch _mode do {
 			};
 				
 			/* Wait until a user-defined condition is true */
-			WaitUntil { sleep 1; call _stopCondition || [_moduleForDistanceChecks, false] call _fnc_distanceCheck };
+			WaitUntil { sleep 1; _logic call _stopCondition || [_moduleForDistanceChecks, false] call _fnc_distanceCheck };
 			
 			if (_rain) then {
 				_transitionTime setGusts _oldGusts;

@@ -48,7 +48,7 @@ switch _presetMode do {
 	case JUKEBOX_PRESET_ARSENAL: { 
 		_pool = ["arsenal_1", "arsenal_2", "arsenal_3", "arsenal_4", "arsenal_5"];
 	};
-	case JUKEBOX_PRESET_CUSTOM: { 
+	case JUKEBOX_PRESET_CUSTOM: {
 		_pool = call compile _customTracks; 
 	};
 	default {};
@@ -85,7 +85,7 @@ _logic setVariable ["TrackPool", _poolWeighted];
 while { true } do 
 {
 	/* Wait until a user-defined condition is true */
-	WaitUntil { sleep 1; call _startCondition }; 
+	WaitUntil { sleep 1; _logic call _startCondition }; 
 	
 	if (_debug) then {
 		diag_log format ["Jukebox %1: Start Condition is true, start playing...", _logic];
@@ -102,7 +102,7 @@ while { true } do
 	};
 
 	/* Wait until a user-defined condition is true */
-	WaitUntil { sleep 1; call _stopCondition };
+	WaitUntil { sleep 1; _logic call _stopCondition };
 
 	if (_debug) then {
 		diag_log format ["Jukebox %1: Stop Condition is true", _logic];
@@ -116,9 +116,9 @@ while { true } do
 		if ( _playLocally ) then {
 		
 			/* Check if the music was stopped because another Jukebox got activated */
-			private _otherJukeboxes = (allMissionObjects "FS_Jukebox_Module") select {_x != _logic && call compile ( _x getVariable "StartCondition" )};
+			private _otherJukeboxes = (allMissionObjects "FS_Jukebox_Module") select {_x != _logic && _x call compile ( _x getVariable "StartCondition" )};
 			
-			//private _debugInfo = (allMissionObjects "FS_Jukebox_Module") apply {[_x, _x getVariable "StartCondition", call compile (_x getVariable "StartCondition")]};
+			//private _debugInfo = (allMissionObjects "FS_Jukebox_Module") apply {[_x, _x getVariable "StartCondition", _x call compile (_x getVariable "StartCondition")]};
 			//diag_log format ["Jukebox %1: other jukeboxes=%2", _logic, _otherJukeboxes];
 			//diag_log format ["Jukebox %1: all jukeboxes=%2", _logic, _debugInfo];
 			//diag_log format ["Jukebox %1: active jukeboxes=%2", _logic, _debugInfo select {_x # 2}];
