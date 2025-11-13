@@ -239,7 +239,7 @@ else
 					// Just reshuffled this code a bit because the previous version suddenly 
 					// stopped working after I haven't touched the code for a year 
 					[[_aircraft, _names select _i, _repairTo min (_damage select _i)], {
-						_this # 0 setHitPointDamage [_this # 1, _this # 1];
+						_this # 0 setHitPointDamage [_this # 1, _this # 2];
 					}] remoteExec ["call", _aircraft];
 				};
 			};
