@@ -1,6 +1,9 @@
 
 params ["_object", ["_preventRecursion", false]];
 
+//-- Prevent players hearing radio from curators unless player is a curator, then he should be able to hear all radio 
+if (_object isKindOf "VirtualCurator_F" && player != _object) exitWith { false };
+
 if ( _object call FS_fnc_CanTransmit ) exitWith { true };
 
 if (isNil{RADIOCOMMS_PERSONAL_RADIOS}) then {
@@ -12,8 +15,8 @@ if ( _ableToReceiveRadioComms ) exitWith { true };
 if ( _preventRecursion ) exitWith { false };
 
 /*
-	If he does not have any radio, check surroundings in case any of his buddies has, 
-	or there is a vehicle nearby
+	If he does not have any radio, check surroundings in case any of his buddies has it, 
+	or if there is a vehicle nearby
 */
 
 if (isNil{RADIOCOMMS_OBJECTS_WITH_COMMS}) then {

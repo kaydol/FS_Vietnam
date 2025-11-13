@@ -10,6 +10,7 @@ if !(isServer) exitWith {};
 params ["_side", ["_prefix", ""], "_messageType", ["_vehicle", objNull], ["_speaker", objNull]];
 
 private _data = createHashMapFromArray [
+	//-- Vanilla radio messages
 	[toLowerANSI DEF_RADIO_TRANSMISSION_PREFIX_NONE, createHashMapFromArray [
 		 [toLowerANSI "Arty_North", 		["mp_groundsupport_45_artillery_BHQ_0", "mp_groundsupport_45_artillery_BHQ_1", "mp_groundsupport_45_artillery_BHQ_2"]]
 		,[toLowerANSI "Arty_North_East", 	["mp_groundsupport_45_artillery_BHQ_0", "mp_groundsupport_45_artillery_BHQ_1", "mp_groundsupport_45_artillery_BHQ_2"]]
@@ -41,6 +42,7 @@ private _data = createHashMapFromArray [
 		,[toLowerANSI "BoardingEnded", 		["mp_groundsupport_10_boardingended_BHQ_0", "mp_groundsupport_10_boardingended_BHQ_1", "mp_groundsupport_10_boardingended_BHQ_2"]]
 		,[toLowerANSI "CrewMemberInjured", 	["RadioMsgStatic"]]
 	]]
+	//-- Custom radio messages 
 	,[toLowerANSI DEF_RADIO_TRANSMISSION_PREFIX_GODSPEED_NIGGA, createHashMapFromArray [
 		 [toLowerANSI "Arty_North", 		["artillery_north"]]
 		,[toLowerANSI "Arty_North_East", 	["artillery_north_east"]]
@@ -145,12 +147,19 @@ if (_speaker isEqualTo objNull && _prefix isNotEqualTo "") then
 	
 	if !( _canReceiveMessage ) exitWith {};
 	
-	if ( _speaker isEqualType "" ) then {
-		if (_cfgRadio isNotEqualTo "") then {	[_side, _speaker] sideRadio _cfgRadio;	};
-		if (_text isNotEqualTo "") then 	{	[_side, _speaker] sideChat _text;		};
+	if (DEF_CURRENT_PLAYER call FS_fnc_CanTransmit) then {
+		//-- Play a nice 2D radio sound
+		if ( _speaker isEqualType "" ) then {
+			if (_cfgRadio isNotEqualTo "") then {	[_side, _speaker] sideRadio _cfgRadio;	};
+			if (_text isNotEqualTo "") then 	{	[_side, _speaker] sideChat _text;		};
+		} else {
+			if (_cfgRadio isNotEqualTo "") then {	[_side, "HQ"] sideRadio _cfgRadio;		};
+			if (_text isNotEqualTo "") then 	{	_speaker sideChat _text;				};
+		};
 	} else {
-		if (_cfgRadio isNotEqualTo "") then {	[_side, "HQ"] sideRadio _cfgRadio;		};
-		if (_text isNotEqualTo "") then 	{	_speaker sideChat _text;				};
+		//-- Emit 3D radio sounds from the receivers in range
+		private _3Dspeakers = DEF_CURRENT_PLAYER call FS_fnc_CanReceiveFrom;
+		{ _x say3D _cfgRadio } forEach _3Dspeakers;
 	};
 	
 }] remoteExec ["call", 0];

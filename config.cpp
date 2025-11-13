@@ -116,7 +116,8 @@ class CfgMusic {
 class CfgSounds {
 	
 	#include "SupportSounds.hpp"
-
+	
+	#include "CfgRadio.hpp"
 };
 
 class CfgHQIdentities {
@@ -128,11 +129,8 @@ class CfgHQIdentities {
 };
 
 class CfgRadio {
-	
 	#include "CfgRadio.hpp"
-	
 };
-
 
 /*
 	Editor category
@@ -1677,6 +1675,7 @@ class CfgFunctions
 		class Radio {
 			class AddCommsMenu {file = "\FS_Vietnam\Functions\Radio\AddCommsMenu.sqf";};
 			class CanReceive {file = "\FS_Vietnam\Functions\Radio\CanReceive.sqf";};
+			class CanReceiveFrom {file = "\FS_Vietnam\Functions\Radio\CanReceiveFrom.sqf";};
 			class CanTransmit {file = "\FS_Vietnam\Functions\Radio\CanTransmit.sqf";};
 			class HasCommSystem {file = "\FS_Vietnam\Functions\Radio\HasCommSystem.sqf";};
 			class IsRankingOfficer {file = "\FS_Vietnam\Functions\Radio\IsRankingOfficer.sqf";};

@@ -9,6 +9,8 @@ if (isNil{RADIOCOMMS_AUDIBLE_RADIUS}) then {
 	RADIOCOMMS_AUDIBLE_RADIUS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "AudibleRadius" >> "defaultValue");
 };
 
+//-- Prevent players hearing radio from curators unless player is a curator, then he should be able to hear all radio 
+if (_this isKindOf "VirtualCurator_F" && player != _this) exitWith { false };
 
 private _hasComms = false;
 {
