@@ -53,6 +53,7 @@ addMissionEventHandler ["Draw3D",
 			if(_dmg <= 0.25) then {_color = [0,0.5,0,1];};
 			if(_dmg > 0.25 && damage _unit < 0.6) then {_color = [1,1,0,1];};
 			if(_dmg >= 0.6) then {_color = [1,0,0,1];};
+			if (!isDamageAllowed _unit) then {_color = [0.3,0.3,1,1];};
 			
 			private _mod = ( DEF_CURRENT_PLAYER distance _unit ) call FS_fnc_HealthbarsGetSize;
 			_pos set [0, (_pos select 0) - 0.1 * _mod];
