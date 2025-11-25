@@ -1648,6 +1648,31 @@ class CfgVehicles
 		};
 	};
 
+	//-- Mighty PK weapon holder
+	class vn_weapon_base;
+	class FS_Weapon_MMG_Mighty_PK : vn_weapon_base { //["Weapon_Base_F","WeaponHolder","ReammoBox","Strategic","Building","Static","All"]
+		author = "kaydol";
+		appId = 1.2277e+006;
+		scope = 2;
+		scopeCurator = 2;
+		displayName = "Mighty PK";
+		editorPreview = "\vn\editorpreviews_f_vietnam\weapons\preview_vn_pk.jpg";
+		picture = "\vn\weapons_f_vietnam\ui\icon_vn_pk_ca.paa";
+		class TransportWeapons {
+			class _xx_vn_pk {
+				weapon = "FS_Mighty_PK";
+				count = 1;
+			};
+		};
+		class Transportmagazines {
+			class _xx_vn_pk_100_mag {
+				magazine = "FS_Mighty_PK_100_mag";
+				count = 3;
+			};
+		};
+	};
+	
+	
 	//-- Invisible object\building in the shape of stone backpack that can be attached to player with attachTo to block bullets
 	class House_F;
 	class FS_Backpack_RaiStone_Geometry : House_F
@@ -1895,6 +1920,23 @@ class CfgAmmo
 
 class CfgMagazines 
 {
+	//-- For Mighty PK 
+	class vn_lmgmag_base;
+	class FS_Mighty_PK_100_mag : vn_lmgmag_base { //["vn_magazine","CA_Magazine","Default"]
+		author = "kaydol";
+		appId = 1.2277e+006;
+		scope = 2;
+		scopeArsenal = 2;
+		displayName = "100Rnd. Mighty PK Belt";
+		descriptionShort = "100Rnd. Mighty PK Belt. <br />Caliber: 20mm. <br />Used in Mighty PK machine gun";
+		model = "\vn\weapons_f_vietnam\pk\vn_pk_mag.p3d";
+		editorPreview = "\vn\editorpreviews_f_vietnam\magazines\preview_vn_pk_100_mag.jpg";
+		picture = "\vn\weapons_f_vietnam\ui\icon_vn_pk_100_mag_ca.paa";
+		ammo = "vn_20x110_x6";
+		count = 100;
+		mass = 40;
+		tracersEvery = 1;
+	};
 	
 	//-- For Healing Grenades
 	class SmokeShell;
@@ -1952,6 +1994,20 @@ class CfgWeapons
             sounds[] = {"StandardSound"};
         };
     };
+	
+	//-- Mighty PK weapon
+	class vn_pk;
+	class FS_Mighty_PK : vn_pk {
+		author = "kaydol";
+		scope = 2;
+		scopeArsenal = 2;
+		displayName = "Mighty PK";
+		descriptionShort = "PK 20mm Light Machine Gun with 100-round box and bipod";
+		magazines[] = {"FS_Mighty_PK_100_mag"};
+		class Library {
+			libtextdesc = "The Mighty PK machine gun is a 20mm machine gun designed in the FS Vietnam Bureau in 1961. It is fitted with a 100-round box and a bipod for stability. Exported to many countries, it saw use in the later stages of the Vietnam War. It is carried or used on tripods, helicopters, boats, and APCs as a crew weapon.";
+		};
+	};
 	
 	//-- Healing Grenades weapon
 	class GrenadeLauncher;
