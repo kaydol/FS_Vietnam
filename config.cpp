@@ -1764,15 +1764,16 @@ class CfgFunctions
 {
 	class FS {
 		
-		class Math {
+		class FS_Math {
 			class AgglomerativeClustering {file = "\FS_Vietnam\Functions\Math\AgglomerativeClustering.sqf";};
 			class BiggestClusterDiameter {file = "\FS_Vietnam\Functions\Math\BiggestClusterDiameter.sqf";};
 			class CalculateCenter2D {file = "\FS_Vietnam\Functions\Math\CalculateCenter2D.sqf";};
 			class Clusterize {file = "\FS_Vietnam\Functions\Math\Clusterize.sqf";};
 			class kMeansClustering {file = "\FS_Vietnam\Functions\Math\kMeansClustering.sqf";};
+			class RotateVector2D {file = "\FS_Vietnam\Functions\Math\RotateVector2D.sqf";};
 		};
 		
-		class Misc {
+		class FS_Misc {
 			class DirectionWrapper {file = "\FS_Vietnam\Functions\Misc\DirectionWrapper.sqf";};
 			class DistanceBetweenArrays {file = "\FS_Vietnam\Functions\Misc\DistanceBetweenArrays.sqf";};
 			class GetSideVariable {file = "\FS_Vietnam\Functions\Misc\GetSideVariable.sqf";};
@@ -1790,9 +1791,11 @@ class CfgFunctions
 			class Snapshots {file = "\FS_Vietnam\Functions\Misc\Snapshots.sqf";};
 			class UpdateSideVariable {file = "\FS_Vietnam\Functions\Misc\UpdateSideVariable.sqf";};
 			class VisualizeBestPlaces {file = "\FS_Vietnam\Functions\Misc\VisualizeBestPlaces.sqf";};
+			class PlayAnimationSequence {file = "\FS_Vietnam\Functions\Misc\PlayAnimationSequence.sqf";};
+			class IsInside {file = "\FS_Vietnam\Functions\Misc\IsInside.sqf";};
 		};
 		
-		class Helicopters {
+		class FS_Helicopters {
 			class Asses {file = "\FS_Vietnam\Functions\Helicopters\Asses.sqf";};
 			class AssignFireTask {file = "\FS_Vietnam\Functions\Helicopters\AssignFireTask.sqf";};
 			class AssignPriorities {file = "\FS_Vietnam\Functions\Helicopters\AssignPriorities.sqf";};
@@ -1815,7 +1818,7 @@ class CfgFunctions
 			class GetProblems {file = "\FS_Vietnam\Functions\Helicopters\GetProblems.sqf";};
 		};
 		
-		class Support {
+		class FS_Support {
 			class DropMines {file = "\FS_Vietnam\Effects\Artillery\DropMines.sqf";};
 			class DropNapalm {file = "\FS_Vietnam\Effects\Napalm\DropNapalm.sqf";};
 			class FallingDirt {file = "\FS_Vietnam\Effects\Artillery\FallingDirt.sqf";};
@@ -1826,17 +1829,17 @@ class CfgFunctions
 			class NapalmPuffAndSparks {file = "\FS_Vietnam\Effects\Napalm\NapalmPuffAndSparks.sqf";};
 		};
 		
-		class Traps {
+		class FS_Traps {
 			class PutEventHandler {file = "\FS_Vietnam\Functions\Traps\PutEventHandler.sqf";};
 		};
 		
-		class Markers {
+		class FS_Markers {
 			class CreateDebugMarker {file = "\FS_Vietnam\Functions\Markers\CreateDebugMarker.sqf";};
 			class FadeDebugMarkers {file = "\FS_Vietnam\Functions\Markers\FadeDebugMarkers.sqf";};
 			class GrpAttachDebugMarkers {file = "\FS_Vietnam\Functions\Markers\GrpAttachDebugMarkers.sqf";};
 		};
 		
-		class Radio {
+		class FS_Radio {
 			class AddCommsMenu {file = "\FS_Vietnam\Functions\Radio\AddCommsMenu.sqf";};
 			class CanReceive {file = "\FS_Vietnam\Functions\Radio\CanReceive.sqf";};
 			class CanReceiveFrom {file = "\FS_Vietnam\Functions\Radio\CanReceiveFrom.sqf";};
@@ -1848,7 +1851,7 @@ class CfgFunctions
 			class TransmitSitrep {file = "\FS_Vietnam\Functions\Radio\TransmitSitrep.sqf";};
 		};
 		
-		class Behaviour {
+		class FS_Behaviour {
 			class AttackPlanner {file = "\FS_Vietnam\Functions\Behaviour\AttackPlanner.sqf";};
 			class FilterObjects {file = "\FS_Vietnam\Functions\Behaviour\FilterObjects.sqf";};
 			class GetHiddenPos {file = "\FS_Vietnam\Functions\Behaviour\GetHiddenPos.sqf";};
@@ -1871,7 +1874,7 @@ class CfgFunctions
 			class UnitsReady {file = "\FS_Vietnam\Functions\Behaviour\UnitsReady.sqf";};
 		};
 		
-		class Modules {
+		class FS_Modules {
 			class ArsenalRoom {file = "\FS_Vietnam\Functions\Modules\ArsenalRoom.sqf";};
 			class ArsenalRoomCreate {file = "\FS_Vietnam\Functions\Modules\ArsenalRoomCreate.sqf";};
 			class AuthenticLoadout {file = "\FS_Vietnam\Functions\Modules\AuthenticLoadout.sqf";};
@@ -1897,7 +1900,7 @@ class CfgFunctions
 			class VisualizeModuleRadius3DEN {file = "\FS_Vietnam\Functions\Modules\VisualizeModuleRadius3DEN.sqf";};
 		};
 		
-		class Healthbars {
+		class FS_Healthbars {
 			class HealthbarsAdd {file = "\FS_Vietnam\Functions\Healthbars\HealthbarsAdd.sqf";};
 			class HealthbarsRemove {file = "\FS_Vietnam\Functions\Healthbars\HealthbarsRemove.sqf";};
 			class HealthbarsGetSize {file = "\FS_Vietnam\Functions\Healthbars\HealthbarsGetSize.sqf";};
