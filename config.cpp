@@ -40,15 +40,15 @@ class FS_HealthBar_HUD_RscProgress
 class RscTitles
 {
 	// Used for showing radio status such as No signal, Can Receive, Can Transmit 
-	class FS_Vietnam_Radio_HUD {
+	class FS_Vietnam_HUD {
 		idd = -1;
 		duration = 1e+1000;
 		fadeIn = 0;
 		fadeOut = 0;
-		name = "FS_Vietnam_Radio_HUD";
-		onLoad = "uiNamespace setVariable['FS_Vietnam_Radio_HUD',_this select 0]";
-		onUnload = "uiNamespace setVariable['FS_Vietnam_Radio_HUD',displayNull]";
-		onDestroy =  "uiNamespace setVariable['FS_Vietnam_Radio_HUD',displayNull]";
+		name = "FS_Vietnam_HUD";
+		onLoad = "uiNamespace setVariable['FS_Vietnam_HUD',_this select 0]";
+		onUnload = "uiNamespace setVariable['FS_Vietnam_HUD',displayNull]";
+		onDestroy =  "uiNamespace setVariable['FS_Vietnam_HUD',displayNull]";
 	};
 	
 	// Used for health bars 
@@ -1786,7 +1786,6 @@ class CfgFunctions
 			class TransmitDistress {file = "\FS_Vietnam\Functions\Radio\TransmitDistress.sqf";};
 			class TransmitOverRadio {file = "\FS_Vietnam\Functions\Radio\TransmitOverRadio.sqf";};
 			class TransmitSitrep {file = "\FS_Vietnam\Functions\Radio\TransmitSitrep.sqf";};
-			class RadioPostInit {file = "\FS_Vietnam\Functions\Radio\RadioPostInit.sqf"; postInit=1; };
 		};
 		
 		class Behaviour {
@@ -1843,6 +1842,10 @@ class CfgFunctions
 			class HealthbarsRemove {file = "\FS_Vietnam\Functions\Healthbars\HealthbarsRemove.sqf";};
 			class HealthbarsGetSize {file = "\FS_Vietnam\Functions\Healthbars\HealthbarsGetSize.sqf";};
 		};
+		
+		class FS_HUD {
+			class HUDPostInit {file = "\FS_Vietnam\Functions\HUD\HUDPostInit.sqf"; postInit=1; };
+		}
 		
 		class FS_Equipment {
 			class EquipmentPostInit {file = "\FS_Vietnam\Functions\Equipment\EquipmentPostInit.sqf"; postInit=1; };
