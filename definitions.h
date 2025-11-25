@@ -30,3 +30,4 @@
 #define DEF_RADIO_TRANSMISSION_PREFIX_NONE ""
 #define DEF_RADIO_TRANSMISSION_PREFIX_GODSPEED_NIGGA "godspeed_nigga"
 
+#define DEF_HEALING_GRENADE_EFFECT_ENDS_AT "FS_Weapons_Healing_Grenade_Effect_Ends_At"

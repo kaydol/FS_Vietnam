@@ -9,5 +9,5 @@ if (isNil{ NAPALM_ENABLE }) then
 
 if !( NAPALM_ENABLE ) exitWith {};
 
-[_this] spawn FS_fnc_NapalmCreateExplosion; 
-
+//[_this] spawn FS_fnc_NapalmCreateExplosion; 
+[[_this], {_this spawn FS_fnc_NapalmCreateExplosion}] remoteExec ["call", 0];

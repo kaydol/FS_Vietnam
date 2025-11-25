@@ -63,6 +63,19 @@ class RscTitles
 		onUnload = "uiNamespace setVariable['FS_HealthBar_HUD',displayNull]";
 		onDestroy =  "uiNamespace setVariable['FS_HealthBar_HUD',displayNull]";
 	};
+	
+	// Used for healing grenades 
+	class FS_HealingGrenades_HUD
+	{
+		idd = -1;
+		duration = 0;
+		fadeIn = 0;
+		fadeOut = 1;
+		name = "FS_HealingGrenades_HUD";
+		onLoad = "uiNamespace setVariable['FS_HealingGrenades_HUD',_this select 0]";
+		onUnload = "uiNamespace setVariable['FS_HealingGrenades_HUD',displayNull]";
+		onDestroy =  "uiNamespace setVariable['FS_HealingGrenades_HUD',displayNull]";
+	};
 };
 
 class CfgMusic {
@@ -118,7 +131,15 @@ class CfgSounds {
 	#include "SupportSounds.hpp"
 	
 	#include "CfgRadio.hpp"
+	
+	class FS_Healing_Tick
+	{
+		name = "";
+		sound[] = {"\FS_Vietnam\Sounds\Weapons\healing_tick.ogg", db+6, 1};
+		titles[] = {1, ""};
+	};
 };
+
 
 class CfgHQIdentities {
 	class Godspeed {
@@ -161,8 +182,30 @@ class CfgCloudlets {
 		particleShape = "\A3\data_f\ParticleEffects\Universal\Universal";
 	};
 	
+	//-- For Healing Grenades
+	//class MediumSmoke;
+	class FS_ScriptedGrenadeExplosion_01 : MediumSmoke {
+		size[] = {0};
+		interval = 10; // values > emitter life time will produce exactly 1 particle 
+		lifeTime = 0.1; // particle life time = time after which the beforeDestroyScript is called
+		lifeTimeVar = 0;
+		beforeDestroyScript = "\FS_Vietnam\Functions\Weapons\HealingGrenade.sqf";
+		particleShape = "\A3\data_f\ParticleEffects\Universal\Universal";
+		ignoreWind = 1;
+		weight = 0.05;
+		volume = 0.04;
+		rubbing = 0.001; 
+		//particleEffects = "FS_VFX_HealingGrenade"; // created particles can spawn their own particles 
+		class HitEffects {
+			vehicle = "";
+			object = "";
+			hitWater = ""; // EmptyEffect
+		};
+	};
 };
 
+
+//-- For Napalm
 class vn_vfx_napalm_container_explosion_effect {
 	class Scripted {
 		simulation = "particles";
@@ -265,6 +308,17 @@ class vn_vfx_napalm_container_explosion_effect {
 		start = 2;
 	};
 };
+
+
+//-- For Healing Grenades
+class FS_VFX_HealingGrenade {
+	class Scripted {
+		simulation = "particles";
+		type = "FS_ScriptedGrenadeExplosion_01";
+		lifeTime = 1; // emitter life time 
+	};
+};
+
 
 class CfgVehicles 
 {
@@ -1804,7 +1858,54 @@ class CfgAmmo
 	class vn_mine_ammobox_range_ammo : DirectionalBombBase { //["DirectionalBombCore","TimeBombCore","Default"]
 		mineInconspicuousness = 500;
 	};
+	
+	//-- For Healing Grenades
+	class GrenadeHand;
+	class FS_HealingGrenade_Ammo : GrenadeHand {
+		hit = 0;
+		indirectHit = 0;
+		indirectHitRange = 0;
+		dangerRadiusHit = 0;
+		suppressionRadiusHit = 0;
+		deflecting = 1;
+		displayNameShort = "Healing grenade";
+		explosionEffects = "FS_VFX_HealingGrenade";
+		model = "\A3\Weapons_f\ammo\smokegrenade_green_throw";
+		explosionTime = -1;
+		cartridge = "";
+		fuseDistance = 0;
+		whistleDist = 0;
+		simulation = "shotShell"; // shotShell makes it detonate against soldiers, shotGrenade only detonates against terrain & objects 
+		explosionSoundEffect = "";
+		CraterEffects = "";
+		CraterWaterEffects = "";
+		SoundSetExplosion[] = {""};
+		class CamShakeExplode {
+			power = 0;
+			duration = 0;
+			frequency = 0;
+			distance = 0;
+		};
+	};
 };
+
+
+class CfgMagazines 
+{
+	
+	//-- For Healing Grenades
+	class SmokeShell;
+	class FS_HealingGrenade_Mag : SmokeShell { //["HandGrenade","CA_Magazine","Default"]
+		author = "kaydol";
+		displayName = "Healing grenade";
+		displayNameShort = "Healing grenade";
+		descriptionShort = "Explodes on impact, dealing no damage and creating a small healing aura for 10s. Units inside the aura are healed 10% HP every second. Does not heal units that can not be damaged.";
+		picture = "\A3\Weapons_f\data\ui\gear_smokegrenade_green_ca.paa";
+		model = "\A3\Weapons_f\ammo\smokegrenade_green";
+		ammo = "FS_HealingGrenade_Ammo";
+	};
+};
+
 
 class Mode_SemiAuto;
 class Mode_FullAuto;
@@ -1848,4 +1949,17 @@ class CfgWeapons
             sounds[] = {"StandardSound"};
         };
     };
+	
+	//-- Healing Grenades weapon
+	class GrenadeLauncher;
+	class Throw : GrenadeLauncher { //["Default"]
+		muzzles[] += {"FS_HealingGrenade_Muzzle"};
+		
+		class HandGrenadeMuzzle;
+		class FS_HealingGrenade_Muzzle : HandGrenadeMuzzle { //["ThrowMuzzle","GrenadeLauncher","Default"]
+			magazines[] = {"FS_HealingGrenade_Mag"};
+			displayNameShort = "Healing grenade";
+		};
+	};
+	
 };
