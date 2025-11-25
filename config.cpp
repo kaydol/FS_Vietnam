@@ -1906,6 +1906,10 @@ class CfgFunctions
 			class HealthbarsGetSize {file = "\FS_Vietnam\Functions\Healthbars\HealthbarsGetSize.sqf";};
 		};
 		
+		class FS_Weapons {
+			class ShotgunTacticalReload {file = "\FS_Vietnam\Functions\Weapons\ShotgunTacticalReload.sqf"; postInit = 1;};
+		};
+		
 		class FS_HUD {
 			class HUDPostInit {file = "\FS_Vietnam\Functions\HUD\HUDPostInit.sqf"; postInit=1; };
 		}
@@ -2032,6 +2036,17 @@ class CfgWeapons
             sounds[] = {"StandardSound"};
         };
     };
+	
+	//-- M1897 shotgun that can be reloaded 1 shell at a time
+	class vn_m1897;
+	class FS_M1897 : vn_m1897 {
+		author = "kaydol";
+		scope = 2;
+		scopeArsenal = 2;
+		displayName = "M1897 (hold R to reload, player only)";
+		reloadmagazinesound[] = {"",0,0,0};
+		FS_one_shell_reloadable = 1;
+	};
 	
 	//-- Mighty PK weapon
 	class vn_pk;
