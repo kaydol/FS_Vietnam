@@ -5,8 +5,12 @@ class CfgPatches
 	{
 		//-- Units available to spawn as Zeus must be in units[]
 		//-- Of course, they didn't write about it on the wiki
-		units[] = {"FS_NapalmCAS_Module", "FS_ArtyStrike_Module", "FS_ForceToPlaceTraps_Module"};
-		weapons[] = {};
+		units[] = {"FS_NapalmCAS_Module", "FS_ArtyStrike_Module", "FS_ForceToPlaceTraps_Module", "FS_Weapon_MMG_Mighty_PK", 
+		"FS_Backpack_RaiStone", "FS_Backpack_RaiStone_Holder"};
+		
+		magazines[] = {"FS_Mighty_PK_100_mag", "FS_HealingGrenade_Mag"};
+		weapons[] = {"FS_Mighty_PK", "FS_HealingGrenade_Muzzle"};
+		ammo[] = {"FS_HealingGrenade_Ammo"};
 		requiredAddons[] = {"A3_Data_F", "A3_Weapons_F_Mark", "weapons_f_vietnam_c"};
 		requiredVersion = 0.100000;
 		author = "kaydol";
@@ -36,6 +40,7 @@ class FS_HealthBar_HUD_RscProgress
 	tooltipColorText[] = {1,1,1,1};
 	tooltipColorBox[] = {1,1,1,1};
 };
+
 
 class RscTitles
 {
@@ -77,6 +82,7 @@ class RscTitles
 		onDestroy =  "uiNamespace setVariable['FS_HealingGrenades_HUD',displayNull]";
 	};
 };
+
 
 class CfgMusic {
 	tracks[] = {""};
@@ -149,9 +155,11 @@ class CfgHQIdentities {
 	};
 };
 
+
 class CfgRadio {
 	#include "CfgRadio.hpp"
 };
+
 
 /*
 	Editor category
@@ -165,7 +173,10 @@ class CfgFactionClasses {
 	};
 };
 
+
 class CfgCloudlets {
+	
+	//-- For Napalm
 	class Default;
 	class MediumSmoke;
 	class NapalmVictim : MediumSmoke {
