@@ -1672,7 +1672,23 @@ class CfgVehicles
 		};
 	};
 	
-	
+	//-- Jerrycan item weapon holder
+	class Item_Base_F;
+	class FS_Item_CanisterFuel_Holder : Item_Base_F { //["WeaponHolder","ReammoBox","Strategic","Building","Static","All"]
+		scope = 2;
+		scopeCurator = 2;
+		displayName = "Jerrycan (Fuel)";
+		author = "kaydol";
+		editorCategory = "EdCat_Equipment";
+		editorSubcategory = "EdSubcat_InventoryItems";
+		vehicleClass = "Items";
+		class TransportItems {
+			class FS_Item_CanisterFuel {
+				name = "FS_Item_CanisterFuel";
+				count = 1;
+			};
+		};
+	};	
 	//-- Invisible object\building in the shape of stone backpack that can be attached to player with attachTo to block bullets
 	class House_F;
 	class FS_Backpack_RaiStone_Geometry : House_F
@@ -2018,6 +2034,28 @@ class CfgWeapons
 		class FS_HealingGrenade_Muzzle : HandGrenadeMuzzle { //["ThrowMuzzle","GrenadeLauncher","Default"]
 			magazines[] = {"FS_HealingGrenade_Mag"};
 			displayNameShort = "Healing grenade";
+		};
+	};
+	
+	//-- Jerrycan item
+	class Default;
+	class ItemCore : Default {
+		class InventoryItem_Base_F;
+	};
+	class FS_Item_CanisterFuel : ItemCore { //["Default"]
+		scope = 2;
+		scopearsenal = 2;
+		displayname = "Jerrycan (Fuel)";
+		descriptionshort = "";
+		_generalmacro = "FS_Item_CanisterFuel";
+		editorPreview = "\vn\editorpreviews_f_vietnam\structures\preview_Land_vn_canisterfuel_red_f.jpg";
+		picture = "\FS_Vietnam\Textures\jerrycan_item_red.paa";
+		model = "\A3\Structures_F\Items\Vessels\CanisterFuel_F.p3d";
+		hiddenSelections[] = {"camo"};
+		hiddenSelectionsTextures[] = {"vn\vn_props_f_orange\humanitarian\supplies\data\canisterfuel_red_co.paa"};
+		class iteminfo : InventoryItem_Base_F {
+			mass = 240;
+			type = 401;
 		};
 	};
 	
