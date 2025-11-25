@@ -1688,7 +1688,26 @@ class CfgVehicles
 				count = 1;
 			};
 		};
-	};	
+	};
+	
+	//-- Shovel item weapon holder
+	//class Item_Base_F;
+	class FS_Item_Shovel_Holder : Item_Base_F { //["WeaponHolder","ReammoBox","Strategic","Building","Static","All"]
+		scope = 2;
+		scopeCurator = 2;
+		displayName = "Shovel";
+		author = "kaydol";
+		editorCategory = "EdCat_Equipment";
+		editorSubcategory = "EdSubcat_InventoryItems";
+		vehicleClass = "Items";
+		class TransportItems {
+			class FS_Item_Shovel {
+				name = "FS_Item_Shovel";
+				count = 1;
+			};
+		};
+	};
+	
 	//-- Invisible object\building in the shape of stone backpack that can be attached to player with attachTo to block bullets
 	class House_F;
 	class FS_Backpack_RaiStone_Geometry : House_F
@@ -2055,6 +2074,26 @@ class CfgWeapons
 		hiddenSelectionsTextures[] = {"vn\vn_props_f_orange\humanitarian\supplies\data\canisterfuel_red_co.paa"};
 		class iteminfo : InventoryItem_Base_F {
 			mass = 240;
+			type = 401;
+		};
+	};
+	
+	//-- Shovel item
+	//class Default;
+	//class ItemCore : Default {
+	//	class InventoryItem_Base_F;
+	//};
+	class FS_Item_Shovel : ItemCore { //["Default"]
+		scope = 2;
+		scopearsenal = 2;
+		displayname = "Shovel";
+		descriptionshort = "";
+		_generalmacro = "FS_Item_Shovel";
+		editorPreview = "\A3\EditorPreviews_F\Data\CfgVehicles\Land_Shovel_F.jpg";
+		picture = "\FS_Vietnam\Textures\shovel.paa";
+		model = "\A3\Structures_F_EPA\Items\Tools\Shovel_F.p3d";
+		class iteminfo : InventoryItem_Base_F {
+			mass = 120;
 			type = 401;
 		};
 	};
