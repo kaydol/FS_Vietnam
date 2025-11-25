@@ -1593,6 +1593,56 @@ class CfgVehicles
 			class ModuleDescription : ModuleDescription {};
 		};
 	};
+
+	//-- Invisible object\building in the shape of stone backpack that can be attached to player with attachTo to block bullets
+	class House_F;
+	class FS_Backpack_RaiStone_Geometry : House_F
+	{
+		scope = 1;
+		scopeCurator = 1;
+		_generalMacro = "FS_Backpack_RaiStone_Geometry";
+		author = "kaydol";
+		displayName = "Stone Backpack (Geometry)";
+		destrType="DestructNo";
+		armor = 400;
+		//model = "\FS_Vietnam\Models\StoneBP_Geometry.p3d"; // for debug
+		model = "\FS_Vietnam\Models\StoneBP_Geometry_without_visual.p3d";
+	};
+
+	//-- Stone Backpack backpack, does not block bullets because is not included in unit's fire geometry
+	class Bag_Base;
+	class FS_Backpack_RaiStone : Bag_Base
+	{
+		displayName = "Stone Backpack (Medium)";
+		author = "kaydol";
+		_generalMacro = "FS_Backpack_RaiStone";
+		model = "\FS_Vietnam\Models\StoneBP.p3d";
+		maximumLoad = 160;
+		mass = 20;
+		scope = 2;
+		scopeCurator = 2;
+		icon = "iconBackpack";
+		editorPreview="\FS_Vietnam\Textures\raistone_backpack.jpg";
+		picture = "\FS_Vietnam\Textures\raistone_backpack.paa";
+		isbackpack = 1;
+		reversed = 1;
+	};
+	
+	class FS_Backpack_RaiStone_Holder : Item_Base_F { //["WeaponHolder","ReammoBox","Strategic","Building","Static","All"]
+		scope = 2;
+		scopeCurator = 2;
+		displayName = "Stone Backpack (Medium) (container)";
+		author = "kaydol";
+		editorCategory = "EdCat_Equipment";
+		editorSubcategory = "EdSubcat_Backpacks";
+		vehicleClass = "Items";
+		class TransportItems {
+			class FS_Backpack_RaiStone {
+				name = "FS_Backpack_RaiStone";
+				count = 1;
+			};
+		};
+	};
 };
 
 
@@ -1739,10 +1789,16 @@ class CfgFunctions
 			class HealthbarsRemove {file = "\FS_Vietnam\Functions\Healthbars\HealthbarsRemove.sqf";};
 			class HealthbarsGetSize {file = "\FS_Vietnam\Functions\Healthbars\HealthbarsGetSize.sqf";};
 		};
+		
+		class FS_Equipment {
+			class EquipmentPostInit {file = "\FS_Vietnam\Functions\Equipment\EquipmentPostInit.sqf"; postInit=1; };
+		};
 	};
 };
 
-class CfgAmmo {
+
+class CfgAmmo 
+{
 	class DirectionalBombBase;
 	// from weapons_f_vietnam_c
 	class vn_mine_ammobox_range_ammo : DirectionalBombBase { //["DirectionalBombCore","TimeBombCore","Default"]
