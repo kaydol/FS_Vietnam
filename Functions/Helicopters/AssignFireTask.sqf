@@ -115,7 +115,7 @@ if ( !_taskAssigned && _estimatedVictims >= _artilleryThreshold && _distanceTofr
 		
 		if (_closestFriend isNotEqualTo objNull) then 
 		{
-			private _relativeDir = _closestFriend getDir (_params # 0);
+			private _relativeDir = _closestFriend getDir _coordinates;
 			private _messageType = "";
 			
 			if ((_relativeDir >= 337.5 && _relativeDir <= 360) || 
