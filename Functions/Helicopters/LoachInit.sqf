@@ -44,8 +44,6 @@ if (_debug) then {
 
 //driver _aircraft disableAI "AUTOCOMBAT";
 
-// The side has to be saved to find out which side this aircraft served to before it got destroyed
-_aircraft setVariable ["initSide", side _aircraft]; 
 
 private _friendly_aircrafts = [];
 private _k = 0;

@@ -77,10 +77,19 @@ private _aircrafts = [];
 }
 forEach _synced;
 
-if (_makeCaptive) then {
+// The side has to be saved to find out which side this aircraft served to before it got destroyed
+// Important to save side before setCaptive, because setCaptive makes them civillians
+{
+	private _aircraft = _x;
+	_aircraft setVariable ["initSide", side _aircraft]; 
+} 
+forEach _aircrafts;
+
+if (_makeCaptive) then 
+{
 	{
 		private _crew = crew _x;
-		{ 
+		{
 			_x setCaptive true; 
 			if (_debug) then {
 				diag_log format ["Air Command Module: Made %1 captive", _x];
