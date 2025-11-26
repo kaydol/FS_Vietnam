@@ -20,7 +20,7 @@ if ( _preventRecursion ) exitWith { false };
 */
 
 if (isNil{RADIOCOMMS_OBJECTS_WITH_COMMS}) then {
-	RADIOCOMMS_OBJECTS_WITH_COMMS = call compile getText (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "EntitiesWithComms" >> "defaultValue");
+	RADIOCOMMS_OBJECTS_WITH_COMMS = call compile getText (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "ObjectsWithComms" >> "defaultValue");
 };
 if (isNil{RADIOCOMMS_AUDIBLE_RADIUS}) then {
 	RADIOCOMMS_AUDIBLE_RADIUS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "AudibleRadius" >> "defaultValue");
