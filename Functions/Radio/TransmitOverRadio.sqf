@@ -184,9 +184,14 @@ if (_speaker isEqualTo objNull && _prefix isNotEqualTo "") then
 			if (_text isNotEqualTo "") then 	{	_speaker sideChat _text;				};
 		};
 	} else {
+		
+		if (isNil{RADIOCOMMS_AUDIBLE_RADIUS}) then {
+			RADIOCOMMS_AUDIBLE_RADIUS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "AudibleRadius" >> "defaultValue");
+		};
+		
 		//-- Emit 3D radio sounds from the receivers in range
 		private _3Dspeakers = DEF_CURRENT_PLAYER call FS_fnc_CanReceiveFrom;
-		{ _x say3D _cfgRadio } forEach _3Dspeakers;
+		{ _x say3D [_cfgRadio, RADIOCOMMS_AUDIBLE_RADIUS]} forEach _3Dspeakers;
 	};
 	
 }] remoteExec ["call", 0];
