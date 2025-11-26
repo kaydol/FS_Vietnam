@@ -42,7 +42,7 @@ if ( !_taskAssigned && _estimatedVictims >= _napalmThreshold && _distanceTofrien
 		private _bestAngle = (( [_coordinates, _closestFriend] call BIS_fnc_dirTo ) + 90) % 360;
 		_params = [_coordinates, _bestAngle]; 
 	}
-	else { 
+	else {
 		/* two coordinates are supplied */
 		_params = _coordinates;
 	};
@@ -67,22 +67,27 @@ if ( !_taskAssigned && _estimatedVictims >= _napalmThreshold && _distanceTofrien
 			private _messageType = "";
 			
 			if ((_relativeDir >= 337.5 && _relativeDir <= 360) || 
-			    (_relativeDir >= 0 && _relativeDir < 22.5)) then { _messageType = "napalm_north" };
-			if (_relativeDir >= 22.5 && _relativeDir < 67.5) then { _messageType = "napalm_north_east" };
-			if (_relativeDir >= 67.5 && _relativeDir < 112.5) then { _messageType = "napalm_east" };
-			if (_relativeDir >= 112.5 && _relativeDir < 157.5) then { _messageType = "napalm_south_east" };
-			if (_relativeDir >= 157.5 && _relativeDir < 202.5) then { _messageType = "napalm_south" };
-			if (_relativeDir >= 202.5 && _relativeDir < 247.5) then { _messageType = "napalm_south_west" };
-			if (_relativeDir >= 247.5 && _relativeDir < 292.5) then { _messageType = "napalm_west" };
-			if (_relativeDir >= 292.5 && _relativeDir < 337.5) then { _messageType = "napalm_north_west" };
+			    (_relativeDir >= 0 && _relativeDir < 22.5)) then { _messageType = "Napalm_North" };
+			if (_relativeDir >= 22.5 && _relativeDir < 67.5) then { _messageType = "Napalm_North_East" };
+			if (_relativeDir >= 67.5 && _relativeDir < 112.5) then { _messageType = "Napalm_East" };
+			if (_relativeDir >= 112.5 && _relativeDir < 157.5) then { _messageType = "Napalm_South_East" };
+			if (_relativeDir >= 157.5 && _relativeDir < 202.5) then { _messageType = "Napalm_South" };
+			if (_relativeDir >= 202.5 && _relativeDir < 247.5) then { _messageType = "Napalm_South_West" };
+			if (_relativeDir >= 247.5 && _relativeDir < 292.5) then { _messageType = "Napalm_West" };
+			if (_relativeDir >= 292.5 && _relativeDir < 337.5) then { _messageType = "Napalm_North_West" };
 			
 			// Sending a radio warning
 			[_side, _aircraft getVariable DEF_RADIO_TRANSMISSION_PREFIX_VAR, _messageType] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+		}
+		else
+		{
+			// Sending a radio warning
+			[_side, _aircraft getVariable DEF_RADIO_TRANSMISSION_PREFIX_VAR, "Napalm_Distance"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
 		};
 		
 		_taskAssigned = True; 
-	} 
-	else 
+	}
+	else
 	{
 		if (_debug) then {
 			diag_log format ["Pilot: A suitable target for NAPALM strike exists, but support was on cooldown"];
@@ -114,17 +119,22 @@ if ( !_taskAssigned && _estimatedVictims >= _artilleryThreshold && _distanceTofr
 			private _messageType = "";
 			
 			if ((_relativeDir >= 337.5 && _relativeDir <= 360) || 
-			    (_relativeDir >= 0 && _relativeDir < 22.5)) then { _messageType = "arty_north" };
-			if (_relativeDir >= 22.5 && _relativeDir < 67.5) then { _messageType = "arty_north_east" };
-			if (_relativeDir >= 67.5 && _relativeDir < 112.5) then { _messageType = "arty_east" };
-			if (_relativeDir >= 112.5 && _relativeDir < 157.5) then { _messageType = "arty_south_east" };
-			if (_relativeDir >= 157.5 && _relativeDir < 202.5) then { _messageType = "arty_south" };
-			if (_relativeDir >= 202.5 && _relativeDir < 247.5) then { _messageType = "arty_south_west" };
-			if (_relativeDir >= 247.5 && _relativeDir < 292.5) then { _messageType = "arty_west" };
-			if (_relativeDir >= 292.5 && _relativeDir < 337.5) then { _messageType = "arty_north_west" };
+			    (_relativeDir >= 0 && _relativeDir < 22.5)) then { _messageType = "Arty_North" };
+			if (_relativeDir >= 22.5 && _relativeDir < 67.5) then { _messageType = "Arty_North_East" };
+			if (_relativeDir >= 67.5 && _relativeDir < 112.5) then { _messageType = "Arty_East" };
+			if (_relativeDir >= 112.5 && _relativeDir < 157.5) then { _messageType = "Arty_South_East" };
+			if (_relativeDir >= 157.5 && _relativeDir < 202.5) then { _messageType = "Arty_South" };
+			if (_relativeDir >= 202.5 && _relativeDir < 247.5) then { _messageType = "Arty_South_West" };
+			if (_relativeDir >= 247.5 && _relativeDir < 292.5) then { _messageType = "Arty_West" };
+			if (_relativeDir >= 292.5 && _relativeDir < 337.5) then { _messageType = "Arty_North_West" };
 			
 			// Sending a radio warning
 			[_side, _aircraft getVariable DEF_RADIO_TRANSMISSION_PREFIX_VAR, _messageType] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+		} 
+		else 
+		{
+			// Sending a radio warning
+			[_side, _aircraft getVariable DEF_RADIO_TRANSMISSION_PREFIX_VAR, "Artillery_Distance"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
 		};
 		
 		_taskAssigned = True;

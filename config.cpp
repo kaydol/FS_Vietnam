@@ -1753,21 +1753,6 @@ class CfgVehicles
 		reversed = 1;
 	};
 	
-	class FS_Backpack_RaiStone_Holder : Item_Base_F { //["WeaponHolder","ReammoBox","Strategic","Building","Static","All"]
-		scope = 2;
-		scopeCurator = 2;
-		displayName = "Stone Backpack (Medium) (container)";
-		author = "kaydol";
-		editorCategory = "EdCat_Equipment";
-		editorSubcategory = "EdSubcat_Backpacks";
-		vehicleClass = "Items";
-		class TransportItems {
-			class FS_Backpack_RaiStone {
-				name = "FS_Backpack_RaiStone";
-				count = 1;
-			};
-		};
-	};
 };
 
 

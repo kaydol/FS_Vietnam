@@ -7,7 +7,7 @@
 
 if !(isServer) exitWith {};
 
-params ["_side", ["_prefix", ""], "_messageType", ["_vehicle", objNull], ["_speaker", objNull]];
+params ["_side", ["_prefix", ""], "_messageType", ["_vehicle", objNull], ["_speaker", objNull], ["_debug", false]];
 
 private _data = createHashMapFromArray [
 	//-- Vanilla radio messages
@@ -29,6 +29,18 @@ private _data = createHashMapFromArray [
 		,[toLowerANSI "Napalm_South_West", 	["mp_groundsupport_70_tacticalstrikeinbound_BHQ_0", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_1", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_2", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_3", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_4"]]
 		,[toLowerANSI "Napalm_West", 		["mp_groundsupport_70_tacticalstrikeinbound_BHQ_0", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_1", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_2", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_3", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_4"]]
 		,[toLowerANSI "Napalm_North_West", 	["mp_groundsupport_70_tacticalstrikeinbound_BHQ_0", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_1", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_2", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_3", "mp_groundsupport_70_tacticalstrikeinbound_BHQ_4"]]
+		
+		,[toLowerANSI "Enemies_North", 		["RadioMsgStatic"]]
+		,[toLowerANSI "Enemies_North_East", ["RadioMsgStatic"]]
+		,[toLowerANSI "Enemies_East", 		["RadioMsgStatic"]]
+		,[toLowerANSI "Enemies_South_East", ["RadioMsgStatic"]]
+		,[toLowerANSI "Enemies_South", 		["RadioMsgStatic"]]
+		,[toLowerANSI "Enemies_South_West", ["RadioMsgStatic"]]
+		,[toLowerANSI "Enemies_West", 		["RadioMsgStatic"]]
+		,[toLowerANSI "Enemies_North_West", ["RadioMsgStatic"]]
+		
+		,[toLowerANSI "Napalm_Distance", 	["RadioMsgStatic"]]
+		,[toLowerANSI "Artillery_Distance", ["RadioMsgStatic"]]
 		
 		,[toLowerANSI "Introduction", 		["mp_groundsupport_05_newpilot_BHQ_0", "mp_groundsupport_05_newpilot_BHQ_1", "mp_groundsupport_05_newpilot_BHQ_2"]]
 		,[toLowerANSI "Replacement", 		["mp_groundsupport_05_newpilot_BHQ_0", "mp_groundsupport_05_newpilot_BHQ_1", "mp_groundsupport_05_newpilot_BHQ_2"]]
@@ -61,6 +73,18 @@ private _data = createHashMapFromArray [
 		,[toLowerANSI "Napalm_South_West", 	["napalm_south_west"]]
 		,[toLowerANSI "Napalm_West", 		["napalm_west"]]
 		,[toLowerANSI "Napalm_North_West", 	["napalm_north_west"]]
+		
+		,[toLowerANSI "Enemies_North", 		["enemies_north"]]
+		,[toLowerANSI "Enemies_North_East", ["enemies_north_east"]]
+		,[toLowerANSI "Enemies_East", 		["enemies_east"]]
+		,[toLowerANSI "Enemies_South_East", ["enemies_south_east"]]
+		,[toLowerANSI "Enemies_South", 		["enemies_south"]]
+		,[toLowerANSI "Enemies_South_West", ["enemies_south_west"]]
+		,[toLowerANSI "Enemies_West", 		["enemies_west"]]
+		,[toLowerANSI "Enemies_North_West", ["enemies_north_west"]]
+		
+		,[toLowerANSI "Napalm_Distance", 	["napalm_distance_1", "napalm_distance_2", "napalm_distance_3", "napalm_distance_4"]]
+		,[toLowerANSI "Artillery_Distance", ["artillery_distance_1", "artillery_distance_2", "artillery_distance_3"]]
 		
 		,[toLowerANSI "Introduction", 		["introduction_1", "introduction_2", "introduction_3"]]
 		,[toLowerANSI "Replacement", 		["replacement_1"]] 												// TODO cfgRadio
@@ -108,7 +132,10 @@ if ( (toLowerANSI _messageType) in _dictionary ) then
 		private _str = getText (ConfigFile >> "CfgRadio" >> _cfgRadio >> "text");
 		_text = _str;
 	};
-	diag_log format ["TransmitOverRadio: %1", _cfgRadio];
+	
+	if (_debug) then {
+		diag_log format ["TransmitOverRadio: %1", _cfgRadio];
+	};
 };
 
 

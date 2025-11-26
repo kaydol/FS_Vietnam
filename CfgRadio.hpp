@@ -179,6 +179,117 @@
 	};
 	
 	
+	class Godspeed_nigga_enemies_east
+	{
+		name = "Godspeed_nigga_enemies_east";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed_Nigga\enemies_east.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "This is Godspeed. Group Nigga, I have visual on at least a platoon-sized VC group on your EAST. Over.";
+	};
+	class Godspeed_nigga_enemies_north
+	{
+		name = "Godspeed_nigga_enemies_north";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed_Nigga\enemies_north.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "This is Godspeed. Group Nigga, I have a visual on at least a dozen tango to your NORTH. Over.";
+	};
+	class Godspeed_nigga_enemies_north_east
+	{
+		name = "Godspeed_nigga_enemies_north_east";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed_Nigga\enemies_north_east.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "This is Godspeed. Group Nigga, VC to your NORTH EAST. Over.";
+	};
+	class Godspeed_nigga_enemies_north_west
+	{
+		name = "Godspeed_nigga_enemies_north_west";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed_Nigga\enemies_north_west.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "This is Godspeed. Group Nigga, VC to your NORTH WEST. Over.";
+	};
+	class Godspeed_nigga_enemies_south
+	{
+		name = "Godspeed_nigga_enemies_south";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed_Nigga\enemies_south.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "This is Godspeed. Group Nigga, I see VC running towards you from the SOUTH. Over.";
+	};
+	class Godspeed_nigga_enemies_south_east
+	{
+		name = "Godspeed_nigga_enemies_south_east";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed_Nigga\enemies_south_east.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "This is Godspeed. Group Nigga, incoming VC on your SOUTH EAST. Over.";
+	};
+	class Godspeed_nigga_enemies_south_west
+	{
+		name = "Godspeed_nigga_enemies_south_west";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed_Nigga\enemies_south_west.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "This is Godspeed. Group Nigga, watch your SOUTH WEST. Over.";
+	};
+	class Godspeed_nigga_enemies_west
+	{
+		name = "Godspeed_nigga_enemies_west";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed_Nigga\enemies_west.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "This is Godspeed. Group Nigga, a group of tangos is approaching you from the WEST. Over.";
+	};
+	
+	
+	class Godspeed_nigga_napalm_distance_1
+	{
+		name = "Godspeed_nigga_napalm_distance_1";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed_Nigga\napalm_distance_1.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "Group Nigga, This is Godspeed. The NAPALM jets are on stand-by. If you manage to put some DISTANCE between yourself and the gooks, we will fry them. Over.";
+	};
+	class Godspeed_nigga_napalm_distance_2
+	{
+		name = "Godspeed_nigga_napalm_distance_2";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed_Nigga\napalm_distance_2.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "Group Nigga, This is Godspeed. I want to request a NAPALM strike, but the risk of friendly casualties is too high. Try to create some SPACE between Charlie and yourself. Over.";
+	};
+	class Godspeed_nigga_napalm_distance_3
+	{
+		name = "Godspeed_nigga_napalm_distance_3";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed_Nigga\napalm_distance_3.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "Group Nigga, This is Godspeed. Phantoms carrying NAPALM are on stand-by. I am hesitant to call them, because the enemy is too close to you. Over.";
+	};
+	class Godspeed_nigga_napalm_distance_4
+	{
+		name = "Godspeed_nigga_napalm_distance_4";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed_Nigga\napalm_distance_4.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "Group Nigga, This is Godspeed. Phantoms jets are loaded with NAPALM. But I am hesitant to call them, because the enemy is too close to you. Over.";
+	};
+	
+	
+	class Godspeed_nigga_artillery_distance_1
+	{
+		name = "Godspeed_nigga_artillery_distance_1";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed_Nigga\artillery_distance_1.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "Group Nigga, This is Godspeed. The enemy is too close so I can not request artillery support. Over.";
+	};
+	class Godspeed_nigga_artillery_distance_2
+	{
+		name = "Godspeed_nigga_artillery_distance_2";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed_Nigga\artillery_distance_2.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "Group Nigga, This is Godspeed. Battalion's artillery is on stand-by, but can not engage the VC that are so close to you. Over.";
+	};
+	class Godspeed_nigga_artillery_distance_3
+	{
+		name = "Godspeed_nigga_artillery_distance_3";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed_Nigga\artillery_distance_3.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "Group Nigga, This is Godspeed. The howitzer battery is ready to conduct fire missions, but we can not help you while the enemy is so close to you. Over.";
+	};
+	
+	
 	class Godspeed_injured_1
 	{
 		name = "Godspeed_injured_1";
