@@ -7,7 +7,11 @@
 
 if !(isServer) exitWith {};
 
-params ["_side", ["_prefix", ""], "_messageType", ["_vehicle", objNull], ["_speaker", objNull], ["_debug", false]];
+params ["_side", ["_prefix", ""], "_messageType", ["_vehicle", objNull], ["_speaker", objNull], ["_debug", true]];
+
+if (_debug) then {
+	diag_log format ["TransmitOverRadio.sqf input: %1", _this];
+};
 
 private _data = createHashMapFromArray [
 	//-- Vanilla radio messages
@@ -42,10 +46,14 @@ private _data = createHashMapFromArray [
 		,[toLowerANSI "Napalm_Distance", 	["RadioMsgStatic"]]
 		,[toLowerANSI "Artillery_Distance", ["RadioMsgStatic"]]
 		
+		,[toLowerANSI "Visual", ["RadioMsgStatic"]]
+		
 		,[toLowerANSI "Introduction", 		["mp_groundsupport_05_newpilot_BHQ_0", "mp_groundsupport_05_newpilot_BHQ_1", "mp_groundsupport_05_newpilot_BHQ_2"]]
 		,[toLowerANSI "Replacement", 		["mp_groundsupport_05_newpilot_BHQ_0", "mp_groundsupport_05_newpilot_BHQ_1", "mp_groundsupport_05_newpilot_BHQ_2"]]
 		,[toLowerANSI "RefuelAndResupply", 	["RadioMsgStatic"]]
 		,[toLowerANSI "Returned", 			["mp_groundsupport_05_newpilot_BHQ_0", "mp_groundsupport_05_newpilot_BHQ_1", "mp_groundsupport_05_newpilot_BHQ_2"]]
+		
+		,[toLowerANSI "Engaging", 			["RadioMsgStatic"]]
 		
 		,[toLowerANSI "RequestCAS", 		["mp_groundsupport_01_casrequested_BHQ_0", "mp_groundsupport_01_casrequested_BHQ_1", "mp_groundsupport_01_casrequested_BHQ_2"]]
 		,[toLowerANSI "InboundCAS", 		["mp_groundsupport_50_cas_BHQ_0", "mp_groundsupport_50_cas_BHQ_1", "mp_groundsupport_50_cas_BHQ_2"]]
@@ -86,6 +94,8 @@ private _data = createHashMapFromArray [
 		,[toLowerANSI "Napalm_Distance", 	["napalm_distance_1", "napalm_distance_2", "napalm_distance_3", "napalm_distance_4"]]
 		,[toLowerANSI "Artillery_Distance", ["artillery_distance_1", "artillery_distance_2", "artillery_distance_3"]]
 		
+		,[toLowerANSI "Visual", ["visual_1"]]
+		
 		,[toLowerANSI "Introduction", 		["introduction_1", "introduction_2", "introduction_3"]]
 		,[toLowerANSI "Replacement", 		["replacement_1"]] 												// TODO cfgRadio
 		,[toLowerANSI "RefuelAndResupply", 	["resupply_1"]] 												// TODO cfgRadio
@@ -95,12 +105,13 @@ private _data = createHashMapFromArray [
 		//,[toLowerANSI "InboundCAS", 		["RadioMsgStatic"]]
 		//,[toLowerANSI "ChopperDown", 		["RadioMsgStatic"]]
 		//,[toLowerANSI "BoardingStarted", 	["RadioMsgStatic"]]
-		//,[toLowerANSI "BoardingEnded", 		["RadioMsgStatic"]]
+		//,[toLowerANSI "BoardingEnded", 	["RadioMsgStatic"]]
 		
 		,[toLowerANSI "InjuredCrewChief", 	["injured_crew_chief_1"]]
 		,[toLowerANSI "InjuredCopilot", 	["injured_copilot_1"]]
 		,[toLowerANSI "Injured", 			["injured_1"]]
 		,[toLowerANSI "Damaged", 			["vehicle_damaged_1"]]
+		,[toLowerANSI "Engaging", 			["engaging_1", "engaging_2"]]
 	]]
 ];
 
@@ -118,14 +129,6 @@ private _cfgRadio = "RadioMsgStatic";
 if ( (toLowerANSI _messageType) in _dictionary ) then 
 {
 	private _pool = _dictionary get toLowerANSI _messageType;
-	
-	switch (toLowerANSI _messageType) do {
-		case toLowerANSI "InjuredCrewChief": { _prefix = (_prefix splitString "_" select 0); };
-		case toLowerANSI "InjuredCopilot": { _prefix = (_prefix splitString "_" select 0); };
-		case toLowerANSI "Injured": { _prefix = (_prefix splitString "_" select 0); };
-		case toLowerANSI "Damaged": { _prefix = (_prefix splitString "_" select 0); };
-		default {};
-	};
 	
 	_cfgRadio = _prefix + "_" + selectRandom _pool;
 	if (isText(ConfigFile >> "CfgRadio" >> _cfgRadio >> "text")) then {
@@ -174,7 +177,8 @@ if (_speaker isEqualTo objNull && _prefix isNotEqualTo "") then
 	
 	if !( _canReceiveMessage ) exitWith {};
 	
-	if (DEF_CURRENT_PLAYER call FS_fnc_CanTransmit) then {
+	if (DEF_CURRENT_PLAYER call FS_fnc_CanTransmit) then 
+	{
 		//-- Play a nice 2D radio sound
 		if ( _speaker isEqualType "" ) then {
 			if (_cfgRadio isNotEqualTo "") then {	[_side, _speaker] sideRadio _cfgRadio;	};
@@ -183,8 +187,9 @@ if (_speaker isEqualTo objNull && _prefix isNotEqualTo "") then
 			if (_cfgRadio isNotEqualTo "") then {	[_side, "HQ"] sideRadio _cfgRadio;		};
 			if (_text isNotEqualTo "") then 	{	_speaker sideChat _text;				};
 		};
-	} else {
-		
+	} 
+	else 
+	{
 		if (isNil{RADIOCOMMS_AUDIBLE_RADIUS}) then {
 			RADIOCOMMS_AUDIBLE_RADIUS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "AudibleRadius" >> "defaultValue");
 		};

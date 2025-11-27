@@ -29,6 +29,7 @@ if !(_activated) exitWith {};
 
 private _respawnDestroyedAircrafts = _module getVariable "RespawnDestroyedAircrafts";
 private _respawnDelay = _module getVariable "RespawnDelay";
+
 private _hunterClasses = _module getVariable "HunterClasses";
 if (_hunterClasses isEqualType "") then { _hunterClasses = call compile _hunterClasses; };
 
@@ -43,8 +44,10 @@ private _napalmThreshold = _module getVariable "napalmThreshold";
 private _napalmCD = _module getVariable "napalmCooldown";
 private _ambientRadio = _module getVariable "AmbientRadio";
 private _enableIntroduction = _module getVariable "EnableIntroduction";
+
 private _markersToMarkWith = _module getVariable "MarkersToMarkWith";
 if (_markersToMarkWith isEqualType "") then { _markersToMarkWith = call compile _markersToMarkWith; };
+
 private _minClusterSizeToMark = _module getVariable "MinClusterSizeToMark";
 private _makeCaptive = _module getVariable "MakeCaptive";
 private _godmode = _module getVariable "Godmode";
@@ -85,6 +88,49 @@ forEach _synced;
 } 
 forEach _aircrafts;
 
+{
+	private _aircraft = _x;
+	
+	if (_radioTransmissionPrefix != DEF_RADIO_TRANSMISSION_PREFIX_NONE) then {
+		_aircraft setVariable [DEF_RADIO_TRANSMISSION_PREFIX_VAR, _radioTransmissionPrefix, true];
+	};
+	
+	//-- There must be a better place to put this in. This place does not account for empty vehicles...
+	if ((driver _aircraft) isNotEqualTo objNull) then {
+		[group driver _aircraft, [_radioTransmissionPrefix splitString "_" select 0]] remoteExec ["setGroupId", 0];
+	};
+	
+	_x spawn 
+	{
+		params ["_aircraft"];
+		
+		//-- "Contact!"
+		[[_aircraft], {
+			params ["_aircraft"]; 
+			_aircraft addEventHandler ["Fired", {
+				params ["_aircraft", "_weapon", "_muzzle", "_mode", "_ammo", "_magazine", "_projectile", "_gunner"];
+				_aircraft removeEventHandler [_thisEvent, _thisEventHandler];
+				private _side = _aircraft getVariable ["initSide", side _aircraft];
+				[_side, _aircraft getVariable DEF_RADIO_TRANSMISSION_PREFIX_VAR, "Engaging"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+			}];
+		}] remoteExec ["call", _aircraft];
+		
+		//-- "I've got a visual on you"
+		private _time = time;
+		private _isPosHidden = false;
+		waitUntil {
+			sleep 1;
+			_isPosHidden = ([eyePos driver _this, [] call BIS_fnc_listPlayers, _this] call FS_fnc_IsPosHidden); 
+			time - _time > 60 || !_isPosHidden 
+		};
+		if (!_isPosHidden) then {
+			private _side = _aircraft getVariable ["initSide", side _aircraft];
+			[_side, _aircraft getVariable DEF_RADIO_TRANSMISSION_PREFIX_VAR, "Visual"] remoteExec ["FS_fnc_TransmitOverRadio", 2];
+		};
+	};
+}
+forEach _aircrafts;
+
 if (_makeCaptive) then 
 {
 	{
@@ -114,11 +160,6 @@ if (_makeCaptive) then
 		private _fsmHandle = [_aircraft, _assessmentRate, [_artilleryThreshold, _artilleryCD, _napalmThreshold, _napalmCD], _target, _markersToMarkWith, _minClusterSizeToMark, _debug] execFSM "\FS_Vietnam\FSM\Loach.fsm";
 		
 		_aircraft setVariable ["AirCommandFSMHandle", _fsmHandle, true];
-		
-		if (_radioTransmissionPrefix != DEF_RADIO_TRANSMISSION_PREFIX_NONE) then {
-			_aircraft setVariable [DEF_RADIO_TRANSMISSION_PREFIX_VAR, _radioTransmissionPrefix, true];
-			[group driver _aircraft, [_radioTransmissionPrefix splitString "_" select 0]] remoteExec ["setGroupId", 0];
-		};
 		
 		// Step 3. Announce if needed 
 		if ( _firstRun && _enableIntroduction ) then 

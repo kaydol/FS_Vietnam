@@ -21,7 +21,7 @@ if (!hasInterface) exitWith {};
 {
 	FS_ShotgunTacticalReload_PRESSED_R = FALSE;
 
-	waitUntil { !isNull (findDisplay 46) };
+	waitUntil { sleep 1; !isNull (findDisplay 46) };
 
 	FS_ONE_SHELL_RELOADABLE_CACHE = createHashMap;
 

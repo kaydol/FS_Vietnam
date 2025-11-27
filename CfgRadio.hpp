@@ -290,33 +290,58 @@
 	};
 	
 	
-	class Godspeed_injured_1
+	class Godspeed_nigga_visual_1
 	{
-		name = "Godspeed_injured_1";
+		name = "Godspeed_nigga_visual_1";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed_Nigga\visual_1.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "This is Godspeed. Group Nigga, I've got a visual on you. High concentration of VC in this area, proceed with caution. Over.";
+	};
+	
+	
+	class Godspeed_nigga_injured_1
+	{
+		name = "Godspeed_nigga_injured_1";
 		sound[] = {"\FS_Vietnam\Sounds\Godspeed\injured_1.ogg", db+20, 1};
 		titles[] = {1, ""};
 		text = "This is Godspeed. I am wounded. I will try to make it to the closest base. Over.";
 	};
-	class Godspeed_injured_copilot_1
+	class Godspeed_nigga_injured_copilot_1
 	{
-		name = "Godspeed_injured_copilot_1";
+		name = "Godspeed_nigga_injured_copilot_1";
 		sound[] = {"\FS_Vietnam\Sounds\Godspeed\injured_copilot_1.ogg", db+20, 1};
 		titles[] = {1, ""};
 		text = "This is Godspeed. My copilot is badly injured. I am LEAVING the area. Over!";
 	};
-	class Godspeed_injured_crew_chief_1
+	class Godspeed_nigga_injured_crew_chief_1
 	{
-		name = "Godspeed_injured_crew_chief_1";
+		name = "Godspeed_nigga_injured_crew_chief_1";
 		sound[] = {"\FS_Vietnam\Sounds\Godspeed\injured_crew_chief_1.ogg", db+20, 1};
 		titles[] = {1, ""};
 		text = "This is Godspeed. My crew chief is injured. I am LEAVING! Over!";
 	};
-	class Godspeed_vehicle_damaged_1
+	class Godspeed_nigga_vehicle_damaged_1
 	{
-		name = "Godspeed_vehicle_damaged_1";
+		name = "Godspeed_nigga_vehicle_damaged_1";
 		sound[] = {"\FS_Vietnam\Sounds\Godspeed\vehicle_damaged_1.ogg", db+20, 1};
 		titles[] = {1, ""};
 		text = "This is Godspeed. We have sustained heavy damage. I will try to make it to closest base! Over!";
+	};
+	
+	
+	class Godspeed_nigga_engaging_1
+	{
+		name = "Godspeed_nigga_engaging_1";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed\engaging_1.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "This is Godspeed. We have are engaging VC. Over.";
+	};
+	class Godspeed_nigga_engaging_2
+	{
+		name = "Godspeed_nigga_engaging_2";
+		sound[] = {"\FS_Vietnam\Sounds\Godspeed\engaging_2.ogg", db+20, 1};
+		titles[] = {1, ""};
+		text = "This is Godspeed. Contact! I see dinks! Over!";
 	};
 	
 	
