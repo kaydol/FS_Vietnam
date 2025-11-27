@@ -1,4 +1,7 @@
 
+#define DEF_SLEEP 3
+#define DEF_STEPS 30
+
 params ["_aircraft", ["_debug", false]];
 
 private _group = group _aircraft;
@@ -112,7 +115,56 @@ while { _aircraft call FS_fnc_CanPerformDuties } do
 	}
 	forEach _friendlyGroups;
 	
-	sleep 3;
+	// Pushing the aircrafts towards current waypoing to make him HAUL ASS 
+	// because this RETARD flies 2 FUCKING kilometers away from his waypoint 
+	// and then takes his SWEET time getting back
+	private _group = group _aircraft;
+	private _time = time;
+	private _isPosHidden = [getPosASL _aircraft, [] call BIS_fnc_listPlayers, _aircraft] call FS_fnc_IsPosHidden;
 	
+	if (_isPosHidden && count waypoints _group > 0 && getPos _aircraft select 2 > 30) then 
+	{
+		private _wpPos = waypointPosition [_group, currentWaypoint _group];
+		private _maxSpeed = 50;
+		private _i = 0;
+		for [{_i = 0},{_i < DEF_STEPS},{_i = _i + 1}] do 
+		{
+			sleep (DEF_SLEEP/DEF_STEPS);
+			
+			private _velocity = velocity _aircraft;
+			private _dirAlpha = linearConversion [_time, _time + DEF_SLEEP, time, 0, 1];
+			private _velocityAlpha = linearConversion [_time, _time + DEF_SLEEP, time, 0, 1];
+			
+			//-- lerp dir
+			private _dir = vectorDirVisual _aircraft;
+			_dir set [2, 0];
+			_dir = vectorNormalized _dir;
+			private _p1 = position _aircraft;
+			private _p2 = _wpPos;
+			private _dirToTarget = vectorNormalized [_p2 # 0 - _p1 # 0, _p2 # 1 - _p1 # 1, 0];
+			private _newDir = [_dir, _dirToTarget, _dirAlpha] call BIS_fnc_slerp;
+			
+			//-- lerp velocity
+			private _vectorToTarget = vectorNormalized ((getPosATL _aircraft) vectorFromTo _wpPos);
+			private _newVelocity = _vectorToTarget vectorMultiply _maxSpeed;
+			
+			_newVelocity set [2, 0];
+			
+			private _lerp = [_velocity, _newVelocity, _velocityAlpha] call BIS_fnc_lerpVector;
+			
+			//-- lerp pitch bank
+			//private _pitchBank = (_aircraft call BIS_fnc_getPitchBank) params ["_pitch", "_bank"];
+			//private _newPitch = linearConversion [0, 1, _dirAlpha, _pitch, -35, true];
+			//private _newBank = linearConversion [0, 1, _dirAlpha, _bank, 0, true];
+			
+			_aircraft setVectorDir _newDir;
+			//[_aircraft, _newPitch, _newBank] call BIS_fnc_setPitchBank;
+			_aircraft setVelocity _lerp;
+		};
+	}
+	else
+	{
+		sleep DEF_SLEEP;
+	};
 };
 

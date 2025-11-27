@@ -78,7 +78,7 @@ link42[] = {27,29};
 link43[] = {28,20};
 link44[] = {29,14};
 link45[] = {30,14};
-globals[] = {0.000000,0,0,0,0,640,480,1,75,6316128,1,-492.117432,487.110535,145.403214,-525.623291,1147,786,1};
+globals[] = {0.000000,0,0,0,0,640,480,1,75,6316128,1,-463.949707,515.278748,168.455109,-502.569702,1147,786,1};
 window[] = {0,-1,-1,-1,-1,1218,260,1986,260,1,1165};
 *//*%FSM</HEAD>*/
 class FSM
@@ -588,7 +588,7 @@ class FSM
                                         to="__Long__On_stati";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"" \n
-                                         "time - _time > 180" \n
+                                         "time - _time > 60" \n
                                          ""/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/"if (_debug) then {" \n
                                          "	diag_log ""Pilot: Timed out while reaching the area"";" \n

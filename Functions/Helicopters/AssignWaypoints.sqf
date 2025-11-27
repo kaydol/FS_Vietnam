@@ -10,9 +10,9 @@ _this spawn
 	private _side = _aircraft getVariable ["initSide", side _aircraft];
 	[_side, "AIRSTATIONS", [_aircraft, _target]] call FS_fnc_UpdateSideVariable;
 
-	private _distance = 200;
+	private _distance = 400;
 	private _distance_step = 0;
-	private _waypoints = 3;
+	private _waypoints = 1;
 	private _group = group _aircraft;
 
 	private _dir = [(getDir _aircraft) + ([_aircraft, _target] call BIS_fnc_relativeDirTo)] call FS_fnc_DirectionWrapper; 
@@ -31,9 +31,9 @@ _this spawn
 		
 		private _NewWP = _group addWaypoint [_pos, 0];
 		_NewWP setWaypointType "MOVE";
-		_NewWP setWaypointSpeed "NORMAL";	
-		_NewWP setWaypointBehaviour "AWARE";	
-		_NewWP setWaypointCombatMode "RED";	
+		_NewWP setWaypointSpeed "FULL";
+		_NewWP setWaypointBehaviour "AWARE";
+		_NewWP setWaypointCombatMode "RED";
 		_NewWP setWaypointCompletionRadius 200;
 		_NewWP setWaypointStatements ["true", "vehicle this setVariable ['reached_the_area', true]; deleteWaypoint [group this, currentWaypoint (group this)]"];
 		
@@ -43,8 +43,8 @@ _this spawn
 	_pos = _pos getPos [_distance, [_dir + 360/_waypoints] call FS_fnc_DirectionWrapper];
 
 	private _NewWP = _group addWaypoint [_pos, 0];
-	_NewWP setWaypointSpeed "NORMAL";	
-	_NewWP setWaypointBehaviour "AWARE";	
+	_NewWP setWaypointSpeed "FULL";
+	_NewWP setWaypointBehaviour "AWARE";
 	_NewWP setWaypointCombatMode "RED";
 	_NewWP setWaypointCompletionRadius 150;
 	_NewWP setWaypointStatements ["true", "deleteWaypoint [group this, currentWaypoint (group this)]"];
