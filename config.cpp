@@ -1789,6 +1789,8 @@ class CfgFunctions
 			class VisualizeBestPlaces {file = "\FS_Vietnam\Functions\Misc\VisualizeBestPlaces.sqf";};
 			class PlayAnimationSequence {file = "\FS_Vietnam\Functions\Misc\PlayAnimationSequence.sqf";};
 			class IsInside {file = "\FS_Vietnam\Functions\Misc\IsInside.sqf";};
+			class GetNewTerrainHeight {file = "\FS_Vietnam\Functions\Misc\GetNewTerrainHeight.sqf";};
+			class SetNewTerrainHeight {file = "\FS_Vietnam\Functions\Misc\SetNewTerrainHeight.sqf";};
 		};
 		
 		class FS_Helicopters {

@@ -26,7 +26,7 @@ private _dirt = "#particlesource" createVehicleLocal getPos DEF_CURRENT_PLAYER;
 _dirt setParticleCircle [0, [0, 0, 0]];
 _dirt setParticleRandom [0, [20, 20, 0], [3, 3, 0.4], 0, 1, [0, 0, 0, 0], 0, 0];
 _dirt setParticleParams [["\A3\data_f\ParticleEffects\Universal\Mud.p3d", 1, 0, 1], "", "SpaceObject", 1, 4, [0, 0, 20], [0, 0, -1], 0, 10, 0, 0, [0, 0.1, 0.1], [[0.1, 0.1, 0.1, 1], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0.08], 1, 0, "", "", DEF_CURRENT_PLAYER];
-_dirt setDropInterval 0.05;
+_dirt setDropInterval 0.01;
 
 [_dirt, 0.05, 3] spawn _fnc_fadingEffect;
 

@@ -61,16 +61,24 @@ for "_i" from 1 to _salvos do
 			_markers pushBack _marker;
 		};
 		
-		[_mine, _pos2] spawn 
+		[_mine, _pos2] spawn
 		{
-			params ["_mine", "_position"];
+			params ["_mine", "_pos"];
+			
+			_pos set [2, 0];
+			private _posASL = ATLtoASL _pos;
 			
 			waitUntil {!alive _mine};
 			
-			[_position] remoteExec ["FS_fnc_FallingDirt", 0];
-			{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [_position,["bush"],10]);
+			diag_log format ["DropMines.sqf: %1", _posASL];
+			
+			[_posASL] remoteExec ["FS_fnc_FallingDirt", 0];
+			{ _x hideObjectGlobal true } foreach (nearestTerrainObjects [ASLToAGL _posASL,["BUSH", "TREE", "HIDE"],10]);
+			
+			private _desiredTerrainHeightASL = (_posASL # 2) - 1;
+			private _positionsAndHeights = [_posASL, 3, 3, _desiredTerrainHeightASL] call FS_fnc_GetNewTerrainHeight; 
+			[_positionsAndHeights] call FS_fnc_SetNewTerrainHeight;
 		};
-		
 	};
 	
 	sleep 6;
