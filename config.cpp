@@ -1,4 +1,15 @@
 
+#define DEF_TURRET_MIN_RANGE 0.1
+#define DEF_TURRET_MED_RANGE 75
+#define DEF_TURRET_MAX_RANGE 150
+#define DEF_TURRET_DISPERSION 0.001
+#define DEF_TURRET_ROF 0.03
+#define DEF_TURRET_ROTATION_SPEED 3
+#define DEF_TURRET_SHOULDER_MIN_TURN -180
+#define DEF_TURRET_SHOULDER_MAX_TURN 180
+#define DEF_TURRET_MIN_TURN -180
+#define DEF_TURRET_MAX_TURN 180
+
 class CfgPatches
 {
 	class FS_Vietnam
@@ -6,11 +17,11 @@ class CfgPatches
 		//-- Units available to spawn as Zeus must be in units[]
 		//-- Of course, they didn't write about it on the wiki
 		units[] = {"FS_NapalmCAS_Module", "FS_ArtyStrike_Module", "FS_ForceToPlaceTraps_Module", "FS_Weapon_MMG_Mighty_PK", 
-		"FS_Backpack_RaiStone", "FS_Backpack_RaiStone_Holder"};
+		"FS_Backpack_RaiStone", "FS_Backpack_RaiStone_Holder", "FS_PortableTurret", "FS_PortableTurret_Shoulder", "FS_PortableTurret_BP"};
 		
-		magazines[] = {"FS_Mighty_PK_100_mag", "FS_HealingGrenade_Mag"};
-		weapons[] = {"FS_Mighty_PK", "FS_HealingGrenade_Muzzle"};
-		ammo[] = {"FS_HealingGrenade_Ammo"};
+		magazines[] = {"FS_Mighty_PK_100_mag", "FS_HealingGrenade_Mag", "FS_PortableTurret_Magazine"};
+		weapons[] = {"FS_Mighty_PK", "FS_HealingGrenade_Muzzle", "FS_PortableTurret_Weapon"};
+		ammo[] = {"FS_HealingGrenade_Ammo", "FS_PortableTurret_Ammo"};
 		requiredAddons[] = {"A3_Data_F", "A3_Weapons_F_Mark", "weapons_f_vietnam_c"};
 		requiredVersion = 0.100000;
 		author = "kaydol";
@@ -331,6 +342,28 @@ class FS_VFX_HealingGrenade {
 };
 
 
+class SensorTemplatePassiveRadar;
+class SensorTemplateAntiRadiation;
+class SensorTemplateActiveRadar;
+class SensorTemplateIR;
+class SensorTemplateVisual;
+class SensorTemplateMan;
+class SensorTemplateLaser;
+class SensorTemplateNV;
+class SensorTemplateDataLink;
+class DefaultVehicleSystemsDisplayManagerLeft {
+	class components;
+};
+class DefaultVehicleSystemsDisplayManagerRight {
+	class components;
+};
+class VehicleSystemsTemplateLeftPilot : DefaultVehicleSystemsDisplayManagerLeft {
+	class components;
+};
+class VehicleSystemsTemplateRightPilot : DefaultVehicleSystemsDisplayManagerRight {
+	class components;
+};
+class CBA_Extended_EventHandlers_base;
 class CfgVehicles 
 {
 	/*
@@ -1736,7 +1769,14 @@ class CfgVehicles
 
 	//-- Stone Backpack backpack, does not block bullets because is not included in unit's fire geometry
 	class Bag_Base;
-	class FS_Backpack_RaiStone : Bag_Base
+	class FS_Backpack_Base: Bag_Base {
+		scope = 1;
+		//editorcategory = "FS_TIBERIAN_GENESIS_EDITOR_CAT";
+		isbackpack = 1;
+		reversed = 1;
+	};
+
+	class FS_Backpack_RaiStone : FS_Backpack_Base
 	{
 		displayName = "Stone Backpack (Medium)";
 		author = "kaydol";
@@ -1753,6 +1793,572 @@ class CfgVehicles
 		reversed = 1;
 	};
 	
+	
+	/*
+		Turret Backpack
+	*/
+	
+	class LandVehicle;
+  	class StaticWeapon: LandVehicle	{
+		class NewTurret;
+	};
+
+	class StaticWeapon_F: StaticWeapon {
+		class AnimationSources;
+		class Turrets {
+			class MainTurret: NewTurret{};
+		};
+		class Components;
+	};
+
+	class FS_StaticTurret_Base: StaticWeapon_F {
+		class AnimationSources;
+		class Turrets {
+			class MainTurret: NewTurret{};
+		};
+        class Components;
+	};
+
+	class FS_PortableTurret_BP: FS_Backpack_Base {
+		_generalMacro = "FS_PortableTurret_BP";
+		author = "Sentry";
+		scope = 2;
+		scopeCurator = 2;
+		//editorSubcategory="FS_EQUIPMENT_EDITOR_SUBCAT";
+		//editorPreview = "\FS_core\data\ico\icoportable_gun.jpg";
+		side = 3;
+		allowedSlots[]={901};
+		mapSize = 0.6;
+		icon = "iconBackpack";
+		//picture = "\FS_core\data\ico\ico_portable_turret_ca.paa";
+		displayName = "Portable Turret";
+		maximumLoad = 0;
+		mass = 5;
+		model="\FS_Vietnam\Models\portable_turret_backpack.p3d";
+		class assembleInfo {
+			primary = 1;
+			base = "";
+			displayName = "Portable Turret";
+			assembleTo = "FS_PortableTurret";
+			dissasembleTo[] = {};
+		};
+		class TransportMagazines{};
+	};
+
+	class FS_PortableTurret : FS_StaticTurret_Base {
+		author = "Sentry";
+		scope = 2;
+		scopeCurator = 2;
+		_generalMacro = "FS_PortableTurret";
+		faction = "BLU_F";
+		displayName = "Turret";
+		hasDriver = 0;
+		hasCommander = 0;
+		hasGunner = 1;
+		simulation = "tankX";
+		weapons[] = {};
+		class SpeechVariants {
+			class Default {
+				speechSingular[]={"veh_Static_MG_s"};
+				speechPlural[]={"veh_Static_MG_p"};
+			};
+		};
+		textSingular="Turret";
+		textPlural="Turrets";
+		nameSound="veh_Static_MG_s";
+		getInRadius = 0;
+		isUav = 1;
+		crew = B_UAV_AI;
+		side = 1;
+		uavCameraGunnerPos = "pos_gunner_view";
+		uavCameraGunnerDir = "pos_gunner_view_dir";
+		unitInfoType = "RscUnitInfoTank";
+		model = "\FS_Vietnam\Models\portable_turret.p3d";
+		hiddenSelections[] ={};
+		hiddenSelectionsTextures[] = {};
+		// threat (VSoft, VArmor, VAir), how threatening vehicle is to unit types
+		threat[] = {1, 0, 0};
+		cost = 2000000;
+		accuracy = 0.12;	// accuracy needed to recognize type of this target
+		memoryPointAim = "zamerny";
+		extCameraPosition[] = {0, 1, -2};
+		canFloat = false;
+		animated = true;
+		fuelExplosionPower = 0;
+		damageEffect="UAVDestructionEffects";
+		enableGPS = 1;
+		radartype = 2;
+		radarTarget = 1;
+		radarTargetSize = 1;
+		visualTarget = 1;
+		visualTargetSize = 1;
+		irTarget = true;
+		irTargetSize = 1;
+		reportRemoteTargets = 0;
+		receiveRemoteTargets = 0;
+		reportOwnPosition = 1;
+		type = 0;
+		lockDetectionSystem = 0;
+		incomingMissileDetectionSystem = 16;
+		class Attributes {};
+		class assembleInfo {
+			primary=1;
+			base="";
+			assembleTo="";
+			displayName="";
+			dissasembleTo[]={"FS_PortableTurret_BP"};
+		};
+		class Components {
+			class SensorsManagerComponent {
+				class Components {
+					class VisualSensorComponent : SensorTemplateVisual {
+						class AirTarget{};
+						class GroundTarget {
+							minRange = DEF_TURRET_MIN_RANGE;
+							maxRange = DEF_TURRET_MAX_RANGE;
+							objectDistanceLimitCoef = 1;
+							viewDistanceLimitCoef = 1;
+						};
+						typeRecognitionDistance = DEF_TURRET_MAX_RANGE;
+						minTrackableSpeed = -1e10;
+						maxTrackableSpeed = 1e10;
+						minTrackableATL= -1e10;
+						maxTrackableATL= 1e10;
+						angleRangeHorizontal = 360;
+						angleRangeVertical = 360;
+						animDirection = "";
+						aimDown = 0;
+						maxFogSeeThrough= 0.85;
+						nightRangeCoef = 1;
+						allowsMarking= 1;
+					};
+					class ManSensorComponent: SensorTemplateMan {
+						class AirTarget{};
+						class GroundTarget {
+							minRange = DEF_TURRET_MIN_RANGE;
+							maxRange = DEF_TURRET_MAX_RANGE;
+							objectDistanceLimitCoef = 1;
+							viewDistanceLimitCoef = 1;
+						};
+						typeRecognitionDistance = DEF_TURRET_MAX_RANGE;
+						minTrackableSpeed = -1e10;
+						maxTrackableSpeed = 1e10;
+						minTrackableATL= -1e10;
+						maxTrackableATL= 1e10;
+						angleRangeHorizontal = 360;
+						angleRangeVertical = 360;
+						animDirection = "";
+						aimDown = 0;
+						maxFogSeeThrough= 0.85;
+						nightRangeCoef = 1;
+						allowsMarking= 1;
+					};
+				};
+			};
+		};
+		class AnimationSources {
+			class recoil_source	{
+				source = "reload";
+				weapon = "FS_PortableTurret_Weapon";
+			};
+			class muzzleLeftRot {
+				source="ammorandom";
+				weapon="FS_PortableTurret_Weapon";
+			};
+			class muzzleRightRot {
+				source="ammorandom";
+				weapon="FS_PortableTurret_Weapon";
+			};
+		};
+		class EventHandlers {
+			// Infinite ammo
+			reloaded = "_this params ['_unit', '_weapon', '_muzzle', '_newMagazine', '_oldMagazine']; if (local _unit) then { vehicle _unit addMagazineTurret [_oldMagazine # 0, [0]]; };";
+			class CBA_Extended_EventHandlers: CBA_Extended_EventHandlers_base {};
+		};
+		armor = 80;
+		armorStructural = 1.0;
+		damageResistance = 0.004;
+		class Hitpoints{};
+		class Damage {
+			tex[] = {};
+			mat[] = {};
+		};
+		class Turrets : Turrets	{
+			class MainTurret : MainTurret {
+				minelev = -35;
+				maxelev = 45;
+				minturn = DEF_TURRET_MIN_TURN;
+				maxturn = DEF_TURRET_MAX_TURN;
+				initElev = 0;
+				initTurn = 0;
+				maxHorizontalRotSpeed = DEF_TURRET_ROTATION_SPEED;
+				maxVerticalRotSpeed = DEF_TURRET_ROTATION_SPEED;
+				soundServo[] = {"FS_Vietnam\Sounds\Weapons\turret_turn.wav", db3, 1, 40};
+				soundServoVertical[] = {"A3\Sounds_F\vehicles\armor\noises\servo_armor_gunner_vertical",0.15848932,1.0,30};
+				hasGunner = true;
+				gunnerName = "$STR_A3_Mk21_operator_displayName";
+				primary = true;
+				primaryGunner = 1;
+				startEngine = 0;
+				enableManualFire = 1;
+				turretinfotype = "RscOptics_APC_Tracked_01_gunner";
+				forceHideGunner = true;
+				gunnerforceoptics = true;
+				gunnerOutForceOptics = 1;
+				viewgunnerinExternal = false;
+				outGunnerMayFire = true;
+				inGunnerMayFire = true;
+				castGunnerShadow = false;
+				showAllTargets = 2;
+				body = "MainTurret";
+				gun = "MainGun";
+				animationSourceBody = "MainTurret";
+				animationSourceGun = "MainGun";
+				uavCameraGunnerPos = "pos_gunner_view";
+				uavCameraGunnerDir = "pos_gunner_view_dir";
+				memoryPointGunnerOptics = "pos_gunner_view";
+				memoryPointsGetInGunner = "pos_gunner";
+				memoryPointsGetInGunnerDir = "pos_gunner";
+				selectionFireAnim = "zasleh";
+				memoryPointGun[] = {"usti hlavne", "usti hlavne 2"};
+				gunBeg = usti hlavne, usti hlavne 2;
+				gunEnd = konec hlavne, konec hlavne 2;
+				gunnerlefthandanimname = "";
+				gunnerrighthandanimname = "";
+				weapons[] = {"FS_PortableTurret_Weapon"};
+				magazines[] = {"FS_PortableTurret_Magazine","FS_PortableTurret_Magazine","FS_PortableTurret_Magazine"};
+				optics = true;
+				gunnerOpticsModel = "\A3\weapons_f\reticle\Optics_Gunner_AAA_01_w_F";
+				class Reflectors{};
+				class OpticsIn {
+					class Wide {
+						opticsDisplayName = "W";
+						initAngleX = 0;
+						minAngleX = -30;
+						maxAngleX = 30;
+						initAngleY = 0;
+						minAngleY = -100;
+						maxAngleY = 100;
+						initFov = 0.466;
+						minFov = 0.466;
+						maxFov = 0.466;
+						visionMode[] = {"Normal", NVG};
+					//	visionMode[] = {"Normal", NVG, "Ti"};
+					//	thermalMode[] = {0, 1};
+						gunnerOpticsModel = "\A3\weapons_f\reticle\Optics_Gunner_AAA_01_w_F";
+					};
+					class Medium : Wide {
+						opticsDisplayName = "M";
+						initFov = 0.093;
+						minFov = 0.093;
+						maxFov = 0.093;
+						gunnerOpticsModel = "\A3\weapons_f\reticle\Optics_Gunner_AAA_01_m_F";
+					};
+					class Narrow : Wide {
+						opticsDisplayName = "N";
+						gunnerOpticsModel = "\A3\weapons_f\reticle\Optics_Gunner_AAA_01_n_F";
+						initFov = 0.029;
+						minFov = 0.029;
+						maxFov = 0.029;
+					};
+				};
+				class Components {
+					class VehicleSystemsDisplayManagerComponentLeft : DefaultVehicleSystemsDisplayManagerLeft {
+						defaultDisplay = "EmptyDisplay";
+						class Components {
+							class EmptyDisplay {
+								componentType = "EmptyDisplayComponent";
+							};
+							class MinimapDisplay {
+								componentType = "MinimapDisplayComponent";
+								range[] = {DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE};
+								resource = "RscCustomInfoMiniMap";
+							};
+							class SensorDisplay	{
+								componentType = "SensorsDisplayComponent";
+								range[] = {DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE};
+								resource = "RscCustomInfoSensors";
+							};
+						};
+					};
+					class VehicleSystemsDisplayManagerComponentRight : DefaultVehicleSystemsDisplayManagerRight	{
+						defaultDisplay = "SensorDisplay";
+						class Components {
+							class EmptyDisplay {
+								componentType = "EmptyDisplayComponent";
+							};
+							class MinimapDisplay {
+								componentType = "MinimapDisplayComponent";
+								range[] = {DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE};
+								resource = "RscCustomInfoMiniMap";
+							};
+							class SensorDisplay	{
+								componentType = "SensorsDisplayComponent";
+								range[] = {DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE};
+								resource = "RscCustomInfoSensors";
+							};
+						};
+					};
+				};
+				class AttributeValues {
+					RadarUsageAI = 1;
+				};
+			};
+		};
+	};
+
+	class FS_PortableTurret_Shoulder : FS_StaticTurret_Base {
+		author = "Sentry";
+		scope = 1;
+		scopeCurator = 1;
+		_generalMacro = "FS_PortableTurret_Shoulder";
+		displayName = "";
+		hasDriver = 0;
+		hasCommander = 0;
+		hasGunner = 1;
+		simulation = "tankX";
+		weapons[] = {};
+		class SpeechVariants {
+			class Default {
+				speechSingular[]={"veh_Static_MG_s"};
+				speechPlural[]={"veh_Static_MG_p"};
+			};
+		};
+		textSingular="GDI Turret";
+		textPlural="GDI Turrets";
+		nameSound="veh_Static_MG_s";
+		getInRadius = 0;
+		isUav = 1;
+		crew = B_UAV_AI;
+		side = 1;
+		uavCameraGunnerPos = "pos_gunner_view";
+		uavCameraGunnerDir = "pos_gunner_view_dir";
+		unitInfoType = "RscUnitInfoTank";
+		model = "\FS_Vietnam\Models\shoulder_turret.p3d";
+		hiddenSelections[] ={};
+		hiddenSelectionsTextures[] = {};
+		// threat (VSoft, VArmor, VAir), how threatening vehicle is to unit types
+		threat[] = {1, 0, 0};
+		cost = 2000000;
+		accuracy = 0.12;	// accuracy needed to recognize type of this target
+		memoryPointAim = "zamerny";
+		extCameraPosition[] = {0, 1, -2};
+		canFloat = false;
+		animated = true;
+		fuelExplosionPower = 0;
+		damageEffect="UAVDestructionEffects";
+		enableGPS = 1;
+		radartype = 0;
+		radarTarget = 0;
+		radarTargetSize = 0;
+		visualTarget = 0;
+		visualTargetSize = 0;
+		irTarget = 0;
+		irTargetSize = 0;
+		reportRemoteTargets = 0;
+		receiveRemoteTargets = 0;
+		reportOwnPosition = 1;
+		type = 0;
+		lockDetectionSystem = 0;
+		incomingMissileDetectionSystem = 16;
+		class Components {
+			class SensorsManagerComponent {
+				class Components {
+					class VisualSensorComponent : SensorTemplateVisual {
+						class AirTarget{};
+						class GroundTarget {
+							minRange = DEF_TURRET_MIN_RANGE;
+							maxRange = DEF_TURRET_MAX_RANGE;
+							objectDistanceLimitCoef = 1;
+							viewDistanceLimitCoef = 1;
+						};
+						typeRecognitionDistance = DEF_TURRET_MAX_RANGE;
+						minTrackableSpeed = -1e10;
+						maxTrackableSpeed = 1e10;
+						minTrackableATL= -1e10;
+						maxTrackableATL= 1e10;
+						angleRangeHorizontal = 360;
+						angleRangeVertical = 360;
+						animDirection = "";
+						aimDown = 0;
+						maxFogSeeThrough= 0.85;
+						nightRangeCoef = 1;
+						allowsMarking= 1;
+					};
+					class ManSensorComponent: SensorTemplateMan	{
+						class AirTarget{};
+						class GroundTarget {
+							minRange = DEF_TURRET_MIN_RANGE;
+							maxRange = DEF_TURRET_MAX_RANGE;
+							objectDistanceLimitCoef = 1;
+							viewDistanceLimitCoef = 1;
+						};
+						typeRecognitionDistance = DEF_TURRET_MAX_RANGE;
+						minTrackableSpeed = -1e10;
+						maxTrackableSpeed = 1e10;
+						minTrackableATL= -1e10;
+						maxTrackableATL= 1e10;
+						angleRangeHorizontal = 360;
+						angleRangeVertical = 360;
+						animDirection = "";
+						aimDown = 0;
+						maxFogSeeThrough= 0.85;
+						nightRangeCoef = 1;
+						allowsMarking= 1;
+					};
+				};
+			};
+		};
+		class AnimationSources {
+			class recoil_source {
+				source = "reload";
+				weapon = "FS_PortableTurret_Shoulder_Weapon";
+			};
+			class muzzleRot {
+				source="ammorandom";
+				weapon="FS_PortableTurret_Shoulder_Weapon";
+			};
+		};
+		class UserActions{};
+		class EventHandlers	{
+			// Infinite ammo
+			reloaded = "_this params ['_unit', '_weapon', '_muzzle', '_newMagazine', '_oldMagazine']; if (local _unit) then { vehicle _unit addMagazineTurret [_oldMagazine # 0, [0]]; };";
+			class CBA_Extended_EventHandlers: CBA_Extended_EventHandlers_base {};
+		};
+		armor = 80;
+		armorStructural = 1.0;
+		damageResistance = 0.004;
+		class Hitpoints{};
+		class Damage {
+			tex[] = {};
+			mat[] = {};
+		};
+		class Turrets : Turrets	{
+			class MainTurret : MainTurret {
+				minelev = -45;
+				maxelev = 70;
+				minturn = DEF_TURRET_SHOULDER_MIN_TURN;
+				maxturn = DEF_TURRET_SHOULDER_MAX_TURN;
+				initElev = 0;
+				initTurn = 0;
+				maxHorizontalRotSpeed = DEF_TURRET_ROTATION_SPEED;
+				maxVerticalRotSpeed = DEF_TURRET_ROTATION_SPEED;
+				soundServo[] = {"FS_Vietnam\Sounds\Weapons\turret_turn.wav", db3, 1, 40};
+				soundServoVertical[] = {"A3\Sounds_F\vehicles\armor\noises\servo_armor_gunner_vertical",0.15848932,1.0,30};
+				hasGunner = true;
+				gunnerName = "$STR_A3_Mk21_operator_displayName";
+				primary = true;
+				primaryGunner = 1;
+				startEngine = 0;
+				enableManualFire = 1;
+				turretinfotype = "RscOptics_APC_Tracked_01_gunner";
+				forceHideGunner = true;
+				gunnerforceoptics = true;
+				gunnerOutForceOptics = 1;
+				viewgunnerinExternal = false;
+				outGunnerMayFire = true;
+				inGunnerMayFire = true;
+				castGunnerShadow = false;
+				showAllTargets = 2;
+				body = "MainTurret";
+				gun = "MainGun";
+				animationSourceBody = "MainTurret";
+				animationSourceGun = "MainGun";
+				uavCameraGunnerPos = "pos_gunner_view";
+				uavCameraGunnerDir = "pos_gunner_view_dir";
+				memoryPointGunnerOptics = "pos_gunner_view";
+				memoryPointsGetInGunner = "pos_gunner";
+				memoryPointsGetInGunnerDir = "pos_gunner";
+				selectionFireAnim = "zasleh";
+				memoryPointGun[] = {"usti hlavne"};
+				gunBeg = usti hlavne;
+				gunEnd = konec hlavne;
+				gunnerlefthandanimname = "";
+				gunnerrighthandanimname = "";
+				weapons[] = {"FS_PortableTurret_Shoulder_Weapon"};
+				magazines[] = {"FS_PortableTurret_Shoulder_Magazine","FS_PortableTurret_Shoulder_Magazine","FS_PortableTurret_Shoulder_Magazine",};
+				optics = true;
+				gunnerOpticsModel = "\A3\weapons_f\reticle\Optics_Gunner_AAA_01_w_F";
+				class Reflectors{};
+				class OpticsIn {
+					class Wide {
+						opticsDisplayName = "W";
+						initAngleX = 0;
+						minAngleX = -30;
+						maxAngleX = 30;
+						initAngleY = 0;
+						minAngleY = -100;
+						maxAngleY = 100;
+						initFov = 0.466;
+						minFov = 0.466;
+						maxFov = 0.466;
+						visionMode[] = {"Normal", NVG};
+					//	visionMode[] = {"Normal", NVG, "Ti"};
+					//	thermalMode[] = {0, 1};
+						gunnerOpticsModel = "\A3\weapons_f\reticle\Optics_Gunner_AAA_01_w_F";
+					};
+					
+					class Medium : Wide	{
+						opticsDisplayName = "M";
+						initFov = 0.093;
+						minFov = 0.093;
+						maxFov = 0.093;
+						gunnerOpticsModel = "\A3\weapons_f\reticle\Optics_Gunner_AAA_01_m_F";
+					};
+					
+					class Narrow : Wide	{
+						opticsDisplayName = "N";
+						gunnerOpticsModel = "\A3\weapons_f\reticle\Optics_Gunner_AAA_01_n_F";
+						initFov = 0.029;
+						minFov = 0.029;
+						maxFov = 0.029;
+					};
+				};
+				
+				class Components {
+					class VehicleSystemsDisplayManagerComponentLeft : DefaultVehicleSystemsDisplayManagerLeft {
+						defaultDisplay = "EmptyDisplay";
+						class Components {
+							class EmptyDisplay {
+								componentType = "EmptyDisplayComponent";
+							};
+							class MinimapDisplay {
+								componentType = "MinimapDisplayComponent";
+								range[] = {DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE};
+								resource = "RscCustomInfoMiniMap";
+							};
+							class SensorDisplay	{
+								componentType = "SensorsDisplayComponent";
+								range[] = {DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE};
+								resource = "RscCustomInfoSensors";
+							};
+						};
+					};
+					class VehicleSystemsDisplayManagerComponentRight : DefaultVehicleSystemsDisplayManagerRight {
+						defaultDisplay = "SensorDisplay";
+						class Components {
+							class EmptyDisplay {
+								componentType = "EmptyDisplayComponent";
+							};
+							class MinimapDisplay {
+								componentType = "MinimapDisplayComponent";
+								range[] = {DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE};
+								resource = "RscCustomInfoMiniMap";
+							};
+							class SensorDisplay	{
+								componentType = "SensorsDisplayComponent";
+								range[] = {DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE, DEF_TURRET_MAX_RANGE};
+								resource = "RscCustomInfoSensors";
+							};
+						};
+					};
+				};
+				class AttributeValues {
+					RadarUsageAI = 1;
+				};
+			};
+		};
+	};
 };
 
 
@@ -1955,6 +2561,33 @@ class CfgAmmo
 			distance = 0;
 		};
 	};
+	
+	//-- For Turret Backpack 
+	class BulletBase;
+	class FS_PortableTurret_Ammo : BulletBase
+	{
+		hit = 4;
+		indirectHit = 0;
+		indirectHitRange = 0;
+		cartridge = "FxCartridge_762";
+		dangerRadiusBulletClose = 8;
+		dangerRadiusHit = 12;
+		suppressionRadiusBulletClose = 6;
+		suppressionRadiusHit = 8;
+		cost = 1.2;
+		airLock = false;
+		typicalSpeed = 800;
+		caliber = 5;
+		model = "\A3\Weapons_f\Data\bullettracer\tracer_yellow";
+		tracerScale = 0.6;
+		tracerStartTime = 0.0075;
+		tracerEndTime = 5;
+		airFriction = -0.001;
+		deflecting = 0;
+		fuseDistance = 0;
+		aiAmmoUsageFlags="64";
+		audibleFire = 0;
+	};
 };
 
 
@@ -1989,10 +2622,35 @@ class CfgMagazines
 		model = "\A3\Weapons_f\ammo\smokegrenade_green";
 		ammo = "FS_HealingGrenade_Ammo";
 	};
+	
+	//-- For Turret Backpack
+	class VehicleMagazine;
+	class FS_PortableTurret_Magazine: VehicleMagazine {
+		author = "Sentry";
+		scope = 2;
+		ammo = "FS_PortableTurret_Ammo";
+		displayName = "Portable Turret Magazine";
+		displayNameShort = "Portable Turret Mag";
+		tracersEvery = 1;
+		count = 20;
+		initSpeed = 860;
+		weight = 128;
+	};
+	class FS_PortableTurret_Shoulder_Magazine: FS_PortableTurret_Magazine {
+		author = "Sentry";
+		scope = 2;
+	};
 };
 
 
+class SlotInfo;
+class MuzzleSlot;
+class CowsSlot;
+class PointerSlot;
+class UnderBarrelSlot;
+class GunParticles;
 class Mode_SemiAuto;
+class Mode_Burst;
 class Mode_FullAuto;
 class CfgWeapons 
 {
@@ -2114,4 +2772,108 @@ class CfgWeapons
 		};
 	};
 	
+	//-- Backpack Turret 
+	class MGun;
+	class FS_PortableTurret_Weapon: MGun {
+		author = "Sentry";
+		scope = 2;
+		displayName = "Portable Turret Weapon";
+		cursor = "EmptyCursor";
+		cursorAim = "mg";
+		magazines[] = {"FS_PortableTurret_Magazine"};
+		canLock = LockCadet;
+		weight = 40;
+		burst = 2;
+		reloadTime = DEF_TURRET_ROF;
+		magazineReloadTime = 1.5;
+		aiRateOfFire = DEF_TURRET_ROF;
+		aiRateOfFireDispersion = DEF_TURRET_DISPERSION;
+		aiRateOfFireDistance = DEF_TURRET_MAX_RANGE;
+		dispersion=DEF_TURRET_DISPERSION;
+		sounds[] = {"StandardSound"};
+		class StandardSound {
+			begin1[] = {"FS_Vietnam\Sounds\Weapons\sentrygun_fire.ogg", 3.0, 0.7, 1500};
+			begin2[] = {"FS_Vietnam\Sounds\Weapons\sentrygun_fire.ogg", 3.0, 0.9, 1500};
+			begin3[] = {"FS_Vietnam\Sounds\Weapons\sentrygun_fire.ogg", 3.0, 1, 1500};
+			soundBegin[] = {"begin1", 0.33, "begin2", 0.33, "begin3", 0.34};
+		};
+		textureType="fullAuto";
+		flash="gunfire";
+		flashSize=10.0;
+		soundContinuous = 0;
+		soundBurst = 0;
+		minRange = DEF_TURRET_MIN_RANGE;
+		minRangeProbab = 1;
+		midRange = DEF_TURRET_MED_RANGE;
+		midRangeProbab = 1;
+		maxRange = DEF_TURRET_MAX_RANGE;
+		maxRangeProbab = 1;
+		class GunParticles {
+			class FirstEffect {
+				effectName = "MachineGun1";
+				positionName = "usti hlavne";
+				directionName = "konec hlavne";
+			};
+			class SecondEffect {
+				effectName = "MachineGun1";
+				positionName = "usti hlavne 2";
+				directionName = "konec hlavne 2";
+			};
+			class effect1 {
+				positionName = "machinegun_eject_pos";
+				directionName = "machinegun_eject_dir";
+			};
+			class effect2 {
+				positionName = "machinegun_eject_2_pos";
+				directionName = "machinegun_eject_2_dir";
+			};
+		};
+	};
+	
+	class FS_PortableTurret_Shoulder_Weapon: MGun {
+		author = "Sentry";
+		scope = 2;
+		displayName = "Portable Turret (Shoulder) Weapon";
+		cursor = "EmptyCursor";
+		cursorAim = "mg";
+		magazines[] = {"FS_PortableTurret_Shoulder_Magazine"};
+		canLock = LockCadet;
+		weight = 40;
+		burst = 1;
+		reloadTime = DEF_TURRET_ROF;
+		magazineReloadTime = 1.5;
+		aiRateOfFire = DEF_TURRET_ROF;
+		aiRateOfFireDispersion = DEF_TURRET_DISPERSION;
+		aiRateOfFireDistance = DEF_TURRET_MAX_RANGE;
+		dispersion=DEF_TURRET_DISPERSION;
+		sounds[] = {"StandardSound"};
+		class StandardSound	{
+			begin1[] = {"FS_Vietnam\Sounds\Weapons\sentrygun_fire.ogg", 3.0, 0.7, 1500};
+			begin2[] = {"FS_Vietnam\Sounds\Weapons\sentrygun_fire.ogg", 3.0, 0.9, 1500};
+			begin3[] = {"FS_Vietnam\Sounds\Weapons\sentrygun_fire.ogg", 3.0, 1, 1500};
+			soundBegin[] = {"begin1", 0.33, "begin2", 0.33, "begin3", 0.34};
+		};
+		textureType="fullAuto";
+		flash="gunfire";
+		flashSize=10.0;
+		soundContinuous = 0;
+		soundBurst = 0;
+		minRange = DEF_TURRET_MIN_RANGE;
+		minRangeProbab = 1;
+		midRange = DEF_TURRET_MED_RANGE;
+		midRangeProbab = 1;
+		maxRange = DEF_TURRET_MAX_RANGE;
+		maxRangeProbab = 1;
+		class GunParticles {
+			class FirstEffect {
+				effectName = "MachineGun1";
+				positionName = "usti hlavne";
+				directionName = "konec hlavne";
+			};
+			class effect1 {
+				positionName = "machinegun_eject_pos";
+				directionName = "machinegun_eject_dir";
+			};
+		};
+	};
 };
