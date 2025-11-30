@@ -1,11 +1,7 @@
 
 #include "..\..\definitions.h"
 
-#define DEF_STONE_BACKPACK "FS_Backpack_RaiStone"
-#define DEF_STONE_BACKPACK_GEOMETRY "FS_Backpack_RaiStone_Geometry"
-
-#define DEF_TURRET_BACKPACK "FS_PortableTurret_BP"
-#define DEF_TURRET_BACKPACK_SHOULDER_GUN "FS_PortableTurret_Shoulder"
+#define DEF_ENABLE_TEXTURE true  
 
 if (!hasInterface) exitWith {};
 
@@ -61,6 +57,8 @@ if (!hasInterface) exitWith {};
 					
 					isNil {
 						createVehicleCrew (vehicle _attachment);
+						[_grp, (vehicle _attachment)] call _fnc_join_group;
+						
 						{
 							_x disableAI "AIMINGERROR"; 
 							_x setSkill ["spotTime",1];
@@ -68,13 +66,9 @@ if (!hasInterface) exitWith {};
 							_x setSkill ["aimingAccuracy", 1];
 							_x setSkill ["aimingSpeed",1];
 							_x setSkill ["aimingShake",1];
-							
-							systemchat format ["Set skill for: %1 %2", time, _x];
-						} 
+						}
 						forEach units _grp;
 					};
-					
-					[_grp, (vehicle _attachment)] call _fnc_join_group;
 				};
 			};
 		}
@@ -83,7 +77,7 @@ if (!hasInterface) exitWith {};
 			[DEF_TURRET_BACKPACK, DEF_TURRET_BACKPACK_SHOULDER_GUN, [0,-0.15,0.55], true]
 		];
 	};
-
+	
 	player addEventHandler ["SlotItemChanged", _code];
 
 	//-- Persistent on respawn if assigned where unit was local.
@@ -96,4 +90,72 @@ if (!hasInterface) exitWith {};
 	player addEventHandler ["Respawn", _code];
 
 	player call _code; 
+};
+
+if (hasInterface) then 
+{
+	[DEF_LASER_SOURCES_EH_VAR, "onEachFrame", 
+	{
+		private _sources = missionNameSpace getVariable [DEF_LASER_SOURCES_VAR, []];
+		{
+			private _thisSource = _x;
+			if (!isNull _thisSource) then 
+			{	
+				private _selections = ["Laser", "Laser_R", "Laser_L"];
+				{
+					private _thisSelection = _x;
+					private _offset = _thisSource selectionPosition _thisSelection;
+					
+					if (_offset isNotEqualTo [0,0,0]) then 
+					{
+						private _laserColor = [1000,0,0];
+						private _thisSourceASL = _thisSource modelToWorldVisualWorld _offset;
+						
+						drawLaser [
+							_thisSourceASL, 
+							_thisSource weaponDirection currentWeapon _thisSource, 
+							_laserColor,
+							[],
+							0.1,
+							0.1,
+							-1,
+							false
+						];
+						
+						if (DEF_ENABLE_TEXTURE) then 
+						{
+							private _camPos = AGLToASL (positionCameraToWorld [0,0,0.2]);
+							private _camDistance = _camPos distance DEF_CURRENT_PLAYER;
+							private _zoom = (0.5 - ((worldToScreen positionCameraToWorld [0, 1, 1]) # 1)) * (getResolution # 5);
+							private _size = (-1 * (_camDistance / 100) + 1.5) * (_zoom / 2);
+							
+							if (_cameraMode == 1) then {
+								_laserColor = [1000,0,0];
+							};
+							
+							_laserColor set [3,1];
+
+							drawIcon3D
+							[
+								"\FS_Vietnam\Textures\laserpoint_ca.paa",
+								_laserColor,
+								ASLToAGL _thisSourceASL,
+								_size,
+								_size,
+								0,
+								"",
+								0,
+								0,
+								"PuristaMedium",
+								"center",
+								false
+							];
+						};
+					};
+				}
+				forEach _selections;
+			};
+		}
+		forEach _sources;
+	}] call BIS_fnc_addStackedEventHandler; 
 };

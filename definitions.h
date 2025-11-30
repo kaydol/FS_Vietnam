@@ -31,3 +31,11 @@
 #define DEF_RADIO_TRANSMISSION_PREFIX_GODSPEED_NIGGA "godspeed_nigga"
 
 #define DEF_HEALING_GRENADE_EFFECT_ENDS_AT "FS_Weapons_Healing_Grenade_Effect_Ends_At"
+
+#define DEF_STONE_BACKPACK "FS_Backpack_RaiStone"
+#define DEF_STONE_BACKPACK_GEOMETRY "FS_Backpack_RaiStone_Geometry"
+#define DEF_TURRET_BACKPACK "FS_Backpack_PortableTurret"
+#define DEF_TURRET_BACKPACK_SHOULDER_GUN "FS_PortableTurret_Shoulder"
+
+#define DEF_LASER_SOURCES_EH_VAR "FS_LASER_SOURCES_EH"
+#define DEF_LASER_SOURCES_VAR "FS_LASER_SOURCES_VAR"

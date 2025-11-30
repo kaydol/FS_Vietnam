@@ -17,7 +17,7 @@ class CfgPatches
 		//-- Units available to spawn as Zeus must be in units[]
 		//-- Of course, they didn't write about it on the wiki
 		units[] = {"FS_NapalmCAS_Module", "FS_ArtyStrike_Module", "FS_ForceToPlaceTraps_Module", "FS_Weapon_MMG_Mighty_PK", 
-		"FS_Backpack_RaiStone", "FS_Backpack_RaiStone_Holder", "FS_PortableTurret", "FS_PortableTurret_Shoulder", "FS_PortableTurret_BP"};
+		"FS_Backpack_RaiStone", "FS_Backpack_RaiStone_Holder", "FS_PortableTurret", "FS_PortableTurret_Shoulder", "FS_Backpack_PortableTurret"};
 		
 		magazines[] = {"FS_Mighty_PK_100_mag", "FS_HealingGrenade_Mag", "FS_PortableTurret_Magazine"};
 		weapons[] = {"FS_Mighty_PK", "FS_HealingGrenade_Muzzle", "FS_PortableTurret_Weapon"};
@@ -338,6 +338,35 @@ class FS_VFX_HealingGrenade {
 		simulation = "particles";
 		type = "FS_ScriptedGrenadeExplosion_01";
 		lifeTime = 1; // emitter life time 
+	};
+};
+
+
+class CfgUserActions
+{
+	class FS_PortableTurret_Shoulder_Laser // This class name is used for internal representation and also for the inputAction command.
+	{
+		displayName = "Shoulder Turret Laser On\Off";
+		tooltip = "Toggles Shoulder Turret's Laser. The Shoulder Turret is given by wearing the Portable Turret backpack";
+		onActivate = "";		// _this is always true.
+		onDeactivate = "_this call FS_fnc_ShoulderTurretLaserAction";	// _this is always false.
+		onAnalog = "";	// _this is the scalar analog value.
+		analogChangeThreshold = 0.01; // Minimum change required to trigger the onAnalog EH (default: 0.01).
+	};
+};
+
+
+//-- Default keybindings
+class CfgDefaultKeysPresets
+{
+	class Arma2 // Arma2 is inherited by all other presets.
+	{
+		class Mappings
+		{
+			FS_PortableTurret_Shoulder_Laser[] = {
+				"0x26" // 0x26 is the DIK code for L.
+			};
+		};
 	};
 };
 
@@ -1819,8 +1848,8 @@ class CfgVehicles
         class Components;
 	};
 
-	class FS_PortableTurret_BP: FS_Backpack_Base {
-		_generalMacro = "FS_PortableTurret_BP";
+	class FS_Backpack_PortableTurret: FS_Backpack_Base {
+		_generalMacro = "FS_Backpack_PortableTurret";
 		author = "Sentry";
 		scope = 2;
 		scopeCurator = 2;
@@ -1901,12 +1930,28 @@ class CfgVehicles
 		lockDetectionSystem = 0;
 		incomingMissileDetectionSystem = 16;
 		class Attributes {};
+		class UserActions {
+			class ToggleLaser
+			{
+				displayName = "Toggle Laser";
+				displayNameDefault = "<img size='3' image='a3\ui_f\data\igui\cfg\actions\getingunner_ca.paa'/>";
+				priority = 10;
+				radius = 10; // a too small radius might cause the action to not be visible
+				position = "camera";
+				showWindow = 0;
+				hideOnUse = 1;
+				onlyForPlayer = 1;
+				shortcut = "";
+				condition = "true";
+				statement = "this call FS_fnc_ToggleLaser";
+			};
+		};
 		class assembleInfo {
 			primary=1;
 			base="";
 			assembleTo="";
 			displayName="";
-			dissasembleTo[]={"FS_PortableTurret_BP"};
+			dissasembleTo[]={"FS_Backpack_PortableTurret"};
 		};
 		class Components {
 			class SensorsManagerComponent {
@@ -2515,11 +2560,13 @@ class CfgFunctions
 		};
 		
 		class FS_HUD {
-			class HUDPostInit {file = "\FS_Vietnam\Functions\HUD\HUDPostInit.sqf"; postInit=1; };
+			class HUDPostInit {file = "\FS_Vietnam\Functions\HUD\HUDPostInit.sqf"; postInit=1;};
 		}
 		
 		class FS_Equipment {
-			class EquipmentPostInit {file = "\FS_Vietnam\Functions\Equipment\EquipmentPostInit.sqf"; postInit=1; };
+			class EquipmentPostInit {file = "\FS_Vietnam\Functions\Equipment\EquipmentPostInit.sqf"; postInit=1;};
+			class ShoulderTurretLaserAction {file = "\FS_Vietnam\Functions\Equipment\ShoulderTurretLaserAction.sqf";};
+			class ToggleLaser {file = "\FS_Vietnam\Functions\Equipment\ToggleLaser.sqf";};
 		};
 	};
 };
