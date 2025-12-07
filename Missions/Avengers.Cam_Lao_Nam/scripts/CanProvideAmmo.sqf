@@ -21,7 +21,7 @@ if !(player diarySubjectExists "Readme") then
 	player setDiarySubjectPicture ["Readme","Your abilities"];
 };
 
-player createDiaryRecord ["Readme", ["Can Provide Ammo", format ["<br/>You can restore up to %1 magazines both for the primary and secondary weapons to yourself and your group members within %2m.<br/><br/>The cooldown is %3 seconds and it only ticks while you are alive (also ticks while incapacitated).<br/><br/>", DEF_MAGS_TO_RESTORE, DEF_ABILITY_RADIUS, DEF_ABILITY_COOLDOWN]]];
+player createDiaryRecord ["Readme", ["Can Provide Ammo", format ["<br/>You can restore up to %1 magazines both for the primary and secondary weapons to yourself and your group members within %2m.<br/><br/>If the weapon is loaded, currently loaded magazine will be given, if the weapon is unloaded, default weapon magazine (defined in the weapon config) will be given instead. It is better to activate this ability while having your highest capacity magazine equipped.<br/><br/>The cooldown is %3 seconds and it only ticks while you are alive (also ticks while incapacitated).<br/><br/>", DEF_MAGS_TO_RESTORE, DEF_ABILITY_RADIUS, DEF_ABILITY_COOLDOWN]]];
 
 
 private _fnc_getAffectedAmount = {
