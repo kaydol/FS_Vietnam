@@ -31,7 +31,9 @@ if !(player diarySubjectExists "Readme") then
 	player setDiarySubjectPicture ["Readme","Your abilities"];
 };
 
-player createDiaryRecord ["Readme", ["Banana Lover", format ["<br/>Keep an eye out for %1.<br/><br/>It fills your bowels with butterflies!<br/><br/>Can not be opened while incapacitated.<br/><br/>The item is consumed upon usage.<br/><br/>", DEF_MAGAZINES_THAT_GRANT_PERK apply {gettext (configfile >> "CfgMagazines" >> _x >> "displayName")}]]];
+private _displayNames = [];
+{_displayNames pushBack _x} forEach ((DEF_MAGAZINES_THAT_GRANT_PERK apply {gettext (configfile >> "CfgMagazines" >> _x >> "displayName")}) + (DEF_ITEMS_THAT_GRANT_PERK apply {gettext (configfile >> "CfgWeapons" >> _x >> "displayName")}));
+player createDiaryRecord ["Readme", ["Banana Lover", format ["<br/>Keep an eye out for %1.<br/><br/>It fills your bowels with butterflies!<br/><br/>Can not be opened while incapacitated.<br/><br/>The item is consumed upon usage.<br/><br/>", _displayNames]]];
 
 
 
@@ -70,7 +72,15 @@ _unit addEventHandler ["Respawn", {
 		{
 			private _consumable = _consumables select 0;
 			
-			[parseText format ["<t font='PuristaBold' size='1.6' color='#FFA500' >%2</t><br />%1", DEF_PERK_ACTIVATED_STR, gettext (configfile >> "CfgMagazines" >> _magazine >> "displayName")], true, nil, 7, 0.7, 0] spawn BIS_fnc_textTiles;
+			if (DEF_MAGAZINES_THAT_GRANT_PERK isNotEqualTo []) then 
+			{
+				[parseText format ["<t font='PuristaBold' size='1.6' color='#FFA500' >%2</t><br />%1", DEF_PERK_ACTIVATED_STR, gettext (configfile >> "CfgMagazines" >> _consumable >> "displayName")], true, nil, 7, 0.7, 0] spawn BIS_fnc_textTiles;
+			};
+			
+			if (DEF_ITEMS_THAT_GRANT_PERK isNotEqualTo []) then 
+			{
+				[parseText format ["<t font='PuristaBold' size='1.6' color='#FFA500' >%2</t><br />%1", DEF_PERK_ACTIVATED_STR, gettext (configfile >> "CfgWeapons" >> _consumable >> "displayName")], true, nil, 7, 0.7, 0] spawn BIS_fnc_textTiles;
+			};
 			
 			#include "BananaOfFlight.h"
 			
@@ -81,7 +91,7 @@ _unit addEventHandler ["Respawn", {
 		{
 			private _magazine = _magazines select 0;
 		
-			[parseText format ["<t font='PuristaBold' size='1.6' color='#FFA500' >%2</t><br />%1", DEF_PERK_DEACTIVATED_STR, gettext (configfile >> "CfgMagazines" >> _magazine >> "displayName")], true, nil, 7, 0.7, 0] spawn BIS_fnc_textTiles; 
+			[parseText format ["<t font='PuristaBold' size='1.6' color='#FFA500' >%2</t><br />%1", DEF_PERK_DEACTIVATED_STR, _displayName], true, nil, 7, 0.7, 0] spawn BIS_fnc_textTiles; 
 			
 			private _previousAction = _unit getVariable DEF_ACTION_ID_VAR;
 			if (!isNil{_previousAction}) then {

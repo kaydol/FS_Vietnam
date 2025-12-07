@@ -55,17 +55,14 @@ if (hasInterface) then
 // Medic 
 if (_player == group_nigga_medic) then 
 {
-	_player execVM "scripts\IAMAFreeBird.sqf"; 
 	_player execVM "scripts\MiracleWorker.sqf"; 
 	_player execVM "scripts\CanProvideIFAKs.sqf"; 
 	_player execVM "scripts\CanSeeHealthbars.sqf"; 
-	
 };
 
 // Sniper
 if (_player == group_nigga_sniper) then 
 {
-	_player execVM "scripts\IAMAFreeBird.sqf"; 
 	_player execVM "scripts\SuperiorAwareness.sqf"; 
 	_player execVM "scripts\BulletTrajectory.sqf"; 
 	_player execVM "scripts\CanProvideAmmo.sqf"; 
@@ -75,14 +72,12 @@ if (_player == group_nigga_sniper) then
 // Point Man
 if (_player == group_nigga_pointman) then 
 {
-	_player execVM "scripts\IAMAFreeBird.sqf"; 
 	_player execVM "scripts\ReduceDamageTaken.sqf"; 
 };
 
 // Leader 
 if (_player == group_nigga_leader) then 
 {
-	_player execVM "scripts\IAMAFreeBird.sqf"; 
 	_player execVM "scripts\ShizaVietCongBehind.sqf";
 	_player execVM "scripts\Encourage.sqf"; 
 	_player execVM "scripts\RallyPoint.sqf";
@@ -90,6 +85,8 @@ if (_player == group_nigga_leader) then
 	_player execVM "scripts\SelectLeader.sqf";
 };
 
+_player execVM "scripts\IAmAFreeBird.sqf"; 
+_player execVM "scripts\BananaOfFlight.sqf"; 
 
 [] execVM "scripts\DynamicSupportRequester.sqf";
 [] execVM "scripts\VisualSensor.sqf";

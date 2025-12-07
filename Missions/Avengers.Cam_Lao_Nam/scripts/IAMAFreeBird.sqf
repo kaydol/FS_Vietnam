@@ -37,7 +37,9 @@ if !(player diarySubjectExists "Readme") then
 	player setDiarySubjectPicture ["Readme","Your abilities"];
 };
 
-player createDiaryRecord ["Readme", ["Old Spice", format ["<br/>Keep an eye out for spicy food such as %1.<br/><br/>Do your best and don't eat every bottle you come across (unless the situation becomes dire, then you can eat it).<br/><br/>Can only be opened while incapacitated.<br/><br/>The item is consumed upon usage.<br/><br/>", DEF_MAGAZINES_THAT_GRANT_PERK apply {gettext (configfile >> "CfgMagazines" >> _x >> "displayName")}]]];
+private _displayNames = [];
+{_displayNames pushBack _x} forEach ((DEF_MAGAZINES_THAT_GRANT_PERK apply {gettext (configfile >> "CfgMagazines" >> _x >> "displayName")}) + (DEF_ITEMS_THAT_GRANT_PERK apply {gettext (configfile >> "CfgWeapons" >> _x >> "displayName")}));
+player createDiaryRecord ["Readme", ["Old Spice", format ["<br/>Keep an eye out for spicy food such as %1.<br/><br/>Do your best and don't eat every bottle you come across (unless the situation becomes dire, then you can eat it).<br/><br/>Can only be opened while incapacitated.<br/><br/>The item is consumed upon usage.<br/><br/>", _displayNames]]];
 
 
 
@@ -120,59 +122,62 @@ _unit addEventHandler ["Respawn", {
 if (getNumber(missionConfigFile >> "respawnOnStart") <= 0) then 
 {
 	//-- Copy pasted -----------------------------------------
-	params ["_unit", "_targetContainer"];
+	_unit addEventHandler ["InventoryClosed",
+	{
+		params ["_unit", "_targetContainer"];
 		
-	private _consumables = [];
-	
-	if (DEF_MAGAZINES_THAT_GRANT_PERK isNotEqualTo []) then 
-	{
-		_consumables = (DEF_MAGAZINES_THAT_GRANT_PERK apply {toLowerANSI _x}) arrayIntersect ((magazines _unit) apply {toLowerANSI _x});
-	};
-	
-	if (DEF_ITEMS_THAT_GRANT_PERK isNotEqualTo []) then 
-	{
-		_consumables = (DEF_ITEMS_THAT_GRANT_PERK apply {toLowerANSI _x}) arrayIntersect ((items _unit) apply {toLowerANSI _x});
-	};
-	
-	if (count _consumables > 0 && isNil{ _unit getVariable DEF_ACTION_ID_VAR }) then 
-	{
-		private _consumable = _consumables select 0;
-	
+		private _consumables = [];
+		
 		if (DEF_MAGAZINES_THAT_GRANT_PERK isNotEqualTo []) then 
 		{
-			[parseText format ["<t font='PuristaBold' size='1.6' color='#FFA500' >%2</t><br />%1", DEF_PERK_ACTIVATED_STR, gettext (configfile >> "CfgMagazines" >> _consumable >> "displayName")], true, nil, 7, 0.7, 0] spawn BIS_fnc_textTiles;
+			_consumables = (DEF_MAGAZINES_THAT_GRANT_PERK apply {toLowerANSI _x}) arrayIntersect ((magazines _unit) apply {toLowerANSI _x});
 		};
 		
 		if (DEF_ITEMS_THAT_GRANT_PERK isNotEqualTo []) then 
 		{
-			[parseText format ["<t font='PuristaBold' size='1.6' color='#FFA500' >%2</t><br />%1", DEF_PERK_ACTIVATED_STR, gettext (configfile >> "CfgWeapons" >> _consumable >> "displayName")], true, nil, 7, 0.7, 0] spawn BIS_fnc_textTiles;
+			_consumables = (DEF_ITEMS_THAT_GRANT_PERK apply {toLowerANSI _x}) arrayIntersect ((items _unit) apply {toLowerANSI _x});
 		};
 		
-		#include "IAMAFreeBird.h"
-		
-		_unit call _fnc_addAction;
-		
-	};
-	if (count _consumables <= 0 && !isNil{ _unit getVariable DEF_ACTION_ID_VAR }) then 
-	{
-		private _consumable = _consumables select 0;
-	
-		if (DEF_MAGAZINES_THAT_GRANT_PERK isNotEqualTo []) then 
+		if (count _consumables > 0 && isNil{ _unit getVariable DEF_ACTION_ID_VAR }) then 
 		{
-			[parseText format ["<t font='PuristaBold' size='1.6' color='#FFA500' >%2</t><br />%1", DEF_PERK_ACTIVATED_STR, gettext (configfile >> "CfgMagazines" >> _consumable >> "displayName")], true, nil, 7, 0.7, 0] spawn BIS_fnc_textTiles;
-		};
+			private _consumable = _consumables select 0;
 		
-		if (DEF_ITEMS_THAT_GRANT_PERK isNotEqualTo []) then 
+			if (DEF_MAGAZINES_THAT_GRANT_PERK isNotEqualTo []) then 
+			{
+				[parseText format ["<t font='PuristaBold' size='1.6' color='#FFA500' >%2</t><br />%1", DEF_PERK_ACTIVATED_STR, gettext (configfile >> "CfgMagazines" >> _consumable >> "displayName")], true, nil, 7, 0.7, 0] spawn BIS_fnc_textTiles;
+			};
+			
+			if (DEF_ITEMS_THAT_GRANT_PERK isNotEqualTo []) then 
+			{
+				[parseText format ["<t font='PuristaBold' size='1.6' color='#FFA500' >%2</t><br />%1", DEF_PERK_ACTIVATED_STR, gettext (configfile >> "CfgWeapons" >> _consumable >> "displayName")], true, nil, 7, 0.7, 0] spawn BIS_fnc_textTiles;
+			};
+			
+			#include "IAMAFreeBird.h"
+			
+			_unit call _fnc_addAction;
+			
+		};
+		if (count _consumables <= 0 && !isNil{ _unit getVariable DEF_ACTION_ID_VAR }) then 
 		{
-			[parseText format ["<t font='PuristaBold' size='1.6' color='#FFA500' >%2</t><br />%1", DEF_PERK_ACTIVATED_STR, gettext (configfile >> "CfgWeapons" >> _consumable >> "displayName")], true, nil, 7, 0.7, 0] spawn BIS_fnc_textTiles;
-		};
+			private _consumable = _consumables select 0;
 		
-		private _previousAction = _unit getVariable DEF_ACTION_ID_VAR;
-		if (!isNil{_previousAction}) then {
-			_unit setVariable [DEF_ACTION_ID_VAR, nil];
-			[_unit, _previousAction] call BIS_fnc_holdActionRemove;
+			if (DEF_MAGAZINES_THAT_GRANT_PERK isNotEqualTo []) then 
+			{
+				[parseText format ["<t font='PuristaBold' size='1.6' color='#FFA500' >%2</t><br />%1", DEF_PERK_ACTIVATED_STR, gettext (configfile >> "CfgMagazines" >> _consumable >> "displayName")], true, nil, 7, 0.7, 0] spawn BIS_fnc_textTiles;
+			};
+			
+			if (DEF_ITEMS_THAT_GRANT_PERK isNotEqualTo []) then 
+			{
+				[parseText format ["<t font='PuristaBold' size='1.6' color='#FFA500' >%2</t><br />%1", DEF_PERK_ACTIVATED_STR, gettext (configfile >> "CfgWeapons" >> _consumable >> "displayName")], true, nil, 7, 0.7, 0] spawn BIS_fnc_textTiles;
+			};
+			
+			private _previousAction = _unit getVariable DEF_ACTION_ID_VAR;
+			if (!isNil{_previousAction}) then {
+				_unit setVariable [DEF_ACTION_ID_VAR, nil];
+				[_unit, _previousAction] call BIS_fnc_holdActionRemove;
+			};
 		};
-	};
+	}];
 	//-- /Copy pasted ----------------------------------------
 };
 
