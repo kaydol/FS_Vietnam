@@ -1,0 +1,390 @@
+
+//To allow redefinition of function from addons 
+allowFunctionsRecompile = 1;
+
+//To prevent spawning in the corner of the map
+respawnOnStart = -1;
+
+class Params {
+	class vn_stamina 
+	{ 
+		title = $STR_VN_PARAMS_STAMINA; 
+		isGlobal = 1; 
+		values[] = {0, 1}; 
+		texts[] = {$STR_DISP_OPT_DISABLED, $STR_DISP_OPT_ENABLED}; 
+		default = 0; 
+		function = "vn_ms_fnc_params_stamina"; 
+	}; 
+};
+
+class CfgMusic {
+	tracks[] = {""};
+	class intro
+	{
+		name = "intro";
+		sound[] = {"\music\intro.ogg", 3, 1};
+	};
+	class play_while_dead
+	{
+		name = "play_while_dead";
+		sound[] = {"\music\play_while_dead.ogg", db+1, 1};
+	};
+	class wounded
+	{
+		name = "wounded";
+		sound[] = {"\music\wounded.ogg", db-1, 1};
+	};
+	class wounded_2
+	{
+		name = "wounded_2";
+		sound[] = {"\music\wounded_2.ogg", 3, 1};
+	};
+	class wounded_3
+	{
+		name = "wounded_3";
+		sound[] = {"\music\wounded_3.ogg", 3, 1};
+	};
+	class wounded_4
+	{
+		name = "wounded_4";
+		sound[] = {"\music\wounded_4.ogg", db+6, 1};
+	};
+	class wounded_5
+	{
+		name = "wounded_5";
+		sound[] = {"\music\wounded_5.ogg", db+6, 1};
+	};
+	class wounded_6
+	{
+		name = "wounded_6";
+		sound[] = {"\music\wounded_6.ogg", db+1, 1};
+	};
+	class shiza_wounded_1
+	{
+		name = "shiza_wounded_1";
+		sound[] = {"\music\shiza_wounded_1.ogg", db+1, 1};
+	};
+	class shiza_wounded_2
+	{
+		name = "shiza_wounded_1";
+		sound[] = {"\music\shiza_wounded_2.ogg", db+6, 1};
+	};
+	class shiza_heaven
+	{
+		name = "shiza_wounded_1";
+		sound[] = {"\music\shiza_heaven.ogg", db+6, 1};
+	};
+	class free_bird
+	{
+		name = "free bird";
+		sound[] = {"\music\free_bird.ogg", 3, 1};
+	};
+	
+	class let_it_happen_with_rain
+	{
+		name = "let_it_happen_with_rain";
+		sound[] = {"\music\let_it_happen_with_rain.ogg", db-5, 1};
+		titles[] = {1, ""};
+	};
+};
+
+class CfgSounds
+{
+	sounds[] = {};
+	
+	class radio_tuk_tuk
+	{
+		name = "Tuk Tuk Music";
+		sound[] = {"\music\radio_tuk_tuk.ogg", db+15, 1};
+		titles[] = {1, ""};
+		duration = 140;
+	};
+	
+	//--------------------------------
+	
+	class cheat_death_activated
+	{
+		name = "cheat_death_activated";
+		sound[] = {"\music\cheat_death_activated.ogg", db+5, 1};
+		titles[] = {1, ""};
+	};
+	
+	class invul_aura_activated
+	{
+		name = "invul_aura_activated";
+		sound[] = {"\music\invul_aura_activated.ogg", 20, 1};
+		titles[] = {1, ""};
+	};
+	
+	class rally_point_dropped
+	{
+		name = "rally_point_dropped";
+		sound[] = {"\music\rally_point_dropped.ogg", 5, 1};
+		titles[] = {1, ""};
+	};
+	
+	class ammo_restocked
+	{
+		name = "rally_point_dropped";
+		sound[] = {"\music\ammo_restocked.ogg", 20, 1};
+		titles[] = {1, ""};
+	};
+	
+	class item_picked_up
+	{
+		name = "item_picked_up";
+		sound[] = {"\music\item_picked_up.ogg", 20, 1};
+		titles[] = {1, ""};
+	};
+	
+	class heartbeat
+	{
+		name = "heartbeat";
+		sound[] = {"\music\heartbeat.ogg", db-10, 1};
+		titles[] = {1, ""};
+	};
+	
+	class open_bottle
+	{
+		name = "open bottle";
+		sound[] = {"\music\open_bottle.ogg", db-6, 1};
+		titles[] = {1, ""};
+	};
+	
+	//----------------------
+	
+	class skyrim_bass_boosted_battle_theme
+	{
+		name = "skyrim";
+		sound[] = {"\music\skyrim_bass_boosted_battle_theme.ogg", db+30, 1};
+		titles[] = {1, ""};
+	};
+	
+	//----------------------
+	
+	class kruber_bloody_shame
+	{
+		name = "kruber";
+		sound[] = {"\music\kruber_bloody_shame.ogg", db+30, 1};
+		titles[] = {1, ""};
+	};
+	
+	/*
+	class kruber_1
+	{
+		name = "kruber";
+		sound[] = {"\music\kruber_1.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	
+	class kruber_2
+	{
+		name = "kruber";
+		sound[] = {"\music\kruber_2.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	
+	class kruber_3
+	{
+		name = "kruber";
+		sound[] = {"\music\kruber_3.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	
+	class kruber_4
+	{
+		name = "kruber";
+		sound[] = {"\music\kruber_4.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	
+	class kruber_5
+	{
+		name = "kruber";
+		sound[] = {"\music\kruber_5.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	
+	class kruber_6
+	{
+		name = "kruber";
+		sound[] = {"\music\kruber_6.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	
+	class kruber_7
+	{
+		name = "kruber";
+		sound[] = {"\music\kruber_7.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	
+	class kruber_8
+	{
+		name = "kruber";
+		sound[] = {"\music\kruber_8.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	
+	class kruber_9
+	{
+		name = "kruber";
+		sound[] = {"\music\kruber_9.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	
+	class kruber_10
+	{
+		name = "kruber";
+		sound[] = {"\music\kruber_10.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	
+	class kruber_11
+	{
+		name = "kruber";
+		sound[] = {"\music\kruber_11.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	
+	class kruber_12
+	{
+		name = "kruber";
+		sound[] = {"\music\kruber_12.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	
+	class kruber_13
+	{
+		name = "kruber";
+		sound[] = {"\music\kruber_13.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	
+	class kruber_14
+	{
+		name = "kruber";
+		sound[] = {"\music\kruber_14.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	*/
+};
+
+#include "\a3\ui_f\hpp\definecommongrids.inc"
+
+class RscTitles
+{
+	import RscText;
+	import RscPicture;
+	import RscControlsGroup;
+	
+	class RscPrigozhinCalls {
+		idd = -1;
+		duration = 1e11;
+		fadeIn = 0;
+		scriptName = "eugene_my_beloved\RscPrigozhinCalls";
+		scriptPath = "";
+		onLoad = "[""onLoad"",_this,""RscPrigozhinCalls"",'OrangeTitles'] call RscPrigozhinCalls_fn";
+		onUnload = "[""onUnload"",_this,""RscPrigozhinCalls"",'OrangeTitles'] call RscPrigozhinCalls_fn";
+		class Controls {
+			class Call : RscControlsGroup {
+				x = "safezoneX + safezoneW - 15.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+				y = "safezoneY + safezoneH - 4 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+				idc = 8868;
+				w = "14.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+				h = "5 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+				class Controls {
+					class Background : RscText {
+						idc = 7568;
+						x = "0 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						y = "0 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+						w = "14.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						h = "3.5 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+						colorBackground[] = {0.3,0.3,0.3,1};
+					};
+					class Title : RscText {
+						idc = 7569;
+						x = "0 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						y = "0 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+						w = "14.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						h = "1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+						colorBackground[] = {0.2,0.2,0.2,1};
+					};
+					class Logo : RscPicture {
+						idc = 7768;
+						text = "\a3\UI_F_Orange\Data\RscTitles\RscPhoneCall\logo_ca.paa";
+						x = "0.2 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						y = "0 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+						w = "2 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						h = "1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+					};
+					class Avatar : RscPicture {
+						idc = 7769;
+						//text = "#(argb,8,8,3)color(1,1,1,1)";
+						text = "eugene_my_beloved\phone_call_avatar_1.paa";
+						x = "0.3 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						y = "1.3 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+						w = "2 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						h = "1.9 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+					};
+					class BackgroundMute : RscPicture {
+						idc = 7770;
+						text = "\a3\UI_F_Orange\Data\RscTitles\RscPhoneCall\buttonBackground_ca.paa";
+						x = "10.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						y = "1.5 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+						w = "1.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						h = "1.5 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+						colorText[] = {0,0.6,0.9,1};
+					};
+					class IconMute : RscPicture {
+						idc = 7772;
+						text = "\a3\UI_F_Orange\Data\RscTitles\RscPhoneCall\mute_ca.paa";
+						x = "10.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						y = "1.5 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+						w = "1.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						h = "1.5 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+					};
+					class BackgroundCancel : RscPicture {
+						idc = 7771;
+						text = "\a3\UI_F_Orange\Data\RscTitles\RscPhoneCall\buttonBackground_ca.paa";
+						x = "12.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						y = "1.5 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+						w = "1.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						h = "1.5 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+						colorText[] = {1,0,0,1};
+					};
+					class IconCancel : RscPicture {
+						idc = 7773;
+						text = "\a3\UI_F_Orange\Data\RscTitles\RscPhoneCall\cancel_ca.paa";
+						x = "12.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						y = "1.5 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+						w = "1.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						h = "1.5 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+					};
+					class Name : RscText {
+						shadow = 0;
+						idc = 7570;
+						text = "Anonymous";
+						x = "2.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						y = "1.4 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+						w = "8 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						h = "1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+						sizeEx = "1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+					};
+					class Timestamp : RscText {
+						font = "RobotoCondensedLight";
+						shadow = 0;
+						idc = 7571;
+						text = "11:38";
+						x = "2.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						y = "2.2 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+						w = "6.5 * 			(			((safezoneW / safezoneH) min 1.2) / 40)";
+						h = "1 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+						colorText[] = {1,1,1,0.75};
+						sizeEx = "0.8 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+					};
+				};
+			};
+		};
+	};
+};
