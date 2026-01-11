@@ -2022,6 +2022,9 @@ class CfgVehicles
 		class EventHandlers {
 			// Infinite ammo
 			reloaded = "_this params ['_unit', '_weapon', '_muzzle', '_newMagazine', '_oldMagazine']; if (local _unit) then { vehicle _unit addMagazineTurret [_oldMagazine # 0, [0]]; };";
+			// Make turrets be able to ignore specific enemies
+			init = "_this call FS_fnc_AmnesiaAddLocalGroup;";
+			
 			class CBA_Extended_EventHandlers: CBA_Extended_EventHandlers_base {};
 		};
 		armor = 80;
@@ -2272,6 +2275,8 @@ class CfgVehicles
 		class EventHandlers	{
 			// Infinite ammo
 			reloaded = "_this params ['_unit', '_weapon', '_muzzle', '_newMagazine', '_oldMagazine']; if (local _unit) then { vehicle _unit addMagazineTurret [_oldMagazine # 0, [0]]; };";
+			// Make turrets be able to ignore specific enemies
+			init = "_this call FS_fnc_AmnesiaAddLocalGroup;";
 			class CBA_Extended_EventHandlers: CBA_Extended_EventHandlers_base {};
 		};
 		armor = 80;
@@ -2525,6 +2530,12 @@ class CfgFunctions
 			class Suspense {file = "\FS_Vietnam\Functions\Behaviour\Suspense.sqf";};
 			class TrySpawnObjectBestPlaces {file = "\FS_Vietnam\Functions\Behaviour\TrySpawnObjectBestPlaces.sqf";};
 			class UnitsReady {file = "\FS_Vietnam\Functions\Behaviour\UnitsReady.sqf";};
+			
+			class AmnesiaMainLoop {file = "\FS_Vietnam\Functions\Behaviour\AmnesiaMainLoop.sqf"; postInit = 1;};
+			class AmnesiaAddLocalGroup {file = "\FS_Vietnam\Functions\Behaviour\AmnesiaAddLocalGroup.sqf";};
+			class AmnesiaGetLocalGroups {file = "\FS_Vietnam\Functions\Behaviour\AmnesiaGetLocalGroups.sqf";};
+			class AmnesiaAddTargets {file = "\FS_Vietnam\Functions\Behaviour\AmnesiaAddTargets.sqf";};
+			class AmnesiaGetTargets {file = "\FS_Vietnam\Functions\Behaviour\AmnesiaGetTargets.sqf";};
 		};
 		
 		class FS_Modules {
