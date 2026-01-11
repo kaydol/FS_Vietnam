@@ -2,7 +2,7 @@
 #include "..\..\definitions.h"
 
 #define DEF_NAPALM_STRIKE_LENGTH 150
-
+#define DEF_WARNING_COOLDOWN 100
 
 params ["_aircraft", "_assessmentRate", "_supportParams", ["_markersToMarkWith", []], ["_minSizeToMark", 0], ["_debug", false, [true]]];
 
@@ -144,8 +144,12 @@ while { ! _taskAssigned && _i < count _clusters_centers} do
 };
 
 // Find the biggest cluster that hasn't yet engaged the players and try to give them a radio warning 
-if (!_taskAssigned && _biggestUnspottedClusterId >= 0) then 
+private _warningIsOnCooldown = [_side, "ASSES", "WARNING_IS_ON_COOLDOWN"] call FS_fnc_GetSideVariable isEqualTo true;
+if (!_taskAssigned && _biggestUnspottedClusterId >= 0 && !_warningIsOnCooldown) then 
 {
+	// Preventing repeat of the warning message
+	[_side, "ASSES", ["WARNING_IS_ON_COOLDOWN", true], DEF_WARNING_COOLDOWN] call FS_fnc_UpdateSideVariable;
+	
 	private _relativeDir = _biggestUnspottedClusterClosestFriend getDir _biggestUnspottedClusterCoordinates;
 	private _messageType = "";
 	

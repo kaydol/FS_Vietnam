@@ -130,7 +130,7 @@ if ( !_taskAssigned && _estimatedVictims >= _artilleryThreshold && _distanceTofr
 			
 			// Sending a radio warning
 			[_side, _aircraft getVariable DEF_RADIO_TRANSMISSION_PREFIX_VAR, _messageType] remoteExec ["FS_fnc_TransmitOverRadio", 2];
-		} 
+		}
 		else 
 		{
 			// Sending a radio warning
