@@ -149,8 +149,7 @@ class CfgSounds {
 	
 	#include "CfgRadio.hpp"
 	
-	class FS_Healing_Tick
-	{
+	class FS_Healing_Tick {
 		name = "";
 		sound[] = {"\FS_Vietnam\Sounds\Weapons\healing_tick.ogg", db+6, 1};
 		titles[] = {1, ""};
@@ -2002,6 +2001,11 @@ class CfgVehicles
 			};
 		};
 		class AnimationSources {
+			class laser_source {
+				source = "user";
+				animPeriod = 0.1;
+				initPhase = 1;
+			};
 			class recoil_source	{
 				source = "reload";
 				weapon = "FS_PortableTurret_Weapon";

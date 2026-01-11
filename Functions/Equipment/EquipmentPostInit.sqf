@@ -1,7 +1,7 @@
 
 #include "..\..\definitions.h"
 
-#define DEF_ENABLE_TEXTURE true  
+#define DEF_ENABLE_3DICON_AT_LASER_SOURCE false  
 
 if (!hasInterface) exitWith {};
 
@@ -99,8 +99,8 @@ if (hasInterface) then
 		private _sources = missionNameSpace getVariable [DEF_LASER_SOURCES_VAR, []];
 		{
 			private _thisSource = _x;
-			if (!isNull _thisSource) then 
-			{	
+			if (alive _thisSource) then 
+			{
 				private _selections = ["Laser", "Laser_R", "Laser_L"];
 				{
 					private _thisSelection = _x;
@@ -122,7 +122,7 @@ if (hasInterface) then
 							false
 						];
 						
-						if (DEF_ENABLE_TEXTURE) then 
+						if (DEF_ENABLE_3DICON_AT_LASER_SOURCE) then 
 						{
 							private _camPos = AGLToASL (positionCameraToWorld [0,0,0.2]);
 							private _camDistance = _camPos distance DEF_CURRENT_PLAYER;
