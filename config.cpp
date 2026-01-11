@@ -442,13 +442,13 @@ class CfgVehicles
 		displayName = "Helicopter Air Base";
 		function = "FS_fnc_ModuleCreateAirBase";
 		class ModuleDescription : ModuleDescription {
-			description = "This module is required for Vietnam helicopter crews.";
+			description = "This module is required for Vietnam helicopter crews. This module requires to be synced with a Side who owns it. Synced 'LocationRespawnPoint_F' define where crew replacements will be spawned. After spawn, they will run to the helicopter and board it, replacing the dead crew. Consider placing 'LocationRespawnPoint_F' in tents or houses, unless you want the crew to spawn in the open. If no 'LocationRespawnPoint_F' were synced, the new crew teleports directly into transport";
 			sync[] = {"RespawnPoints", "Side"};
 			position = 1;
 			direction = 0;
 			class RespawnPoints {
 				description[] = { // Multi-line descriptions are supported
-					"Respawn Points define where the crew replacements will be spawned. After spawn, they will run to the helicopter and board it, replacing the dead crew. Consider placing respawn points in tents or houses, unless you want the crew to spawn in the open. If no RP were provided, the new crew teleports directly into transport."
+					"Respawn Points define where the crew replacements will be spawned. After spawn, they will run to the helicopter and board it, replacing the dead crew. Consider placing 'LocationRespawnPoint_F' in tents or houses, unless you want the crew to spawn in the open. If no LocationRespawnPoint_F were synced, the new crew teleports directly into transport."
 				};
 				position = 1; // Position is taken into effect
 				direction = 0; // Direction is taken into effect
@@ -1390,7 +1390,7 @@ class CfgVehicles
 		isGlobal = 0; // 0 for server only execution, 1 for global execution, 2 for persistent global execution
 		isTriggerActivated = 1;
 		class ModuleDescription : ModuleDescription {
-			description = "This module essentually creates marker(s) named 'respawn_side_xxxxxx'. Marker(s) only exist as long as the condition is true. Side is defined by a synced Side logic. Synced vehicles have markers attached to them. If no vehicles are synced before module starts, module's position is used instead. It is possible to add and remove synchronized objects during gameplay (if module's position was used as spawn point, it will be deleted when first vehicle is synchronized). It is possible to activate this module with a trigger.";
+			description = "This module essentually creates marker(s) named 'respawn_side_xxxxxx'. Marker(s) only exist as long as the condition is true. Side is defined by a synced Side logic. Synced vehicles have markers attached to them. If one or more 'LocationRespawnPoint_F' are synced to the module, a random one of them will be selected each time. If no vehicles and no LocationRespawnPoint_F were synced before module starts, module's position is used instead. It is possible to add and remove synchronized objects during gameplay (if module's position was used as spawn point, it will be deleted when first vehicle is synchronized). It is possible to activate this module with a trigger.";
 			sync[] = {"Vehicles", "Side"};
 			position = 1;
 			direction = 0;
