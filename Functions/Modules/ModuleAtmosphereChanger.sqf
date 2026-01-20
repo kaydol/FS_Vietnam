@@ -29,7 +29,8 @@ switch _mode do {
 		private _enableSnow = (_logic getVariable "EnableSnow") isEqualTo 1;
 		private _enableSteam = (_logic getVariable "EnableSteam") isEqualTo 1;
 		private _radius = _logic getVariable "Radius";
-		private _transitionTime = _logic getVariable "TransitionTime";
+		private _transitionTimeIn = _logic getVariable "TransitionTimeIn";
+		private _transitionTimeOut = _logic getVariable "TransitionTimeOut";
 		private _startCondition = _logic getVariable ["StartCondition", "true"];
 		private _stopCondition = _logic getVariable ["StopCondition", "false"];
 		private _loopConditions = ( _logic getVariable ["LoopConditions", 0] ) isEqualTo 1;
@@ -120,10 +121,10 @@ switch _mode do {
 				_oldLightnings = lightnings;
 				
 				// start the rain
-				_transitionTime setGusts 1;
-				_transitionTime setOvercast 1;
-				_transitionTime setLightnings 1;
-				_transitionTime setRain 1;
+				_transitionTimeIn setGusts 1;
+				_transitionTimeIn setOvercast 1;
+				_transitionTimeIn setLightnings 1;
+				_transitionTimeIn setRain 1;
 				forceWeatherChange;
 				skipTime 1;
 				skipTime -1;
@@ -142,28 +143,28 @@ switch _mode do {
 					diag_log format ["(AtmosphereChanger %1) Fog starts...", _logic];
 				};
 			
-				_handle = [_transitionTime, _fogParams, _rain] spawn {
-					params ["_transitionTime", "_fogParams", "_rain"];
+				_handle = [_transitionTimeIn, _fogParams, _rain] spawn {
+					params ["_transitionTimeIn", "_fogParams", "_rain"];
 					private _fogValue = _fogParams # 0;
 					private _fogDecay = _fogParams # 1;
 					
 					while {true} do {
 						private _overcast = if (_rain) then {1} else {0.5};
-						_transitionTime setOvercast _overcast;
-						sleep _transitionTime;
+						_transitionTimeIn setOvercast _overcast;
+						sleep _transitionTimeIn;
 						// the fog base will be constantly adjusting to player's height above sea 
-						_transitionTime setFog [_fogValue, _fogDecay, getPosASL DEF_CURRENT_PLAYER select 2];
-						sleep _transitionTime;
+						_transitionTimeIn setFog [_fogValue, _fogDecay, getPosASL DEF_CURRENT_PLAYER select 2];
+						sleep _transitionTimeIn;
 					};
 				};
 				
 				// restores fog to the old params once the fog spawner is terminated
-				[_handle, _oldFogParams, _oldOvercast, _transitionTime, _logic, _debug] spawn {
-					params ["_handle", "_params", "_oldOvercast", "_transitionTime", "_logic", "_debug"];
+				[_handle, _oldFogParams, _oldOvercast, _transitionTimeIn, _logic, _debug] spawn {
+					params ["_handle", "_params", "_oldOvercast", "_transitionTimeIn", "_logic", "_debug"];
 					waitUntil { sleep 0.5; scriptDone _handle };
-					_transitionTime setOvercast _oldOvercast;
-					sleep _transitionTime;
-					_transitionTime setFog _params;
+					_transitionTimeIn setOvercast _oldOvercast;
+					sleep _transitionTimeIn;
+					_transitionTimeIn setFog _params;
 					
 					if (_debug) then {
 						diag_log format ["(AtmosphereChanger %1) Fog ended", _logic];
@@ -445,8 +446,6 @@ switch _mode do {
 				forEach (playableUnits + switchableUnits);
 			};
 			
-			
-			
 			// ======================================== //
 			// 				color corrections			//
 			// ======================================== //
@@ -465,13 +464,16 @@ switch _mode do {
 					_priority = _priority + 1; 
 				};
 				_ppCol ppEffectAdjust _ppCCIn;
-				_ppCol ppEffectCommit _transitionTime;
+				_ppCol ppEffectCommit _transitionTimeIn;
 				_ppCol ppEffectEnable true;
 				
 				if (_debug) then {
 					diag_log format ["(AtmosphereChanger %1) Color correction with priority %2 starts ", _logic, _priority];
 				};
 			};
+			
+			// Create hashmap and store current settings into it , use _priority as key ? 
+			
 			
 			/* Wait until a user-defined condition is true */
 			WaitUntil { sleep 1; _logic call _stopCondition || [_moduleForDistanceChecks, false] call _fnc_distanceCheck };
@@ -480,13 +482,13 @@ switch _mode do {
 				if (_debug) then {
 					diag_log format ["(AtmosphereChanger %1) Restoring rain or snow to previous values", _logic];
 				};
-				_transitionTime setGusts _oldGusts;
-				_transitionTime setOvercast _oldOvercast;
-				_transitionTime setLightnings _oldLightnings;
-				_transitionTime setRain _oldRain;
-				[_transitionTime] spawn {
-					params ["_transitionTime"];
-					sleep _transitionTime;
+				_transitionTimeOut setGusts _oldGusts;
+				_transitionTimeOut setOvercast _oldOvercast;
+				_transitionTimeOut setLightnings _oldLightnings;
+				_transitionTimeOut setRain _oldRain;
+				[_transitionTimeOut] spawn {
+					params ["_transitionTimeOut"];
+					sleep _transitionTimeOut;
 					forceWeatherChange;
 					skipTime 1; 
 					skipTime -1;
@@ -497,9 +499,9 @@ switch _mode do {
 				if (_debug) then {
 					diag_log format ["(AtmosphereChanger %1) Terminating fog script", _logic];
 				};
-				[_handle, _transitionTime] spawn {
-					params ["_handle","_transitionTime"];
-					sleep _transitionTime;
+				[_handle, _transitionTimeOut] spawn {
+					params ["_handle","_transitionTimeOut"];
+					sleep _transitionTimeOut;
 					if !(scriptDone _handle) then {
 						terminate _handle;
 					};
@@ -540,10 +542,10 @@ switch _mode do {
 					diag_log format ["(AtmosphereChanger %1) Deleting ppcolor effect", _logic];
 				};
 				_ppCol ppEffectAdjust _ppCCOut;
-				_ppCol ppEffectCommit _transitionTime*2;
-				[_ppCol, _transitionTime] spawn {
-					params ["_ppCol", "_transitionTime"];
-					sleep _transitionTime*2;
+				_ppCol ppEffectCommit _transitionTimeOut;
+				[_ppCol, _transitionTimeOut] spawn {
+					params ["_ppCol", "_transitionTimeOut"];
+					sleep _transitionTimeOut;
 					ppEffectDestroy _ppCol;
 				};
 			};

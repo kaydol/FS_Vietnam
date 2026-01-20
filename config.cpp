@@ -1685,9 +1685,16 @@ class CfgVehicles
 				typeName = "NUMBER";
 				defaultValue = 0;
 			};
-			class TransitionTime : Edit {
-				property = "ModuleAtmosphereChanger_TransitionTime";
-				displayName = "Transition Time";
+			class TransitionTimeIn : Edit {
+				property = "ModuleAtmosphereChanger_TransitionTimeIn";
+				displayName = "Transition Time In";
+				tooltip = "A value of 0 means instant weather\color\fog change.";
+				typeName = "NUMBER";
+				defaultValue = 3;
+			};
+			class TransitionTimeOut : Edit {
+				property = "ModuleAtmosphereChanger_TransitionTimeOut";
+				displayName = "Transition Time Out";
 				tooltip = "A value of 0 means instant weather\color\fog change.";
 				typeName = "NUMBER";
 				defaultValue = 3;
