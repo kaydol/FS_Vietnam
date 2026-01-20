@@ -304,16 +304,13 @@ if (hasInterface) then
 					_collider addEventHandler ["HandleDamage", {
 						params ["_collider", "_selection", "_damage", "_source", "_projectile", "_hitPartIndex", "_instigator", "_hitPoint", "_directHit", "_context"];
 						
-						hintSilent str _this;
 						if (_instigator != DEF_CURRENT_PLAYER || !_directHit) exitWith {0};
 						private _grenade = attachedTo _collider;
 						if (_grenade isNotEqualTo []) then 
 						{
 							_collider removeAllEventHandlers "HandleDamage";
 							
-							_grenade setDamage 1;
-							systemchat format ["%1 setDamage 1", _grenade];
-							
+							deleteVehicle _grenade;
 							deleteVehicle _collider;
 						};
 					}];
