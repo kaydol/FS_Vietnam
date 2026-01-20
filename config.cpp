@@ -1379,7 +1379,7 @@ class CfgVehicles
 				displayName = "Audible radius";
 				tooltip = "Units within this distance from RTOs or objects & vehicles with comms will be given access to comms.";
 				typeName = "NUMBER";
-				defaultValue = 10;
+				defaultValue = 15;
 			};
 			class PersonalRadios : Edit {
 				property = "PersonalRadios";
