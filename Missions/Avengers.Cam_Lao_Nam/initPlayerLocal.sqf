@@ -78,18 +78,20 @@ if (_player == group_nigga_pointman) then
 // Leader 
 if (_player == group_nigga_leader) then 
 {
-	_player execVM "scripts\ShizaVietCongBehind.sqf";
 	_player execVM "scripts\Encourage.sqf"; 
 	_player execVM "scripts\RallyPoint.sqf";
 	_player execVM "scripts\AddTeamMapMarkers.sqf"; 
 	_player execVM "scripts\SelectLeader.sqf";
+	
+	_player execVM "scripts\ShizaWoundedLoop.sqf";
+	_player execVM "scripts\ShizaVietCongBehind.sqf";
 };
 
 _player execVM "scripts\IAmAFreeBird.sqf"; 
 _player execVM "scripts\BananaOfFlight.sqf"; 
 
 [] execVM "scripts\DynamicSupportRequester.sqf";
-[] execVM "scripts\VisualSensor.sqf";
+
 
 
 //-----------

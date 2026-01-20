@@ -127,21 +127,19 @@ private _possibleShizas = [];
 //-- Additional condition to spawn graves: the immediate terrain must be flat enough 
 private _result = (position DEF_CURRENT_PLAYER) isFlatEmpty [DEF_GRAVES_DISTANCE, -1, DEF_GRAVES_MAX_STEEPNESS, DEF_GRAVES_DISTANCE, 0, false, DEF_CURRENT_PLAYER];
 private _isFlat = _result isNotEqualTo [];
-//if (_isFlat) then {
-//	_possibleShizas pushBack DEF_ILLUSION_GRAVE;
-//};
+if (_isFlat) then {
+	_possibleShizas pushBack DEF_ILLUSION_GRAVE;
+};
 
 //-- Additional condition to spawn Prigozhin: Prigozhin must not be meeting other players 
 if (!DEF_FNC_IS_LOCKED(DEF_NPC_VAR,DEF_GLOBAL_ANIM_DONE_EH_ID)) then {
-//	_possibleShizas pushBack DEF_ILLUSION_PRIGOZHIN;
+	_possibleShizas pushBack DEF_ILLUSION_PRIGOZHIN;
 	_possibleShizas pushBack DEF_ILLUSION_PLANE;
 };
-
-
-//_possibleShizas pushBack DEF_ILLUSION_BODIES;
+_possibleShizas pushBack DEF_ILLUSION_BODIES;
 //_possibleShizas pushBack DEF_ILLUSION_MEMORIAL; // not ready yet 
-//_possibleShizas pushBack DEF_ILLUSION_LITERALLY_ME;
-//_possibleShizas pushBack DEF_ILLUSION_HEAVEN;
+_possibleShizas pushBack DEF_ILLUSION_LITERALLY_ME;
+_possibleShizas pushBack DEF_ILLUSION_HEAVEN;
 
 
 //-------------------------------------------------------------------------------------------------------------
@@ -665,8 +663,3 @@ switch (_shizaType) do
 	};
 };
 
-// звук гранаты из таркова https://youtu.be/QedcIcXzOmo по триггеру от шурика 
-// звук невидимых вьетнамцев за спиной по кд ?
-// добавить локальных монстров из аддона с монстрами 
-// test isFlatEmpty 
-// add nicknames to bodies ???  Acts_Onchair_Dead
