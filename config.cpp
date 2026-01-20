@@ -16,8 +16,13 @@ class CfgPatches
 	{
 		//-- Units available to spawn as Zeus must be in units[]
 		//-- Of course, they didn't write about it on the wiki
-		units[] = {"FS_NapalmCAS_Module", "FS_ArtyStrike_Module", "FS_ForceToPlaceTraps_Module", "FS_Weapon_MMG_Mighty_PK", 
-		"FS_Backpack_RaiStone", "FS_Backpack_RaiStone_Holder", "FS_PortableTurret", "FS_PortableTurret_Shoulder", "FS_Backpack_PortableTurret"};
+		units[] = {
+			"FS_NapalmCAS_Module", "FS_ArtyStrike_Module", "FS_ForceToPlaceTraps_Module", 
+			"FS_Weapon_MMG_Mighty_PK", 
+			"FS_Backpack_RaiStone", "FS_Backpack_RaiStone_Holder", 
+			"FS_PortableTurret", "FS_PortableTurret_Shoulder", "FS_Backpack_PortableTurret",
+			"FS_Invisible_Fire_Geometry"
+		};
 		
 		magazines[] = {"FS_Mighty_PK_100_mag", "FS_HealingGrenade_Mag", "FS_PortableTurret_Magazine"};
 		weapons[] = {"FS_Mighty_PK", "FS_HealingGrenade_Muzzle", "FS_PortableTurret_Weapon"};
@@ -152,6 +157,12 @@ class CfgSounds {
 	class FS_Healing_Tick {
 		name = "";
 		sound[] = {"\FS_Vietnam\Sounds\Weapons\healing_tick.ogg", db+6, 1};
+		titles[] = {1, ""};
+	};
+	
+	class FS_Necrons_Sound {
+		name = "";
+		sound[] = {"\FS_Vietnam\Sounds\necrons.ogg", db+6, 1};
 		titles[] = {1, ""};
 	};
 };
@@ -352,10 +363,20 @@ class CfgUserActions
 		onAnalog = "";	// _this is the scalar analog value.
 		analogChangeThreshold = 0.01; // Minimum change required to trigger the onAnalog EH (default: 0.01).
 	};
+	class FS_Helmet_HUD // This class name is used for internal representation and also for the inputAction command.
+	{
+		displayName = "Helmet HUD On\Off";
+		tooltip = "Toggles Helmet HUD (target interface). Can be activated when wearing the Smart Helmet.";
+		onActivate = "";		// _this is always true.
+		onDeactivate = "_this call FS_fnc_ToggleHelmetHUDAction";	// _this is always false.
+		onAnalog = "";	// _this is the scalar analog value.
+		analogChangeThreshold = 0.01; // Minimum change required to trigger the onAnalog EH (default: 0.01).
+	};
 };
 
 
 //-- Default keybindings
+//-- See https://community.bistudio.com/wiki/Arma_3:_Modded_Keybinding
 class CfgDefaultKeysPresets
 {
 	class Arma2 // Arma2 is inherited by all other presets.
@@ -363,7 +384,10 @@ class CfgDefaultKeysPresets
 		class Mappings
 		{
 			FS_PortableTurret_Shoulder_Laser[] = {
-				"0x26" // 0x26 is the DIK code for L.
+				"0x1D130026" // 0x1D1300 is LCONTROL, 0x26 is the DIK code for L.
+			};
+			FS_Helmet_HUD[] = {
+				"0x1D130031" // 0x1D1300 is LCONTROL, 0x31 is the DIK code for N.
 			};
 		};
 	};
@@ -2413,6 +2437,29 @@ class CfgVehicles
 			};
 		};
 	};
+
+	//class House_F;
+	class FS_Invisible_Fire_Geometry: House_F
+	{
+		scope = 2;
+		scopeCurator = 2;
+		_generalMacro = "FS_Invisible_Fire_Geometry";
+		author = "Sentry";
+		
+		displayName = "Grenade (invisible hitbox)";
+		model = "FS_Vietnam\Models\invisible_grenade.p3d";
+		
+		// With one single shot it gets killed
+		armor = 1;
+		armorStructural = 0;
+		explosionShielding = 100;
+		
+		class EventHandlers{};
+		class DestructionEffects{};
+
+		hiddenSelections[]={};
+		hiddenSelectionsTextures[]={};
+	};
 };
 
 
@@ -2581,6 +2628,7 @@ class CfgFunctions
 		class FS_Equipment {
 			class EquipmentPostInit {file = "\FS_Vietnam\Functions\Equipment\EquipmentPostInit.sqf"; postInit=1;};
 			class ShoulderTurretLaserAction {file = "\FS_Vietnam\Functions\Equipment\ShoulderTurretLaserAction.sqf";};
+			class ToggleHelmetHUDAction {file = "\FS_Vietnam\Functions\Equipment\ToggleHelmetHUDAction.sqf";};
 			class ToggleLaser {file = "\FS_Vietnam\Functions\Equipment\ToggleLaser.sqf";};
 		};
 	};
@@ -2938,4 +2986,15 @@ class CfgWeapons
 			};
 		};
 	};
+	
+	//-- For Smart Helmet 
+	class vnx_b_helmet_aph6_02_06;
+	class FS_SmartHelmet : vnx_b_helmet_aph6_02_06 {
+		ScopeArsenal = 2;
+		ScopeCurator = 2;
+		displayName = "Cursed Helmet of Legendary Target Acquisition";
+		descriptionshort = "Default keybind to enable HUD is [CTRL+N]";
+	};
+	
+	
 };

@@ -103,6 +103,68 @@ if (!hasInterface) exitWith {};
 		{}
 	];
 	
+	//========================//
+	//	Smart Helmet Battery  //
+	//========================//
+	
+	if (DEF_HUD_HELMET_ENABLE_CHARGE_MECHANIC) then 
+	{
+		private _fnc_batteryIconIsVisible = { 
+			if (isNil {DEF_CURRENT_PLAYER}) exitWith {false};
+			if (isNull DEF_CURRENT_PLAYER) exitWith {false};
+			private _hasHelmet = toLowerANSI headgear DEF_CURRENT_PLAYER in (DEF_HUD_HELMETS apply {toLowerANSI _x});
+			_hasHelmet
+		};
+		
+		private _fnc_batteryIconUpdateTexture = {
+			params ["_ctrl"];
+			
+			if (!isNull DEF_CURRENT_PLAYER) then 
+			{
+				private _textures = [
+					"\FS_Vietnam\Textures\battery_100.paa"
+					,"\FS_Vietnam\Textures\battery_75.paa"
+					,"\FS_Vietnam\Textures\battery_50.paa"
+					,"\FS_Vietnam\Textures\battery_25.paa"
+					,"\FS_Vietnam\Textures\battery_0.paa"
+				];
+				
+				private _colors = [
+					[0,1,0,DEF_VISIBLE]
+					,[1,1,0,DEF_VISIBLE]
+					,[1,0.64,0,DEF_VISIBLE]
+					,[1,0,0,DEF_VISIBLE]
+					,[1,0,0,DEF_VISIBLE]
+				];
+				
+				private _texture = _textures # 0;
+				private _color = _colors # ((count _colors) - 1);
+				
+				private _currentChargeLevel = missionNameSpace getVariable [DEF_HUD_HELMET_CHARGE_LEFT_VAR, 0];
+				private _p = _currentChargeLevel / DEF_HUD_HELMET_MAX_CHARGE;
+				
+				if (_p <= 1) then { _texture = _textures # 0; _color = _colors # 0; };
+				if (_p <= 0.75) then { _texture = _textures # 1; _color = _colors # 1; };
+				if (_p <= 0.5) then { _texture = _textures # 2; _color = _colors # 2; };
+				if (_p <= 0.25) then { _texture = _textures # 3; _color = _colors # 3; };
+				if (_p <= 0) then { _texture = _textures # 4; _color = _colors # 4; };
+				
+				_ctrl ctrlSetText _texture;
+				_ctrl ctrlSetTextColor _color;
+			};
+		};
+		
+		_ctrl = (uiNamespace getVariable DEF_RSC_TITLE) ctrlCreate ["RscPicture", -1];
+		_ctrl ctrlSetTextColor [0,0,0, DEF_INVISIBLE];
+		_ctrl ctrlCommit 0;
+		
+		_hudIcons pushBack [
+			_fnc_batteryIconIsVisible,
+			_ctrl,
+			_fnc_batteryIconUpdateTexture
+		];
+	};
+	
 	//============================================
 	
 	while {sleep 0.5; true} do 
