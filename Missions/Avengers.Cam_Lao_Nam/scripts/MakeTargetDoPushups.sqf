@@ -19,39 +19,45 @@ if (!isPlayer _target && !local _target) then {
 
 if ((!isPlayer _target && local _target) || _target == player) then {
 	
-	private _sequence = [];
-	
-	_sequence pushBack DEF_MARKER_DISABLE_AI_ANIM;
-	
-	//-- Pushup
-	
-	if (currentWeapon _target isNotEqualTo "" && currentWeapon _target == primaryWeapon _target) then {
-		private _unequipRifle = "AmovPercMstpSrasWrflDnon_AwopPercMstpSoptWbinDnon";
-		_sequence pushBack _unequipRifle;
+	if (isPlayer _target && !(_target getVariable ["vn_revive_incapacitated", false])) then 
+	{
+		_target playMoveNow "AmovPercMstpSnonWnonDnon_exercisePushup";
+	} 
+	else 
+	{
+		private _sequence = [];
+		
+		_sequence pushBack DEF_MARKER_DISABLE_AI_ANIM;
+		
+		//-- Pushup
+		
+		if (currentWeapon _target isNotEqualTo "" && currentWeapon _target == primaryWeapon _target) then {
+			private _unequipRifle = "AmovPercMstpSrasWrflDnon_AwopPercMstpSoptWbinDnon";
+			_sequence pushBack _unequipRifle;
+		};
+		
+		if (currentWeapon _target isNotEqualTo "" && currentWeapon _target == secondaryWeapon _target) then {
+			private _unequipPistol_1 = "AmovPercMstpSrasWpstDnon_AmovPercMstpSnonWnonDnon";
+			private _unequipPistol_2 = "AmovPercMstpSrasWpstDnon_AmovPercMstpSnonWnonDnon_end";
+			_sequence pushBack _unequipPistol_1;
+			_sequence pushBack _unequipPistol_2;
+		};
+		
+		_sequence pushBack "AmovPercMstpSnonWnonDnon_SaluteIn";
+		_sequence pushBack "AmovPercMstpSnonWnonDnon_SaluteOut";
+		_sequence pushBack "AmovPercMstpSnonWnonDnon_exercisePushup";
+		
+		//_sequence pushBack DEF_MARKER_ENABLE_AI_ANIM;
+		//_sequence pushBack DEF_MARKER_END_ANIMATION;
+		
+		private _timeoutExitCode = {
+			params ["_target"]; 
+			_target enableAI "ANIM";
+			//_target switchMove ""; 
+		};
+		
+		[_target, _sequence, [], 18, _timeoutExitCode, true] call FS_fnc_PlayAnimationSequence;
 	};
-	
-	if (currentWeapon _target isNotEqualTo "" && currentWeapon _target == secondaryWeapon _target) then {
-		private _unequipPistol_1 = "AmovPercMstpSrasWpstDnon_AmovPercMstpSnonWnonDnon";
-		private _unequipPistol_2 = "AmovPercMstpSrasWpstDnon_AmovPercMstpSnonWnonDnon_end";
-		_sequence pushBack _unequipPistol_1;
-		_sequence pushBack _unequipPistol_2;
-	};
-	
-	_sequence pushBack "AmovPercMstpSnonWnonDnon_SaluteIn";
-	_sequence pushBack "AmovPercMstpSnonWnonDnon_SaluteOut";
-	_sequence pushBack "AmovPercMstpSnonWnonDnon_exercisePushup";
-	
-	//_sequence pushBack DEF_MARKER_ENABLE_AI_ANIM;
-	//_sequence pushBack DEF_MARKER_END_ANIMATION;
-	
-	private _timeoutExitCode = {
-		params ["_target"]; 
-		_target enableAI "ANIM";
-		//_target switchMove ""; 
-	};
-	
-	[_target, _sequence, [], 18, _timeoutExitCode, true] call FS_fnc_PlayAnimationSequence;
-	
 	
 	// Sits AmovPercMstpSnonWnonDnon_exercisekneeBendB AmovPercMstpSnonWnonDnon_exercisekneeBendA
 };
