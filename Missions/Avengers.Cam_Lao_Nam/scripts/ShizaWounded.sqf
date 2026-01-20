@@ -1,6 +1,9 @@
 
 #include "definitions.h"
 
+#define DEF_SHIZA_FIRST_RUN_VAR "FS_ShizaWounded_Is_First_Run_Var"
+#define DEF_SHIZA_BLACKLISTED_SHIZAS_VAR "FS_ShizaWounded_Blacklisted_Shizas_Var"
+
 #define DEF_ILLUSION_PRIGOZHIN 1
 #define DEF_ILLUSION_GRAVE 2
 #define DEF_ILLUSION_BODIES 3
@@ -12,7 +15,9 @@
 //-- DEF_ILLUSION_PRIGOZHIN 
 #define DEF_NPC_VAR Prigozhin
 #define DEF_MARKER_FACE_PLAYER ""
+#define DEF_MARKER_ROTATE_20 "20"
 #define DEF_MARKER_ROTATE_90 "90"
+#define DEF_MARKER_ROTATE_270 "270"
 #define DEF_MARKER_ROTATE_330 "330"
 #define DEF_MARKER_ATTACH_TO_PLAYER "-"
 #define DEF_MARKER_FACE_RANDOM_DIR "."
@@ -20,6 +25,7 @@
 #define DEF_MARKER_END_ANIMATION_REVIVE_PLAYER "..."
 #define DEF_GLOBAL_ANIM_DONE_EH_ID "FS_EH_AnimDone"
 #define DEF_GLOBAL_ANIM_SEQUENCE "FS_AnimSequence"
+#define DEF_NPC_MIN_DISTANCE_TO_PLAYER 1
 
 //-- DEF_ILLUSION_PRIGOZHIN
 #define DEF_FNC_RELEASE_LOCK(UNIT,VARNAME) (UNIT setVariable [VARNAME, nil, true])	
@@ -40,6 +46,7 @@
 #define DEF_BODIES_CLASSES ["Land_vn_b_prop_body_01_02","Land_vn_b_prop_body_02","Land_vn_b_prop_body_01","Land_vn_b_prop_body_02_02"]
 #define DEF_BODIES_ATMOSPHERE Atmosphere_For_Shiza_Depressed
 #define DEF_BODIES_JUKEBOX Jukebox_For_Shiza_Depressed
+#define DEF_BODIES_AMOUNT 20
 
 //-- DEF_ILLUSION_MEMORIAL
 #define DEF_MEMORIAL_CLASSES ["Land_BattlefieldCross_01_F","Land_BattlefieldCross_01_green_F"]
@@ -144,13 +151,35 @@ _possibleShizas pushBack DEF_ILLUSION_HEAVEN;
 
 //-------------------------------------------------------------------------------------------------------------
 
+private _blacklistedShizas = missionNameSpace getVariable [DEF_SHIZA_BLACKLISTED_SHIZAS_VAR, []];
+_possibleShizas = _possibleShizas select { !(_x in _blacklistedShizas) };
+
 if (count _possibleShizas <= 0) exitWith {
 	diag_log format ["(ShizaWounded @ %1) No shizas available, exiting...", clientOwner];
 };
 
-private _shizaType = selectRandom _possibleShizas;
+// Always show DEF_ILLUSION_PRIGOZHIN on first run, exit if it's not available
+private _firstRun = missionNameSpace getVariable [DEF_SHIZA_FIRST_RUN_VAR, true];
+if (_firstRun && !(DEF_ILLUSION_PRIGOZHIN in _possibleShizas)) exitWith {
+	diag_log format ["(ShizaWounded @ %1) First run, but illusion type %2 is not available, exiting...", clientOwner, DEF_ILLUSION_PRIGOZHIN];
+};
+missionNameSpace setVariable [DEF_SHIZA_FIRST_RUN_VAR, false];
+
+private _shizaType = DEF_ILLUSION_PRIGOZHIN;
+
+// On subsequent runs, select a random illusion from the remaining
+if !(_firstRun) then {
+	_shizaType = selectRandom _possibleShizas;
+};
 
 diag_log format ["(ShizaWounded @ %1) Possible shizas: %2, chosen = %3", clientOwner, _possibleShizas, _shizaType];
+
+// All shizas except DEF_ILLUSION_PRIGOZHIN can only be played once
+if (_shizaType != DEF_ILLUSION_PRIGOZHIN) then {
+	_blacklistedShizas pushBackUnique _shizaType;
+	missionNameSpace setVariable [DEF_SHIZA_BLACKLISTED_SHIZAS_VAR, _blacklistedShizas];
+	diag_log format ["(ShizaWounded @ %1) Added %2 to blacklist, current blacklist = %3", clientOwner, _shizaType, _blacklistedShizas];
+};
 
 private _fnc_doBefore = {
 	0 cutText ["", "BLACK IN", 6, true, true];
@@ -181,7 +210,12 @@ private _fnc_rotateVector2D = {
 	
 	_dir
 };
-
+private _fnc_deleteVegetationAGL = {
+	params ["_posAGL"];
+	private _grassCutter =  createVehicleLocal ["Land_ClutterCutter_medium_F", _posAGL, [], 0, "CAN_COLLIDE"];
+	deleteVehicle _grassCutter;
+	{ _x hideObject true } foreach (nearestTerrainObjects [_posAGL,["BUSH", "TREE", "HIDE"],10]);
+};
 
 switch (_shizaType) do 
 {
@@ -191,18 +225,18 @@ switch (_shizaType) do
 		DEF_CURRENT_ILLUSION_VAR = DEF_ILLUSION_PRIGOZHIN;
 		
 		private _animations = [
-			[DEF_MARKER_FACE_PLAYER, "Acts_AidlPercMstpSloWWrflDnon_warmup_6_loop"], 
-			[DEF_MARKER_FACE_PLAYER, "Acts_AidlPercMstpSnonWnonDnon_warmup_2_loop", "Acts_AidlPercMstpSnonWnonDnon_warmup_2_out", DEF_MARKER_END_ANIMATION], 
-			[DEF_MARKER_FACE_PLAYER, "Acts_AidlPercMstpSnonWnonDnon_warmup_6_loop"],
-			[DEF_MARKER_ROTATE_90, "Acts_CivilInjuredArms_1"],
-			[DEF_MARKER_FACE_RANDOM_DIR, "Acts_CivilInjuredGeneral_1"],
-			[DEF_MARKER_FACE_RANDOM_DIR, "Acts_CivilInjuredHead_1"],
-			[DEF_MARKER_FACE_RANDOM_DIR, "Acts_CivilShocked_1"],
-			[DEF_MARKER_FACE_PLAYER, "Acts_Executioner_Standing", "Acts_Executioner_Squat", "Acts_Executioner_Squat_End", DEF_MARKER_END_ANIMATION],
-			[DEF_MARKER_FACE_PLAYER, "Acts_ExecutionVictim_Loop", "Acts_ExecutionVictim_Kill", "Acts_ExecutionVictim_Kill_End", "Acts_ExecutionVictim_KillTerminal"],
-			[DEF_MARKER_ROTATE_330, "Acts_Helping_Wake_Up_1", "Acts_Helping_Wake_Up_2", "Acts_Helping_Wake_Up_3", DEF_MARKER_END_ANIMATION_REVIVE_PLAYER],
-			[DEF_MARKER_FACE_RANDOM_DIR, "Acts_Injured_Driver_Loop"],
-			[DEF_MARKER_ATTACH_TO_PLAYER, "Acts_TreatingWounded01", DEF_MARKER_END_ANIMATION_REVIVE_PLAYER]
+			[DEF_MARKER_FACE_PLAYER, "Acts_AidlPercMstpSloWWrflDnon_warmup_6_loop"]
+			,[DEF_MARKER_ROTATE_20, "Acts_AidlPercMstpSnonWnonDnon_warmup_2_loop", "Acts_AidlPercMstpSnonWnonDnon_warmup_2_out", DEF_MARKER_END_ANIMATION] 
+			,[DEF_MARKER_FACE_PLAYER, "Acts_AidlPercMstpSnonWnonDnon_warmup_6_loop"]
+			,[DEF_MARKER_ROTATE_90, "Acts_CivilInjuredArms_1", "Acts_CivilInjuredArms_1", "Acts_CivilInjuredArms_1"]
+			,[DEF_MARKER_FACE_PLAYER, "Acts_CivilInjuredGeneral_1"]
+			,[DEF_MARKER_ROTATE_90, "Acts_CivilInjuredHead_1"]
+			,[DEF_MARKER_FACE_PLAYER, "Acts_CivilShocked_1","Acts_CivilShocked_1","Acts_CivilShocked_1","Acts_CivilShocked_1","Acts_CivilShocked_1"]
+			,[DEF_MARKER_FACE_PLAYER, "Acts_Executioner_Standing", "Acts_Executioner_Squat", "Acts_Executioner_Squat_End", DEF_MARKER_END_ANIMATION]
+			,[DEF_MARKER_FACE_PLAYER, "Acts_ExecutionVictim_Loop", "Acts_ExecutionVictim_Kill", "Acts_ExecutionVictim_Kill_End", "Acts_ExecutionVictim_KillTerminal"]
+			,[DEF_MARKER_ROTATE_330, "Acts_Helping_Wake_Up_1", "Acts_Helping_Wake_Up_2", "Acts_Helping_Wake_Up_3", DEF_MARKER_END_ANIMATION_REVIVE_PLAYER]
+			,[DEF_MARKER_FACE_PLAYER, "Acts_Injured_Driver_Loop"]
+			,[DEF_MARKER_ATTACH_TO_PLAYER, "Acts_TreatingWounded01", DEF_MARKER_END_ANIMATION_REVIVE_PLAYER]
 		];
 
 		private _sequence = selectRandom _animations;
@@ -253,8 +287,26 @@ switch (_shizaType) do
 		#include "ShizaWoundedWaitCondition.hpp" //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		//-------------------------------------------------------------------------------------------------------------
 		
-		private _placeFound = DEF_NPC_VAR setVehiclePosition [ASLToATL eyePos DEF_CURRENT_PLAYER, [], 1, "NONE"];
-
+		private _playerEyePosATL = ASLToATL eyePos DEF_CURRENT_PLAYER;
+		private _placeFound = false;
+		
+		// Make 5 attempts at placing Prigozhin, but not too close to the player's head AND legs, 
+		// otherwise there will be clipping issues, or Prigozhin may face wrong direction
+		for [{_i = 0},{_i < 5},{_i = _i + 1}] do 
+		{
+			_placeFound = false;
+			
+			isNil { _placeFound = DEF_NPC_VAR setVehiclePosition [_playerEyePosATL, [], 1.5, "NONE"] };
+			
+			_placeFound = 	_placeFound && 
+							(DEF_NPC_VAR distance _playerEyePosATL) > DEF_NPC_MIN_DISTANCE_TO_PLAYER && 
+							(DEF_NPC_VAR distance getPosATL DEF_CURRENT_PLAYER) > DEF_NPC_MIN_DISTANCE_TO_PLAYER;
+			
+			diag_log format ["(ShizaWounded @ %1) Distance to eyePos: %2, Distance to model: %3", clientOwner, DEF_NPC_VAR distance _playerEyePosATL, (DEF_NPC_VAR distance getPosATL DEF_CURRENT_PLAYER)];
+			
+			if (_placeFound) exitWith {};
+		};
+		
 		if (!_placeFound) exitWith {
 			DEF_FNC_RELEASE_LOCK(DEF_NPC_VAR,DEF_GLOBAL_ANIM_DONE_EH_ID);
 			diag_log format ["(ShizaWounded @ %1) Could not find enough space near %2, terminating", clientOwner, DEF_CURRENT_PLAYER];
@@ -262,9 +314,11 @@ switch (_shizaType) do
 		};
 		
 		call _fnc_doBefore;
+		[getPos DEF_CURRENT_PLAYER] call _fnc_deleteVegetationAGL;
 		
 		DEF_NPC_VAR enableSimulation true;
 		DEF_NPC_VAR hideObject false;
+		
 		
 		switch (_sequence select 0) do {
 			case DEF_MARKER_FACE_PLAYER: {
@@ -277,10 +331,22 @@ switch (_shizaType) do
 			case DEF_MARKER_ATTACH_TO_PLAYER: {
 				DEF_NPC_VAR attachTo [DEF_CURRENT_PLAYER, [0,0,0]];
 			};
+			case DEF_MARKER_ROTATE_20: 
+			{
+				private _dir = position DEF_NPC_VAR vectorFromTo position DEF_CURRENT_PLAYER;
+				_dir = [_dir, 20] call _fnc_rotateVector2D;
+				[DEF_NPC_VAR, _dir] remoteExec ["setVectorDir", DEF_NPC_VAR];
+			};
 			case DEF_MARKER_ROTATE_90: 
 			{
 				private _dir = position DEF_NPC_VAR vectorFromTo position DEF_CURRENT_PLAYER;
 				_dir = [_dir, 90] call _fnc_rotateVector2D;
+				[DEF_NPC_VAR, _dir] remoteExec ["setVectorDir", DEF_NPC_VAR];
+			};
+			case DEF_MARKER_ROTATE_270: 
+			{
+				private _dir = position DEF_NPC_VAR vectorFromTo position DEF_CURRENT_PLAYER;
+				_dir = [_dir, 270] call _fnc_rotateVector2D;
 				[DEF_NPC_VAR, _dir] remoteExec ["setVectorDir", DEF_NPC_VAR];
 			};
 			case DEF_MARKER_ROTATE_330: 
@@ -317,25 +383,20 @@ switch (_shizaType) do
 		//-------------------------------------------------------------------------------------------------------------
 		
 		call _fnc_doBefore;
+		[getPos DEF_CURRENT_PLAYER] call _fnc_deleteVegetationAGL;
 		
 		(selectRandom DEF_GRAVES_FENCE_CLASSES) params ["_fenceClass", "_rotation"];
 		private _fence = _fenceClass createVehicleLocal [0,0,0];
 		
-		_fence hideObject true;
-		_fence enableSimulation false;
-		
-		_fence hideObject false;
-		_fence enableSimulation true;
-		
-		_fence setPos getPos player;
-		_fence setDir ((getDir player) + _rotation);
+		_fence setPos getPos DEF_CURRENT_PLAYER;
+		_fence setDir ((getDir DEF_CURRENT_PLAYER) + _rotation);
 		
 		
 		(selectRandom DEF_GRAVES_GRAVE_CLASSES) params ["_graveClass", "_rotation"];
 		private _grave = _graveClass createVehicleLocal [0,0,0];
 		
-		_grave setPos getPos player;
-		_grave setDir ((getDir player) + _rotation);
+		_grave setPos getPos DEF_CURRENT_PLAYER;
+		_grave setDir ((getDir DEF_CURRENT_PLAYER) + _rotation);
 		
 		
 		private _shovel = "Land_Shovel_F" createVehicleLocal [0,0,0];
@@ -371,16 +432,17 @@ switch (_shizaType) do
 		//-------------------------------------------------------------------------------------------------------------
 		
 		call _fnc_doBefore;
+		[getPos DEF_CURRENT_PLAYER] call _fnc_deleteVegetationAGL;
 		
 		private _bodies = [];
 		
-		for [{private _i = 0},{_i < 6},{_i = _i + 1}] do 
+		for [{private _i = 0},{_i < DEF_BODIES_AMOUNT},{_i = _i + 1}] do 
 		{
 			private _body = (selectRandom DEF_BODIES_CLASSES) createVehicleLocal [0,0,0];
 			_body hideObject true;
 			_body enableSimulation false;
 			
-			if (_body setVehiclePosition [getPosATL DEF_CURRENT_PLAYER, [], 0, "NONE"]) then 
+			if (_body setVehiclePosition [ASLtoATL eyePos DEF_CURRENT_PLAYER, [], 5, "NONE"]) then 
 			{	
 				private _vectorDir = position _body vectorFromTo eyepos DEF_CURRENT_PLAYER;
 				
@@ -390,7 +452,9 @@ switch (_shizaType) do
 				_body setVectorDirAndUp [[0,0,1], _vectorDir];
 				_body hideObject false;
 				_bodies pushBack _body;
-			} else {
+			} 
+			else 
+			{
 				deleteVehicle _body;
 			};
 		};
@@ -440,7 +504,7 @@ switch (_shizaType) do
 		//-------------------------------------------------------------------------------------------------------------
 		
 		call _fnc_doBefore;
-		
+		[getPos DEF_CURRENT_PLAYER] call _fnc_deleteVegetationAGL;
 		
 		//-------------------------------------------------------------------------------------------------------------
 		#include "ShizaWoundedExitCondition.hpp" //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -459,6 +523,7 @@ switch (_shizaType) do
 		//-------------------------------------------------------------------------------------------------------------
 		
 		call _fnc_doBefore;
+		[getPos DEF_CURRENT_PLAYER] call _fnc_deleteVegetationAGL;
 		
 		private _cam = "camera" camCreate (player modelToWorld [0, 0, 5]);
 		_cam camSetTarget player;
@@ -514,6 +579,7 @@ switch (_shizaType) do
 		//-------------------------------------------------------------------------------------------------------------
 		
 		call _fnc_doBefore;
+		[getPos DEF_CURRENT_PLAYER] call _fnc_deleteVegetationAGL;
 		
 		player hideObject true;
 		
@@ -532,6 +598,8 @@ switch (_shizaType) do
 		_cam camSetTarget _fakePlayer;
 		_cam cameraEffect ["internal", "back"];
 		_cam camCommit 15;
+		
+		[getPos _cam] call _fnc_deleteVegetationAGL;
 		
 		cameraEffectEnableHUD false;
 		

@@ -8,7 +8,7 @@ class EditorData
 	toggles=1;
 	class ItemIDProvider
 	{
-		nextID=2050;
+		nextID=2052;
 	};
 	class MarkerIDProvider
 	{
@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=1038;
+		nextID=1083;
 	};
 	class Camera
 	{
-		pos[]={13732.158,59.898937,773.95654};
-		dir[]={0.0051558553,-0.64263642,0.76615393};
-		up[]={0.0043245428,0.76617128,0.64262187};
-		aside[]={0.99997735,0,-0.0067293765};
+		pos[]={13719.994,72.684761,773.68909};
+		dir[]={0.31398991,-0.81477267,0.48740053};
+		up[]={0.4412522,0.57977778,0.68494695};
+		aside[]={0.84065944,5.3085387e-08,-0.5415647};
 	};
 };
 binarizationWanted=0;
@@ -1041,7 +1041,7 @@ class Mission
 	};
 	class Entities
 	{
-		items=444;
+		items=445;
 		class Item0
 		{
 			dataType="Logic";
@@ -2036,8 +2036,8 @@ class Mission
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={13730.078,43.25161,800.87311};
-						angles[]={0,4.4423976,0};
+						position[]={13730.078,43.251614,800.87299};
+						angles[]={0,4.4424043,0};
 					};
 					side="West";
 					flags=5;
@@ -2046,7 +2046,7 @@ class Mission
 						rank="CORPORAL";
 						init="this spawn {_this disableAI ""ANIM""; _this action [""salute"", _this]; sleep 8; _this enableAI ""ANIM"";};" \n "" \n "";
 						name="group_nigga_pointman";
-						description="Tank: Chance to heal on dmg taken, Shout, Has Mine Detector";
+						description="Tank: Chance to heal on dmg taken, Has Mine Detector";
 						isPlayable=1;
 						class Inventory
 						{
@@ -2215,7 +2215,6 @@ class Mission
 						init="this spawn {_this disableAI ""ANIM""; _this action [""salute"", _this]; sleep 8; _this enableAI ""ANIM"";}" \n "";
 						name="group_nigga_sniper";
 						description="Sniper: Bullet Trajectory, Superior Awareness, Smart Helmet, Map Knowledge, Can Give Ammo";
-						isPlayer=1;
 						isPlayable=1;
 						class Inventory
 						{
@@ -2373,7 +2372,8 @@ class Mission
 					{
 						rank="LIEUTENANT";
 						name="group_nigga_leader";
-						description="Leader: Artillery, Encourage, Rally Point, Map Knowledge, Crippling PTSD, Has Toolkit, Explosive Specialist, Fitness Instructor";
+						description="Leader: Has Radio, Encourage, Rally Point, Map Knowledge, Crippling PTSD, Has Toolkit, Voice of Command, Explosive Specialist";
+						isPlayer=1;
 						isPlayable=1;
 						class Inventory
 						{
@@ -4742,8 +4742,8 @@ class Mission
 			dataType="Logic";
 			class PositionInfo
 			{
-				position[]={13741.886,42.287399,790.7962};
-				angles[]={6.2392135,0,6.157846};
+				position[]={13741.886,42.287392,790.79602};
+				angles[]={6.2392201,0,6.1578531};
 			};
 			name="Atmosphere_For_Incapacitated";
 			id=922;
@@ -4751,6 +4751,19 @@ class Mission
 			class CustomAttributes
 			{
 				class Attribute0
+				{
+					property="ModuleAtmosphereChanger_TransitionTimeIn";
+					expression="_this setVariable ['TransitionTimeIn',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="SCALAR";
+							value=3;
+						};
+					};
+				};
+				class Attribute1
 				{
 					property="ModuleAtmosphereChanger_EnableSteam";
 					expression="_this setVariable ['EnableSteam',_value,true];";
@@ -4763,7 +4776,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute1
+				class Attribute2
 				{
 					property="ModuleAtmosphereChanger_Radius";
 					expression="_this setVariable ['Radius',_value,true];";
@@ -4776,7 +4789,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute2
+				class Attribute3
 				{
 					property="Debug";
 					expression="_this setVariable ['Debug',_value,true];";
@@ -4789,7 +4802,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute3
+				class Attribute4
 				{
 					property="ModuleAtmosphereChanger_Fog";
 					expression="_this setVariable ['Fog',_value,true];";
@@ -4802,7 +4815,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute4
+				class Attribute5
 				{
 					property="ModuleAtmosphereChanger_CCCustomTint";
 					expression="_this setVariable ['CCCustomTint',_value,true];";
@@ -4815,46 +4828,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute5
-				{
-					property="ModuleAtmosphereChanger_FogParams";
-					expression="_this setVariable ['FogParams',_value,true];";
-					class Value
-					{
-						class data
-						{
-							singleType="STRING";
-							value="[0.9,0.001]";
-						};
-					};
-				};
 				class Attribute6
-				{
-					property="ModuleAtmosphereChanger_Preset";
-					expression="_this setVariable ['CCPreset',_value,true];";
-					class Value
-					{
-						class data
-						{
-							singleType="SCALAR";
-							value=2;
-						};
-					};
-				};
-				class Attribute7
-				{
-					property="ModuleAtmosphereChanger_EnableSnow";
-					expression="_this setVariable ['EnableSnow',_value,true];";
-					class Value
-					{
-						class data
-						{
-							singleType="SCALAR";
-							value=0;
-						};
-					};
-				};
-				class Attribute8
 				{
 					property="ModuleAtmosphereChanger_StopCondition";
 					expression="_this setVariable ['StopCondition',_value,true];";
@@ -4867,7 +4841,46 @@ class Mission
 						};
 					};
 				};
+				class Attribute7
+				{
+					property="ModuleAtmosphereChanger_FogParams";
+					expression="_this setVariable ['FogParams',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="STRING";
+							value="[0.9,0.001]";
+						};
+					};
+				};
+				class Attribute8
+				{
+					property="ModuleAtmosphereChanger_Preset";
+					expression="_this setVariable ['CCPreset',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="SCALAR";
+							value=2;
+						};
+					};
+				};
 				class Attribute9
+				{
+					property="ModuleAtmosphereChanger_TransitionTimeOut";
+					expression="_this setVariable ['TransitionTimeOut',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="SCALAR";
+							value=3;
+						};
+					};
+				};
+				class Attribute10
 				{
 					property="ModuleAtmosphereChanger_LoopConditions";
 					expression="_this setVariable ['LoopConditions',_value,true];";
@@ -4880,7 +4893,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute10
+				class Attribute11
 				{
 					property="ModuleAtmosphereChanger_EnableDust";
 					expression="_this setVariable ['EnableDust',_value,true];";
@@ -4893,20 +4906,20 @@ class Mission
 						};
 					};
 				};
-				class Attribute11
+				class Attribute12
 				{
-					property="ModuleAtmosphereChanger_TransitionTime";
-					expression="_this setVariable ['TransitionTime',_value,true];";
+					property="ModuleAtmosphereChanger_EnableSnow";
+					expression="_this setVariable ['EnableSnow',_value,true];";
 					class Value
 					{
 						class data
 						{
 							singleType="SCALAR";
-							value=3;
+							value=0;
 						};
 					};
 				};
-				class Attribute12
+				class Attribute13
 				{
 					property="ModuleAtmosphereChanger_Rain";
 					expression="_this setVariable ['Rain',_value,true];";
@@ -4919,7 +4932,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute13
+				class Attribute14
 				{
 					property="ModuleAtmosphereChanger_StartCondition";
 					expression="_this setVariable ['StartCondition',_value,true];";
@@ -4932,7 +4945,7 @@ class Mission
 						};
 					};
 				};
-				nAttributes=14;
+				nAttributes=15;
 			};
 		};
 		class Item47
@@ -13359,8 +13372,8 @@ class Mission
 			dataType="Logic";
 			class PositionInfo
 			{
-				position[]={13741.95,42.319595,791.7132};
-				angles[]={6.2392135,0,6.157846};
+				position[]={13741.95,42.319588,791.71301};
+				angles[]={6.2392201,0,6.1578531};
 			};
 			name="Atmosphere_For_Shiza_Depressed";
 			id=1508;
@@ -13368,6 +13381,19 @@ class Mission
 			class CustomAttributes
 			{
 				class Attribute0
+				{
+					property="ModuleAtmosphereChanger_TransitionTimeIn";
+					expression="_this setVariable ['TransitionTimeIn',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="SCALAR";
+							value=3;
+						};
+					};
+				};
+				class Attribute1
 				{
 					property="ModuleAtmosphereChanger_EnableSteam";
 					expression="_this setVariable ['EnableSteam',_value,true];";
@@ -13380,7 +13406,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute1
+				class Attribute2
 				{
 					property="ModuleAtmosphereChanger_Radius";
 					expression="_this setVariable ['Radius',_value,true];";
@@ -13393,7 +13419,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute2
+				class Attribute3
 				{
 					property="Debug";
 					expression="_this setVariable ['Debug',_value,true];";
@@ -13406,7 +13432,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute3
+				class Attribute4
 				{
 					property="ModuleAtmosphereChanger_Fog";
 					expression="_this setVariable ['Fog',_value,true];";
@@ -13419,7 +13445,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute4
+				class Attribute5
 				{
 					property="ModuleAtmosphereChanger_CCCustomTint";
 					expression="_this setVariable ['CCCustomTint',_value,true];";
@@ -13432,46 +13458,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute5
-				{
-					property="ModuleAtmosphereChanger_FogParams";
-					expression="_this setVariable ['FogParams',_value,true];";
-					class Value
-					{
-						class data
-						{
-							singleType="STRING";
-							value="[1,0.00001]";
-						};
-					};
-				};
 				class Attribute6
-				{
-					property="ModuleAtmosphereChanger_Preset";
-					expression="_this setVariable ['CCPreset',_value,true];";
-					class Value
-					{
-						class data
-						{
-							singleType="SCALAR";
-							value=1;
-						};
-					};
-				};
-				class Attribute7
-				{
-					property="ModuleAtmosphereChanger_EnableSnow";
-					expression="_this setVariable ['EnableSnow',_value,true];";
-					class Value
-					{
-						class data
-						{
-							singleType="SCALAR";
-							value=0;
-						};
-					};
-				};
-				class Attribute8
 				{
 					property="ModuleAtmosphereChanger_StopCondition";
 					expression="_this setVariable ['StopCondition',_value,true];";
@@ -13484,7 +13471,46 @@ class Mission
 						};
 					};
 				};
+				class Attribute7
+				{
+					property="ModuleAtmosphereChanger_FogParams";
+					expression="_this setVariable ['FogParams',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="STRING";
+							value="[1,0.00001]";
+						};
+					};
+				};
+				class Attribute8
+				{
+					property="ModuleAtmosphereChanger_Preset";
+					expression="_this setVariable ['CCPreset',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="SCALAR";
+							value=1;
+						};
+					};
+				};
 				class Attribute9
+				{
+					property="ModuleAtmosphereChanger_TransitionTimeOut";
+					expression="_this setVariable ['TransitionTimeOut',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="SCALAR";
+							value=3;
+						};
+					};
+				};
+				class Attribute10
 				{
 					property="ModuleAtmosphereChanger_LoopConditions";
 					expression="_this setVariable ['LoopConditions',_value,true];";
@@ -13497,7 +13523,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute10
+				class Attribute11
 				{
 					property="ModuleAtmosphereChanger_EnableDust";
 					expression="_this setVariable ['EnableDust',_value,true];";
@@ -13510,20 +13536,20 @@ class Mission
 						};
 					};
 				};
-				class Attribute11
+				class Attribute12
 				{
-					property="ModuleAtmosphereChanger_TransitionTime";
-					expression="_this setVariable ['TransitionTime',_value,true];";
+					property="ModuleAtmosphereChanger_EnableSnow";
+					expression="_this setVariable ['EnableSnow',_value,true];";
 					class Value
 					{
 						class data
 						{
 							singleType="SCALAR";
-							value=0.1;
+							value=0;
 						};
 					};
 				};
-				class Attribute12
+				class Attribute13
 				{
 					property="ModuleAtmosphereChanger_Rain";
 					expression="_this setVariable ['Rain',_value,true];";
@@ -13536,7 +13562,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute13
+				class Attribute14
 				{
 					property="ModuleAtmosphereChanger_StartCondition";
 					expression="_this setVariable ['StartCondition',_value,true];";
@@ -13549,7 +13575,7 @@ class Mission
 						};
 					};
 				};
-				nAttributes=14;
+				nAttributes=15;
 			};
 		};
 		class Item230
@@ -14283,8 +14309,8 @@ class Mission
 			dataType="Logic";
 			class PositionInfo
 			{
-				position[]={13741.908,42.37505,792.8512};
-				angles[]={6.2392135,0,6.157846};
+				position[]={13741.908,42.375042,792.85101};
+				angles[]={6.2392201,0,6.1578531};
 			};
 			name="Atmosphere_For_Shiza_LiterallyMe";
 			id=1610;
@@ -14292,6 +14318,19 @@ class Mission
 			class CustomAttributes
 			{
 				class Attribute0
+				{
+					property="ModuleAtmosphereChanger_TransitionTimeIn";
+					expression="_this setVariable ['TransitionTimeIn',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="SCALAR";
+							value=3;
+						};
+					};
+				};
+				class Attribute1
 				{
 					property="ModuleAtmosphereChanger_EnableSteam";
 					expression="_this setVariable ['EnableSteam',_value,true];";
@@ -14304,7 +14343,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute1
+				class Attribute2
 				{
 					property="ModuleAtmosphereChanger_Radius";
 					expression="_this setVariable ['Radius',_value,true];";
@@ -14317,7 +14356,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute2
+				class Attribute3
 				{
 					property="Debug";
 					expression="_this setVariable ['Debug',_value,true];";
@@ -14330,7 +14369,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute3
+				class Attribute4
 				{
 					property="ModuleAtmosphereChanger_Fog";
 					expression="_this setVariable ['Fog',_value,true];";
@@ -14343,7 +14382,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute4
+				class Attribute5
 				{
 					property="ModuleAtmosphereChanger_CCCustomTint";
 					expression="_this setVariable ['CCCustomTint',_value,true];";
@@ -14356,46 +14395,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute5
-				{
-					property="ModuleAtmosphereChanger_FogParams";
-					expression="_this setVariable ['FogParams',_value,true];";
-					class Value
-					{
-						class data
-						{
-							singleType="STRING";
-							value="[1,0.00001]";
-						};
-					};
-				};
 				class Attribute6
-				{
-					property="ModuleAtmosphereChanger_Preset";
-					expression="_this setVariable ['CCPreset',_value,true];";
-					class Value
-					{
-						class data
-						{
-							singleType="SCALAR";
-							value=1;
-						};
-					};
-				};
-				class Attribute7
-				{
-					property="ModuleAtmosphereChanger_EnableSnow";
-					expression="_this setVariable ['EnableSnow',_value,true];";
-					class Value
-					{
-						class data
-						{
-							singleType="SCALAR";
-							value=1;
-						};
-					};
-				};
-				class Attribute8
 				{
 					property="ModuleAtmosphereChanger_StopCondition";
 					expression="_this setVariable ['StopCondition',_value,true];";
@@ -14408,7 +14408,46 @@ class Mission
 						};
 					};
 				};
+				class Attribute7
+				{
+					property="ModuleAtmosphereChanger_FogParams";
+					expression="_this setVariable ['FogParams',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="STRING";
+							value="[1,0.00001]";
+						};
+					};
+				};
+				class Attribute8
+				{
+					property="ModuleAtmosphereChanger_Preset";
+					expression="_this setVariable ['CCPreset',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="SCALAR";
+							value=1;
+						};
+					};
+				};
 				class Attribute9
+				{
+					property="ModuleAtmosphereChanger_TransitionTimeOut";
+					expression="_this setVariable ['TransitionTimeOut',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="SCALAR";
+							value=3;
+						};
+					};
+				};
+				class Attribute10
 				{
 					property="ModuleAtmosphereChanger_LoopConditions";
 					expression="_this setVariable ['LoopConditions',_value,true];";
@@ -14421,7 +14460,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute10
+				class Attribute11
 				{
 					property="ModuleAtmosphereChanger_EnableDust";
 					expression="_this setVariable ['EnableDust',_value,true];";
@@ -14434,20 +14473,20 @@ class Mission
 						};
 					};
 				};
-				class Attribute11
+				class Attribute12
 				{
-					property="ModuleAtmosphereChanger_TransitionTime";
-					expression="_this setVariable ['TransitionTime',_value,true];";
+					property="ModuleAtmosphereChanger_EnableSnow";
+					expression="_this setVariable ['EnableSnow',_value,true];";
 					class Value
 					{
 						class data
 						{
 							singleType="SCALAR";
-							value=0.1;
+							value=1;
 						};
 					};
 				};
-				class Attribute12
+				class Attribute13
 				{
 					property="ModuleAtmosphereChanger_Rain";
 					expression="_this setVariable ['Rain',_value,true];";
@@ -14460,7 +14499,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute13
+				class Attribute14
 				{
 					property="ModuleAtmosphereChanger_StartCondition";
 					expression="_this setVariable ['StartCondition',_value,true];";
@@ -14473,7 +14512,7 @@ class Mission
 						};
 					};
 				};
-				nAttributes=14;
+				nAttributes=15;
 			};
 		};
 		class Item246
@@ -14921,8 +14960,8 @@ class Mission
 			dataType="Logic";
 			class PositionInfo
 			{
-				position[]={13741.985,42.360905,793.73022};
-				angles[]={0.015998369,0,6.099287};
+				position[]={13741.81,42.391396,793.86798};
+				angles[]={0.016004669,0,6.0992804};
 			};
 			name="Atmosphere_For_Shiza_Heaven";
 			id=1631;
@@ -14930,6 +14969,19 @@ class Mission
 			class CustomAttributes
 			{
 				class Attribute0
+				{
+					property="ModuleAtmosphereChanger_TransitionTimeIn";
+					expression="_this setVariable ['TransitionTimeIn',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="SCALAR";
+							value=45;
+						};
+					};
+				};
+				class Attribute1
 				{
 					property="ModuleAtmosphereChanger_EnableSteam";
 					expression="_this setVariable ['EnableSteam',_value,true];";
@@ -14942,7 +14994,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute1
+				class Attribute2
 				{
 					property="ModuleAtmosphereChanger_Radius";
 					expression="_this setVariable ['Radius',_value,true];";
@@ -14955,7 +15007,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute2
+				class Attribute3
 				{
 					property="Debug";
 					expression="_this setVariable ['Debug',_value,true];";
@@ -14968,7 +15020,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute3
+				class Attribute4
 				{
 					property="ModuleAtmosphereChanger_Fog";
 					expression="_this setVariable ['Fog',_value,true];";
@@ -14981,7 +15033,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute4
+				class Attribute5
 				{
 					property="ModuleAtmosphereChanger_CCCustomTint";
 					expression="_this setVariable ['CCCustomTint',_value,true];";
@@ -14994,46 +15046,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute5
-				{
-					property="ModuleAtmosphereChanger_FogParams";
-					expression="_this setVariable ['FogParams',_value,true];";
-					class Value
-					{
-						class data
-						{
-							singleType="STRING";
-							value="[1,0.00001]";
-						};
-					};
-				};
 				class Attribute6
-				{
-					property="ModuleAtmosphereChanger_Preset";
-					expression="_this setVariable ['CCPreset',_value,true];";
-					class Value
-					{
-						class data
-						{
-							singleType="SCALAR";
-							value=1;
-						};
-					};
-				};
-				class Attribute7
-				{
-					property="ModuleAtmosphereChanger_EnableSnow";
-					expression="_this setVariable ['EnableSnow',_value,true];";
-					class Value
-					{
-						class data
-						{
-							singleType="SCALAR";
-							value=0;
-						};
-					};
-				};
-				class Attribute8
 				{
 					property="ModuleAtmosphereChanger_StopCondition";
 					expression="_this setVariable ['StopCondition',_value,true];";
@@ -15046,7 +15059,46 @@ class Mission
 						};
 					};
 				};
+				class Attribute7
+				{
+					property="ModuleAtmosphereChanger_FogParams";
+					expression="_this setVariable ['FogParams',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="STRING";
+							value="[1,0.00001]";
+						};
+					};
+				};
+				class Attribute8
+				{
+					property="ModuleAtmosphereChanger_Preset";
+					expression="_this setVariable ['CCPreset',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="SCALAR";
+							value=1;
+						};
+					};
+				};
 				class Attribute9
+				{
+					property="ModuleAtmosphereChanger_TransitionTimeOut";
+					expression="_this setVariable ['TransitionTimeOut',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="SCALAR";
+							value=3;
+						};
+					};
+				};
+				class Attribute10
 				{
 					property="ModuleAtmosphereChanger_LoopConditions";
 					expression="_this setVariable ['LoopConditions',_value,true];";
@@ -15059,7 +15111,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute10
+				class Attribute11
 				{
 					property="ModuleAtmosphereChanger_EnableDust";
 					expression="_this setVariable ['EnableDust',_value,true];";
@@ -15072,20 +15124,20 @@ class Mission
 						};
 					};
 				};
-				class Attribute11
+				class Attribute12
 				{
-					property="ModuleAtmosphereChanger_TransitionTime";
-					expression="_this setVariable ['TransitionTime',_value,true];";
+					property="ModuleAtmosphereChanger_EnableSnow";
+					expression="_this setVariable ['EnableSnow',_value,true];";
 					class Value
 					{
 						class data
 						{
 							singleType="SCALAR";
-							value=45;
+							value=0;
 						};
 					};
 				};
-				class Attribute12
+				class Attribute13
 				{
 					property="ModuleAtmosphereChanger_Rain";
 					expression="_this setVariable ['Rain',_value,true];";
@@ -15098,7 +15150,7 @@ class Mission
 						};
 					};
 				};
-				class Attribute13
+				class Attribute14
 				{
 					property="ModuleAtmosphereChanger_StartCondition";
 					expression="_this setVariable ['StartCondition',_value,true];";
@@ -15111,7 +15163,7 @@ class Mission
 						};
 					};
 				};
-				nAttributes=14;
+				nAttributes=15;
 			};
 		};
 		class Item252
@@ -15478,7 +15530,7 @@ class Mission
 			position[]={13736.872,42.378201,782.53302};
 			class Attributes
 			{
-				text="[Leader] Make AI Do Pushups";
+				text="[Voice of Command] Make Target Do Pushups";
 				condition="this && player == group_nigga_leader";
 				onActivation="cursorObject execVM ""scripts\MakeTargetDoPushups.sqf""";
 				sizeA=0;
@@ -26673,16 +26725,83 @@ class Mission
 			};
 			id=2045;
 		};
+		class Item444
+		{
+			dataType="Logic";
+			class PositionInfo
+			{
+				position[]={13726.784,43.229225,793.14655};
+				angles[]={6.2611909,0,0};
+			};
+			id=2050;
+			type="ModuleGroupID";
+			class CustomAttributes
+			{
+				class Attribute0
+				{
+					property="ModuleGroupID_Platoon";
+					expression="_this setVariable ['Platoon',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="STRING";
+							value="Platoon1";
+						};
+					};
+				};
+				class Attribute1
+				{
+					property="ModuleGroupID_Squad";
+					expression="_this setVariable ['Squad',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="STRING";
+							value="Squad1";
+						};
+					};
+				};
+				class Attribute2
+				{
+					property="ModuleGroupID_Company";
+					expression="_this setVariable ['Company',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="STRING";
+							value="CompanyAlpha";
+						};
+					};
+				};
+				class Attribute3
+				{
+					property="ModuleGroupID_Custom";
+					expression="_this setVariable ['Custom',_value,true];";
+					class Value
+					{
+						class data
+						{
+							singleType="STRING";
+							value="Wagner";
+						};
+					};
+				};
+				nAttributes=4;
+			};
+		};
 	};
 	class Connections
 	{
 		class LinkIDProvider
 		{
-			nextID=70;
+			nextID=71;
 		};
 		class Links
 		{
-			items=70;
+			items=71;
 			class Item0
 			{
 				linkID=0;
@@ -27378,6 +27497,16 @@ class Mission
 				linkID=69;
 				item0=2004;
 				item1=2005;
+				class CustomData
+				{
+					type="Sync";
+				};
+			};
+			class Item70
+			{
+				linkID=70;
+				item0=2050;
+				item1=1498;
 				class CustomData
 				{
 					type="Sync";
