@@ -8,7 +8,7 @@ class EditorData
 	toggles=1;
 	class ItemIDProvider
 	{
-		nextID=2052;
+		nextID=2055;
 	};
 	class MarkerIDProvider
 	{
@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=1083;
+		nextID=1143;
 	};
 	class Camera
 	{
-		pos[]={13719.994,72.684761,773.68909};
-		dir[]={0.31398991,-0.81477267,0.48740053};
-		up[]={0.4412522,0.57977778,0.68494695};
-		aside[]={0.84065944,5.3085387e-08,-0.5415647};
+		pos[]={13726.852,51.971134,786.35889};
+		dir[]={0.2592802,-0.61911839,0.7412619};
+		up[]={0.20441276,0.7852965,0.58440077};
+		aside[]={0.94392347,1.3760291e-07,-0.33016697};
 	};
 };
 binarizationWanted=0;
@@ -1932,6 +1932,7 @@ class Mission
 						init="this spawn {_this disableAI ""ANIM""; _this action [""salute"", _this]; sleep 8; _this enableAI ""ANIM"";}" \n "";
 						name="group_nigga_medic";
 						description="Medic: Can See Healthbars, Miracle Worker, Healing Grenades, Can Give IFAKs, Has Medkit, Medic, Explosive Specialist";
+						isPlayer=1;
 						isPlayable=1;
 						class Inventory
 						{
@@ -2373,7 +2374,6 @@ class Mission
 						rank="LIEUTENANT";
 						name="group_nigga_leader";
 						description="Leader: Has Radio, Encourage, Rally Point, Map Knowledge, Crippling PTSD, Has Toolkit, Voice of Command, Explosive Specialist";
-						isPlayer=1;
 						isPlayable=1;
 						class Inventory
 						{
@@ -13143,11 +13143,11 @@ class Mission
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={13728.056,43.207806,792.89044};
-						angles[]={0,6.0207882,0};
+						position[]={13728.056,43.207802,792.89001};
+						angles[]={0,6.0207925,0};
 					};
 					side="West";
-					flags=7;
+					flags=6;
 					class Attributes
 					{
 						skill=1;
@@ -13237,8 +13237,8 @@ class Mission
 							headgear="H_HelmetB_sand";
 						};
 					};
-					id=1498;
-					type="vn_b_men_sog_22";
+					id=2054;
+					type="FS_Prigozhin_B";
 					class CustomAttributes
 					{
 						class Attribute0
@@ -27506,7 +27506,7 @@ class Mission
 			{
 				linkID=70;
 				item0=2050;
-				item1=1498;
+				item1=2054;
 				class CustomData
 				{
 					type="Sync";

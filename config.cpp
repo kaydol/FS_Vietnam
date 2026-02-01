@@ -2467,6 +2467,12 @@ class CfgVehicles
 		hiddenSelections[]={};
 		hiddenSelectionsTextures[]={};
 	};
+	
+	class vn_b_men_sog_22;
+	class FS_Prigozhin_B : vn_b_men_sog_22 { //["B_Soldier_base_F","SoldierWB","CAManBase","Man","Land","AllVehicles","All"]
+		author = "Savage Game Design";
+		displayName = "Eugene Prigozhin";
+	};
 };
 
 
