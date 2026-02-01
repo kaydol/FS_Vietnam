@@ -83,6 +83,7 @@ if (_player == group_nigga_leader) then
 	_player execVM "scripts\AddTeamMapMarkers.sqf"; 
 	_player execVM "scripts\SelectLeader.sqf";
 	
+	_player execVM "scripts\ShizaPrigozhinCalls.sqf";
 	_player execVM "scripts\ShizaWoundedLoop.sqf";
 	_player execVM "scripts\ShizaVietCongBehind.sqf";
 };

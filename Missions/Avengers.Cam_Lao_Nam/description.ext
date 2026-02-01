@@ -268,7 +268,11 @@ class CfgSounds
 		titles[] = {1, ""};
 	};
 	*/
-	
+	class eugene_will_visit_in_person {
+		name = "eugene says get up";
+		sound[] = {"\eugene_my_beloved\incoming\will_visit_you_in_person.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
 	class eugene_get_up_1 
 	{
 		name = "eugene says get up";
@@ -285,6 +289,20 @@ class CfgSounds
 	{
 		name = "eugene says get up";
 		sound[] = {"\eugene_my_beloved\shiza_wounded\Get_up_3.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	
+	
+	class eugene_first_support_call
+	{
+		name = "eugene says privet eto kto";
+		sound[] = {"\eugene_my_beloved\outgoing\first_call.ogg", db+10, 1};
+		titles[] = {1, ""};
+	};
+	class eugene_shas_bombanu
+	{
+		name = "eugene says shas bombanu";
+		sound[] = {"\eugene_my_beloved\outgoing\shas_bombanu.ogg", db+10, 1};
 		titles[] = {1, ""};
 	};
 };

@@ -1,7 +1,7 @@
 
 #include "definitions.h"
+#include "ShizaDefinitions.hpp"
 
-#define DEF_SHIZA_FIRST_RUN_VAR "FS_ShizaWounded_Is_First_Run_Var"
 #define DEF_SHIZA_BLACKLISTED_SHIZAS_VAR "FS_ShizaWounded_Blacklisted_Shizas_Var"
 
 #define DEF_ILLUSION_PRIGOZHIN 1
@@ -227,18 +227,17 @@ switch (_shizaType) do
 		DEF_CURRENT_ILLUSION_VAR = DEF_ILLUSION_PRIGOZHIN;
 		
 		private _animations = [
-			//[DEF_MARKER_FACE_PLAYER, "Acts_AidlPercMstpSloWWrflDnon_warmup_6_loop"]
-			//,[DEF_MARKER_ROTATE_20, "Acts_AidlPercMstpSnonWnonDnon_warmup_2_loop", "Acts_AidlPercMstpSnonWnonDnon_warmup_2_out", DEF_MARKER_END_ANIMATION] 
-			//,[DEF_MARKER_FACE_PLAYER, "Acts_AidlPercMstpSnonWnonDnon_warmup_6_loop"]
-			//,[DEF_MARKER_ROTATE_90, "Acts_CivilInjuredArms_1", "Acts_CivilInjuredArms_1", "Acts_CivilInjuredArms_1"]
-			//,[DEF_MARKER_FACE_PLAYER, "Acts_CivilInjuredGeneral_1"]
-			//,[DEF_MARKER_ROTATE_90, "Acts_CivilInjuredHead_1"]
-			//,[DEF_MARKER_FACE_PLAYER, "Acts_CivilShocked_1","Acts_CivilShocked_1","Acts_CivilShocked_1","Acts_CivilShocked_1","Acts_CivilShocked_1"]
-			//,[DEF_MARKER_FACE_PLAYER, "Acts_Executioner_Standing", "Acts_Executioner_Squat", "Acts_Executioner_Squat_End", DEF_MARKER_END_ANIMATION]
-			//,[DEF_MARKER_FACE_PLAYER, "Acts_ExecutionVictim_Loop", "Acts_ExecutionVictim_Kill", "Acts_ExecutionVictim_Kill_End", "Acts_ExecutionVictim_KillTerminal"]
-			//,
-			[DEF_MARKER_ROTATE_330, "Acts_Helping_Wake_Up_1", "Acts_Helping_Wake_Up_2", "Acts_Helping_Wake_Up_3", DEF_MARKER_END_ANIMATION_REVIVE_PLAYER, DEF_MARKER_SAY3D_GETUP]
-			//,[DEF_MARKER_FACE_PLAYER, "Acts_Injured_Driver_Loop"]
+			[DEF_MARKER_FACE_PLAYER, "Acts_AidlPercMstpSloWWrflDnon_warmup_6_loop"]
+			,[DEF_MARKER_ROTATE_20, "Acts_AidlPercMstpSnonWnonDnon_warmup_2_loop", "Acts_AidlPercMstpSnonWnonDnon_warmup_2_out", DEF_MARKER_END_ANIMATION] 
+			,[DEF_MARKER_FACE_PLAYER, "Acts_AidlPercMstpSnonWnonDnon_warmup_6_loop"]
+			,[DEF_MARKER_ROTATE_90, "Acts_CivilInjuredArms_1", "Acts_CivilInjuredArms_1", "Acts_CivilInjuredArms_1"]
+			,[DEF_MARKER_FACE_PLAYER, "Acts_CivilInjuredGeneral_1"]
+			,[DEF_MARKER_ROTATE_90, "Acts_CivilInjuredHead_1"]
+			,[DEF_MARKER_FACE_PLAYER, "Acts_CivilShocked_1","Acts_CivilShocked_1","Acts_CivilShocked_1","Acts_CivilShocked_1","Acts_CivilShocked_1"]
+			,[DEF_MARKER_FACE_PLAYER, "Acts_Executioner_Standing", "Acts_Executioner_Squat", "Acts_Executioner_Squat_End", DEF_MARKER_END_ANIMATION]
+			,[DEF_MARKER_FACE_PLAYER, "Acts_ExecutionVictim_Loop", "Acts_ExecutionVictim_Kill", "Acts_ExecutionVictim_Kill_End", "Acts_ExecutionVictim_KillTerminal"]
+			,[DEF_MARKER_ROTATE_330, "Acts_Helping_Wake_Up_1", "Acts_Helping_Wake_Up_2", "Acts_Helping_Wake_Up_3", DEF_MARKER_END_ANIMATION_REVIVE_PLAYER, DEF_MARKER_SAY3D_GETUP]
+			,[DEF_MARKER_FACE_PLAYER, "Acts_Injured_Driver_Loop"]
 			,[DEF_MARKER_ATTACH_TO_PLAYER, "Acts_TreatingWounded01", DEF_MARKER_END_ANIMATION_REVIVE_PLAYER, DEF_MARKER_SAY3D_GETUP]
 		];
 
