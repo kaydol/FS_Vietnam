@@ -32,8 +32,9 @@ private _fnc_getAffectedUnits = {
 private _fnc_getWeightedTexture = {
 	params ["_player"];
 	private _defaultPoolWeighted = [
-		"\FS_Vietnam\Textures\healing_grenade_flash_image_1.paa", 0, 
-		"\FS_Vietnam\Textures\jesus_1.paa", 1
+		"\FS_Vietnam\Textures\healing_grenade_flash_image_gays.paa", 0, 
+		"\FS_Vietnam\Textures\healing_grenade_flash_image_jesus.paa", 1,
+		"\FS_Vietnam\Textures\healing_grenade_flash_image_biden_blast.paa", 0
 	];
 	
 	/* Get player-specific weighted array of textures */
