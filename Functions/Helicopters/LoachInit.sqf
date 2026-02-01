@@ -1,6 +1,7 @@
 
 #define DEF_SLEEP 3
 #define DEF_STEPS 30
+#define DEF_TIME_BETWEEN_COURSE_CORRECTIONS 30 
 
 params ["_aircraft", ["_debug", false]];
 
@@ -47,7 +48,7 @@ if (_debug) then {
 
 //driver _aircraft disableAI "AUTOCOMBAT";
 
-
+private _last_course_correction_time = 0;
 private _friendly_aircrafts = [];
 private _k = 0;
 
@@ -122,8 +123,10 @@ while { _aircraft call FS_fnc_CanPerformDuties } do
 	private _time = time;
 	private _isPosHidden = [getPosASL _aircraft, [] call BIS_fnc_listPlayers, _aircraft] call FS_fnc_IsPosHidden;
 	
-	if (_isPosHidden && count waypoints _group > 0 && getPos _aircraft select 2 > 30) then 
+	if (_isPosHidden && count waypoints _group > 0 && getPos _aircraft select 2 > 30 && time - _last_course_correction_time > DEF_TIME_BETWEEN_COURSE_CORRECTIONS) then 
 	{
+		_last_course_correction_time = time;
+		
 		private _wpPos = waypointPosition [_group, currentWaypoint _group];
 		private _maxSpeed = 50;
 		private _i = 0;
@@ -161,10 +164,8 @@ while { _aircraft call FS_fnc_CanPerformDuties } do
 			//[_aircraft, _newPitch, _newBank] call BIS_fnc_setPitchBank;
 			_aircraft setVelocity _lerp;
 		};
-	}
-	else
-	{
-		sleep DEF_SLEEP;
 	};
+	
+	sleep DEF_SLEEP;
 };
 
