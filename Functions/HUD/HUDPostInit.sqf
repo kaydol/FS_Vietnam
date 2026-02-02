@@ -134,7 +134,7 @@ if (!hasInterface) exitWith {};
 					,[1,1,0,DEF_VISIBLE]
 					,[1,0.64,0,DEF_VISIBLE]
 					,[1,0,0,DEF_VISIBLE]
-					,[1,0,0,DEF_VISIBLE]
+					,[0.5,0.5,0.5,DEF_VISIBLE]
 				];
 				
 				private _texture = _textures # 0;

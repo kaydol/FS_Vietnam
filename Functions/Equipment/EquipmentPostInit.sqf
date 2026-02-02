@@ -291,6 +291,8 @@ if (hasInterface) then
 			private _grenades = nearestObjects [DEF_CURRENT_PLAYER, ["Grenade"], 30];
 			private _allColliders = missionNameSpace getVariable [DEF_LOCAL_GRENADE_COLLIDERS_VAR, []]; 
 			
+			private _newColliders = [];
+			
 			{
 				private _thisGrenade = _x;
 				private _missingCollider = (attachedObjects _thisGrenade select { typeOf _x == DEF_LOCAL_GRENADE_COLLIDER_OBJECT_CLASS }) isEqualTo [];
@@ -316,12 +318,26 @@ if (hasInterface) then
 					}];
 					
 					_collider attachTo [_thisGrenade, [0,0,0]];
-					_allColliders pushBack _collider;
+					_newColliders pushBack _collider;
 				};
 				
 				drawIcon3D [DEF_ICON_GRENADE, DEF_ICON_COLOR_RED, getPosATLVisual _thisGrenade, DEF_ICON_GRENADE_SIZE, DEF_ICON_GRENADE_SIZE, 0,"",0,0.04,"RobotoCondensed","center",true];
 				
 			} forEach _grenades;
+			
+			// delete colliders from despawned grenades, replace them with objNulls
+			_allColliders apply
+			{
+				private _grenade = attachedTo _x;
+				if (isNull _grenade) then 
+				{
+					deleteVehicle _x;
+				};
+			};
+			// remove objNulls from array
+			_allColliders = _allColliders select {!(isNull _x)}; 
+			
+			_allColliders = _allColliders + _newColliders;
 			
 			missionNameSpace setVariable [DEF_LOCAL_GRENADE_COLLIDERS_VAR, _allColliders];
 		};
