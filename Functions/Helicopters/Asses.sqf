@@ -145,7 +145,7 @@ while { ! _taskAssigned && _i < count _clusters_centers} do
 
 // Find the biggest cluster that hasn't yet engaged the players and try to give them a radio warning 
 private _warningIsOnCooldown = [_side, "ASSES", "WARNING_IS_ON_COOLDOWN"] call FS_fnc_GetSideVariable isEqualTo true;
-if (!_taskAssigned && _biggestUnspottedClusterId >= 0 && !_warningIsOnCooldown) then 
+if (!_taskAssigned && _biggestUnspottedClusterId >= 0 && isPlayer _biggestUnspottedClusterClosestFriend && !_warningIsOnCooldown) then 
 {
 	// Preventing repeat of the warning message
 	[_side, "ASSES", ["WARNING_IS_ON_COOLDOWN", true], DEF_WARNING_COOLDOWN] call FS_fnc_UpdateSideVariable;
