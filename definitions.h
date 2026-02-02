@@ -43,7 +43,7 @@
 #define DEF_HUD_HELMETS ["FS_SmartHelmet"]
 
 #define DEF_HUD_HELMET_ENABLE_CHARGE_MECHANIC true 
-#define DEF_HUD_HELMET_MAX_CHARGE 100
+#define DEF_HUD_HELMET_MAX_CHARGE 60
 #define DEF_HUD_HELMET_CHARGE_LEFT_VAR "FS_SmartHelmet_Charge_Left_Seconds"
 #define DEF_HUD_HELMET_DISCHARGE_LOOP_VAR "FS_SmartHelmet_Discharge_Loop_Handle"
 
