@@ -13,7 +13,8 @@ _this spawn
 	{
 		waitUntil { sleep 1; _player getVariable ["vn_revive_incapacitated", false] };
 		
-		if ((random 1) < _shizaChance) then 
+		private _isHeadUnderwater = eyePos player select 2 < 0;
+		if ((random 1) < _shizaChance && !_isHeadUnderwater) then 
 		{
 			_player execVM "scripts\ShizaWounded.sqf";
 		}
