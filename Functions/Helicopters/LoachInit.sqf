@@ -26,8 +26,8 @@ forEach crew _aircraft;
 
 
 // Draw arrow to the next waypoint on map
-if (_debug) then {
-	
+if (_debug) then 
+{
 	private _code = compile format [" 
 	
 	private _aircraft = %1 ;

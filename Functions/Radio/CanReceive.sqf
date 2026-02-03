@@ -10,7 +10,10 @@ if (isNil{RADIOCOMMS_PERSONAL_RADIOS}) then {
 	RADIOCOMMS_PERSONAL_RADIOS = call compile getText (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "PersonalRadios" >> "defaultValue");
 };
 
+// Personal radio must be in "assignedItems", not "items"
+// In other words, units with radios in their inventories instead of assigned items do not count as receivers - the radio must be equipped  
 private _ableToReceiveRadioComms = ((RADIOCOMMS_PERSONAL_RADIOS apply {toLowerANSI _x}) arrayIntersect ((assignedItems _object) apply {toLowerANSI _x})) isNotEqualTo [];
+
 if ( _ableToReceiveRadioComms ) exitWith { true };
 if ( _preventRecursion ) exitWith { false };
 

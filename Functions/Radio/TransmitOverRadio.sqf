@@ -179,15 +179,43 @@ if (_speaker isEqualTo objNull && _prefix isNotEqualTo "") then
 	
 	if (DEF_CURRENT_PLAYER call FS_fnc_CanTransmit) then 
 	{
-		//-- Play a nice 2D radio sound
-		if ( _speaker isEqualType "" ) then {
-			if (_cfgRadio isNotEqualTo "") then {	[_side, _speaker] sideRadio _cfgRadio;	};
-			if (_text isNotEqualTo "") then 	{	[_side, _speaker] sideChat _text;		};
-		} else {
-			if (_cfgRadio isNotEqualTo "") then {	[_side, "HQ"] sideRadio _cfgRadio;		};
-			if (_text isNotEqualTo "") then 	{	_speaker sideChat _text;				};
+		if (isNil{RADIOCOMMS_PERSONAL_RADIOS}) then {
+			RADIOCOMMS_PERSONAL_RADIOS = getNumber (ConfigFile >> "CfgVehicles" >> "FS_RadioSettings_Module" >> "Attributes" >> "PersonalRadios" >> "defaultValue");
+			if (RADIOCOMMS_PERSONAL_RADIOS isEqualType "") then { RADIOCOMMS_PERSONAL_RADIOS = call compile RADIOCOMMS_PERSONAL_RADIOS; };
 		};
-	} 
+		
+		private _playerAssignedItems = (assignedItems player) apply {toLowerANSI _x};
+		private _requiredItems = RADIOCOMMS_PERSONAL_RADIOS apply {toLowerANSI _x};
+		
+		if ( count (_requiredItems arrayIntersect _playerAssignedItems) > 0 ) then 
+		{
+			// radio equipped, sideRadio\sideChat will work
+			
+			if (_cfgRadio isNotEqualTo "") then 
+			{
+				//-- Play a nice 2D radio sound
+				if ( _speaker isEqualType "" ) then {
+					[_side, _speaker] sideRadio _cfgRadio;
+				} else {
+					[_side, "HQ"] sideRadio _cfgRadio;
+				};
+			};
+			if (_text isNotEqualTo "") then 
+			{
+				if ( _speaker isEqualType "") then {
+					[_side, _speaker] sideChat _text;
+				} else {
+					_speaker sideChat _text;
+				};
+			};
+		}
+		else
+		{
+			// no radio,  sideRadio\sideChat will not work, use globalChat + playSound 
+			player globalChat format ["%1", _text];
+			playSound _cfgRadio;
+		};
+	}
 	else 
 	{
 		if (isNil{RADIOCOMMS_AUDIBLE_RADIUS}) then {
@@ -196,7 +224,13 @@ if (_speaker isEqualTo objNull && _prefix isNotEqualTo "") then
 		
 		//-- Emit 3D radio sounds from the receivers in range
 		private _3Dspeakers = DEF_CURRENT_PLAYER call FS_fnc_CanReceiveFrom;
-		{ _x say3D [_cfgRadio, RADIOCOMMS_AUDIBLE_RADIUS]} forEach _3Dspeakers;
+		{ 
+			_x say3D [_cfgRadio, RADIOCOMMS_AUDIBLE_RADIUS];
+		} forEach _3Dspeakers;
+		
+		if (count _3Dspeakers > 0) then {
+			(_3Dspeakers # 0) globalChat format ["%1", _text];
+		};
 	};
 	
 }] remoteExec ["call", 0];
