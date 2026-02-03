@@ -32,6 +32,7 @@ private _fnc_deployRallyPoint = {
 	_marker setMarkerTypeLocal "mil_flag";
 	_marker setMarkerColorLocal _markerColor;
 	_marker setMarkerText "Rally Point";
+	_marker setMarkerAlpha 1;
 	
 	//--------------------------
 	
